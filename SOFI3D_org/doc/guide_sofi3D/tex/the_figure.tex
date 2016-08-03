@@ -1,0 +1,37 @@
+%Written by figure2latex
+%Author: David Krause
+%Email: david.krause@ece.queensu.ca
+%Clock output: 2010              9             27              9             45      31.878615
+%Comments: Hello world
+\psset{xunit=1mm,yunit=1mm,runit=1mm}
+\begin{pspicture}(0,0)(125,105)
+% Main figure box
+\psframe[linewidth=0.35,linecolor=black](25,15)(100,90)
+% Axes handle = 170.031
+\rput(62.5,7){Time (s)}
+\rput(25,12){1}
+\rput(40,12){20.8}
+\psline[linewidth=0.25, linecolor=black]{-}(40,15)(40,17)
+\rput(55,12){40.6}
+\psline[linewidth=0.25, linecolor=black]{-}(55,15)(55,17)
+\rput(70,12){60.4}
+\psline[linewidth=0.25, linecolor=black]{-}(70,15)(70,17)
+\rput(85,12){80.2}
+\psline[linewidth=0.25, linecolor=black]{-}(85,15)(85,17)
+\rput(100,12){100}
+\rput(7,52.5){\rotatebox{90}{Intensity (W/m)}}
+\rput[r](23,15){1}
+\rput[r](23,30){20.8}
+\psline[linewidth=0.25, linecolor=black]{-}(25,30)(27,30)
+\rput[r](23,45){40.6}
+\psline[linewidth=0.25, linecolor=black]{-}(25,45)(27,45)
+\rput[r](23,60){60.4}
+\psline[linewidth=0.25, linecolor=black]{-}(25,60)(27,60)
+\rput[r](23,75){80.2}
+\psline[linewidth=0.25, linecolor=black]{-}(25,75)(27,75)
+\rput[r](23,90){100}
+\newrgbcolor{userLineColor}{0 0 0}
+\rput[l](24.24,-761.52){\textcolor{userLineColor}{$\circ$ Blue Line}}
+\newrgbcolor{userLineColor}{0 0 0}
+\rput[l](24.24,14.24){\textcolor{userLineColor}{$\bullet$ Black Line}}
+\end{pspicture}

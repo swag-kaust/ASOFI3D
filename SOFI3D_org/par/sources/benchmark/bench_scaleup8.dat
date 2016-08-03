@@ -1,0 +1,24 @@
+64.00  64.00  64.00  0.00  50.00  1.00 
+64.00  64.00  192.00  0.00  50.00  1.00 
+64.00  192.00  64.00  0.00  50.00  1.00 
+64.00  192.00  192.00  0.00  50.00  1.00 
+192.00  64.00  64.00  0.00  50.00  1.00 
+192.00  64.00  192.00  0.00  50.00  1.00 
+192.00  192.00  64.00  0.00  50.00  1.00 
+192.00  192.00  192.00  0.00  50.00  1.00 
+# 
+# Definition of (distributed) source positions: 
+# position, time-delay, centre frequency, and amplitude 
+# 
+# (comment line is indicated by # or # 
+# Parameters for each source node (one source node per line): 
+# 
+#  XSRC   YSRC   ZSRC   TD   FC   AMP 
+# 
+# Symbols: 
+# XSRC= x-coordinate of source point [meter] 
+# YSRC= y-coordinate of source point [meter] (vertical)
+# ZSRC= z-coordinate of source point [meter] 
+# TD= excitation time (time-delay) for source node [s] 
+# FC= centre frequency of source signal [Hz] 
+# AMP= maximum amplitude of source signal 

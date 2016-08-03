@@ -1,0 +1,22 @@
+540.0   2106.0  2592.0
+1080.0  2106.0  2592.0
+1620.0  2106.0  2592.0
+2160.0  2106.0  2592.0
+2700.0  2106.0  2592.0
+3240.0  2106.0  2592.0
+3780.0  2106.0  2592.0
+4320.0  2106.0  2592.0
+4860.0  2106.0  2592.0
+5400.0  2106.0  2592.0
+
+#
+#(comment line is indicated by # or % as first character)
+#
+# Parameters for each receiver postiton (one receiver per line):
+#
+#       XSRC            YSRC            ZSRC
+#
+# Symbols: 
+# XSRC= x-coordinate of source point [meter]
+# YSRC= y-coordinate of source point [meter] (vertical)
+# ZSRC= z-coordinate of source point [meter]

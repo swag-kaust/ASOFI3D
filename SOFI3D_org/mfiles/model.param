@@ -1,0 +1,30 @@
+PATTERN		I
+SLICES_PER_FRAME        1
+GOP_SIZE = 1
+BASE_FILE_FORMAT PNM
+INPUT_CONVERT jpegtopnm * | pnmmargin -white 5
+#INPUT_CONVERT cat *
+INPUT_DIR .
+INPUT
+ktbsnap*.jpg [1-100]
+END_INPUT
+OUTPUT ../ktb1_85Hz_jpg_2.mpg
+# motion vector search parameters
+
+# MAD or MSE -- must be upper case
+ERROR           MAD
+
+# FULL or HALF -- must be upper case
+PIXEL           HALF
+
+# means +/- this many pixels
+RANGE           0 
+
+PSEARCH_ALG     LOGARITHMIC
+BSEARCH_ALG     SIMPLE
+
+IQSCALE         8
+PQSCALE         8 
+BQSCALE         8
+
+REFERENCE_FRAME DECODED

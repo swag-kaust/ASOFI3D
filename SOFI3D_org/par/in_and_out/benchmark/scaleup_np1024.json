@@ -1,0 +1,112 @@
+#-----------------------------------------------------------------
+#      JSON PARAMETER FILE FOR SOFI3D
+#-----------------------------------------------------------------
+# description: json input file for scale-up benchmark
+# description/name of the model: homogeneous full space (hh_elastic.c)
+# 
+
+{
+"Domain Decomposition" : "comment",
+			"NPROCX" : "16",
+			"NPROCY" : "8",
+			"NPROCZ" : "8",
+
+"3-D Grid" : "comment",
+			"NX" : "2048",
+			"NY" : "1024",
+			"NZ" : "1024",
+			"DX" : "1.0",
+                        "DY" : "1.0",
+                        "DZ" : "1.0",
+
+"FD order" : "comment",
+			"FDORDER" : "8",
+			"FDCOEFF" : "2",
+
+"Time Stepping" : "comment",
+			"TIME" : "0.2",
+			"DT" : "1.0e-4",
+
+"Source" : "comment",
+
+			"SOURCE_SHAPE" : "1",
+			"SOURCE_SHAPE values: ricker=1;fumue=2;from_SIGNAL_FILE=3;SIN**3=4" : "comment",
+			"SIGNAL_FILE" : "signal_mseis.tz",
+
+			"SOURCE_TYPE" : "1",
+			"SOURCE_TYPE values (point_source): explosive=1;force_in_x=2;in_y=3;in_z=4;custom=5" : "comment",
+			"ALPHA, BETA" : "0.0 , 0.0",
+			"SRCREC" : "1",
+			"SRCREC values :  read from SOURCE_FILE=1, PLANE_WAVE=2 (internal)" : "comment"
+			
+			"SOURCE_FILE" : "./sources/benchmark/bench_scaleup1024.dat", 
+			"RUN_MULTIPLE_SHOTS" : "0", 
+			
+			"PLANE_WAVE_DEPTH" : "2106.0",
+			"PLANE_WAVE_ANGLE" : "0.0",
+			"TS" : "0.2",
+
+"Model" : "comment",
+			"READMOD" : "0",
+			"MFILE" : "model/bench_scaleup1024",
+			"WRITE_MODELFILES" : "0",
+
+"Q-approximation" : "comment",
+			"L" : "0",
+			"FL1" : "5.0", 
+			"TAU" : "0.00",
+
+"Boundary Conditions" : "comment",
+			"FREE_SURF" : "0", 
+			"ABS_TYPE" : "2",
+			"FW" : "20.0",
+			"DAMPING" : "8.0",
+			"FPML" : "5.0",
+			"VPPML" : "3500.0",
+			"BOUNDARY" : "1",
+			"A" : "0",
+
+"Snapshots" : "comment",
+			"SNAP" : "0",
+			"TSNAP1" : "6.6e-3",
+			"TSNAP2" : "14.8",
+			"TSNAPINC" : "1",
+			"IDX" : "5",
+			"IDY" : "5",
+			"IDZ" : "5",
+			"SNAP_FORMAT" : "3",
+			"SNAP_FILE" : "./snap/test",
+			"SNAP_PLANE" : "1",
+
+"Receiver" : "comment",
+			"SEISMO" : "1",
+			"READREC" : "0",
+			"REC_FILE" : "./receiver/receiver.dat",
+			"REFRECX, REFRECY, REFRECZ" : "0.0 , 0.0 , 0.0",
+			"XREC1,YREC1, ZREC1" : "50.0 , 128.0, 128.0",
+			"XREC2,YREC2, ZREC2" : "200.0 , 128.0, 128.0",
+			"NGEOPH" : "3",
+
+"Receiver array" : "comment",
+
+			"REC_ARRAY" : "0",
+			"REC_ARRAY_DEPTH" : "65.0",
+			"REC_ARRAY_DIST" : "40.0", 
+			"DRX" : "4",
+			"DRZ" : "4",
+
+"Seismograms" : "comment",
+			"NDT, NDTSHIFT" : "10, 0",
+			"SEIS_FORMAT" : "1",
+			"SEIS_FILE" : "./su/bench_scaleup1024",
+
+"Monitoring the simulation" : "comment",
+			"LOG_FILE" : "log/bench_scaleup1024.log",
+			"LOG" : "1",
+			"OUT_TIMESTEP_INFO" : "1",
+
+"Checkpoints" : "comment",
+			"CHECKPTREAD" : "0",
+			"CHECKPTWRITE" : "0",
+			"CHECKPT_FILE" : "tmp/checkpoint_sofi3D",
+}

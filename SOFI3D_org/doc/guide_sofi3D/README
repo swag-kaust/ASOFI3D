@@ -1,0 +1,9 @@
+README - Documentation
+
+To create the manual pdf please use the script:
+
+compile_LaTeX_manual.sh
+
+If problems with the compilation occur or Latex isn't installed on your PC,
+please visit https://git.scc.kit.edu/GPIAG-Software/SOFI3D/wikis/home.
+The manual of the latest Release is placed on this page.

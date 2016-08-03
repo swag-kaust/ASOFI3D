@@ -1,0 +1,17 @@
+#FIG 3.2  Produced by xfig version 3.2.5
+Landscape
+Center
+Metric
+A4      
+100.00
+Single
+-2
+1200 2
+2 5 0 1 0 -1 50 -1 -1 0.000 0 0 -1 0 0 5
+	0 clusterbenchmark_totalcomptime.eps
+	 6840 1583 13333 1583 13333 6885 6840 6885 6840 1583
+2 5 0 1 0 -1 50 -1 -1 0.000 0 0 -1 0 0 5
+	0 clusterbenchmark_speedup.eps
+	 135 1575 6628 1575 6628 6877 135 6877 135 1575
+4 0 0 50 -1 0 18 0.0000 4 270 240 45 6795 a)\001
+4 0 0 50 -1 0 18 0.0000 4 270 255 6840 6795 b)\001

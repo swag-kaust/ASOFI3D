@@ -1,0 +1,15 @@
+#!/bin/sh
+#PBS -l walltime=1:00:00
+#PBS -l ncpus=32
+#PBS -l mem=10gb
+#PBS -j eo
+#PBS -m be -M tbohlen@geophysik.uni-kiel.de
+#PBS -N SSG_2
+
+ulimit -a 
+uname -a
+pwd
+date
+
+cd /home/supge053/projects/rsg_test/sofi3D/par/rsg_test
+mpirun -np 32 ../../bin/sofi3D < sofi3D_2th_ssg_stabtest.inp > sofi3D_2th_ssg_stabtest.out
