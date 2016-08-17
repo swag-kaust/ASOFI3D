@@ -1,7 +1,8 @@
-# Makefile for SOFI3D 
+# Makefile for SOFI3D
 
 #--------------------------------------------------------
 # edit here
+# modules for KAUST
 
 # source code for model generation (viscoelastic)
 MODEL_SRC_V = hh_visco.c
@@ -49,12 +50,12 @@ MODEL_SRC_BENCH = benchmod.c
 # On JUROPA cluster
 #CC=mpicc
 #LFLAGS=-lm
-#CFLAGS=-O3 -ipo 
+#CFLAGS=-O3 -ipo
 
 
 # On HLRN system
 #CC=mpcc
-#LFLAGS=-lm  
+#LFLAGS=-lm
 
 # ON Linux cluster ALTIX.RZ.UNI-KIEL:DE
 #CC=icc
@@ -84,14 +85,14 @@ SNAPMERGE_SCR = \
 	readdsk.c \
 	snapmerge.c \
 	util.c \
-	writedsk.c 
-	
-	
+	writedsk.c
+
+
 PARTMODEL_SCR = \
 	json_parser.c\
 	part_model.c \
 	read_par_json.c \
-	util.c 	
+	util.c
 
 
 SOFI3D_UTIL = \
@@ -158,8 +159,8 @@ SOFI3D_SRC = \
 		readmod.c \
 		$(MODEL_SRC_E) \
 		$(MODEL_SRC_V) \
-		$(SOFI3D_UTIL) 
-		
+		$(SOFI3D_UTIL)
+
 SOFI3D_SRC_BENCH = \
 		sofi3D.c \
 		comm_ini_s.c \
@@ -199,7 +200,7 @@ SOFI3D_SRC_RSG = \
 		psource_rsg.c \
 		$(MODEL_SRC_E) \
 		$(MODEL_SRC_V) \
-		$(SOFI3D_UTIL) 
+		$(SOFI3D_UTIL)
 
 SOFI3D_SRC_ACOUSTIC = \
 		av_mat_acoustic.c \
@@ -221,7 +222,7 @@ SOFI3D_SRC_ACOUSTIC = \
 		psource_acoustic.c \
 		readmod_acoustic.c \
 		$(MODEL_SRC_A) \
-		$(SOFI3D_UTIL) 
+		$(SOFI3D_UTIL)
 
 SOFI3D_OBJ = $(SOFI3D_SRC:%.c=%.o)
 SOFI3D_OBJ_RSG = $(SOFI3D_SRC_RSG:%.c=%.o)
@@ -240,7 +241,7 @@ seismerge:	$(SEISMERGE_OBJ)
 
 snapmerge:	$(SNAPMERGE_OBJ)
 	$(CC) $(SNAPMERGE_OBJ) -o ../bin/snapmerge $(LFLAGS)
-		
+
 part_model:	$(PARTMODEL_OBJ)
 	$(CC) $(PARTMODEL_OBJ) -o ../bin/partmodel $(LFLAGS)
 

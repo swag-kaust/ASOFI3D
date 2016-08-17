@@ -2,18 +2,18 @@
  * Copyright (C) 2011 For the list of authors, see file AUTHORS.
  *
  * This file is part of SOFI3D.
- *
+ * 
  * SOFI3D is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.0 of the License only.
- *
+ * 
  * SOFI3D is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
- * along with SOFI3D. See file COPYING and/or
+ * along with SOFI3D. See file COPYING and/or 
   * <http://www.gnu.org/licenses/gpl-2.0.html>.
 --------------------------------------------------------------------------*/
 /* ----------------------------------------------------------------------
@@ -48,7 +48,7 @@ int main(int argc, char **argv){
 	int ntr=0, ntr_loc=0, ntr_glob=0, nsrc=0, nsrc_loc=0, ishot, nshots; /* removed variable "h", not in use*/
 
 	double 	time1=0.0, time2=0.0, time3=0.0, time4=0.0;
-	double * time_v_update, * time_s_update, * time_s_exchange,* time_v_exchange, * time_timestep;
+	double * time_v_update, * time_s_update, * time_s_exchange,* time_v_exchange, * time_timestep;	
 	int * xb, * yb, * zb, l;
 
 	float  *** absorb_coeff=NULL;
@@ -57,13 +57,13 @@ int main(int argc, char **argv){
 	float  ***  rxy=NULL, ***  ryz=NULL, ***  rxz=NULL;
 	float  ***  rxx=NULL, ***  ryy=NULL, ***  rzz=NULL;
 	float  ***  vx=NULL, ***  vy=NULL, ***  vz=NULL;
-
+    
     /* Save old spatial derivations of velocity for Adam Bashforth */
     float *** vxyyx=NULL, *** vyzzy=NULL, *** vxzzx=NULL, *** vxxyyzz=NULL, *** vyyzz=NULL, *** vxxzz=NULL, *** vxxyy=NULL;
     float *** vxyyx_2=NULL, *** vyzzy_2=NULL, *** vxzzx_2=NULL, *** vxxyyzz_2=NULL, *** vyyzz_2=NULL, *** vxxzz_2=NULL, *** vxxyy_2=NULL;
     float *** vxyyx_3=NULL, *** vyzzy_3=NULL, *** vxzzx_3=NULL, *** vxxyyzz_3=NULL, *** vyyzz_3=NULL, *** vxxzz_3=NULL, *** vxxyy_3=NULL;
     float *** vxyyx_4=NULL, *** vyzzy_4=NULL, *** vxzzx_4=NULL, *** vxxyyzz_4=NULL, *** vyyzz_4=NULL, *** vxxzz_4=NULL, *** vxxyy_4=NULL;
-
+    
     /* Save old derivation of the stress for Adam Bashforth */
     float *** svx=NULL,  *** svy=NULL, *** svz=NULL;
     float *** svx_2=NULL, *** svy_2=NULL, *** svz_2=NULL, *** svx_3=NULL, *** svy_3=NULL, *** svz_3=NULL;
@@ -73,7 +73,7 @@ int main(int argc, char **argv){
     float *** shift_s1=NULL,*** shift_s2=NULL,*** shift_s3=NULL;
     float *** shift_v1=NULL,*** shift_v2=NULL,*** shift_v3=NULL,*** shift_v4=NULL,*** shift_v5=NULL,*** shift_v6=NULL,*** shift_v7=NULL;
     float *** shift_r1=NULL,*** shift_r2=NULL,*** shift_r3=NULL,*** shift_r4=NULL,*** shift_r5=NULL,*** shift_r6=NULL;
-
+    
     /* We need some pointes for the memory variables for Adams Bashforth */
     float  ***  rxy_2=NULL, ***  ryz_2=NULL, ***  rxz_2=NULL;
     float  ***  rxx_2=NULL, ***  ryy_2=NULL, ***  rzz_2=NULL;
@@ -81,11 +81,10 @@ int main(int argc, char **argv){
     float  ***  rxx_3=NULL, ***  ryy_3=NULL, ***  rzz_3=NULL;
     float  ***  rxy_4=NULL, ***  ryz_4=NULL, ***  rxz_4=NULL;
     float  ***  rxx_4=NULL, ***  ryy_4=NULL, ***  rzz_4=NULL;
-
+    
 	float  ***  rho, ***  pi, ***  u;
-	float  ***  C11, ***  C22, ***  C33, ***  C12, ***  C13, ***  C23, ***  C44, ***  C55, ***  C66;
 	float  ***  taus=NULL, ***  taup=NULL, *eta=NULL;
-	float  *** C66ipjp, *** C44jpkp, *** C55ipkp, *** tausipjp=NULL, *** tausjpkp=NULL, *** tausipkp=NULL,*** rjp, *** rkp, *** rip;
+	float  *** uipjp, *** ujpkp, *** uipkp, *** tausipjp=NULL, *** tausjpkp=NULL, *** tausipkp=NULL,*** rjp, *** rkp, *** rip;
 
 	float  ** srcpos=NULL, **srcpos_loc=NULL, ** srcpos1=NULL, ** signals=NULL;
 	int    ** recpos=NULL, ** recpos_loc=NULL;
@@ -122,11 +121,11 @@ int main(int argc, char **argv){
 
 	setvbuf(stdout, NULL, _IONBF, 0);
 
-	/* initialize clock for estimating runtime of program */
+	/* initialize clock for estimating runtime of program */	
 	if (MYID == 0){
 		time1=MPI_Wtime();
 		clock();
-	}
+	}	
 
 	/* print program name, version, author etc to stdout*/
 	if (MYID == 0) info(stdout);
@@ -152,20 +151,20 @@ int main(int argc, char **argv){
 		//read json formated input file
 		read_par_json(stdout, FILEINP);
 		fclose(FP);
-	}
+	} 
 	/* PE 0 will broadcast the parameters to all others PEs */
-	exchange_par();
-
+	exchange_par(); 
+    
 	/* Print info on log-files to stdout */
 	if (MYID == 0) note(stdout);
 
 	/* open log-file (each PE is using different file) */
 	/*	fp=stdout; */
-	sprintf(ext,".%i",MYID);
-	strcat(LOG_FILE,ext);
+	sprintf(ext,".%i",MYID);  
+	strcat(LOG_FILE,ext);	
 
-	/* nodes MYIDo writes logging info to LOG_FILE or stdout */
-	if (MYID==0)
+	/* nodes MYIDo writes logging info to LOG_FILE or stdout */	
+	if (MYID==0) 
 		switch (LOG){
 		case 0 : FP=fopen("/dev/null","w"); /* no logging information will be output */
 		break;
@@ -176,8 +175,8 @@ int main(int argc, char **argv){
 		break;
 		}
 
-	/* all other nodes write logging info to LOG_FILE */
-	if (MYID>0)
+	/* all other nodes write logging info to LOG_FILE */		
+	if (MYID>0) 
 		if ((FP=fopen(LOG_FILE,"w"))==NULL) err(" Opening log-file failed.");
 
 	fprintf(FP," This is the log-file generated by PE %d \n\n",MYID);
@@ -217,7 +216,7 @@ int main(int argc, char **argv){
 	NZ = IENDZ;
 
 	/* compute receiver locations within each subgrid and
-	   store local receiver coordinates in recpos_loc */
+	   store local receiver coordinates in recpos_loc */	
 	if (SEISMO){
 		fprintf(FP,"\n ------------------ READING RECEIVER PARAMETERS ----------------- \n");
 		recpos=receiver(FP,&ntr);
@@ -249,7 +248,7 @@ int main(int argc, char **argv){
 	/*allocate memory for dynamic, static and buffer arrays */
 	fac1=(NZ+FDORDER)*(NY+FDORDER)*(NX+FDORDER);
     fac2=sizeof(float)*pow(2.0,-20.0);
-
+    
     if (L>0){ /*viscoelastic case*/
         if(FDORDER_TIME==2){
             memdyn=15.0*fac1*fac2;
@@ -324,13 +323,13 @@ int main(int argc, char **argv){
 
 	l=1;
 	if(ABS_TYPE==1 && FDORDER==2){l=2;}
-
+    
 	/* memory allocation for dynamic (wavefield) arrays */
 	if(POS[2]==0){
 		vx  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
 		vy  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
 		vz  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+        
         if(FDORDER_TIME != 2){ /* Allocate memory for Adams Bashforth */
             vxyyx  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             vyzzy  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
@@ -339,7 +338,7 @@ int main(int argc, char **argv){
             vyyzz  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             vxxzz  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             vxxyy  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+            
             vxyyx_2  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             vyzzy_2  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             vxzzx_2  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
@@ -347,7 +346,7 @@ int main(int argc, char **argv){
             vyyzz_2  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             vxxzz_2  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             vxxyy_2  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+            
             vxyyx_3  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             vyzzy_3  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             vxzzx_3  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
@@ -355,24 +354,24 @@ int main(int argc, char **argv){
             vyyzz_3  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             vxxzz_3  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             vxxyy_3  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+            
             svx=f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             svy=f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             svz=f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+            
             svx_2=f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             svy_2=f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             svz_2=f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+            
             svx_3=f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             svy_3=f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             svz_3=f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+            
             if(FDORDER_TIME==4){
                 svx_4=f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
                 svy_4=f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
                 svz_4=f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+                
                 vxyyx_4  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
                 vyzzy_4  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
                 vxzzx_4  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
@@ -382,7 +381,7 @@ int main(int argc, char **argv){
                 vxxyy_4  =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             }
         }
-
+        
 		sxy =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
 		syz =  f3tensor(0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
 	}
@@ -391,7 +390,7 @@ int main(int argc, char **argv){
         vx  =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
         vy  =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
         vz  =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+        
         if(FDORDER_TIME != 2){ /* Allocate memory for Adams Bashforth */
             vxyyx  =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             vyzzy  =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
@@ -400,7 +399,7 @@ int main(int argc, char **argv){
             vyyzz  =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             vxxzz  =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             vxxyy  =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+            
             vxyyx_2  =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             vyzzy_2  =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             vxzzx_2  =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
@@ -408,7 +407,7 @@ int main(int argc, char **argv){
             vyyzz_2  =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             vxxzz_2  =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             vxxyy_2  =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+            
             vxyyx_3  =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             vyzzy_3  =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             vxzzx_3  =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
@@ -416,24 +415,24 @@ int main(int argc, char **argv){
             vyyzz_3  =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             vxxzz_3  =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             vxxyy_3  =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+            
             svx=f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             svy=f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             svz=f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+            
             svx_2=f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             svy_2=f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             svz_2=f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+            
             svx_3=f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             svy_3=f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             svz_3=f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+            
             if(FDORDER_TIME==4){
                 svx_4=f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
                 svy_4=f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
                 svz_4=f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+                
                 vxyyx_4  =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
                 vyzzy_4  =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
                 vxzzx_4  =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
@@ -443,7 +442,7 @@ int main(int argc, char **argv){
                 vxxyy_4  = f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             }
         }
-
+        
         sxy =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
         syz =  f3tensor(1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
     }
@@ -465,7 +464,7 @@ int main(int argc, char **argv){
 		rxx =  f3tensor(1,NY,1,NX,1,NZ);
 		ryy =  f3tensor(1,NY,1,NX,1,NZ);
 		rzz =  f3tensor(1,NY,1,NX,1,NZ);
-
+        
         if(FDORDER_TIME != 2){ /* Allocate memory for Adams Bashforth */
             rxy_2 =  f3tensor(1,NY,1,NX,1,NZ);
             ryz_2 =  f3tensor(1,NY,1,NX,1,NZ);
@@ -473,7 +472,7 @@ int main(int argc, char **argv){
             rxx_2 =  f3tensor(1,NY,1,NX,1,NZ);
             ryy_2 =  f3tensor(1,NY,1,NX,1,NZ);
             rzz_2 =  f3tensor(1,NY,1,NX,1,NZ);
-
+            
             rxy_3 =  f3tensor(1,NY,1,NX,1,NZ);
             ryz_3 =  f3tensor(1,NY,1,NX,1,NZ);
             rxz_3 =  f3tensor(1,NY,1,NX,1,NZ);
@@ -489,7 +488,7 @@ int main(int argc, char **argv){
                 rzz_4 =  f3tensor(1,NY,1,NX,1,NZ);
             }
         }
-
+        
 		/* memory allocation for static (model) arrays */
 		taus=  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
 		taup=  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
@@ -502,26 +501,14 @@ int main(int argc, char **argv){
 	/* memory allocation for static (model) arrays */
 	rho =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
 	pi  =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
-	// adding Cij variables by VK
-	C11 =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
-	C12  =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
-	C13 =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
-	C22  =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
-	C23 =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
-	C33  =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
-	C44 =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
-	C55  =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
-	C66 =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
-
-	// still keeping u = mu and pi = lambda + 2*mu (just in case) ;)
 	u   =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
 
 	absorb_coeff=  f3tensor(1,NY,1,NX,1,NZ);
 
 	/* averaged material parameters */
-	C66ipjp=f3tensor(1,NY,1,NX,1,NZ);
-	C44jpkp=f3tensor(1,NY,1,NX,1,NZ);
-	C55ipkp=f3tensor(1,NY,1,NX,1,NZ);
+	uipjp=f3tensor(1,NY,1,NX,1,NZ);
+	ujpkp=f3tensor(1,NY,1,NX,1,NZ);
+	uipkp=f3tensor(1,NY,1,NX,1,NZ);
 	rjp=f3tensor(1,NY,1,NX,1,NZ);
 	rkp=f3tensor(1,NY,1,NX,1,NZ);
 	rip=f3tensor(1,NY,1,NX,1,NZ);
@@ -629,17 +616,17 @@ int main(int argc, char **argv){
 			sectionp=fmatrix(1,ntr,1,ns);
 			break;
 		}
-	}
+	}	
 
 
-	if (MYID==0)
+	if (MYID==0) 
 		fprintf(FP," ... memory allocation for PE %d was successfull.\n\n", MYID);
 
 
 	/* memory for source position definition */
 	srcpos1=fmatrix(1,6,1,1);
 
-	/* Reading source positions from SOURCE_FILE */
+	/* Reading source positions from SOURCE_FILE */ 	
 	fprintf(FP,"\n ------------------ READING SOURCE PARAMETERS ------------------- \n");
 	switch (SRCREC) {
 	case 0:
@@ -698,7 +685,7 @@ int main(int argc, char **argv){
 	break;
 	}
 
-	/* create model grids check the function readmod*/
+	/* create model grids */
 	fprintf(FP,"\n ------------------ MODEL CREATION AND OUTPUT-------------------- \n");
 	if (READMOD) readmod(rho,pi,u,taus,taup,eta);
 	else {
@@ -707,16 +694,16 @@ int main(int argc, char **argv){
             model_visco(rho,pi,u,taus,taup,eta); /* viscoelastic modeling, L is specified in input file*/
         }
 	}
-
-
-	if (RUN_MULTIPLE_SHOTS) nshots=nsrc; else nshots=1;
+	
+	
+	if (RUN_MULTIPLE_SHOTS) nshots=nsrc; else nshots=1;		
 	/*printf("\n ------------------ checkfd by MYID %i -------------------- \n", MYID);*/
 	/* check if the FD run will be stable and free of numerical dispersion */
 	checkfd(FP,rho,pi,u,taus,taup,eta,srcpos,nsrc,recpos,ntr_glob);
 
 	/* calculate 3-D array for exponential damping of reflections
            at the edges of the numerical mesh (PML-boundary)*/
-	/*if(ABS_TYPE==1){
+	/*if(ABS_TYPE==1){   
 	  absorb_PML(absorb_coeffx, absorb_coeffy, absorb_coeffz);
         }*/
 
@@ -727,20 +714,20 @@ int main(int argc, char **argv){
 
 	/* calculate 3-D array for exponential damping of reflections
 	   at the edges of the numerical mesh */
-	if(ABS_TYPE==2){
+	if(ABS_TYPE==2){   
 		absorb(absorb_coeff);
 	}
 
-	/* For the calculation of the material parameters between gridpoints
-	   the parameters have to be averaged. For this, values lying at 0 and NX+1,
+	/* For the calculation of the material parameters beteween gridpoints
+	   the have to be averaged. For this, values lying at 0 and NX+1,
 	for example, are required on the local grid. These are now copied from the
 	neighbouring grids */
 	matcopy(rho,pi,u,taus,taup);
 
 	/* spatial averaging of material parameters, i.e. Tau for S-waves, shear modulus, and density */
-	av_mat(rho,pi,u,taus,taup,C66ipjp,C44jpkp,C55ipkp,tausipjp,tausjpkp,tausipkp,rjp,rkp,rip);
-
-
+	av_mat(rho,pi,u,taus,taup,uipjp,ujpkp,uipkp,tausipjp,tausjpkp,tausipkp,rjp,rkp,rip);
+    
+    
 	MPI_Barrier(MPI_COMM_WORLD);
 
 	if (CHECKPTREAD){
@@ -771,11 +758,11 @@ int main(int argc, char **argv){
 	    sbufferbac_to_fro, sreq_send, sreq_rec);*/
 
 	/* initialisation of PML and ABS domain */
-	if(ABS_TYPE==1){
+	if(ABS_TYPE==1){    
 		CPML_ini_elastic(xb,yb,zb);
 	}
 
-	if(ABS_TYPE==2){
+	if(ABS_TYPE==2){    
 		xb[0]=1; xb[1]=NX;
 		yb[0]=1; yb[1]=NY;
 		zb[0]=1; zb[1]=NZ;
@@ -817,7 +804,7 @@ int main(int argc, char **argv){
 			fprintf(FP,"\n PE %d outputs source time function in SU format to %s \n ", MYID, source_signal_file);
 			output_source_signal(fopen(source_signal_file,"w"), signals, NT, 1);
 		}
-
+        
         /* initialize wavefield with zero */
         if ((L==1) && (ABS_TYPE==2) && (CHECKPTREAD==0)){
             zero(1-FDORDER/2,NX+FDORDER/2,1-FDORDER/2,NY+FDORDER/2,1-FDORDER/2,NZ+FDORDER/2,vx,vy,vz,sxx,syy,szz,sxy,syz,sxz,
@@ -825,7 +812,7 @@ int main(int argc, char **argv){
                  vyzzy_3,vxzzx_3,vxxyyzz_3,vyyzz_3,vxxzz_3,vxxyy_3,vxyyx_4,vyzzy_4,vxzzx_4,
                  vxxyyzz_4,vyyzz_4,vxxzz_4,vxxyy_4,svx,svy,svz,svx_2,svy_2,svz_2,svx_3,svy_3,svz_3,svx_4,svy_4,svz_4,rxx,ryy,rzz,rxy,ryz,rxz,rxx_2,ryy_2,rzz_2,rxy_2,ryz_2,rxz_2,rxx_3,ryy_3,rzz_3,rxy_3,ryz_3,rxz_3,rxx_4,ryy_4,rzz_4,rxy_4,ryz_4,rxz_4);
         }
-
+        
 		if((L==0) && (ABS_TYPE==2) && (CHECKPTREAD==0)){
             zero_elastic(1-FDORDER/2,NX+FDORDER/2,1-FDORDER/2,NY+FDORDER/2,1-FDORDER/2,NZ+FDORDER/2,vx,vy,vz,sxx,syy,szz,sxy,syz,sxz,
                          vxyyx,vyzzy,vxzzx,vxxyyzz,vyyzz,vxxzz,vxxyy,vxyyx_2,vyzzy_2,vxzzx_2,vxxyyzz_2,vyyzz_2,vxxzz_2,vxxyy_2,vxyyx_3,
@@ -836,7 +823,7 @@ int main(int argc, char **argv){
 			zero_elastic_CPML(NX,NY,NZ,vx,vy,vz,sxx,syy,szz,sxy,syz,sxz,rxx,ryy,rzz,rxy,ryz,rxz,psi_sxx_x,psi_sxy_x,psi_sxz_x,psi_sxy_y,psi_syy_y,psi_syz_y,psi_sxz_z,psi_syz_z,psi_szz_z,psi_vxx,psi_vyx,psi_vzx,psi_vxy,psi_vyy,psi_vzy,psi_vxz,psi_vyz,psi_vzz,rxx_2,ryy_2,rzz_2,rxy_2,ryz_2,rxz_2,rxx_3,ryy_3,rzz_3,rxy_3,ryz_3,rxz_3,rxx_4,ryy_4,rzz_4,rxy_4,ryz_4,rxz_4);
 
 		}
-
+        
 		/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 		/* start of loop over time steps */
 
@@ -864,7 +851,7 @@ int main(int argc, char **argv){
 			if(ABS_TYPE==1){
 				update_v_CPML(xb[0],xb[1],yb[0],yb[1],zb[0],zb[1],nt,vx,vy,vz,sxx,syy,szz,sxy,syz,sxz,rho,rjp,rkp,rip,srcpos_loc,signals,nsrc_loc,absorb_coeff,stype_loc,K_x,a_x,b_x,K_x_half,a_x_half,b_x_half, K_y,a_y,b_y,K_y_half,a_y_half,b_y_half,K_z,a_z,b_z,K_z_half,a_z_half,b_z_half,psi_sxx_x,psi_sxy_x,psi_sxz_x,psi_sxy_y,psi_syy_y,psi_syz_y,psi_sxz_z,psi_syz_z,psi_szz_z);}
 			;
-
+            
             /* Shift spartial derivations of the stress one time step back */
             if (FDORDER_TIME==4){
                 shift_s1=svx_4;svx_4=svx_3;svx_3=svx_2;svx_2=svx;svx=shift_s1;
@@ -884,32 +871,29 @@ int main(int argc, char **argv){
 
 			/* update of components of stress tensor */
 
-
+            
             /* update NON PML boundaries */
             if (L>0){
-
+                
                 time_s_update[nt]=update_s(xb[0],xb[1],yb[0],yb[1],zb[0],zb[1],nt,vx,vy,vz,sxx,syy,szz,sxy,syz,sxz,rxx,ryy,rzz,rxy,ryz,rxz,
-                                           pi,u,C66ipjp,C44jpkp,C55ipkp,taus,tausipjp,tausjpkp,tausipkp,taup,eta,vxyyx,vyzzy,vxzzx,vxxyyzz,vyyzz,vxxzz,vxxyy,vxyyx_2,vyzzy_2,
+                                           pi,u,uipjp,ujpkp,uipkp,taus,tausipjp,tausjpkp,tausipkp,taup,eta,vxyyx,vyzzy,vxzzx,vxxyyzz,vyyzz,vxxzz,vxxyy,vxyyx_2,vyzzy_2,
                                            vxzzx_2,vxxyyzz_2,vyyzz_2,vxxzz_2,vxxyy_2,vxyyx_3,vyzzy_3,vxzzx_3,vxxyyzz_3,vyyzz_3,vxxzz_3,vxxyy_3,vxyyx_4,vyzzy_4,vxzzx_4,
                                            vxxyyzz_4,vyyzz_4,vxxzz_4,vxxyy_4,rxx_2,ryy_2,rzz_2,rxy_2,ryz_2,rxz_2,rxx_3,ryy_3,rzz_3,rxy_3,ryz_3,rxz_3,rxx_4,ryy_4,rzz_4,rxy_4,ryz_4,rxz_4);
                 if(ABS_TYPE==1) update_s_CPML(xb[0],xb[1],yb[0],yb[1],zb[0],zb[1],nt,vx,vy,vz,sxx,syy,szz,sxy,syz,sxz,rxx,ryy,rzz,
-                                              rxy,ryz,rxz,pi,u,
-                                              C66ipjp,C44jpkp,C55ipkp,taus,tausipjp,tausjpkp,tausipkp,taup,eta,K_x,a_x,b_x,K_x_half,a_x_half,
+                                              rxy,ryz,rxz,pi,u,uipjp,ujpkp,uipkp,taus,tausipjp,tausjpkp,tausipkp,taup,eta,K_x,a_x,b_x,K_x_half,a_x_half,
                                               b_x_half,K_y,a_y,b_y,K_y_half,a_y_half,b_y_half,K_z,a_z,b_z,K_z_half,a_z_half,b_z_half,
                                               psi_vxx,psi_vyx,psi_vzx,psi_vxy,psi_vyy,psi_vzy,psi_vxz,psi_vyz,psi_vzz);
             } else{
                 time_s_update[nt]=update_s_elastic(xb[0],xb[1],yb[0],yb[1],zb[0],zb[1],nt,vx,vy,vz,sxx,syy,szz,sxy,syz,sxz,rxx,ryy,rzz,rxy,ryz,rxz,
-                                                   pi,u,C66ipjp,C44jpkp,C55ipkp,taus,tausipjp,tausjpkp,tausipkp,taup,eta,vxyyx,vyzzy,vxzzx,vxxyyzz,vyyzz,vxxzz,vxxyy,vxyyx_2,vyzzy_2,
+                                                   pi,u,uipjp,ujpkp,uipkp,taus,tausipjp,tausjpkp,tausipkp,taup,eta,vxyyx,vyzzy,vxzzx,vxxyyzz,vyyzz,vxxzz,vxxyy,vxyyx_2,vyzzy_2,
                                                    vxzzx_2,vxxyyzz_2,vyyzz_2,vxxzz_2,vxxyy_2,vxyyx_3,vyzzy_3,vxzzx_3,vxxyyzz_3,vyyzz_3,vxxzz_3,vxxyy_3,vxyyx_4,vyzzy_4,vxzzx_4,
                                                    vxxyyzz_4,vyyzz_4,vxxzz_4,vxxyy_4);
                 if(ABS_TYPE==1) update_s_CPML_elastic(xb[0],xb[1],yb[0],yb[1],zb[0],zb[1],nt,vx,vy,vz,sxx,syy,szz,sxy,syz,sxz,
-                                                      pi,u,
-                                                      C11,C12,C13,C22,C23,C33,
-                                                      C66ipjp,C44jpkp,C55ipkp,K_x,a_x,b_x,K_x_half,a_x_half,
+                                                      pi,u,uipjp,ujpkp,uipkp,K_x,a_x,b_x,K_x_half,a_x_half,
                                                       b_x_half,K_y,a_y,b_y,K_y_half,a_y_half,b_y_half,K_z,a_z,b_z,K_z_half,a_z_half,b_z_half,
                                                       psi_vxx,psi_vyx,psi_vzx,psi_vxy,psi_vyy,psi_vzy,psi_vxz,psi_vyz,psi_vzz);
             }
-
+           
             /* Shift spartial derivations from the velocity one time step back */
             if (FDORDER_TIME==4){
                 shift_v1=vxyyx_4;vxyyx_4=vxyyx_3;vxyyx_3=vxyyx_2;vxyyx_2=vxyyx;vxyyx=shift_v1;
@@ -927,7 +911,7 @@ int main(int argc, char **argv){
                     shift_r5=ryy_4;ryy_4=ryy_3;ryy_3=ryy_2;ryy_2=ryy;ryy=shift_r5;
                     shift_r6=rzz_4;rzz_4=rzz_3;rzz_3=rzz_2;rzz_2=rzz;rzz=shift_r6;
                 }
-
+                
             }
             if (FDORDER_TIME==3){
                 shift_v1=vxyyx_3;vxyyx_3=vxyyx_2;vxyyx_2=vxyyx;vxyyx=shift_v1;
@@ -954,7 +938,7 @@ int main(int argc, char **argv){
 				 * eqsource is a implementation of moment tensor points sources. */
 				 eqsource(nt,sxx,syy,szz,sxy, syz, sxz, srcpos_loc,signals,nsrc_loc,stype_loc, amon, str, dip, rake);
 			}
-
+			
 			/* stress free surface ? */
 			if ((FREE_SURF) && (POS[2]==0)){
 				if (L) surface(1,u,pi,taus,taup,eta,sxx,syy,szz,sxy,syz,rxx,ryy,rzz,vx,vy,vz,K_x,a_x,b_x,
@@ -1083,7 +1067,7 @@ int main(int argc, char **argv){
 		free_f3tensor(vz,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
 		free_f3tensor(sxy,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
 		free_f3tensor(syz,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+        
         if(FDORDER_TIME != 2){
             free_f3tensor(vxyyx,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(vyzzy,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
@@ -1100,7 +1084,7 @@ int main(int argc, char **argv){
             free_f3tensor(vyyzz_2,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(vxxzz_2,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(vxxyy_2,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+            
             free_f3tensor(vxyyx_3,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(vyzzy_3,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(vxzzx_3,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
@@ -1108,20 +1092,20 @@ int main(int argc, char **argv){
             free_f3tensor(vyyzz_3,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(vxxzz_3,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(vxxyy_3,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+            
             free_f3tensor(svx,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(svy,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(svz,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+            
             free_f3tensor(svx_2,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(svy_2,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(svz_2,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+            
             free_f3tensor(svx_3,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(svy_3,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(svz_3,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
-
+            
+            
             if(FDORDER_TIME==4){
                 free_f3tensor(vxyyx_4,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
                 free_f3tensor(vyzzy_4,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
@@ -1130,7 +1114,7 @@ int main(int argc, char **argv){
                 free_f3tensor(vyyzz_4,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
                 free_f3tensor(vxxzz_4,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
                 free_f3tensor(vxxyy_4,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+                
                 free_f3tensor(svx_4,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
                 free_f3tensor(svy_4,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
                 free_f3tensor(svz_4,0-FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
@@ -1146,7 +1130,7 @@ int main(int argc, char **argv){
 		free_f3tensor(vz,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
 		free_f3tensor(sxy,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
 		free_f3tensor(syz,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+        
         if(FDORDER_TIME != 2){
             free_f3tensor(vxyyx,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(vyzzy,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
@@ -1155,7 +1139,7 @@ int main(int argc, char **argv){
             free_f3tensor(vyyzz,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(vxxzz,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(vxxyy,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+            
             free_f3tensor(vxyyx_2,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(vyzzy_2,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(vxzzx_2,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
@@ -1163,7 +1147,7 @@ int main(int argc, char **argv){
             free_f3tensor(vyyzz_2,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(vxxzz_2,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(vxxyy_2,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+            
             free_f3tensor(vxyyx_3,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(vyzzy_3,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(vxzzx_3,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
@@ -1171,20 +1155,20 @@ int main(int argc, char **argv){
             free_f3tensor(vyyzz_3,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(vxxzz_3,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(vxxyy_3,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+            
             free_f3tensor(svx,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(svy,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(svz,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+            
             free_f3tensor(svx_2,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(svy_2,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(svz_2,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+            
             free_f3tensor(svx_3,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(svy_3,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             free_f3tensor(svz_3,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
-
+            
+            
             if(FDORDER_TIME==4){
                 free_f3tensor(vxyyx_4,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
                 free_f3tensor(vyzzy_4,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
@@ -1193,15 +1177,15 @@ int main(int argc, char **argv){
                 free_f3tensor(vyyzz_4,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
                 free_f3tensor(vxxzz_4,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
                 free_f3tensor(vxxyy_4,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
-
+                
                 free_f3tensor(svx_4,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
                 free_f3tensor(svy_4,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
                 free_f3tensor(svz_4,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
             }
-
+            
         }
-
-
+        
+        
 	}
 
 	free_f3tensor(sxz,1-l*FDORDER/2,NY+l*FDORDER/2,1-l*FDORDER/2,NX+l*FDORDER/2,1-l*FDORDER/2,NZ+l*FDORDER/2);
@@ -1303,9 +1287,9 @@ int main(int argc, char **argv){
 	free_f3tensor(absorb_coeff,1,NY,1,NX,1,NZ);
 
 	/* averaged material parameters */
-	free_f3tensor(C66ipjp,1,NY,1,NX,1,NZ);
-	free_f3tensor(C44jpkp,1,NY,1,NX,1,NZ);
-	free_f3tensor(C55ipkp,1,NY,1,NX,1,NZ);
+	free_f3tensor(uipjp,1,NY,1,NX,1,NZ);
+	free_f3tensor(ujpkp,1,NY,1,NX,1,NZ);
+	free_f3tensor(uipkp,1,NY,1,NX,1,NZ);
 
 
 	free_f3tensor(rjp,1,NY,1,NX,1,NZ);

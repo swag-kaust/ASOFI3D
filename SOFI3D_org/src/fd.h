@@ -2,18 +2,18 @@
  * Copyright (C) 2011 For the list of authors, see file AUTHORS.
  *
  * This file is part of SOFI3D.
- * 
+ *
  * SOFI3D is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.0 of the License only.
- * 
+ *
  * SOFI3D is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with SOFI3D. See file COPYING and/or 
+ * along with SOFI3D. See file COPYING and/or
   * <http://www.gnu.org/licenses/gpl-2.0.html>.
 --------------------------------------------------------------------------*/
 /*------------------------------------------------------------------------
@@ -54,7 +54,7 @@ void absorb(float *** absorb_coeff);
 
 void absorb_PML(float *** absorb_coeffx, float *** absorb_coeffy, float *** absorb_coeffz);
 
-void CPML_coeff(float * K_x, float * alpha_prime_x, float * a_x, float * b_x, 
+void CPML_coeff(float * K_x, float * alpha_prime_x, float * a_x, float * b_x,
 		float * K_x_half, float * alpha_prime_x_half, float * a_x_half, float * b_x_half,
 		float * K_y, float * alpha_prime_y, float * a_y, float * b_y,
 		float * K_y_half, float * alpha_prime_y_half, float * a_y_half, float * b_y_half,
@@ -195,7 +195,7 @@ void readbufs(float *** sxx, float *** syy, float *** szz,
 		float *** buffertop_to_bot, float *** bufferbot_to_top,
 		float *** bufferfro_to_bac, float *** bufferbac_to_fro);
 
-void readbufv(float *** vx, float *** vy, float *** vz, 
+void readbufv(float *** vx, float *** vy, float *** vz,
 		float *** bufferlef_to_rig, float *** bufferrig_to_lef,
 		float *** buffertop_to_bot, float *** bufferbot_to_top,
 		float *** bufferfro_to_bac, float *** bufferbac_to_fro);
@@ -223,37 +223,37 @@ void save_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 		float *** vx, float *** vy, float *** vz,
 		float *** sxx, float *** syy, float *** szz, float *** sxy,
 		float *** rxx, float *** ryy,float *** rzz, float *** rxy, float *** ryz, float *** rxz,
-		float *** syz, float *** sxz, float *** psi_sxx_x, float *** psi_sxy_x, float *** psi_sxz_x, 
-		float *** psi_sxy_y, float *** psi_syy_y, float *** psi_syz_y, float *** psi_sxz_z, float *** psi_syz_z, float *** psi_szz_z, 
-		float *** psi_vxx, float *** psi_vyx, float *** psi_vzx, float *** psi_vxy, float *** psi_vyy, float *** psi_vzy, 
+		float *** syz, float *** sxz, float *** psi_sxx_x, float *** psi_sxy_x, float *** psi_sxz_x,
+		float *** psi_sxy_y, float *** psi_syy_y, float *** psi_syz_y, float *** psi_sxz_z, float *** psi_syz_z, float *** psi_szz_z,
+		float *** psi_vxx, float *** psi_vyx, float *** psi_vzx, float *** psi_vxy, float *** psi_vyy, float *** psi_vzy,
 		float *** psi_vxz, float *** psi_vyz, float *** psi_vzz);
 
-void seismo_acoustic(int lsamp, int ntr, int **recpos, float **sectionvx, float **sectionvy, 
+void seismo_acoustic(int lsamp, int ntr, int **recpos, float **sectionvx, float **sectionvy,
 		float **sectionvz, float **sectiondiv, float **sectioncurl, float **sectionp,
 		float ***vx, float ***vy, float ***vz, float ***sxx, float ***pi);
 
-void seismo(int lsamp, int ntr, int **recpos, float **sectionvx, float **sectionvy, 
+void seismo(int lsamp, int ntr, int **recpos, float **sectionvx, float **sectionvy,
 		float **sectionvz, float **sectiondiv, float **sectioncurl, float **sectionp,
 		float ***vx, float ***vy, float ***vz,
 		float ***sxx, float ***syy, float ***szz, float ***pi, float ***u);
 
-void seismo_rsg(int lsamp, int ntr, int **recpos, float **sectionvx, float **sectionvy, 
+void seismo_rsg(int lsamp, int ntr, int **recpos, float **sectionvx, float **sectionvy,
 		float **sectionvz, float **sectiondiv, float **sectioncurl, float **sectionp,
 		float ***vx, float ***vy, float ***vz,
 		float ***sxx, float ***syy, float ***szz, float ***pi, float ***u);
 
-void snap_acoustic(FILE *fp, int nt, int nsnap, int format, int type, 
+void snap_acoustic(FILE *fp, int nt, int nsnap, int format, int type,
 		float ***vx, float ***vy, float ***vz, float ***sxx, float ***pi,
 		int idx, int idy, int idz, int nx1, int ny1, int nz1, int nx2,
 		int ny2, int nz2);
 
-void snap(FILE *fp, int nt, int nsnap, int format, int type, 
+void snap(FILE *fp, int nt, int nsnap, int format, int type,
 		float ***vx, float ***vy, float ***vz, float ***sxx, float ***syy, float ***szz, float ***u, float ***pi,
 		int idx, int idy, int idz, int nx1, int ny1, int nz1, int nx2,
 		int ny2, int nz2);
 
 
-void snap_rsg(FILE *fp, int nt, int nsnap, int format, int type, 
+void snap_rsg(FILE *fp, int nt, int nsnap, int format, int type,
 		float ***vx, float ***vy, float ***vz, float ***sxx, float ***syy, float ***szz,
 		float ***u, float ***pi,
 		int idx, int idy, int idz, int nx1, int ny1, int nz1, int nx2,
@@ -270,13 +270,13 @@ float **splitsrc(float **srcpos,int *nsrc_loc, int nsrc, int * stype_loc, int *s
 void surface(int ndepth, float *** u, float *** pi, float ***taus, float *** taup,
 		float * eta, float *** sxx, float ***syy, float ***szz, float *** sxy,float *** syz,
 		float *** rxx, float *** ryy, float ***rzz, float *** vx, float *** vy,
-		float *** vz, float * K_x, float * a_x, float * b_x, float * K_z, float * a_z, float * b_z, 
+		float *** vz, float * K_x, float * a_x, float * b_x, float * K_z, float * a_z, float * b_z,
 		float *** psi_vxx, float *** psi_vzz );
 
 void surface_elastic(int ndepth, float *** u, float *** pi,
 		float *** sxx, float ***syy, float ***szz, float *** sxy,float *** syz,
 		float *** vx, float *** vy, float *** vz,
-		float * K_x, float * a_x, float * b_x, float * K_z, float * a_z, float * b_z, 
+		float * K_x, float * a_x, float * b_x, float * K_z, float * a_z, float * b_z,
 		float *** psi_vxx, float *** psi_vzz );
 
 void surface_acoustic(int ndepth,  float *** pi, float *** sxx, float *** vx, float *** vy, float *** vz);
@@ -335,8 +335,10 @@ double update_s_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int n
 		float *** psi_vxx, float *** psi_vyx, float *** psi_vzx, float *** psi_vxy, float *** psi_vyy, float *** psi_vzy, float *** psi_vxz, float *** psi_vyz, float *** psi_vzz);
 
 double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt, float *** vx, float *** vy, float *** vz,
-		float *** sxx, float *** syy, float *** szz, float *** sxy, float *** syz, float *** sxz, float ***  pi, float ***  u, float ***  uipjp,
-		float ***  ujpkp, float ***  uipkp, float * K_x, float * a_x, float * b_x, float * K_x_half, float * a_x_half, float * b_x_half,
+		float *** sxx, float *** syy, float *** szz, float *** sxy, float *** syz, float *** sxz, float ***  pi, float ***  u,
+		float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
+		float ***  C66ipjp, float ***  C44jpkp, float ***  C55ipkp,
+		float * K_x, float * a_x, float * b_x, float * K_x_half, float * a_x_half, float * b_x_half,
 		float * K_y, float * a_y, float * b_y, float * K_y_half, float * a_y_half, float * b_y_half,
 		float * K_z, float * a_z, float * b_z, float * K_z_half, float * a_z_half, float * b_z_half,
 		float *** psi_vxx, float *** psi_vyx, float *** psi_vzx, float *** psi_vxy, float *** psi_vyy, float *** psi_vzy, float *** psi_vxz, float *** psi_vyz, float *** psi_vzz);
@@ -365,11 +367,11 @@ double update_v(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
         float *** svx_2, float *** svy_2, float *** svz_2, float *** svx_3, float *** svy_3, float *** svz_3,
         float *** svx_4, float *** svy_4, float *** svz_4);
 
-/*double update_v_PML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt, float *** vx, float *** vy, float *** vz, 
-float *** sxx, float *** syy, float *** szz, float *** sxy,float *** syz, float *** sxz, float *** vx1, float *** vy1, 
-float *** vz1, float *** sxx1, float *** syy1, float *** szz1, float *** sxy1, float *** syz1, float *** sxz1, float *** vx2, 
-float *** vy2, float *** vz2, float *** sxx2, float *** syy2, float *** szz2, float *** sxy2, float *** syz2, float *** sxz2, 
-float *** vx3, float *** vy3, float *** vz3, float *** sxx3, float *** syy3, float *** szz3, float *** sxy3, float *** syz3, 
+/*double update_v_PML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt, float *** vx, float *** vy, float *** vz,
+float *** sxx, float *** syy, float *** szz, float *** sxy,float *** syz, float *** sxz, float *** vx1, float *** vy1,
+float *** vz1, float *** sxx1, float *** syy1, float *** szz1, float *** sxy1, float *** syz1, float *** sxz1, float *** vx2,
+float *** vy2, float *** vz2, float *** sxx2, float *** syy2, float *** szz2, float *** sxy2, float *** syz2, float *** sxz2,
+float *** vx3, float *** vy3, float *** vz3, float *** sxx3, float *** syy3, float *** szz3, float *** sxy3, float *** syz3,
 float *** sxz3,float  ***  rho, float **  srcpos_loc, float ** signals, int nsrc, float *** absorb_coeffx, float *** absorb_coeffy, float *** absorb_coeffz, int * stype);*/
 
 double update_v_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
@@ -400,13 +402,13 @@ void update_v_rsg(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 
 float ** wavelet(float **srcpos_loc, int nsrc);
 
-void writebufs(float *** sxx, float *** syy, float *** szz, 
+void writebufs(float *** sxx, float *** syy, float *** szz,
 		float *** sxy, float *** syz, float *** sxz,
 		float *** bufferlef_to_rig, float *** bufferrig_to_lef,
 		float *** buffertop_to_bot, float *** bufferbot_to_top,
 		float *** bufferfro_to_bac, float *** bufferbac_to_fro);
 
-void writebufv(float *** vx, float *** vy, float *** vz, 
+void writebufv(float *** vx, float *** vy, float *** vz,
 		float *** bufferlef_to_rig, float *** bufferrig_to_lef,
 		float *** buffertop_to_bot, float *** bufferbot_to_top,
 		float *** bufferfro_to_bac, float *** bufferbac_to_fro);

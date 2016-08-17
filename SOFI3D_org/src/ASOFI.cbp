@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="TDG" />
+		<Option makefile_is_custom="1" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<MakeCommands>
+			<Build command="$make sofi3D" />
+			<CompileFile command="$make -f $makefile $file" />
+			<Clean command="$make -f $makefile clean$target" />
+			<DistClean command="$make -f $makefile distclean$target" />
+			<AskRebuildNeeded command="$make -q -f $makefile $target" />
+			<SilentBuild command="$make sofi3D &gt; $(CMD_NULL)" />
+		</MakeCommands>
+		<Build>
+			<Target title="sofi3D">
+				<Option output="../bin/sofi3D" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/TDG" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="CPML_coeff.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="CPML_ini_elastic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Makefile" />
+		<Unit filename="PML_ini.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="PML_ini_acoustic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="absorb.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="absorb_PML.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="av_mat.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="av_mat_acoustic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="benchmod.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="catseis.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="checkfd_acoustic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="checkfd_ssg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="comm_ini.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="comm_ini_acoustic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="comm_ini_s.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="eqsource.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="exchange_par.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="exchange_s.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="exchange_s_acoustic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="exchange_v.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="exchange_v_acoustic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="fd.h" />
+		<Unit filename="globvar.h" />
+		<Unit filename="hh_acoustic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hh_elastic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hh_visco.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="info.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="initproc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="initsour.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="json_parser.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="matcopy.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="matcopy_acoustic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="merge.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="mergemod.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="note.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="output_source_signal.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="outseis.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="outseis_glob.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="part_model.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="psource.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="psource_acoustic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="rd_sour.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="read_checkpoint.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="read_par_json.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="readdsk.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="readmod.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="readmod_acoustic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="receiver.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="rwsegy.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="save_checkpoint.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="saveseis.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="saveseis_glob.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="segy.h" />
+		<Unit filename="seismerge.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="seismo_ssg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="seismo_ssg_acoustic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="snap_ssg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="snap_ssg_acoustic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="snapmerge.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="sofi3D.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="sofi3D_acoustic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="sofi3D_org.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="sources.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="splitrec.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="splitsrc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="surface_acoustic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="surface_ssg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="surface_ssg_elastic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="timing.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="update_s_acoustic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="update_s_acoustic_PML.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="update_s_ssg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="update_s_ssg_CPML.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="update_s_ssg_CPML_elastic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="update_s_ssg_elastic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="update_v_acoustic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="update_v_acoustic_PML.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="update_v_ssg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="update_v_ssg_CPML.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="util.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="wavelet.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="writedsk.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="writemod.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="writepar.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="zero.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="zero_acoustic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="zero_elastic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="zero_elastic_CPML.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
