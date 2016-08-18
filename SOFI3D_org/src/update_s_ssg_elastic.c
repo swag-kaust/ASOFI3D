@@ -212,7 +212,7 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
                         k1 = (tsxx-garb1)/(sqrt(tsxx*tsxx+garb1*garb1));
                         k2 = (tsyy-garb2)/(sqrt(tsyy*tsyy+garb2*garb2));
                         k3 = (tszz-garb3)/(sqrt(tszz*tszz+garb3*garb3));
-
+/*
                         if(abs(k1)>0.01 || abs(k2)>0.01 || abs(k3)>0.01)
                         {
                             fprintf(FP,"=====================IAMHERE====================================\n");
@@ -225,7 +225,7 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
                             fprintf(FP,"g = %e \t f = %e\n",g,f);
                             //c11 = 2.450000e+10, c12  = 8.500001e+09, c13 = 8.500001e+09, c22 = 2.450000e+10, c23 = 8.500001e+09, c33 = 2.450000e+10
                         }
-
+*/
                         /*
                                                         sxx[j][i][k]+=DT*((c11*vxx)+(c12*vyy)+(c13*vzz));
                                                         syy[j][i][k]+=DT*((c12*vxx)+(c22*vyy)+(c23*vzz));

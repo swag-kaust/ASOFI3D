@@ -54,8 +54,8 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
 	const float vp1=3500.0, vs1=2000.0, rho1=2000.0, h=100000.0;
 
 	/* parameters for layer 2 */
-	const float vp2=5700.0, vs2=3400.0, rho2=2500.0;
-
+	//const float vp2=5700.0, vs2=3400.0, rho2=2500.0;
+	const float vp2=3500.0, vs2=2000.0, rho2=2000.0, h=100000.0;
 
 	if (WRITE_MODELFILES==1) {
 		pwavemod  =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
@@ -110,7 +110,7 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
 						C11[jj][ii][kk]=piv;
                         C12[jj][ii][kk]=piv-(2*muv);
                         C13[jj][ii][kk]=piv-(2*muv);
-                        C22[jj][ii][kk]=piv;
+                        C22[jj][ii][kk]=piv*0.7;
                         C23[jj][ii][kk]=piv-(2*muv);
                         C33[jj][ii][kk]=piv;
                         C44[jj][ii][kk]=muv;
