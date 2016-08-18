@@ -5,7 +5,9 @@
 
     #include "fd.h"
 
-    void model_elastic(float  ***  rho, float ***  pi, float ***  u, 
+    void model_elastic(float  ***  rho, float ***  pi, float ***  u,
+    float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
+    float *** C44, float *** C55, float *** C66,
     float ***  taus, float ***  taup, float *  eta){
 
 	/*--------------------------------------------------------------------------*/
@@ -20,16 +22,16 @@
 	float *pts=NULL, sumu=0.0, sumpi=0.0;
 	float *** pwavemod, *** swavemod;
 	float *** qpmod=NULL, *** qsmod=NULL;
-	
+
 	int i, j, k, l, ii, jj, kk;
 	int writeallmodels=0;
 	char filename[STRING_SIZE];
-	    
+
 	    /*-----------------material property definition -------------------------*/
 
 	    /* parameters for underground */
 	    const float vp1=3500.0, vs1=2000.0, rho1=2000.0,  qp1=20.0, qs1=10.0;
-	    
+
 	    /*-----------------------------------------------------------------------*/
 	    /*internal switch for writing all models to file (writeallmodels=1)
 	    * or just density (writeallmodels=0)
@@ -66,7 +68,7 @@
 					    *=========================================================
 					    */
 
-					   
+
 					    Vp=vp1; Vs=vs1; Rho=rho1;
 
 
@@ -133,7 +135,7 @@
 					    */
 
 					    Vp=vp1; Vs=vs1; Rho=rho1; Qp=qp1; Qs=qs1;
-					    
+
 
 					    /*=========================================================
 					    * modify up to this point for ELASTIC model definition

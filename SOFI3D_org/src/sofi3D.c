@@ -138,7 +138,7 @@ int main(int argc, char **argv){
 			strncpy(FILEINP,argv[1],STRING_SIZE);
 			fprintf(stderr," Input parameter filename read from command line : %s. \n\n",FILEINP);
 			if (strlen(FILEINP)>STRING_SIZE-1) {
-				fprintf(stderr,"\n SOFI3D cannot handel pathes with more than %d characters.\n",STRING_SIZE-1);
+				fprintf(stderr,"\n SOFI3D cannot handle paths with more than %d characters.\n",STRING_SIZE-1);
 				fprintf(stderr," Error: SOFI3D could not read input parameter file name. -> Exit. \n\n");
 				return -1;
 			}
@@ -699,10 +699,10 @@ int main(int argc, char **argv){
 	}
 
 	/* create model grids check the function readmod*/
-	fprintf(FP,"\n ------------------ MODEL CREATION AND OUTPUT-------------------- \n");
+	fprintf(FP,"\n ------------------ MODEL CREATION AND OUTPUT-(aniso READMOD=1 needs to be implemented still)---\n");
 	if (READMOD) readmod(rho,pi,u,taus,taup,eta);
 	else {
-		if (L==0) model_elastic(rho,pi,u,taus,taup,eta); /* elastic modeling, L is specified in input file*/
+		if (L==0) model_elastic(rho,pi,u,C11,C12,C13,C22,C23,C33,C44,C55,C66,taus,taup,eta); /* elastic modeling, L is specified in input file*/
         else {
             model_visco(rho,pi,u,taus,taup,eta); /* viscoelastic modeling, L is specified in input file*/
         }
@@ -735,10 +735,10 @@ int main(int argc, char **argv){
 	   the parameters have to be averaged. For this, values lying at 0 and NX+1,
 	for example, are required on the local grid. These are now copied from the
 	neighbouring grids */
-	matcopy(rho,pi,u,taus,taup);
+	matcopy(rho,pi,u,C11,C12,C13,C22,C23,C33,C44,C55,C66,taus,taup);
 
 	/* spatial averaging of material parameters, i.e. Tau for S-waves, shear modulus, and density */
-	av_mat(rho,pi,u,taus,taup,C66ipjp,C44jpkp,C55ipkp,tausipjp,tausjpkp,tausipkp,rjp,rkp,rip);
+	av_mat(rho,pi,u,C44,C55,C66,taus,taup,C66ipjp,C44jpkp,C55ipkp,tausipjp,tausjpkp,tausipkp,rjp,rkp,rip);
 
 
 	MPI_Barrier(MPI_COMM_WORLD);
@@ -899,7 +899,7 @@ int main(int argc, char **argv){
                                               psi_vxx,psi_vyx,psi_vzx,psi_vxy,psi_vyy,psi_vzy,psi_vxz,psi_vyz,psi_vzz);
             } else{
                 time_s_update[nt]=update_s_elastic(xb[0],xb[1],yb[0],yb[1],zb[0],zb[1],nt,vx,vy,vz,sxx,syy,szz,sxy,syz,sxz,rxx,ryy,rzz,rxy,ryz,rxz,
-                                                   pi,u,C66ipjp,C44jpkp,C55ipkp,taus,tausipjp,tausjpkp,tausipkp,taup,eta,vxyyx,vyzzy,vxzzx,vxxyyzz,vyyzz,vxxzz,vxxyy,vxyyx_2,vyzzy_2,
+                                                   pi,u,C11,C12,C13,C22,C23,C33,C66ipjp,C44jpkp,C55ipkp,taus,tausipjp,tausjpkp,tausipkp,taup,eta,vxyyx,vyzzy,vxzzx,vxxyyzz,vyyzz,vxxzz,vxxyy,vxyyx_2,vyzzy_2,
                                                    vxzzx_2,vxxyyzz_2,vyyzz_2,vxxzz_2,vxxyy_2,vxyyx_3,vyzzy_3,vxzzx_3,vxxyyzz_3,vyyzz_3,vxxzz_3,vxxyy_3,vxyyx_4,vyzzy_4,vxzzx_4,
                                                    vxxyyzz_4,vyyzz_4,vxxzz_4,vxxyy_4);
                 if(ABS_TYPE==1) update_s_CPML_elastic(xb[0],xb[1],yb[0],yb[1],zb[0],zb[1],nt,vx,vy,vz,sxx,syy,szz,sxy,syz,sxz,
@@ -1297,9 +1297,23 @@ int main(int argc, char **argv){
 
 	}
 
+    //isotropic parameters releasing
+
 	free_f3tensor(rho,0,NY+1,0,NX+1,0,NZ+1);
 	free_f3tensor(pi,0,NY+1,0,NX+1,0,NZ+1);
 	free_f3tensor(u,0,NY+1,0,NX+1,0,NZ+1);
+
+	//anisotropic parameters releasing
+
+	free_f3tensor(C11,0,NY+1,0,NX+1,0,NZ+1);
+	free_f3tensor(C12,0,NY+1,0,NX+1,0,NZ+1);
+	free_f3tensor(C13,0,NY+1,0,NX+1,0,NZ+1);
+	free_f3tensor(C22,0,NY+1,0,NX+1,0,NZ+1);
+	free_f3tensor(C23,0,NY+1,0,NX+1,0,NZ+1);
+	free_f3tensor(C33,0,NY+1,0,NX+1,0,NZ+1);
+	free_f3tensor(C44,0,NY+1,0,NX+1,0,NZ+1);
+	free_f3tensor(C55,0,NY+1,0,NX+1,0,NZ+1);
+	free_f3tensor(C66,0,NY+1,0,NX+1,0,NZ+1);
 	free_f3tensor(absorb_coeff,1,NY,1,NX,1,NZ);
 
 	/* averaged material parameters */

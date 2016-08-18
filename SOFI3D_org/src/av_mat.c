@@ -2,18 +2,18 @@
  * Copyright (C) 2011 For the list of authors, see file AUTHORS.
  *
  * This file is part of SOFI3D.
- * 
+ *
  * SOFI3D is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.0 of the License only.
- * 
+ *
  * SOFI3D is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with SOFI3D. See file COPYING and/or 
+ * along with SOFI3D. See file COPYING and/or
   * <http://www.gnu.org/licenses/gpl-2.0.html>.
 --------------------------------------------------------------------------*/
 /*------------------------------------------------------------------------
@@ -24,8 +24,9 @@
 #include "fd.h"
 
 void av_mat(float *** rho, float *** pi, float *** u,
+        float *** C44, float *** C55, float *** C66,
 		float *** taus, float *** taup,
-		float  *** uipjp, float *** ujpkp, float *** uipkp, float *** tausipjp,
+		float  *** C66ipjp, float *** C44jpkp, float *** C55ipkp, float *** tausipjp,
 		float  *** tausjpkp, float  *** tausipkp, float  *** rjp, float  *** rkp, float  *** rip ){
 
 
@@ -38,7 +39,7 @@ void av_mat(float *** rho, float *** pi, float *** u,
 		fprintf(FP,"\n\n **Message from av_mat (written by PE %d):",MYID);
 		fprintf(FP,"\n Averaging of material parameters ... \n");
 		time1=MPI_Wtime();
-	}	
+	}
 
 	for (j=1;j<=NY;j++){
 		for (i=1;i<=NX;i++){
@@ -46,9 +47,9 @@ void av_mat(float *** rho, float *** pi, float *** u,
 
 
 				/* harmonic averaging of shear modulus */
-				uipjp[j][i][k]=4.0/((1.0/u[j][i][k])+(1.0/u[j][i+1][k])+(1.0/u[j+1][i+1][k])+(1.0/u[j+1][i][k]));
-				ujpkp[j][i][k]=4.0/((1.0/u[j][i][k])+(1.0/u[j][i][k+1])+(1.0/u[j+1][i][k+1])+(1.0/u[j+1][i][k]));
-				uipkp[j][i][k]=4.0/((1.0/u[j][i][k])+(1.0/u[j][i][k+1])+(1.0/u[j][i+1][k+1])+(1.0/u[j][i+1][k]));
+				C66ipjp[j][i][k]=4.0/((1.0/C66[j][i][k])+(1.0/C66[j][i+1][k])+(1.0/C66[j+1][i+1][k])+(1.0/C66[j+1][i][k]));
+				C44jpkp[j][i][k]=4.0/((1.0/C44[j][i][k])+(1.0/C44[j][i][k+1])+(1.0/C44[j+1][i][k+1])+(1.0/C44[j+1][i][k]));
+				C55ipkp[j][i][k]=4.0/((1.0/C55[j][i][k])+(1.0/C55[j][i][k+1])+(1.0/C55[j][i+1][k+1])+(1.0/C55[j][i+1][k]));
 
 				/* arithmetic averaging of TAU for S-waves and density */
 

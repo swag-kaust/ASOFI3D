@@ -165,12 +165,12 @@ double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz
 					g=pi[j][i][k];
 					f=2.0*u[j][i][k];
 
-					c11=pi[j][i][k];
-					c12=u[j][i][k];
-					c13=u[j][i][k];
-					c22=pi[j][i][k];
-					c23=u[j][i][k];
-					c33=pi[j][i][k];
+					c11=C11[j][i][k];
+					c12=C12[j][i][k];
+					c13=C13[j][i][k];
+					c22=C22[j][i][k];
+					c23=C23[j][i][k];
+					c33=C33[j][i][k];
 
 					vxyyx=vxy+vyx;
 					vyzzy=vyz+vzy;
@@ -268,13 +268,12 @@ double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz
 					f=2.0*u[j][i][k];
 
 
-					c11=pi[j][i][k];
-					c12=u[j][i][k];
-					c13=u[j][i][k];
-					c22=pi[j][i][k];
-					c23=u[j][i][k];
-					c33=pi[j][i][k];
-
+					c11=C11[j][i][k];
+					c12=C12[j][i][k];
+					c13=C13[j][i][k];
+					c22=C22[j][i][k];
+					c23=C23[j][i][k];
+					c33=C33[j][i][k];
 
 
 					vxyyx=vxy+vyx;
@@ -347,12 +346,13 @@ double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz
 					g=pi[j][i][k];
 					f=2.0*u[j][i][k];
 
-					c11=pi[j][i][k];
-					c12=u[j][i][k];
-					c13=u[j][i][k];
-					c22=pi[j][i][k];
-					c23=u[j][i][k];
-					c33=pi[j][i][k];
+					c11=C11[j][i][k];
+					c12=C12[j][i][k];
+					c13=C13[j][i][k];
+					c22=C22[j][i][k];
+					c23=C23[j][i][k];
+					c33=C33[j][i][k];
+
 
 					vxyyx=vxy+vyx;
 					vyzzy=vyz+vzy;
@@ -427,12 +427,12 @@ double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz
 					g=pi[j][i][k];
 					f=2.0*u[j][i][k];
 
-					c11=pi[j][i][k];
-					c12=u[j][i][k];
-					c13=u[j][i][k];
-					c22=pi[j][i][k];
-					c23=u[j][i][k];
-					c33=pi[j][i][k];
+					c11=C11[j][i][k];
+					c12=C12[j][i][k];
+					c13=C13[j][i][k];
+					c22=C22[j][i][k];
+					c23=C23[j][i][k];
+					c33=C33[j][i][k];
 
 					vxyyx=vxy+vyx;
 					vyzzy=vyz+vzy;
@@ -489,21 +489,23 @@ double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz
 					g=pi[j][i][k];
 					f=2.0*u[j][i][k];
 
+                    /* can be used for debugging
 					c11=pi[j][i][k];
 					c12=u[j][i][k];
 					c13=u[j][i][k];
 					c22=pi[j][i][k];
 					c23=u[j][i][k];
 					c33=pi[j][i][k];
+					*/
 
-					/*
+
 					c11=C11[j][i][k];
 					c12=C12[j][i][k];
 					c13=C13[j][i][k];
 					c22=C22[j][i][k];
 					c23=C23[j][i][k];
 					c33=C33[j][i][k];
-					*/
+
 
 					vxyyx=vxy+vyx;
 					vyzzy=vyz+vzy;
@@ -597,12 +599,12 @@ maybe right here, maybe even inside this file...
 					g=pi[j][i][k];
 					f=2.0*u[j][i][k];
 
-					c11=pi[j][i][k];
-					c12=u[j][i][k];
-					c13=u[j][i][k];
-					c22=pi[j][i][k];
-					c23=u[j][i][k];
-					c33=pi[j][i][k];
+					c11=C11[j][i][k];
+					c12=C12[j][i][k];
+					c13=C13[j][i][k];
+					c22=C22[j][i][k];
+					c23=C23[j][i][k];
+					c33=C33[j][i][k];
 
 					vxyyx=vxy+vyx;
 					vyzzy=vyz+vzy;

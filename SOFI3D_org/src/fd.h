@@ -64,6 +64,7 @@ void CPML_coeff(float * K_x, float * alpha_prime_x, float * a_x, float * b_x,
 void CPML_ini_elastic(int * xb, int * yb, int * zb);
 
 void av_mat(float *** rho, float *** pi, float *** u,
+        float *** C44, float *** C55, float *** C66,
 		float *** taus, float *** taup,
 		float  *** uipjp, float *** ukpkp, float *** uipkp, float *** tausipjp,
 		float  *** tausjpkp, float  *** tausipkp, float  *** rjp, float  *** rkp, float  *** rip );
@@ -146,6 +147,8 @@ void initproc(void);
 int initsour(int nxs,int nys, int  nzs, int *nxsl,int *nysl, int  *nzsl );
 
 void matcopy(float *** rho, float *** pi, float *** u,
+        float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
+        float *** C44, float *** C55, float *** C66,
 		float *** taus, float *** taup);
 
 void matcopy_acoustic(float *** rho, float *** pi);
@@ -158,6 +161,8 @@ void model_visco(float  ***  rho, float ***  pi, float ***  u,
 		float ***  taus, float ***  taup, float *  eta);
 
 void model_elastic(float  ***  rho, float ***  pi, float ***  u,
+        float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
+        float *** C44, float *** C55, float *** C66,
 		float ***  taus, float ***  taup, float *  eta);
 
 void model_acoustic(float  ***  rho, float ***  pi);
@@ -290,7 +295,8 @@ double update_s(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
                 float *** sxx, float *** syy, float *** szz, float *** sxy,
                 float *** syz, float *** sxz, float *** rxx, float *** ryy,
                 float *** rzz, float *** rxy, float *** ryz, float *** rxz,
-                float ***  pi, float ***  u, float ***  uipjp, float ***  ujpkp, float ***  uipkp,
+                float ***  pi, float ***  u,
+                float ***  uipjp, float ***  ujpkp, float ***  uipkp,
                 float  ***  taus, float  ***  tausipjp, float  ***  tausjpkp, float  ***  tausipkp,
                 float  ***  taup, float *  eta,
                 float *** vxyyx,float *** vyzzy,float *** vxzzx,float *** vxxyyzz,float *** vyyzz,float *** vxxzz,float *** vxxyy,
@@ -308,7 +314,9 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, in
                         float *** sxx, float *** syy, float *** szz, float *** sxy,
                         float *** syz, float *** sxz, float *** rxx, float *** ryy,
                         float *** rzz, float *** rxy, float *** ryz, float *** rxz,
-                        float ***  pi, float ***  u, float ***  uipjp, float ***  ujpkp, float ***  uipkp,
+                        float ***  pi, float ***  u,
+                        float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
+                        float ***  uipjp, float ***  ujpkp, float ***  uipkp,
                         float  ***  taus, float  ***  tausipjp, float  ***  tausjpkp, float  ***  tausipkp,
                         float  ***  taup, float *  eta,
                         float *** vxyyx,float *** vyzzy,float *** vxzzx,float *** vxxyyzz,float *** vyyzz,float *** vxxzz,float *** vxxyy,

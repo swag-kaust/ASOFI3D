@@ -238,7 +238,7 @@ if image_switch==1
     end
     
     
-    h1=figure(1);
+    h1=figure(2);
     % determination of screen size
     scrsz = get(0,'ScreenSize');
     % determination size of window for plotting

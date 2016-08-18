@@ -2,18 +2,18 @@
  * Copyright (C) 2011 For the list of authors, see file AUTHORS.
  *
  * This file is part of SOFI3D.
- *
+ * 
  * SOFI3D is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.0 of the License only.
- *
+ * 
  * SOFI3D is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
- * along with SOFI3D. See file COPYING and/or
+ * along with SOFI3D. See file COPYING and/or 
   * <http://www.gnu.org/licenses/gpl-2.0.html>.
 --------------------------------------------------------------------------*/
 /*------------------------------------------------------------------------
@@ -29,8 +29,6 @@
 #include "fd.h"
 
 void model_elastic(float  ***  rho, float ***  pi, float ***  u,
-        float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
-        float *** C44, float *** C55, float *** C66,
 		float ***  taus, float ***  taup, float *  eta){
 
 	/*--------------------------------------------------------------------------*/
@@ -106,18 +104,6 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
 						u[jj][ii][kk]=muv;
 						rho[jj][ii][kk]=Rho;
 						pi[jj][ii][kk]=piv;
-
-						C11[jj][ii][kk]=piv;
-                        C12[jj][ii][kk]=piv-(2*muv);
-                        C13[jj][ii][kk]=piv-(2*muv);
-                        C22[jj][ii][kk]=piv;
-                        C23[jj][ii][kk]=piv-(2*muv);
-                        C33[jj][ii][kk]=piv;
-                        C44[jj][ii][kk]=muv;
-                        C55[jj][ii][kk]=muv;
-                        C66[jj][ii][kk]=muv;
-
-
 
 						if (WRITE_MODELFILES==1) {
 							pwavemod[jj][ii][kk]=Vp;
