@@ -35,7 +35,7 @@ From input file ./in_and_out/sofi3D.json, 84 objects have been read in.
       14     |                 DT | 6.6e-3 
       15     |       SOURCE_SHAPE | 1 
       16     |        SIGNAL_FILE | signal_mseis.tz 
-      17     |        SOURCE_TYPE | 1 
+      17     |        SOURCE_TYPE | 4 
       18     |       SOURCE_ALPHA | 0.0 
       19     |        SOURCE_BETA | 0.0 
       20     |               AMON | 1.0e2 
@@ -206,7 +206,7 @@ From input file ./in_and_out/sofi3D.json, 84 objects have been read in.
 	./sources/sources.dat
 
  Wavelet of source: Ricker
- Default type of source: explosive point source (concentrated at a single gridpoint)
+ Default type of source: point source with directive force in  z-direction
 
  ------------------------- RECEIVER  ------- -------------------
  Receiver line: 
@@ -347,7 +347,7 @@ Div and curl output will be as Energy with sign true for xz-plane.
  Number of global source positions found: 1
  If source positions are not exactly placed at a grid point, they are shifted to the nearest grid point.
       x		y		z		tshift	fc	amp	stype
-#   1 2592.000	2106.000	2592.000	 0.000	 5.000	 1.000	1
+#   1 2592.000	2106.000	2592.000	 0.000	 5.000	 1.000	4
 
 
 
@@ -393,14 +393,14 @@ Div and curl output will be as Energy with sign true for xz-plane.
  --------- DETERMININATION OF MIN AND MAX VELOCITIES -----------
  Minimum and maximum P-wave and S-wave velocities within subvolume: 
   MYID	 Vp_min(f=fc) 	 Vp_max(f=inf) 	 Vs_min(f=fc) 	 Vs_max(f=inf) 
- 0 	  3500.00 	  3500.00 	  2000.00 	  2000.00 
+ 0 	  3500.00 	  3500.00 	  2020.73 	  2020.73 
 
 
  Note : if any P- or S-wave velocity is set below 1.0 m/s to simulate water or air,
  this minimum velocity will be ignored for determining stable DH and DT.
 
  Global values for entire model: 
- Vp_max=  3500.00 m/s 	 Vs_min= 2000.00 m/s 
+ Vp_max=  3500.00 m/s 	 Vs_min= 2020.73 m/s 
 
  ------------------ CHECK FOR GRID DISPERSION --------------------
  To satisfactorily limit grid dispersion the number of gridpoints 
@@ -411,8 +411,8 @@ Div and curl output will be as Energy with sign true for xz-plane.
  Maximum frequency of the source is approximately    10.00 Hz
     (= two times FC specified in the sources file)
  The minimum wavelength (of P- or S-waves) in the following simulation will
-    be 200.0000 meter.
- Thus, at the chosen FD_ORDER of 4 the recommended value for DH is 24.0385 meter 
+    be 202.0726 meter.
+ Thus, at the chosen FD_ORDER of 4 the recommended value for DH is 24.2876 meter 
     (8.32 gridpoints per minimum wavelength).
  You have specified DH= 54.0000 meter.
 
@@ -487,7 +487,7 @@ W A R N I N G   M E S S A G E:
 
  **Message from matcopy (written by PE 0):
  Copy material properties at inner boundaries ... 
- finished (real time: 0.00 s).
+ finished (real time: 0.01 s).
 
 
  **Message from av_mat (written by PE 0):
@@ -499,7 +499,7 @@ W A R N I N G   M E S S A G E:
  **************************************************
  *********** STARTING TIME STEPPING ***************
  **************************************************
- real time before starting time loop: 0.11 s.
+ real time before starting time loop: 0.12 s.
 
  MYID=0 *****  Starting simulation for shot 1 of 1  ********** 
 
@@ -540,11 +540,11 @@ W A R N I N G   M E S S A G E:
  Real time for stress tensor update: 		 0.01 s.
  Real time for CPML stress tensor update: 	 0.01 s.
  Real time for stress tensor exchange: 		 0.00 s.
- total real time for timestep 11 : 		 0.02 s.
+ total real time for timestep 11 : 		 0.03 s.
 
  Computing timestep 21 of 758 
  Real time for particle velocity update: 	 0.00 s.
- Real time for CPML particle velocity update: 	 0.00 s.
+ Real time for CPML particle velocity update: 	 0.01 s.
  Real time for particle velocity exchange: 	 0.00 s.
  Real time for stress tensor update: 		 0.02 s.
  Real time for CPML stress tensor update: 	 0.01 s.
@@ -585,7 +585,7 @@ W A R N I N G   M E S S A G E:
  Real time for particle velocity update: 	 0.00 s.
  Real time for CPML particle velocity update: 	 0.02 s.
  Real time for particle velocity exchange: 	 0.00 s.
- Real time for stress tensor update: 		 0.02 s.
+ Real time for stress tensor update: 		 0.01 s.
  Real time for CPML stress tensor update: 	 0.05 s.
  Real time for stress tensor exchange: 		 0.00 s.
  total real time for timestep 51 : 		 0.09 s.
@@ -595,7 +595,7 @@ W A R N I N G   M E S S A G E:
  Real time for CPML particle velocity update: 	 0.02 s.
  Real time for particle velocity exchange: 	 0.00 s.
  Real time for stress tensor update: 		 0.01 s.
- Real time for CPML stress tensor update: 	 0.06 s.
+ Real time for CPML stress tensor update: 	 0.05 s.
  Real time for stress tensor exchange: 		 0.01 s.
 
 
@@ -609,7 +609,7 @@ W A R N I N G   M E S S A G E:
 	./snap/test.bin.div.000
 	./snap/test.bin.curl.000
 
- total real time for timestep 61 : 		 0.14 s.
+ total real time for timestep 61 : 		 0.15 s.
 
  Computing timestep 71 of 758 
  Real time for particle velocity update: 	 0.00 s.
@@ -617,8 +617,8 @@ W A R N I N G   M E S S A G E:
  Real time for particle velocity exchange: 	 0.01 s.
  Real time for stress tensor update: 		 0.01 s.
  Real time for CPML stress tensor update: 	 0.04 s.
- Real time for stress tensor exchange: 		 0.03 s.
- total real time for timestep 71 : 		 0.11 s.
+ Real time for stress tensor exchange: 		 0.02 s.
+ total real time for timestep 71 : 		 0.10 s.
 
  Computing timestep 81 of 758 
  Real time for particle velocity update: 	 0.00 s.
@@ -626,7 +626,7 @@ W A R N I N G   M E S S A G E:
  Real time for particle velocity exchange: 	 0.01 s.
  Real time for stress tensor update: 		 0.01 s.
  Real time for CPML stress tensor update: 	 0.03 s.
- Real time for stress tensor exchange: 		 0.03 s.
+ Real time for stress tensor exchange: 		 0.04 s.
  total real time for timestep 81 : 		 0.10 s.
 
  Computing timestep 91 of 758 
@@ -648,7 +648,7 @@ W A R N I N G   M E S S A G E:
 	./snap/test.bin.div.000
 	./snap/test.bin.curl.000
 
- total real time for timestep 91 : 		 0.15 s.
+ total real time for timestep 91 : 		 0.14 s.
 
  Computing timestep 101 of 758 
  Real time for particle velocity update: 	 0.00 s.
@@ -656,17 +656,17 @@ W A R N I N G   M E S S A G E:
  Real time for particle velocity exchange: 	 0.02 s.
  Real time for stress tensor update: 		 0.00 s.
  Real time for CPML stress tensor update: 	 0.01 s.
- Real time for stress tensor exchange: 		 0.06 s.
- total real time for timestep 101 : 		 0.10 s.
+ Real time for stress tensor exchange: 		 0.05 s.
+ total real time for timestep 101 : 		 0.08 s.
 
  Computing timestep 111 of 758 
  Real time for particle velocity update: 	 0.00 s.
  Real time for CPML particle velocity update: 	 0.00 s.
- Real time for particle velocity exchange: 	 0.02 s.
+ Real time for particle velocity exchange: 	 0.01 s.
  Real time for stress tensor update: 		 0.00 s.
  Real time for CPML stress tensor update: 	 0.01 s.
- Real time for stress tensor exchange: 		 0.05 s.
- total real time for timestep 111 : 		 0.09 s.
+ Real time for stress tensor exchange: 		 0.04 s.
+ total real time for timestep 111 : 		 0.07 s.
 
  Computing timestep 121 of 758 
  Real time for particle velocity update: 	 0.00 s.
@@ -674,7 +674,7 @@ W A R N I N G   M E S S A G E:
  Real time for particle velocity exchange: 	 0.01 s.
  Real time for stress tensor update: 		 0.00 s.
  Real time for CPML stress tensor update: 	 0.01 s.
- Real time for stress tensor exchange: 		 0.04 s.
+ Real time for stress tensor exchange: 		 0.02 s.
 
 
  PE 0 is writing snapshot-data at T=0.798600s to 
@@ -687,16 +687,16 @@ W A R N I N G   M E S S A G E:
 	./snap/test.bin.div.000
 	./snap/test.bin.curl.000
 
- total real time for timestep 121 : 		 0.11 s.
+ total real time for timestep 121 : 		 0.09 s.
 
  Computing timestep 131 of 758 
  Real time for particle velocity update: 	 0.00 s.
  Real time for CPML particle velocity update: 	 0.00 s.
- Real time for particle velocity exchange: 	 0.01 s.
+ Real time for particle velocity exchange: 	 0.00 s.
  Real time for stress tensor update: 		 0.00 s.
- Real time for CPML stress tensor update: 	 0.00 s.
- Real time for stress tensor exchange: 		 0.03 s.
- total real time for timestep 131 : 		 0.05 s.
+ Real time for CPML stress tensor update: 	 0.01 s.
+ Real time for stress tensor exchange: 		 0.01 s.
+ total real time for timestep 131 : 		 0.03 s.
 
  Computing timestep 141 of 758 
  Real time for particle velocity update: 	 0.00 s.
@@ -704,8 +704,8 @@ W A R N I N G   M E S S A G E:
  Real time for particle velocity exchange: 	 0.00 s.
  Real time for stress tensor update: 		 0.00 s.
  Real time for CPML stress tensor update: 	 0.01 s.
- Real time for stress tensor exchange: 		 0.01 s.
- total real time for timestep 141 : 		 0.03 s.
+ Real time for stress tensor exchange: 		 0.00 s.
+ total real time for timestep 141 : 		 0.02 s.
 
  Computing timestep 151 of 758 
  Real time for particle velocity update: 	 0.00 s.
@@ -713,7 +713,7 @@ W A R N I N G   M E S S A G E:
  Real time for particle velocity exchange: 	 0.00 s.
  Real time for stress tensor update: 		 0.00 s.
  Real time for CPML stress tensor update: 	 0.01 s.
- Real time for stress tensor exchange: 		 0.01 s.
+ Real time for stress tensor exchange: 		 0.00 s.
 
 
  PE 0 is writing snapshot-data at T=0.996600s to 
@@ -726,7 +726,7 @@ W A R N I N G   M E S S A G E:
 	./snap/test.bin.div.000
 	./snap/test.bin.curl.000
 
- total real time for timestep 151 : 		 0.07 s.
+ total real time for timestep 151 : 		 0.06 s.
 
  Computing timestep 161 of 758 
  Real time for particle velocity update: 	 0.00 s.
@@ -781,8 +781,8 @@ W A R N I N G   M E S S A G E:
  Real time for CPML particle velocity update: 	 0.00 s.
  Real time for particle velocity exchange: 	 0.00 s.
  Real time for stress tensor update: 		 0.00 s.
- Real time for CPML stress tensor update: 	 0.00 s.
- Real time for stress tensor exchange: 		 0.01 s.
+ Real time for CPML stress tensor update: 	 0.01 s.
+ Real time for stress tensor exchange: 		 0.00 s.
  total real time for timestep 201 : 		 0.02 s.
 
  Computing timestep 211 of 758 
@@ -790,8 +790,8 @@ W A R N I N G   M E S S A G E:
  Real time for CPML particle velocity update: 	 0.00 s.
  Real time for particle velocity exchange: 	 0.00 s.
  Real time for stress tensor update: 		 0.00 s.
- Real time for CPML stress tensor update: 	 0.00 s.
- Real time for stress tensor exchange: 		 0.01 s.
+ Real time for CPML stress tensor update: 	 0.01 s.
+ Real time for stress tensor exchange: 		 0.00 s.
 
 
  PE 0 is writing snapshot-data at T=1.392600s to 
@@ -820,8 +820,8 @@ W A R N I N G   M E S S A G E:
  Real time for CPML particle velocity update: 	 0.00 s.
  Real time for particle velocity exchange: 	 0.00 s.
  Real time for stress tensor update: 		 0.00 s.
- Real time for CPML stress tensor update: 	 0.00 s.
- Real time for stress tensor exchange: 		 0.01 s.
+ Real time for CPML stress tensor update: 	 0.01 s.
+ Real time for stress tensor exchange: 		 0.00 s.
  total real time for timestep 231 : 		 0.02 s.
 
  Computing timestep 241 of 758 
@@ -858,7 +858,7 @@ W A R N I N G   M E S S A G E:
  Real time for particle velocity update: 	 0.00 s.
  Real time for CPML particle velocity update: 	 0.00 s.
  Real time for particle velocity exchange: 	 0.00 s.
- Real time for stress tensor update: 		 0.01 s.
+ Real time for stress tensor update: 		 0.00 s.
  Real time for CPML stress tensor update: 	 0.01 s.
  Real time for stress tensor exchange: 		 0.00 s.
  total real time for timestep 261 : 		 0.02 s.
@@ -882,7 +882,7 @@ W A R N I N G   M E S S A G E:
 	./snap/test.bin.div.000
 	./snap/test.bin.curl.000
 
- total real time for timestep 271 : 		 0.07 s.
+ total real time for timestep 271 : 		 0.06 s.
 
  Computing timestep 281 of 758 
  Real time for particle velocity update: 	 0.00 s.
@@ -1255,9 +1255,9 @@ W A R N I N G   M E S S A G E:
 
  Computing timestep 571 of 758 
  Real time for particle velocity update: 	 0.00 s.
- Real time for CPML particle velocity update: 	 0.01 s.
+ Real time for CPML particle velocity update: 	 0.00 s.
  Real time for particle velocity exchange: 	 0.00 s.
- Real time for stress tensor update: 		 0.01 s.
+ Real time for stress tensor update: 		 0.00 s.
  Real time for CPML stress tensor update: 	 0.01 s.
  Real time for stress tensor exchange: 		 0.00 s.
 
@@ -1272,13 +1272,13 @@ W A R N I N G   M E S S A G E:
 	./snap/test.bin.div.000
 	./snap/test.bin.curl.000
 
- total real time for timestep 571 : 		 0.09 s.
+ total real time for timestep 571 : 		 0.06 s.
 
  Computing timestep 581 of 758 
  Real time for particle velocity update: 	 0.00 s.
  Real time for CPML particle velocity update: 	 0.00 s.
  Real time for particle velocity exchange: 	 0.00 s.
- Real time for stress tensor update: 		 0.01 s.
+ Real time for stress tensor update: 		 0.00 s.
  Real time for CPML stress tensor update: 	 0.01 s.
  Real time for stress tensor exchange: 		 0.00 s.
  total real time for timestep 581 : 		 0.02 s.
@@ -1311,7 +1311,7 @@ W A R N I N G   M E S S A G E:
 	./snap/test.bin.div.000
 	./snap/test.bin.curl.000
 
- total real time for timestep 601 : 		 0.07 s.
+ total real time for timestep 601 : 		 0.06 s.
 
  Computing timestep 611 of 758 
  Real time for particle velocity update: 	 0.00 s.
@@ -1350,7 +1350,7 @@ W A R N I N G   M E S S A G E:
 	./snap/test.bin.div.000
 	./snap/test.bin.curl.000
 
- total real time for timestep 631 : 		 0.07 s.
+ total real time for timestep 631 : 		 0.06 s.
 
  Computing timestep 641 of 758 
  Real time for particle velocity update: 	 0.00 s.
@@ -1389,7 +1389,7 @@ W A R N I N G   M E S S A G E:
 	./snap/test.bin.div.000
 	./snap/test.bin.curl.000
 
- total real time for timestep 661 : 		 0.07 s.
+ total real time for timestep 661 : 		 0.06 s.
 
  Computing timestep 671 of 758 
  Real time for particle velocity update: 	 0.00 s.
@@ -1428,7 +1428,7 @@ W A R N I N G   M E S S A G E:
 	./snap/test.bin.div.000
 	./snap/test.bin.curl.000
 
- total real time for timestep 691 : 		 0.07 s.
+ total real time for timestep 691 : 		 0.06 s.
 
  Computing timestep 701 of 758 
  Real time for particle velocity update: 	 0.00 s.
@@ -1467,7 +1467,7 @@ W A R N I N G   M E S S A G E:
 	./snap/test.bin.div.000
 	./snap/test.bin.curl.000
 
- total real time for timestep 721 : 		 0.07 s.
+ total real time for timestep 721 : 		 0.06 s.
 
  Computing timestep 731 of 758 
  Real time for particle velocity update: 	 0.00 s.
@@ -1510,15 +1510,15 @@ W A R N I N G   M E S S A G E:
 
 **Info from function timing (written by PE 0) 
  Average times and standard deviations (in percent) for 
-   velocity update:  	  0.000 seconds +/- 337.717 per cent 
-   stress update:  	  0.000 seconds +/- 377.732 per cent 
-   velocity exchange:  	  0.000 seconds +/- 484.616 per cent   
-   stress exchange:  	  0.001 seconds +/- 702.606 per cent  
-   timestep:  		  0.004 seconds +/- 384.967 per cent  
+   velocity update:  	  0.000 seconds +/- 324.789 per cent 
+   stress update:  	  0.001 seconds +/- 346.160 per cent 
+   velocity exchange:  	  0.000 seconds +/- 490.096 per cent   
+   stress exchange:  	  0.000 seconds +/- 870.253 per cent  
+   timestep:  		  0.004 seconds +/- 378.695 per cent  
  PE 0 is writing timing information in ASCII format to log/test.log.0.timings 
 
  **Info from main (written by PE 0): 
- Total real time of program: 22.29 seconds.
+ Total real time of program: 21.78 seconds.
 
  ******************************************************
  **************** SOFI3D has finished *****************

@@ -38,7 +38,7 @@ filesave=0;
 file_out='../par/snap/pic_test';
 
 % title strings for each sub-figure
-title_inp1='P-wave field (div)';
+title_inp1='P-wave vield (div)';
 title_inp2='S-wave field (curl)';
 title_mod='Density model';
 
@@ -73,7 +73,7 @@ TSNAP1=6.6e-3;
 TSNAPINC=0.2;
 % firts and last snapshot that is considered for displayin
 firstframe=1;
-lastframe=10;
+lastframe=5;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---3D definitions: defines two rotating planes (xz, yz plane)
@@ -91,7 +91,7 @@ rotaxis=[1,0,0];
 rotpoint=[0 0 0];
 % defines angles of perspective for the 3-D view
 % i.e. it rotates the plot to favorable perspective
-viewpoint=[28,18];
+viewpoint=[0,10,0];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---axis limits for 2D and 3D visualization
