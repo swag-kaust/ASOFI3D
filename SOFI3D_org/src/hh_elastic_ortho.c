@@ -29,8 +29,6 @@
 #include "fd.h"
 
 void model_elastic(float  ***  rho, float ***  pi, float ***  u,
-        float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
-        float *** C44, float *** C55, float *** C66,
 		float ***  taus, float ***  taup, float *  eta){
 
 	/*--------------------------------------------------------------------------*/
@@ -54,8 +52,8 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
 	const float vp1=3500.0, vs1=2000.0, rho1=2000.0, h=100000.0;
 
 	/* parameters for layer 2 */
-	//const float vp2=5700.0, vs2=3400.0, rho2=2500.0;
-	const float vp2=3500.0, vs2=2000.0, rho2=2000.0, h=100000.0;
+	const float vp2=5700.0, vs2=3400.0, rho2=2500.0;
+
 
 	if (WRITE_MODELFILES==1) {
 		pwavemod  =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
@@ -106,18 +104,6 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
 						u[jj][ii][kk]=muv;
 						rho[jj][ii][kk]=Rho;
 						pi[jj][ii][kk]=piv;
-
-						C11[jj][ii][kk]=piv+10.;
-                        C12[jj][ii][kk]=piv-(2*muv)+2.;
-                        C13[jj][ii][kk]=piv-(2*muv)+3.;
-                        C22[jj][ii][kk]=piv*0.7+5.;
-                        C23[jj][ii][kk]=piv-(2*muv)+2.5;
-                        C33[jj][ii][kk]=piv;
-                        C44[jj][ii][kk]=muv+1.;
-                        C55[jj][ii][kk]=muv+2.;
-                        C66[jj][ii][kk]=muv+3.;
-
-
 
 						if (WRITE_MODELFILES==1) {
 							pwavemod[jj][ii][kk]=Vp;

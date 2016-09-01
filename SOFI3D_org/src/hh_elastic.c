@@ -42,24 +42,37 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
 
 	/* local variables */
 	float muv, piv;
-	float Vp, Vs, Rho;
-	float *** pwavemod=NULL, *** swavemod=NULL;
+	float Vpv, Vsv, Rho, Poi, Epsx, Epsy, Delx, Dely, Delxy, Gamx, Gamy;
+	float *** vpv=NULL, *** vsv=NULL, *** epsx=NULL, *** epsy=NULL, *** gamx=NULL;
+        float *** delx=NULL, *** dely=NULL, *** delxy=NULL, *** gamy=NULL;
 	float y;
 	int i, j, k, ii, jj, kk;
 	char modfile[STRING_SIZE];
 
 	/*-----------------material property definition -------------------------*/
 
+        /* x=1, y=2 in Tsvankin [1997] (e.g.) epsx=epsion1 & epsy=epsilon2 */
+
 	/* parameters for layer 1 */
-	const float vp1=3500.0, vs1=2000.0, rho1=2000.0, h=100000.0;
+	const float vpv1=3500.0, poi1=0.25, epsx1=0., epsy1=0., delx1=0., dely1=0., delxy1=0.,
+          gamx1=0., gamy1=0., rho1=2000.0, h=100000.0;
 
 	/* parameters for layer 2 */
 	//const float vp2=5700.0, vs2=3400.0, rho2=2500.0;
-	const float vp2=3500.0, vs2=2000.0, rho2=2000.0, h=100000.0;
+	const float vpv2=3500.0, poi2=0.25, epsx2=0., epsy2=0., delx2=0., dely2=0., delxy2=0.,
+          gamx2=0., gamy2=0., rho2=2000.0;
+
 
 	if (WRITE_MODELFILES==1) {
-		pwavemod  =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
-		swavemod  =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
+		vpv  =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
+		vsv  =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
+		epsx  =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
+		epsy  =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
+	        delx  =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
+		dely  =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
+		delxy  =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
+		gamx  =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
+		gamy  =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
 	}
 
 	/*elastic simulation */
@@ -80,19 +93,22 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
 
 					/* two layer case */
 					if (y<=h){
-						Vp=vp1; Vs=vs1; Rho=rho1; }
+						Vpv=vpv1; Poi=poi1; Epsx=epsx1; Epsy=epsy1; Delx=delx1; Dely=dely1;
+                                                Delxy=delxy1; Gamx=gamx1; Gamy=gamy1; Rho=rho1; }
 
 
 					else{
-						Vp=vp2; Vs=vs2; Rho=rho2;}
+						Vpv=vpv2; Poi=poi2; Epsx=epsx2; Epsy=epsy2; Delx=delx2; Dely=dely2;
+                                                Delxy=delxy1; Gamx=gamx2; Gamy=gamy2; Rho=rho2; }
 
 					/*=========================================================
 					 * modify up to this point for ELASTIC model definition
 					 *=========================================================
 					 */
 
-					muv=Vs*Vs*Rho;
-					piv=Vp*Vp*Rho;
+                                        Vsv=Vpv*sqrt((1-2*Poi)/(2-2*Poi));
+					muv=Vsv*Vsv*Rho;
+					piv=Vpv*Vpv*Rho;
 
 					/* only the PE which belongs to the current global gridpoint
 							is saving model parameters in his local arrays */
@@ -104,24 +120,23 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
 						kk=k-POS[3]*NZ;
 
 						u[jj][ii][kk]=muv;
+             					pi[jj][ii][kk]=piv;
+
+	                          		C33[jj][ii][kk]=Rho*Vpv*Vpv;
+                                                C55[jj][ii][kk]=Rho*Vsv*Vsv;
+                                                C11[jj][ii][kk]=(1+2*Epsx)*Rho*Vpv*Vpv;
+                                                C22[jj][ii][kk]=(1+2*Epsy)*Rho*Vpv*Vpv;
+                                                C66[jj][ii][kk]=(1+2*Gamx)*Rho*Vsv*Vsv;
+                                                C44[jj][ii][kk]=((1+2*Gamx)*Rho*Vsv*Vsv)/(1+2*Gamy);
+                                                C13[jj][ii][kk]=Rho*sqrt((Vpv*Vpv-Vsv*Vsv)*((1+2*Delx)*Vpv*Vpv-Vsv*Vsv))-Rho*Vsv*Vsv ;
+                                                C23[jj][ii][kk]=Rho*sqrt((Vpv*Vpv-(1+2*Gamx)*Vsv*Vsv/(1+2*Gamy))*((1+2*Dely)*Vpv*Vpv-(1+2*Gamx)*Vsv*Vsv/(1+2*Gamy)))-Rho*(1+2*Gamx)*Vsv*Vsv/(1+2*Gamy);
+                                                C12[jj][ii][kk]=Rho*sqrt(((1+2*Epsx)*Vpv*Vpv-(1+2*Gamx)*Vsv*Vsv)*((1+2*Delxy)*(1+2*Epsx)*Vpv*Vpv-(1+2*Gamx)*Vsv*Vsv))-Rho*(1+2*Gamx)*Vsv*Vsv ;
 						rho[jj][ii][kk]=Rho;
-						pi[jj][ii][kk]=piv;
-
-						C11[jj][ii][kk]=piv;
-                        C12[jj][ii][kk]=piv-(2*muv);
-                        C13[jj][ii][kk]=piv-(2*muv);
-                        C22[jj][ii][kk]=piv*0.7;
-                        C23[jj][ii][kk]=piv-(2*muv);
-                        C33[jj][ii][kk]=piv;
-                        C44[jj][ii][kk]=muv;
-                        C55[jj][ii][kk]=muv;
-                        C66[jj][ii][kk]=muv;
-
-
+	
 
 						if (WRITE_MODELFILES==1) {
-							pwavemod[jj][ii][kk]=Vp;
-							swavemod[jj][ii][kk]=Vs;
+							vpv[jj][ii][kk]=Vpv;
+							vsv[jj][ii][kk]=Vsv;
 						}
 					}
 				}
@@ -145,12 +160,12 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
 		if (MYID==0) mergemod(modfile,3);
 
 		sprintf(modfile,"%s.SOFI3D.vp",MFILE);
-		writemod(modfile,pwavemod,3);
+		writemod(modfile,vpv,3);
 		MPI_Barrier(MPI_COMM_WORLD);
 		if (MYID==0) mergemod(modfile,3);
 
 		sprintf(modfile,"%s.SOFI3D.vs",MFILE);
-		writemod(modfile,swavemod,3);
+		writemod(modfile,vsv,3);
 		MPI_Barrier(MPI_COMM_WORLD);
 		if (MYID==0) mergemod(modfile,3);
 
@@ -170,8 +185,15 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
 
 
 	if (WRITE_MODELFILES==1) {
-		free_f3tensor(pwavemod,0,NY+1,0,NX+1,0,NZ+1);
-		free_f3tensor(swavemod,0,NY+1,0,NX+1,0,NZ+1);
+		free_f3tensor(vpv,0,NY+1,0,NX+1,0,NZ+1);
+		free_f3tensor(vsv,0,NY+1,0,NX+1,0,NZ+1);
+		free_f3tensor(epsx,0,NY+1,0,NX+1,0,NZ+1);
+		free_f3tensor(epsy,0,NY+1,0,NX+1,0,NZ+1);
+		free_f3tensor(delx,0,NY+1,0,NX+1,0,NZ+1);
+		free_f3tensor(dely,0,NY+1,0,NX+1,0,NZ+1);
+		free_f3tensor(delxy,0,NY+1,0,NX+1,0,NZ+1);
+		free_f3tensor(gamx,0,NY+1,0,NX+1,0,NZ+1);
+		free_f3tensor(gamy,0,NY+1,0,NX+1,0,NZ+1);
 	}
 
 }
