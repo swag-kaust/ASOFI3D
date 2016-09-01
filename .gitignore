@@ -10,6 +10,14 @@ sofi3D_acoustic
 
 guide_sofi3D.pdf
 
+*.jpg
+*.jpeg
+*.bmp
+*.png
+*.tiff
+
+*.jout
+
 *.d
 *.hd
 *.strip
@@ -20,7 +28,6 @@ guide_sofi3D.pdf
 *.su*
 LOG_FILE.*
 *.log*
-*.jout
 
 *.vp*
 *.vs*
