@@ -52,7 +52,7 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
     float c11,c12,c13,c22,c23,c33,c66ipjp,c44jpkp,c55ipkp;
     float vdiag;
     float b1, b2, b3, b4, b5, b6;
-    float vxyyx_T2,vyzzy_T2,vxzzx_T2,vxxyyzz_T2,vyyzz_T2,vxxzz_T2,vxxyy_T2; /* for FDORDER_TIME=2 */
+    float vxyyx_T2,vyzzy_T2,vxzzx_T2;//vxxyyzz_T2,vyyzz_T2,vxxzz_T2,vxxyy_T2; /* for FDORDER_TIME=2 */
     float c1, c2, c3, c4; /* Coefficients for Adam Bashforth */
 
     float **vxyyx_j,**vyzzy_j,**vxzzx_j,**vxxyyzz_j,**vyyzz_j,**vxxzz_j,**vxxyy_j;
@@ -64,7 +64,7 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
     float *vxyyx_j_i_3,*vyzzy_j_i_3,*vxzzx_j_i_3,*vxxyyzz_j_i_3,*vyyzz_j_i_3,*vxxzz_j_i_3,*vxxyy_j_i_3;
     float *vxyyx_j_i_4,*vyzzy_j_i_4,*vxzzx_j_i_4,*vxxyyzz_j_i_4,*vyyzz_j_i_4,*vxxzz_j_i_4,*vxxyy_j_i_4;
 
-    float garb1, garb2, garb3,k1,k2,k3, tsxx, tsyy, tszz;
+
 
     if (LOG)
         if ((MYID==0) && ((nt+(OUTNTIMESTEPINFO-1))%OUTNTIMESTEPINFO)==0) time1=MPI_Wtime();
@@ -119,10 +119,10 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
                         vxyyx_T2=vxy+vyx;
                         vyzzy_T2=vyz+vzy;
                         vxzzx_T2=vxz+vzx;
-                        vxxyyzz_T2=vxx+vyy+vzz;
-                        vyyzz_T2=vyy+vzz;
-                        vxxzz_T2=vxx+vzz;
-                        vxxyy_T2=vxx+vyy;
+                        //vxxyyzz_T2=vxx+vyy+vzz;
+                        //vyyzz_T2=vyy+vzz;
+                        //vxxzz_T2=vxx+vzz;
+                        //vxxyy_T2=vxx+vyy;
 
                         sxy[j][i][k]+=(c66ipjp*vxyyx_T2);
                         syz[j][i][k]+=(c44jpkp*vyzzy_T2);
@@ -185,14 +185,14 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
                         vxyyx_T2=vxy+vyx;
                         vyzzy_T2=vyz+vzy;
                         vxzzx_T2=vxz+vzx;
-                        vxxyyzz_T2=vxx+vyy+vzz;
+                        /*vxxyyzz_T2=vxx+vyy+vzz;
                         vyyzz_T2=vyy+vzz;
                         vxxzz_T2=vxx+vzz;
-                        vxxyy_T2=vxx+vyy;
+                        vxxyy_T2=vxx+vyy;*/
 
-                        garb1 = DT*((c11*vxx)+(c12*vyy)+(c13*vzz));
-                        garb2 = DT*((c12*vxx)+(c22*vyy)+(c23*vzz));
-                        garb3 = DT*((c13*vxx)+(c23*vyy)+(c33*vzz));
+                        //garb1 = DT*((c11*vxx)+(c12*vyy)+(c13*vzz));
+                        //garb2 = DT*((c12*vxx)+(c22*vyy)+(c23*vzz));
+                        //garb3 = DT*((c13*vxx)+(c23*vyy)+(c33*vzz));
 
                         sxy[j][i][k]+=(c66ipjp*vxyyx_T2);
                         syz[j][i][k]+=(c44jpkp*vyzzy_T2);
@@ -204,14 +204,14 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
                         sxx[j][i][k]+=DT*((c11*vxx)+(c12*vyy)+(c13*vzz));
                         syy[j][i][k]+=DT*((c12*vxx)+(c22*vyy)+(c23*vzz));
                         szz[j][i][k]+=DT*((c13*vxx)+(c23*vyy)+(c33*vzz));
-
+/*
                         tsxx = DT*((g*vxxyyzz_T2)-(f*vyyzz_T2));
                         tsyy = DT*((g*vxxyyzz_T2)-(f*vxxzz_T2));
                         tszz = DT*((g*vxxyyzz_T2)-(f*vxxyy_T2));
-
-                        k1 = (tsxx-garb1)/(sqrt(tsxx*tsxx+garb1*garb1));
-                        k2 = (tsyy-garb2)/(sqrt(tsyy*tsyy+garb2*garb2));
-                        k3 = (tszz-garb3)/(sqrt(tszz*tszz+garb3*garb3));
+*/
+                        //k1 = (tsxx-garb1)/(sqrt(tsxx*tsxx+garb1*garb1));
+                        //k2 = (tsyy-garb2)/(sqrt(tsyy*tsyy+garb2*garb2));
+                        //k3 = (tszz-garb3)/(sqrt(tszz*tszz+garb3*garb3));
 /*
                         if(abs(k1)>0.01 || abs(k2)>0.01 || abs(k3)>0.01)
                         {
@@ -315,10 +315,10 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
                         vxyyx_T2=vxy+vyx;
                         vyzzy_T2=vyz+vzy;
                         vxzzx_T2=vxz+vzx;
-                        vxxyyzz_T2=vxx+vyy+vzz;
+                        /*vxxyyzz_T2=vxx+vyy+vzz;
                         vyyzz_T2=vyy+vzz;
                         vxxzz_T2=vxx+vzz;
-                        vxxyy_T2=vxx+vyy;
+                        vxxyy_T2=vxx+vyy;*/
 
                         sxy[j][i][k]+=(c66ipjp*vxyyx_T2);
                         syz[j][i][k]+=(c44jpkp*vyzzy_T2);
@@ -427,10 +427,10 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
                         vxyyx_T2=vxy+vyx;
                         vyzzy_T2=vyz+vzy;
                         vxzzx_T2=vxz+vzx;
-                        vxxyyzz_T2=vxx+vyy+vzz;
+                        /*vxxyyzz_T2=vxx+vyy+vzz;
                         vyyzz_T2=vyy+vzz;
                         vxxzz_T2=vxx+vzz;
-                        vxxyy_T2=vxx+vyy;
+                        vxxyy_T2=vxx+vyy;*/
 
                         sxy[j][i][k]+=(c66ipjp*vxyyx_T2);
                         syz[j][i][k]+=(c44jpkp*vyzzy_T2);
@@ -546,10 +546,10 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
                         vxyyx_T2=vxy+vyx;
                         vyzzy_T2=vyz+vzy;
                         vxzzx_T2=vxz+vzx;
-                        vxxyyzz_T2=vxx+vyy+vzz;
+                        /*vxxyyzz_T2=vxx+vyy+vzz;
                         vyyzz_T2=vyy+vzz;
                         vxxzz_T2=vxx+vzz;
-                        vxxyy_T2=vxx+vyy;
+                        vxxyy_T2=vxx+vyy;*/
 
                         sxy[j][i][k]+=(c66ipjp*vxyyx_T2);
                         syz[j][i][k]+=(c44jpkp*vyzzy_T2);
@@ -677,10 +677,10 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
                         vxyyx_T2=vxy+vyx;
                         vyzzy_T2=vyz+vzy;
                         vxzzx_T2=vxz+vzx;
-                        vxxyyzz_T2=vxx+vyy+vzz;
+                        /*vxxyyzz_T2=vxx+vyy+vzz;
                         vyyzz_T2=vyy+vzz;
                         vxxzz_T2=vxx+vzz;
-                        vxxyy_T2=vxx+vyy;
+                        vxxyy_T2=vxx+vyy;*/
 
                         sxy[j][i][k]+=(c66ipjp*vxyyx_T2);
                         syz[j][i][k]+=(c44jpkp*vyzzy_T2);
