@@ -54,7 +54,7 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
         /* x=1, y=2 in Tsvankin [1997] (e.g.) epsx=epsion1 & epsy=epsilon2 */
 
 	/* parameters for layer 1 */
-	const float vpv1=3500.0, poi1=0.25, epsx1=0., epsy1=0., delx1=0., dely1=0., delxy1=0.,
+	const float vpv1=3500.0, poi1=0.25, epsx1=0., epsy1=0.2, delx1=0., dely1=0., delxy1=0.,
           gamx1=0., gamy1=0., rho1=2000.0, h=100000.0;
 
 	/* parameters for layer 2 */
@@ -122,15 +122,15 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
 						u[jj][ii][kk]=muv;
              					pi[jj][ii][kk]=piv;
 
-	                          		C33[jj][ii][kk]=Rho*Vpv*Vpv;
+	                          		C22[jj][ii][kk]=Rho*Vpv*Vpv;
                                                 C55[jj][ii][kk]=Rho*Vsv*Vsv;
                                                 C11[jj][ii][kk]=(1+2*Epsx)*Rho*Vpv*Vpv;
-                                                C22[jj][ii][kk]=(1+2*Epsy)*Rho*Vpv*Vpv;
-                                                C66[jj][ii][kk]=(1+2*Gamx)*Rho*Vsv*Vsv;
-                                                C44[jj][ii][kk]=((1+2*Gamx)*Rho*Vsv*Vsv)/(1+2*Gamy);
+                                                C33[jj][ii][kk]=(1+2*Epsy)*Rho*Vpv*Vpv;
+                                                C44[jj][ii][kk]=(1+2*Gamx)*Rho*Vsv*Vsv;
+                                                C66[jj][ii][kk]=((1+2*Gamx)*Rho*Vsv*Vsv)/(1+2*Gamy);
                                                 C13[jj][ii][kk]=Rho*sqrt((Vpv*Vpv-Vsv*Vsv)*((1+2*Delx)*Vpv*Vpv-Vsv*Vsv))-Rho*Vsv*Vsv ;
-                                                C23[jj][ii][kk]=Rho*sqrt((Vpv*Vpv-(1+2*Gamx)*Vsv*Vsv/(1+2*Gamy))*((1+2*Dely)*Vpv*Vpv-(1+2*Gamx)*Vsv*Vsv/(1+2*Gamy)))-Rho*(1+2*Gamx)*Vsv*Vsv/(1+2*Gamy);
-                                                C12[jj][ii][kk]=Rho*sqrt(((1+2*Epsx)*Vpv*Vpv-(1+2*Gamx)*Vsv*Vsv)*((1+2*Delxy)*(1+2*Epsx)*Vpv*Vpv-(1+2*Gamx)*Vsv*Vsv))-Rho*(1+2*Gamx)*Vsv*Vsv ;
+                                                C12[jj][ii][kk]=Rho*sqrt((Vpv*Vpv-(1+2*Gamx)*Vsv*Vsv/(1+2*Gamy))*((1+2*Dely)*Vpv*Vpv-(1+2*Gamx)*Vsv*Vsv/(1+2*Gamy)))-Rho*(1+2*Gamx)*Vsv*Vsv/(1+2*Gamy);
+                                                C23[jj][ii][kk]=Rho*sqrt(((1+2*Epsx)*Vpv*Vpv-(1+2*Gamx)*Vsv*Vsv)*((1+2*Delxy)*(1+2*Epsx)*Vpv*Vpv-(1+2*Gamx)*Vsv*Vsv))-Rho*(1+2*Gamx)*Vsv*Vsv ;
 						rho[jj][ii][kk]=Rho;
 	
 

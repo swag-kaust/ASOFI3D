@@ -35,16 +35,16 @@
 			"source shape values: ricker=1;fumue=2;from_SIGNAL_FILE=3;SIN**3=4" : "comment",
 			"SIGNAL_FILE" : "signal_mseis.tz",
 
-			"SOURCE_TYPE" : "4",
+			"SOURCE_TYPE" : "1",
 			"source_type values (point_source): explosive=1;force_in_x=2;in_y=3;in_z=4;custom=5;earthquake=6" : "comment",
 			"SOURCE_ALPHA, SOURCE_BETA" : "0.0 , 0.0",
 			"AMON, STR, DIP, RAKE" : "1.0e2 , 45.0 , 90.0 , 45.0",
 			"SRCREC" : "1",
 			"srcrec values :  read from SOURCE_FILE=1, PLANE_WAVE=2 (internal)" : "comment",
-			
-			"SOURCE_FILE" : "./sources/sources.dat", 
-			"RUN_MULTIPLE_SHOTS" : "0", 
-			
+
+			"SOURCE_FILE" : "./sources/sources.dat",
+			"RUN_MULTIPLE_SHOTS" : "0",
+
 			"PLANE_WAVE_DEPTH" : "2106.0",
 			"PLANE_WAVE_ANGLE" : "0.0",
 			"TS" : "0.2",
@@ -57,11 +57,11 @@
 "Q-approximation" : "comment",
 			"L" : "0",
 			"FREF" : "5.0",
-			"FL1" : "5.0", 
+			"FL1" : "5.0",
 			"TAU" : "0.00001",
 
 "Boundary Conditions" : "comment",
-			"FREE_SURF" : "1", 
+			"FREE_SURF" : "1",
 			"ABS_TYPE" : "1",
 			"FW" : "20.0",
 			"DAMPING" : "8.0",
@@ -96,7 +96,7 @@
 
 			"REC_ARRAY" : "0",
 			"REC_ARRAY_DEPTH" : "1350.0",
-			"REC_ARRAY_DIST" : "640.0", 
+			"REC_ARRAY_DIST" : "640.0",
 			"DRX" : "2",
 			"DRZ" : "2",
 
