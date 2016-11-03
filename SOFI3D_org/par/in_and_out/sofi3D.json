@@ -12,9 +12,9 @@
 			"NPROCZ" : "2",
 
 "3-D Grid" : "comment",
-			"NX" : "100",
-			"NY" : "100",
-			"NZ" : "100",
+			"NX" : "60",
+			"NY" : "60",
+			"NZ" : "60",
 			"DX" : "54.0",
 			"DY" : "54.0",
 			"DZ" : "54.0",
@@ -61,7 +61,7 @@
 			"TAU" : "0.00001",
 
 "Boundary Conditions" : "comment",
-			"FREE_SURF" : "1",
+			"FREE_SURF" : "0",
 			"ABS_TYPE" : "1",
 			"FW" : "20.0",
 			"DAMPING" : "8.0",
@@ -89,7 +89,7 @@
 			"REC_FILE" : "./receiver/receiver.dat",
 			"REFRECX, REFRECY, REFRECZ" : "0.0 , 0.0 , 0.0",
 			"XREC1,YREC1, ZREC1" : "54.0 , 2106.0, 2592.0",
-			"XREC2,YREC2, ZREC2" : "5400.0 , 2106.0, 2592.0",
+			"XREC2,YREC2, ZREC2" : "3240.0 , 2106.0, 2592.0",
 			"NGEOPH" : "1",
 
 "Receiver array" : "comment",

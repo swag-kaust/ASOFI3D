@@ -9,13 +9,13 @@ source mpiInit.sh
 cd SOFI3D_org/par
 
 # Compile the whole code
-echo "Compilation"
-./compileSOFI3D.sh
-echo "OK"
+#echo "Compilation"
+#./compileSOFI3D.sh
+#echo "OK"
 
 # Run the code
 echo "Run code"
-./startSOFI3D.sh
+./startSOFI3D.sh 8
 echo "OK"
 
 # Merge snapshots into visualizable ones
