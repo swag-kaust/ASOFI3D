@@ -812,7 +812,7 @@ for (int irtm = 0; irtm <= RTM_FLAG; irtm++)
 		/* calculate wavelet for each source point */
 		signals=wavelet(srcpos_loc,nsrc_loc);
 		
-		if (irtm > 0)
+		if (irtm >  0)
 		{
 			// sustrip < 
 			// free_matrix(srcpos_loc,1,6,1,ntr);
