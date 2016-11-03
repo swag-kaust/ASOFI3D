@@ -955,6 +955,15 @@ int main(int argc, char **argv){
 				 eqsource(nt,sxx,syy,szz,sxy, syz, sxz, srcpos_loc,signals,nsrc_loc,stype_loc, amon, str, dip, rake);
 			}
 
+			int rtmFlag = 0;
+
+			if (rtmFlag){
+				psource(nt,sxx,syy,szz,srcpos_loc,signals,nsrc_loc,stype_loc);
+				/*
+				 * eqsource is a implementation of moment tensor points sources. */
+				 eqsource(nt,sxx,syy,szz,sxy, syz, sxz, srcpos_loc,signals,nsrc_loc,stype_loc, amon, str, dip, rake);
+			}
+
 			/* stress free surface ? */
 			if ((FREE_SURF) && (POS[2]==0)){
 				if (L) surface(1,u,pi,taus,taup,eta,sxx,syy,szz,sxy,syz,rxx,ryy,rzz,vx,vy,vz,K_x,a_x,b_x,
