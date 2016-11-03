@@ -43,6 +43,7 @@
 #include "globvar.h"
 
 int main(int argc, char **argv){
+	int RTM_FLAG = 1;
 	int ns, nt, nseismograms=0, nf1, nf2;
 	int lsnap, nsnap=0, lsamp=0, nlsamp=0, buffsize;
 	int ntr=0, ntr_loc=0, ntr_glob=0, nsrc=0, nsrc_loc=0, ishot, nshots; /* removed variable "h", not in use*/
@@ -790,6 +791,8 @@ int main(int argc, char **argv){
 	}
 
 
+for (int irtm = 0; irtm <= RTM_FLAG; irtm++)
+{
 	for (ishot=1;ishot<=nshots;ishot++){
 
 		fprintf(FP,"\n MYID=%d *****  Starting simulation for shot %d of %d  ********** \n",MYID,ishot,nshots);
@@ -808,7 +811,28 @@ int main(int argc, char **argv){
 
 		/* calculate wavelet for each source point */
 		signals=wavelet(srcpos_loc,nsrc_loc);
+		
+		if (irtm > 0)
+		{
+			// sustrip < 
+			// free_matrix(srcpos_loc,1,6,1,ntr);
+			// for (int ii = 1; ii<=ntr; ii++)
+			// {
+			// 	srcpos_loc[1][ii] = recpos_loc[1][ii];
+			// 	srcpos_loc[2][ii] = recpos_loc[2][ii];
+			// 	srcpos_loc[3][ii] = recpos_loc[3][ii];
+				fprintf(FP,"\n WE ARE INSIDE \n");
+			// }
+			// nsrc = ntr;
+ 			// nsrc_loc = ntr_loc;
+			// stype = ivector(1,ntr);
+			// stype_loc = ivector(1,ntr);
+			// signals=wavelet(srcpos_loc,nsrc_loc);
+			// srcpos_loc = splitsrc(srcpos,&nsrc_loc, nsrc, stype_loc, stype);
 
+			
+		}
+		 
 		/* output of calculated wavelet for each source point */
 
 		if ((OUTSOURCEWAVELET !=0 ) && (nsrc_loc>0)) {
@@ -955,15 +979,6 @@ int main(int argc, char **argv){
 				 eqsource(nt,sxx,syy,szz,sxy, syz, sxz, srcpos_loc,signals,nsrc_loc,stype_loc, amon, str, dip, rake);
 			}
 
-			int rtmFlag = 0;
-
-			if (rtmFlag){
-				psource(nt,sxx,syy,szz,srcpos_loc,signals,nsrc_loc,stype_loc);
-				/*
-				 * eqsource is a implementation of moment tensor points sources. */
-				 eqsource(nt,sxx,syy,szz,sxy, syz, sxz, srcpos_loc,signals,nsrc_loc,stype_loc, amon, str, dip, rake);
-			}
-
 			/* stress free surface ? */
 			if ((FREE_SURF) && (POS[2]==0)){
 				if (L) surface(1,u,pi,taus,taup,eta,sxx,syy,szz,sxy,syz,rxx,ryy,rzz,vx,vy,vz,K_x,a_x,b_x,
@@ -1002,7 +1017,7 @@ int main(int argc, char **argv){
 
 		} /* end of loop over timesteps */
 		/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
-
+	
 		fprintf(FP, "\n\n *********** Finish TIME STEPPING ****************\n");
 		fprintf(FP, " **************************************************\n\n");
 
@@ -1065,7 +1080,7 @@ int main(int argc, char **argv){
 
 
 	} /* end of loop over shots */
-
+}
 	if (CHECKPTWRITE){
 		if (MYID==0){
 			time3=MPI_Wtime();
@@ -1084,6 +1099,13 @@ int main(int argc, char **argv){
 
 	l=1;
 	if(ABS_TYPE==1 && FDORDER==2){l=2;}
+
+
+
+
+
+
+
 
 	/*de-allocation of memory */
 	if(POS[2]==0){

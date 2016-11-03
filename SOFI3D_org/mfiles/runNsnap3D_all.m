@@ -9,7 +9,7 @@ clc;
 
 cd ../..
 
-system('run_ASOFI3D.sh')
+system('./run_ASOFI3D.sh')
 
 cd SOFI3D_org/mfiles
 
