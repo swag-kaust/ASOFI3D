@@ -42,12 +42,13 @@
 			"SRCREC" : "1",
 			"srcrec values :  read from SOURCE_FILE=1, PLANE_WAVE=2 (internal)" : "comment",
 
-			"SOURCE_FILE" : "./sources/sources.dat",
+			"SOURCE_FILE" : "./receiver/receiver.dat",
 			"RUN_MULTIPLE_SHOTS" : "0",
 
 			"PLANE_WAVE_DEPTH" : "2106.0",
 			"PLANE_WAVE_ANGLE" : "0.0",
 			"TS" : "0.2",
+			"FC" : "5.0",
 
 "Model" : "comment",
 			"READMOD" : "0",
@@ -74,7 +75,7 @@
 "Snapshots" : "comment",
 			"SNAP" : "4",
 			"TSNAP1" : "6.6e-3",
-			"TSNAP2" : "4.8",
+			"TSNAP2" : "9.6",
 			"TSNAPINC" : "0.2",
 			"IDX" : "1",
 			"IDY" : "1",
@@ -109,7 +110,7 @@
 			"LOG_FILE" : "log/test.log",
 			"LOG" : "1",
 			"OUT_SOURCE_WAVELET" : "1",
-			"OUT_TIMESTEP_INFO" : "10",
+			"OUT_TIMESTEP_INFO" : "250",
 
 "Checkpoints" : "comment",
 			"CHECKPTREAD" : "0",

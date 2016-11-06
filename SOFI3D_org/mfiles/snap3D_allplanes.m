@@ -73,7 +73,7 @@ TSNAP1=6.6e-3;
 TSNAPINC=0.2;
 % firts and last snapshot that is considered for displayin
 firstframe=1;
-lastframe=10;
+lastframe=20;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---3D definitions: defines two rotating planes (xz, yz plane)
