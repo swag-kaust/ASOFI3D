@@ -685,7 +685,7 @@ int main(int argc, char **argv)
     {
         if (irtm>0)
         {
-            lsnap = iround(TSNAP1 / DT);
+            lsnap =  iround(TSNAP1 / DT);
         }
     if (MYID == 0)
         fprintf(FP, " ... memory allocation for PE %d was successfull.\n\n", MYID);
