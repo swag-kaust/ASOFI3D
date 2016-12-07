@@ -494,152 +494,160 @@ if image_switch==2
         file1_data=reshape(file1_data,ny,nx,nz);
         file1_data=permute(file1_data,[3,2,1]);
         % creating a grid
-        [X,Z,Y]=meshgrid(x,z,y);
         
-        %surface height of horizontal z-x plane
-        yplane=zeros(ny,nx);
-        yplane(:,:)=(ny*dh*outy)/2+rotpoint(2); 
-        
-        %surface height of vertical y-x plane
-        zplane=zeros(nz,nx);
-        zplane(:,:)=(nz*dh*outz)/2+rotpoint(3); 
-        
-        % creating a vertical slice plane in y-x plane
-        hslice = surf(x,y,yplane);
-        % rotate slice plane with, with respect to a point from which rotation is defined
-        % in case of rotpoint=[0,0,0], this point is the center of the model/snaphot
-        rotate(hslice,rotaxis,phi1,[mean(x)-rotpoint(1),mean(y)-rotpoint(2),mean(mean(zplane))-rotpoint(3)]);
-        % get boundaries of rotated plane
-        xd = get(hslice,'XData');
-        yd = get(hslice,'YData');
-        zd = get(hslice,'ZData');
-        % remove plane, only limits are further used
-        delete(hslice);
-        
-        % creating a horizontal slice plane in z-x plane
-        hslice2 = surf(x,z,zplane);
-        % rotate slice plane with, with respect to a point from which rotation is defined
-        % in case of rotpoint=[0,0,0], this point is the center of the model/snaphot
-        rotate(hslice2,rotaxis,phi2,[mean(x)-rotpoint(1),mean(z)-rotpoint(2),mean(mean(yplane))-rotpoint(3)]);
-        % get boundaries of rotated plane
-        xd2 = get(hslice2,'XData');
-        yd2 = get(hslice2,'YData');
-        zd2 = get(hslice2,'ZData');
-        % remove plane, only limits are further used
-        delete(hslice2);
-        
-        % display sliced and rotated plane
-        h1=figure(1);
-        % determination of screen size
-        scrsz = get(0,'ScreenSize');
-        % determination size of window for plotting
-        set(h1,'Position',[1 scrsz(4)*2/3 scrsz(3)*1/4 scrsz(4)*2/3]);
-        
-        % strict vertical slice, no rotation applied
-%                 h = slice(Y,X,Z,file1_data,[],yslice*dh*outy-1,[]); 
-        % rotated vertical slice
-        % !!! note that taking sclices from a homogeneous model is - for some
-        % reason not working, please use 2-D visualization instead !!!
-        h = slice(X,Z,Y,file1_data,xd,zd,yd);
-        set(h,'FaceColor','interp','EdgeColor','none','DiffuseStrength',.8);
-        
-        hold on
-        % strict horizontal, no rotation applied
-        %         h2 = slice(Y,X,Z,file1_data,[],[],zslice*dh*outz); % this is strict vertical, no rotation applied
-        % rotated horizontal slice
-        h2 = slice(X,Z,Y,file1_data,xd2,zd2,yd2);
-        set(h2,'FaceColor','interp','EdgeColor','none','DiffuseStrength',.8);
-        
-        % vertical slice at model boundary
-        %         h3 = slice(X,Z,Y,file1_data,10,[],[]);
-        %         set(h3,'FaceColor','interp','EdgeColor','none','DiffuseStrength',.8);
-        
-        % black outline of the vertical slice
-        plot3([0 max(max(xd))],[max(max(zd)) max(max(zd))],[0 0],'-black','LineWidth',2);
-        plot3([max(max(xd)) max(max(xd))],[max(max(zd)) max(max(zd))],[0 max(max(yd))],'-black','LineWidth',2);
-        plot3([max(max(xd)) 0],[max(max(zd)) max(max(zd))],[max(max(yd)) max(max(yd))],'-black','LineWidth',2);
-        plot3([0 0],[max(max(zd)) max(max(zd))],[0 max(max(yd))],'-black','LineWidth',2);
-        
-        % black outline of the horizontal slice
-        plot3([0 max(max(xd2))],[max(max(zd2)) max(max(zd2))],[max(max(yd2)) min(min(yd2))],'-black','LineWidth',2);
-        plot3([max(max(xd2)) max(max(xd2))],[max(max(zd2)) 0],[max(max(yd2)) max(max(yd2))],'-black','LineWidth',2);
-        plot3([max(max(xd2)) 0],[0 0],[max(max(yd2)) min(min(yd2))],'-black','LineWidth',2);
-        plot3([0 0],[0 max(max(zd2))],[max(max(yd2)) max(max(yd2))],'-black','LineWidth',2);
-        
-        if cont_switch==1
-            % vertical contour slice
-            h=contourslice(X,Z,Y,mod_data,xd,zd,yd,numbOFcont);
-            set(h,'FaceColor','black','EdgeColor','black');
-            % horizontal contour slice
-            h2=contourslice(X,Z,Y,mod_data,xd2,zd2,yd2,numbOFcont);
-            set(h2,'FaceColor','black','EdgeColor','black');
-        end
-        hold off
-        
-        % formating figure
-        daspect([1,1,1]);
-        axis tight
-        box on
-        
-        % set viewpoint within 3-D space
-        % (rotate 3-D figure plot to favorable perspective)
-        view(viewpoint);
-        camproj perspective
-        % lightangle(-45,45);
-        
-        set(gcf,'Renderer','zbuffer');
-        colorbar
-        xlabel('x in m');
-        ylabel('z in m');
-        zlabel('Depth y in m');
-        
-        % adding title string to plot
-        if type_switch==2
-            title(title_inp1);
-        end
-        if type_switch==1
-            title(title_mod);
-        end
-        
-        set(get(gca,'title'),'FontSize',13);
-        set(get(gca,'title'),'FontWeight','bold');
-        set(get(gca,'Ylabel'),'FontSize',12);
-        set(get(gca,'Ylabel'),'FontWeight','bold');
-        set(get(gca,'Xlabel'),'FontSize',12);
-        set(get(gca,'Xlabel'),'FontWeight','bold');
-        set(get(gca,'Zlabel'),'FontSize',12);
-        set(get(gca,'Zlabel'),'FontWeight','bold');
-        set(gca, 'ZDir', 'reverse')
-        set(gca, 'YDir','reverse')
-        set(gca,'FontSize',12);
-        set(gca,'FontWeight','bold');
-        set(gca,'Linewidth',1.0);
-        set(gca,'Box','on');
-        
-        % determing maximum amplitude of plot
-        file1max=max(max(max(abs(file1_data))));
-        % display maximum amplitude to command window
-        disp(['  Maximum amplitude of ',title_inp1,'-snapshot: ', num2str(file1max)]);
-        
-        % cropping model/snapshot dimensions
-        ylim([0 nz*dh*outz+0.1])
-        xlim([0 nx*dh*outx+0.1])
-        zlim([0 ny*dh*outy+1.1])
+        indPatch=1:numel(file1_data);
+        [F,V,C]=ind2patch(indPatch,file1_data,'v');
+        kk = 0.001;
+        clf; patch('Faces',F,'Vertices',V,'FaceColor','flat','CData',C,'EdgeColor','none','FaceAlpha','flat','FaceVertexAlphaData',double(C > kk * max(C)));
+        % patch('Faces',F,'Vertices',V,'FaceColor','flat','CData',C,'EdgeColor','none','FaceAlpha',0.5);
+        axis equal; view(3); axis tight; axis vis3d; grid off; caxis auto; colorbar; 
+%         input('?');
+%         [X,Z,Y]=meshgrid(x,z,y);
+%         
+%         %surface height of horizontal z-x plane
+%         yplane=zeros(ny,nx);
+%         yplane(:,:)=(ny*dh*outy)/2+rotpoint(2); 
+%         
+%         %surface height of vertical y-x plane
+%         zplane=zeros(nz,nx);
+%         zplane(:,:)=(nz*dh*outz)/2+rotpoint(3); 
+%         
+%         % creating a vertical slice plane in y-x plane
+%         hslice = surf(x,y,yplane);
+%         % rotate slice plane with, with respect to a point from which rotation is defined
+%         % in case of rotpoint=[0,0,0], this point is the center of the model/snaphot
+%         rotate(hslice,rotaxis,phi1,[mean(x)-rotpoint(1),mean(y)-rotpoint(2),mean(mean(zplane))-rotpoint(3)]);
+%         % get boundaries of rotated plane
+%         xd = get(hslice,'XData');
+%         yd = get(hslice,'YData');
+%         zd = get(hslice,'ZData');
+%         % remove plane, only limits are further used
+%         delete(hslice);
+%         
+%         % creating a horizontal slice plane in z-x plane
+%         hslice2 = surf(x,z,zplane);
+%         % rotate slice plane with, with respect to a point from which rotation is defined
+%         % in case of rotpoint=[0,0,0], this point is the center of the model/snaphot
+%         rotate(hslice2,rotaxis,phi2,[mean(x)-rotpoint(1),mean(z)-rotpoint(2),mean(mean(yplane))-rotpoint(3)]);
+%         % get boundaries of rotated plane
+%         xd2 = get(hslice2,'XData');
+%         yd2 = get(hslice2,'YData');
+%         zd2 = get(hslice2,'ZData');
+%         % remove plane, only limits are further used
+%         delete(hslice2);
+%         
+%         % display sliced and rotated plane
+%         h1=figure(1);
+%         % determination of screen size
+%         scrsz = get(0,'ScreenSize');
+%         % determination size of window for plotting
+%         set(h1,'Position',[1 scrsz(4)*2/3 scrsz(3)*1/4 scrsz(4)*2/3]);
+%         
+%         % strict vertical slice, no rotation applied
+% %                 h = slice(Y,X,Z,file1_data,[],yslice*dh*outy-1,[]); 
+%         % rotated vertical slice
+%         % !!! note that taking sclices from a homogeneous model is - for some
+%         % reason not working, please use 2-D visualization instead !!!
+%         h = slice(X,Z,Y,file1_data,xd,zd,yd);
+%         set(h,'FaceColor','interp','EdgeColor','none','DiffuseStrength',.8);
+%         
+%         hold on
+%         % strict horizontal, no rotation applied
+%         %         h2 = slice(Y,X,Z,file1_data,[],[],zslice*dh*outz); % this is strict vertical, no rotation applied
+%         % rotated horizontal slice
+%         h2 = slice(X,Z,Y,file1_data,xd2,zd2,yd2);
+%         set(h2,'FaceColor','interp','EdgeColor','none','DiffuseStrength',.8);
+%         
+%         % vertical slice at model boundary
+%         %         h3 = slice(X,Z,Y,file1_data,10,[],[]);
+%         %         set(h3,'FaceColor','interp','EdgeColor','none','DiffuseStrength',.8);
+%         
+%         % black outline of the vertical slice
+%         plot3([0 max(max(xd))],[max(max(zd)) max(max(zd))],[0 0],'-black','LineWidth',2);
+%         plot3([max(max(xd)) max(max(xd))],[max(max(zd)) max(max(zd))],[0 max(max(yd))],'-black','LineWidth',2);
+%         plot3([max(max(xd)) 0],[max(max(zd)) max(max(zd))],[max(max(yd)) max(max(yd))],'-black','LineWidth',2);
+%         plot3([0 0],[max(max(zd)) max(max(zd))],[0 max(max(yd))],'-black','LineWidth',2);
+%         
+%         % black outline of the horizontal slice
+%         plot3([0 max(max(xd2))],[max(max(zd2)) max(max(zd2))],[max(max(yd2)) min(min(yd2))],'-black','LineWidth',2);
+%         plot3([max(max(xd2)) max(max(xd2))],[max(max(zd2)) 0],[max(max(yd2)) max(max(yd2))],'-black','LineWidth',2);
+%         plot3([max(max(xd2)) 0],[0 0],[max(max(yd2)) min(min(yd2))],'-black','LineWidth',2);
+%         plot3([0 0],[0 max(max(zd2))],[max(max(yd2)) max(max(yd2))],'-black','LineWidth',2);
+%         
+%         if cont_switch==1
+%             % vertical contour slice
+%             h=contourslice(X,Z,Y,mod_data,xd,zd,yd,numbOFcont);
+%             set(h,'FaceColor','black','EdgeColor','black');
+%             % horizontal contour slice
+%             h2=contourslice(X,Z,Y,mod_data,xd2,zd2,yd2,numbOFcont);
+%             set(h2,'FaceColor','black','EdgeColor','black');
+%         end
+%         hold off
+%         
+%         % formating figure
+%         daspect([1,1,1]);
+%         axis tight
+%         box on
+%         
+%         % set viewpoint within 3-D space
+%         % (rotate 3-D figure plot to favorable perspective)
+%         view(viewpoint);
+%         camproj perspective
+%         % lightangle(-45,45);
+%         
+%         set(gcf,'Renderer','zbuffer');
+%         colorbar
+%         xlabel('x in m');
+%         ylabel('z in m');
+%         zlabel('Depth y in m');
+%         
+%         % adding title string to plot
+%         if type_switch==2
+%             title(title_inp1);
+%         end
+%         if type_switch==1
+%             title(title_mod);
+%         end
+%         
+%         set(get(gca,'title'),'FontSize',13);
+%         set(get(gca,'title'),'FontWeight','bold');
+%         set(get(gca,'Ylabel'),'FontSize',12);
+%         set(get(gca,'Ylabel'),'FontWeight','bold');
+%         set(get(gca,'Xlabel'),'FontSize',12);
+%         set(get(gca,'Xlabel'),'FontWeight','bold');
+%         set(get(gca,'Zlabel'),'FontSize',12);
+%         set(get(gca,'Zlabel'),'FontWeight','bold');
+%         set(gca, 'ZDir', 'reverse')
+%         set(gca, 'YDir','reverse')
+%         set(gca,'FontSize',12);
+%         set(gca,'FontWeight','bold');
+%         set(gca,'Linewidth',1.0);
+%         set(gca,'Box','on');
+%         
+%         % determing maximum amplitude of plot
+%         file1max=max(max(max(abs(file1_data))));
+%         % display maximum amplitude to command window
+%         disp(['  Maximum amplitude of ',title_inp1,'-snapshot: ', num2str(file1max)]);
+%         
+%         % cropping model/snapshot dimensions
+%         ylim([0 nz*dh*outz+0.1])
+%         xlim([0 nx*dh*outx+0.1])
+%         zlim([0 ny*dh*outy+1.1])
         
         % for snapshot input files
         if type_switch==2
-            
-            % limiting the colorbar to specified range
-            switch auto_scaling
-                case 1
-                    caxis([-file1max/10 file1max/10]);
-                case 2
-                    caxis([-caxis_value_1 caxis_value_1]);
-                otherwise
-            end
-            
-            % adding text string for timestep of snapshot
-            set(text(3500,-1000,['T= ',sprintf('%2.4f',tsnap), 's']),'FontSize',12,'FontWeight','bold','Color','black');
+%             
+%             % limiting the colorbar to specified range
+%             switch auto_scaling
+%                 case 1
+%                     caxis([-file1max/10 file1max/10]);
+%                 case 2
+%                     caxis([-caxis_value_1 caxis_value_1]);
+%                 otherwise
+%             end
+%             
+%             % adding text string for timestep of snapshot
+%             set(text(3500,-1000,['T= ',sprintf('%2.4f',tsnap), 's']),'FontSize',12,'FontWeight','bold','Color','black');
             
             pause(pause4display);
             

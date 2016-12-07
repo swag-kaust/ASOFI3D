@@ -4,7 +4,9 @@
 
 #mpirun -np 8 nice -19 ../bin/sofi3D_acoustic ./in_and_out/sofi3D.json | tee ./in_and_out/sofi3D.jout
 #mpirun -np 8 nice -19 ../bin/sofi3D ./in_and_out/sofi3D.inp | tee ./in_and_out/sofi3D.out
-mpirun -np 16 nice -19 ../bin/sofi3D ./in_and_out/sofi3D.json | tee ./in_and_out/sofi3D.jout
+
+mpirun -np $1 nice -19 ../bin/sofi3D ./in_and_out/sofi3D.json | tee ./in_and_out/sofi3D.jout
+
 
 #----execute with OPENMPI2
 #mpirun -np 8 nice -19 ../bin/sofi3D ./in_and_out/sofi3D.json | tee ./in_and_out/sofi3D.jout
