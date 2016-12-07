@@ -7,12 +7,12 @@
 
 {
 "Domain Decomposition" : "comment",
-			"NPROCX" : "2",
+			"NPROCX" : "4",
 			"NPROCY" : "2",
 			"NPROCZ" : "2",
 
 "3-D Grid" : "comment",
-			"NX" : "100",
+			"NX" : "120",
 			"NY" : "100",
 			"NZ" : "100",
 			"DX" : "54.0",
