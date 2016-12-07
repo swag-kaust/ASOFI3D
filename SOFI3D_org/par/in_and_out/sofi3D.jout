@@ -509,7 +509,7 @@ W A R N I N G   M E S S A G E:
 
  **Message from matcopy (written by PE 0):
  Copy material properties at inner boundaries ... 
- finished (real time: 0.01 s).
+ finished (real time: 0.00 s).
 
 
  **Message from av_mat (written by PE 0):
@@ -521,7 +521,7 @@ W A R N I N G   M E S S A G E:
  **************************************************
  *********** STARTING TIME STEPPING ***************
  **************************************************
- real time before starting time loop: 0.08 s.
+ real time before starting time loop: 0.26 s.
 
  MYID=0 *****  Starting simulation for shot 1 of 1  ********** 
 
@@ -535,7 +535,7 @@ W A R N I N G   M E S S A G E:
  Computing timestep 1 of 758 
  Real time for particle velocity update: 	 0.00 s.
  Real time for CPML particle velocity update: 	 0.00 s.
- Real time for particle velocity exchange: 	 0.01 s.
+ Real time for particle velocity exchange: 	 0.00 s.
  Real time for stress tensor update: 		 0.00 s.
  Real time for CPML stress tensor update: 	 0.00 s.
  Real time for stress tensor exchange: 		 0.00 s.
@@ -551,7 +551,7 @@ W A R N I N G   M E S S A G E:
 	./snap/test.bin.div.000
 	./snap/test.bin.curl.000
 
- total real time for timestep 1 : 		 0.13 s.
+ total real time for timestep 1 : 		 0.02 s.
 
 
  PE 0 is writing snapshot-data at T=0.204600s to 
@@ -656,7 +656,7 @@ W A R N I N G   M E S S A G E:
  Real time for stress tensor update: 		 0.00 s.
  Real time for CPML stress tensor update: 	 0.00 s.
  Real time for stress tensor exchange: 		 0.00 s.
- total real time for timestep 251 : 		 0.01 s.
+ total real time for timestep 251 : 		 0.00 s.
 
 
  PE 0 is writing snapshot-data at T=1.788600s to 
@@ -761,7 +761,7 @@ W A R N I N G   M E S S A G E:
  Real time for stress tensor update: 		 0.00 s.
  Real time for CPML stress tensor update: 	 0.00 s.
  Real time for stress tensor exchange: 		 0.00 s.
- total real time for timestep 501 : 		 0.01 s.
+ total real time for timestep 501 : 		 0.00 s.
 
 
  PE 0 is writing snapshot-data at T=3.372600s to 
@@ -878,7 +878,7 @@ W A R N I N G   M E S S A G E:
 	./snap/test.bin.div.000
 	./snap/test.bin.curl.000
 
- total real time for timestep 751 : 		 0.03 s.
+ total real time for timestep 751 : 		 0.02 s.
 
 
  *********** Finish TIME STEPPING ****************
@@ -894,11 +894,11 @@ W A R N I N G   M E S S A G E:
 
 **Info from function timing (written by PE 0) 
  Average times and standard deviations (in percent) for 
-   velocity update:  	  0.000 seconds +/- 1724.190 per cent 
-   stress update:  	  0.000 seconds +/- 1860.492 per cent 
-   velocity exchange:  	  0.000 seconds +/- 1944.263 per cent   
-   stress exchange:  	  0.000 seconds +/- 1467.612 per cent  
-   timestep:  		  0.000 seconds +/- 2037.569 per cent  
+   velocity update:  	  0.000 seconds +/- 1468.331 per cent 
+   stress update:  	  0.000 seconds +/- 1420.403 per cent 
+   velocity exchange:  	  0.000 seconds +/- 1668.633 per cent   
+   stress exchange:  	  0.000 seconds +/- 1963.384 per cent  
+   timestep:  		  0.000 seconds +/- 1629.768 per cent  
  PE 0 is writing timing information in ASCII format to log/test.log.0.timings 
  ... memory allocation for PE 0 was successfull.
 
@@ -1086,7 +1086,7 @@ W A R N I N G   M E S S A G E:
  **************************************************
  *********** STARTING TIME STEPPING ***************
  **************************************************
- real time before starting time loop: 10.80 s.
+ real time before starting time loop: 4.98 s.
 
  MYID=0 *****  Starting simulation for shot 1 of 1  ********** 
 
@@ -1102,7 +1102,7 @@ W A R N I N G   M E S S A G E:
  Computing timestep 1 of 758 
  Real time for particle velocity update: 	 0.00 s.
  Real time for CPML particle velocity update: 	 0.00 s.
- Real time for particle velocity exchange: 	 0.01 s.
+ Real time for particle velocity exchange: 	 0.00 s.
  Real time for stress tensor update: 		 0.00 s.
  Real time for CPML stress tensor update: 	 0.00 s.
  Real time for stress tensor exchange: 		 0.00 s.
@@ -1118,7 +1118,7 @@ W A R N I N G   M E S S A G E:
 	./snap/test.bin.div.000
 	./snap/test.bin.curl.000
 
- total real time for timestep 1 : 		 0.04 s.
+ total real time for timestep 1 : 		 0.01 s.
 
 
  PE 0 is writing snapshot-data at T=0.204600s to 
@@ -1222,8 +1222,8 @@ W A R N I N G   M E S S A G E:
  Real time for particle velocity exchange: 	 0.00 s.
  Real time for stress tensor update: 		 0.00 s.
  Real time for CPML stress tensor update: 	 0.00 s.
- Real time for stress tensor exchange: 		 0.01 s.
- total real time for timestep 251 : 		 0.02 s.
+ Real time for stress tensor exchange: 		 0.00 s.
+ total real time for timestep 251 : 		 0.00 s.
 
 
  PE 0 is writing snapshot-data at T=1.788600s to 
@@ -1328,7 +1328,7 @@ W A R N I N G   M E S S A G E:
  Real time for stress tensor update: 		 0.00 s.
  Real time for CPML stress tensor update: 	 0.00 s.
  Real time for stress tensor exchange: 		 0.00 s.
- total real time for timestep 501 : 		 0.01 s.
+ total real time for timestep 501 : 		 0.00 s.
 
 
  PE 0 is writing snapshot-data at T=3.372600s to 
@@ -1445,7 +1445,7 @@ W A R N I N G   M E S S A G E:
 	./snap/test.bin.div.000
 	./snap/test.bin.curl.000
 
- total real time for timestep 751 : 		 0.04 s.
+ total real time for timestep 751 : 		 0.01 s.
 
 
  *********** Finish TIME STEPPING ****************
@@ -1461,15 +1461,15 @@ W A R N I N G   M E S S A G E:
 
 **Info from function timing (written by PE 0) 
  Average times and standard deviations (in percent) for 
-   velocity update:  	  0.000 seconds +/- 1382.083 per cent 
-   stress update:  	  0.000 seconds +/- 1408.484 per cent 
-   velocity exchange:  	  0.000 seconds +/- 1842.612 per cent   
-   stress exchange:  	  0.000 seconds +/- 1963.289 per cent  
-   timestep:  		  0.000 seconds +/- 1528.595 per cent  
+   velocity update:  	  0.000 seconds +/- 1470.033 per cent 
+   stress update:  	  0.000 seconds +/- 1448.139 per cent 
+   velocity exchange:  	  0.000 seconds +/- 1395.997 per cent   
+   stress exchange:  	  0.000 seconds +/- 1443.369 per cent  
+   timestep:  		  0.000 seconds +/- 1603.519 per cent  
  PE 0 is writing timing information in ASCII format to log/test.log.0.timings 
 
  **Info from main (written by PE 0): 
- Total real time of program: 22.24 seconds.
+ Total real time of program: 9.63 seconds.
 
  ******************************************************
  **************** SOFI3D has finished *****************

@@ -681,7 +681,8 @@ int main(int argc, char **argv)
                 break;
         }
     }
-        for (int irtm = 0; irtm <= RTM_FLAG; irtm++)
+    int irtm;
+        for (irtm = 0; irtm <= RTM_FLAG; irtm++)
     {
         if (irtm>0)
         {
