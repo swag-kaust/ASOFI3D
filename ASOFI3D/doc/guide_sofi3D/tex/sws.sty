@@ -1,0 +1,70 @@
+%this file is sws.sty
+\setlength{\parskip}{1.5mm}
+\setlength{\parindent}{0mm}
+\renewcommand{\arraystretch}{1.5}
+
+\newcommand{\TTBS}{\symbol{92}}%teletype backslash
+\newcommand{\TTLB}{\symbol{123}}%teletype left brace
+\newcommand{\TTRB}{\symbol{125}}%teletype right brace
+
+\newcommand{\MOTTO}[1]{
+\begin{flushright}
+\emph{#1}
+\end{flushright}
+}
+
+\newcommand{\EPS}[3]{
+\begin{figure}[!hbt]
+\begin{center}
+\vspace{3ex}
+\includegraphics [width=#2]{#1}
+\caption{\label{#1}\small #3}
+\end{center}
+\end{figure}
+}
+
+\newcommand{\FIG}[1]{figure~\ref{#1}}
+
+\newcommand{\MB}[1]{{\mbox{\mathversion{bold}$#1$}}}
+
+\newcommand{\EQ}[2]{
+    \begin{equation}
+	\label{#1}
+        #2
+    \end{equation}
+}
+
+\newcommand{\ER}[1]{(\ref{#1})}
+
+\newcommand{\TXT}[1]{\;\;\mbox{#1}\;\;}
+
+\newcommand{\EXP}[1]{\,e \mbox{\raisebox{1.3ex}{$\,#1$}}\,}
+
+\newcommand{\SUB}[1]{\mbox{$_\textrm{#1}$}}
+
+
+% Aenderung der Numerierung von arabischen auf römische
+% Schriftzeichen:
+% Code by Heiko Oberdiek
+\makeatletter
+% Roman counter
+\newcounter{roem}
+\renewcommand{\theroem}{\roman{roem}}
+
+% save the original counter
+\newcommand{\c@org@eq}{}
+\let\c@org@eq\c@equation
+\newcommand{\org@theeq}{}
+\let\org@theeq\theequation
+
+% setroem sets roman counting
+\newcommand{\setroem}{
+\let\c@equation\c@roem
+\let\theequation\theroem}
+
+% setroem sets roman counting
+\newcommand{\setarab}{
+\let\c@equation\c@org@eq
+\let\theequation\org@theeq}
+
+\makeatother
