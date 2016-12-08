@@ -6,6 +6,9 @@
 #
 
 {
+"Imaging" : "comment",
+			"RTM_FLAG" : "0",
+
 "Domain Decomposition" : "comment",
 			"NPROCX" : "2",
 			"NPROCY" : "2",

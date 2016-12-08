@@ -2,18 +2,18 @@
  * Copyright (C) 2011 For the list of authors, see file AUTHORS.
  *
  * This file is part of SOFI3D.
- * 
+ *
  * SOFI3D is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.0 of the License only.
- * 
+ *
  * SOFI3D is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with SOFI3D. See file COPYING and/or 
+ * along with SOFI3D. See file COPYING and/or
   * <http://www.gnu.org/licenses/gpl-2.0.html>.
 --------------------------------------------------------------------------*/
 /*------------------------------------------------------------------------
@@ -24,6 +24,10 @@
 /* definition of global variables used in the finite difference programs*/
 /* For the names of the global variables
    uppercase letters are used */
+//Imaging
+int   RTM_FLAG=0;
+
+
 //MADAGASCAR VAR start
 int   RSF=0;
 char RSFDEN[STRING_SIZE]="";
@@ -54,8 +58,8 @@ int   SOFI3DVERS; /* version of SOFI3D 33: current 3D isotropic elastic (SSG), v
 
 /* Mpi-variables */
 int   NP, NPSP, NPROC, NPROCX, NPROCY, NPROCZ, MYID, IENDX, IENDY, IENDZ;
-int   POS[4], INDEX[7];     
-const int TAG1=1,TAG2=2, TAG3=3, TAG4=4, TAG5=5,TAG6=6; 
+int   POS[4], INDEX[7];
+const int TAG1=1,TAG2=2, TAG3=3, TAG4=4, TAG5=5,TAG6=6;
 
 
 float FC=0.0,AMP=1.0, REFSRC[3]={0.0, 0.0, 0.0}, SRC_DT, SRCTSHIFT=0.0;
