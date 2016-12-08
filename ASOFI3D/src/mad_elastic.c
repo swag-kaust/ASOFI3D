@@ -28,7 +28,7 @@
 
 #include "fd.h"
 
-void model_elastic(float  ***  rho, float ***  pi, float ***  u,
+void mad_elastic(float  ***  rho, float ***  pi, float ***  u,
         float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
         float *** C44, float *** C55, float *** C66,
 		float ***  taus, float ***  taup, float *  eta){
@@ -79,7 +79,7 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
 	/*elastic simulation */
 	if (L==0) {
 		/* loop over global grid */
-    fprintf(FP,"In HH elastic MYID=%d, POS[1]=%d, POS[2]=%d,POS[3]=%d \n\n",MYID,POS[1],POS[2],POS[3]);
+    fprintf(FP,"In mad_elastic MYID=%d, POS[1]=%d, POS[2]=%d,POS[3]=%d \n\n",MYID,POS[1],POS[2],POS[3]);
     for (k=1;k<=NZG;k++){
 			for (i=1;i<=NXG;i++){
 				for (j=1;j<=NYG;j++){

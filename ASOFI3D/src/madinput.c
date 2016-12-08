@@ -9,7 +9,7 @@
  */
 
 #include "fd.h"
-#include <string.h>
+//#include <string.h>
 
 
 
@@ -25,24 +25,25 @@ void removespace(char *str) {
 
 
 
-void madinput(char header[],float ***DEN ){
+void madinput(char header[], float *** DEN ){
 
 
     // -------------  header file Reading ---------------------
     extern float DX, DY, DZ;//, OX, OY, OZ;
-    extern int NX, NY, NZ, NXG, NYG, NZG, POS[4];
+    extern int NX, NY, NZ, NXG, NYG, NZG, POS[4], MYID;
     extern FILE *FP;
     fprintf(FP,"\n\n\n--------------------------------------------------------- \n");
     fprintf(FP," \n \n *********** Madagascar Input Start *************** \n \n");
     fprintf(FP,"--------------------------------------------------------- \n");
     fprintf(FP,"\n...Madagascar file : \t%s \n",header);
     fflush( FP);
-
+    // local variables
     int i, ii, j, jj, k, kk;
 
     int Nx, Nz, Ny;
     float Dx, Dz, Dy;
     float Ox, Oy,Oz;
+    float tempRho=0.0;
 
     // -------------  header file Reading ---------------------
     char *pch;
@@ -54,7 +55,7 @@ void madinput(char header[],float ***DEN ){
 
     char tempbuff[STRING_SIZE];
 
-
+/*
     // Read the header file
     sprintf(filename,"%s",header);
     ioh_file=fopen(filename,"r");
@@ -116,12 +117,12 @@ void madinput(char header[],float ***DEN ){
     }
 
     // over-write the json parameters
-    NXG=Nx;
-    NZG=Nz;
-    NYG=Ny;
-    DZ=Dz;
-    DX=Dx;
-    DY=Dy;
+    //NXG=Nx;
+    //NZG=Nz;
+    //NYG=Ny;
+    //DZ=Dz;
+    //DX=Dx;
+    //DY=Dy;
     // ----------------------- Header informaition Reading Completed ---------------
 
 
@@ -134,32 +135,26 @@ void madinput(char header[],float ***DEN ){
     ioh_file=fopen(binary_file,"r");
     fprintf(FP,"\n\n..binary \t%s\n\n",binary_file);
     if (ioh_file==NULL) err("\t \t \t :( No binaries  present :( ");
-    float tempRho;
+*/
 
-
+    fprintf(FP,"MYID=%d\n\n",MYID);
     for (k=1;k<=NZG;k++){
-	for (i=1;i<=NXG;i++){
-	    for (j=1;j<=NYG;j++){
-		tempRho=readdsk(ioh_file , format);  
-		if ((POS[1]==((i-1)/NX)) && (POS[2]==((j-1)/NY)) && (POS[3]==((k-1)/NZ))){
+      for (i=1;i<=NXG;i++){
+        for (j=1;j<=NYG;j++){
+          //tempRho=readdsk(ioh_file, format);
+          if ((POS[1]==((i-1)/NX)) && (POS[2]==((j-1)/NY)) && (POS[3]==((k-1)/NZ))){
 
-		    ii=i-POS[1]*NX;
-		    jj=j-POS[2]*NY;
-		    kk=k-POS[3]*NZ;
-		    DEN[jj][ii][kk]=tempRho;
-		}
-	    }
-	}
+            ii=i-POS[1]*NX;
+            jj=j-POS[2]*NY;
+            kk=k-POS[3]*NZ;
+            DEN[jj][ii][kk]=15000;
+          }
+        }
+      }
     }
 
-    fclose(ioh_file);
+//    fclose(ioh_file);
     fprintf(FP,"\n\n\n--------------------------------------------------------- \n");
     fprintf(FP," \n \n *********** Madagascar Input Finish *************** \n \n");
     fprintf(FP,"--------------------------------------------------------- \n");
 }
-
-
-
-
-
-

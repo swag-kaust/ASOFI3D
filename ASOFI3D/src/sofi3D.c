@@ -772,6 +772,7 @@ int main(int argc, char **argv)
     }
     // Madagascar
     if (RSF) madinput(RSFDEN,rho);
+    mad_elastic(rho, pi, u, C11, C12, C13, C22, C23, C33, C44, C55, C66, taus, taup, eta);
 
     if (RUN_MULTIPLE_SHOTS)
         nshots = nsrc;

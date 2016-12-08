@@ -63,13 +63,13 @@ numbOFcont=8;
 % Choose model or snapshot plot (model-->1; snapshot-->2)
 type_switch=2;
 % Choose 2D slice or 3D surf plot
-image_switch=1; % 1 = 2D; 2 = 3D;
+image_switch=2; % 1 = 2D; 2 = 3D;
 % Choose slice geometry and postion (for 2-D plots)
 slice_switch=2; % horizontal(zx)=1; vertical (yx)=2; vertical (yz)=3;
 % slice definition, where to slice trough the 3-D space
 nx=nx/outx;ny=ny/outy;nz=nz/outz;
-zslice=nz/2; % for xy plane
-yslice=ny/2; % for xz plane
+zslice=nz/3; % for xy plane
+yslice=ny/3; % for xz plane
 xslice=nx/2; % for yz plane in grid points
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -78,10 +78,10 @@ xslice=nx/2; % for yz plane in grid points
 
 % time increment for snapshots:
 TSNAP1=6.6e-3;
-TSNAPINC=0.2;
+TSNAPINC=0.1;
 % firts and last snapshot that is considered for displayin
 firstframe=1;
-lastframe=7;
+lastframe=12;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---3D definitions: defines two rotating planes (xz, yz plane)

@@ -76,9 +76,9 @@
 
 "Snapshots" : "comment",
 			"SNAP" : "4",
-			"TSNAP1" : "6.6e-3",
-			"TSNAP2" : "9.6",
-			"TSNAPINC" : "0.2",
+			"TSNAP1" : "0.05",
+			"TSNAP2" : "1.0",
+			"TSNAPINC" : "0.05",
 			"IDX" : "1",
 			"IDY" : "1",
 			"IDZ" : "1",

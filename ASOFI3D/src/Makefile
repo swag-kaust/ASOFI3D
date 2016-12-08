@@ -160,7 +160,8 @@ SOFI3D_SRC = \
 		$(MODEL_SRC_E) \
 		$(MODEL_SRC_V) \
 		$(SOFI3D_UTIL) \
-		madinput.c
+		madinput.c \
+		mad_elastic.c
 
 SOFI3D_SRC_BENCH = \
 		sofi3D.c \
