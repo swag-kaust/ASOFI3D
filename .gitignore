@@ -23,6 +23,7 @@ guide_sofi3D.pdf
 *.strip
 /contrib/header/*
 *.dat
+!*/sources/source.dat
 *.old*
 *.bin*
 *.su*
@@ -353,6 +354,3 @@ local.properties
 
 # TeXlipse plugin
 .texlipse
-
-
-
