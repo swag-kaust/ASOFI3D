@@ -354,3 +354,5 @@ local.properties
 
 # TeXlipse plugin
 .texlipse
+
+!ASOFI3D/par/sources/source.dat
