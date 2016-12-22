@@ -58,7 +58,7 @@
 "Model" : "comment",
 			"READMOD" : "0",
 			"MFILE" : "model/test",
-			"WRITE_MODELFILES" : "1",
+			"WRITE_MODELFILES" : "2",
 
 "Q-approximation" : "comment",
 			"L" : "0",
@@ -124,5 +124,5 @@
 
 "Madagascar" : "comment",
 			"RSF" : "1",
-	    "RSFDEN" : "madagascar/test_rho.rsf",
+			"RSFDEN" : "./madagascar/test_rho.rsf",
 }

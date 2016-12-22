@@ -770,9 +770,20 @@ int main(int argc, char **argv)
             model_visco(rho, pi, u, taus, taup, eta); /* viscoelastic modeling, L is specified in input file*/
         }
     }
+    
+
+
+    fprintf(FP,"\n \n MYID %d rsf %d rsfden %s", MYID,RSF,RSFDEN);
+
+
     // Madagascar
-    if (RSF) madinput(RSFDEN,rho);
-    mad_elastic(rho, pi, u, C11, C12, C13, C22, C23, C33, C44, C55, C66, taus, taup, eta);
+     if (RSF) madinput(RSFDEN,rho);
+  //  mad_elastic(rho, pi, u, C11, C12, C13, C22, C23, C33, C44, C55, C66, taus, taup, eta);
+
+
+
+
+
 
     if (RUN_MULTIPLE_SHOTS)
         nshots = nsrc;
@@ -868,7 +879,13 @@ int main(int argc, char **argv)
     // for (int irtm = 0; irtm <= RTM_FLAG; irtm++)
     // {
     //if (RSF) madinput(RSFDEN,rho);
-        for (ishot = 1; ishot <= nshots; ishot++)
+    
+
+
+
+
+
+    for (ishot = 1; ishot <= nshots; ishot++)
         {
             fprintf(FP, "\n MYID=%d *****  Starting simulation for shot %d of %d  ********** \n", MYID, ishot, nshots);
             for (nt = 1; nt <= 6; nt++)

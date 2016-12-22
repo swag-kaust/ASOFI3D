@@ -29,8 +29,8 @@ int   RTM_FLAG=0;
 
 
 //MADAGASCAR VAR start
-int   RSF=0;
-char RSFDEN[STRING_SIZE]="";
+int  RSF=1;
+char RSFDEN[STRING_SIZE];
 //MADAGASCAR VAR end
 
 

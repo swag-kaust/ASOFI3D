@@ -1,0 +1,37 @@
+1.6-svn	sfmath	ASOFI3D/par/madagascar:	kalim0a@kw12159	Sun Dec 18 13:07:35 2016
+
+	x2=1
+	d2=54
+	n2=60
+	o1=0
+	x3=2
+	d3=54
+	n3=40
+	o2=0
+	data_format="native_float"
+	o3=0
+	esize=4
+	in="/home/kalim0a/RSFTMP/ASOFI3D/par/madagascar/test_den1.rsf@"
+	x1=0
+	d1=54
+	n1=60
+1.6-svn	sfcat	ASOFI3D/par/madagascar:	kalim0a@kw12159	Sun Dec 18 13:07:35 2016
+
+	d3=54
+	n3=60
+	data_format="native_float"
+	o3=0
+	esize=4
+	in="stdout"
+	in="stdin"
+
+1.6-svn	sfput	ASOFI3D/par/madagascar:	kalim0a@kw12159	Sun Dec 18 13:07:35 2016
+
+	unit2=m
+	label3=z
+	unit3=m
+	data_format="native_float"
+	in="test_rho.rsf@"
+	label1=y
+	unit1=m
+	label2=x

@@ -26,10 +26,13 @@
 
 void read_par_json(FILE *fp, char *fileinp){
 
+extern int RSF;
+extern int RTM_FLAG;
+extern char RSFDEN[STRING_SIZE];
 
-    extern int RSF;
-    extern int RTM_FLAG;
-    extern char RSFDEN[STRING_SIZE], SCONS_FILE[STRING_SIZE];
+
+
+
     /* declaration of extern variables */
     extern int   NX, NY, NZ, SOURCE_SHAPE, SOURCE_TYPE, SNAP, SNAP_FORMAT, SNAP_PLANE;
     extern int DRX, DRZ, L, SRCREC, FDORDER, FW, FDCOEFF, FDORDER_TIME;
@@ -87,7 +90,7 @@ void read_par_json(FILE *fp, char *fileinp){
     if (get_int_from_objectlist("RSF",number_readobjects,&RSF,varname_list, value_list))
 	err("Please specify 0 for NO Madagascar, 1 for Madagascar in RSF");
     if (get_int_from_objectlist("RTM_FLAG",number_readobjects,&RTM_FLAG,varname_list, value_list))
-  err("Please specify 1 for propagation from the receiver side");
+	err("Please specify 1 for propagation from the receiver side");
 
 
     if (get_int_from_objectlist("NPROCX",number_readobjects,&NPROCX,varname_list, value_list))
@@ -608,10 +611,10 @@ void read_par_json(FILE *fp, char *fileinp){
     /*=================================
       RSF
       =================================*/
-    if (RSF){
-	if (get_string_from_objectlist("RSFDEN",number_readobjects,RSFDEN,varname_list, value_list))
-	    err("Forget to give the input in Madagascar");
-    }
+    //    if (RSF){
+    if (get_string_from_objectlist("RSFDEN",number_readobjects,RSFDEN,varname_list, value_list))
+	err("Forget to give the input in Madagascar");
+    //  }
 
 
     fprintf(fp, "\n===========================================================");

@@ -1,37 +1,37 @@
-1.8-svn	sfmath	ASOFI3D/par/madagascar:	kazeiv@kl-16067	Thu Dec  8 17:11:18 2016
+1.6-svn	sfmath	ASOFI3D/par/madagascar:	kalim0a@kw12159	Thu Dec 22 14:00:42 2016
 
 	x2=1
 	d2=54
-	n2=60
+	n2=40
 	o1=0
 	x3=2
 	d3=54
-	n3=40
+	n3=60
 	o2=0
 	data_format="native_float"
 	o3=0
 	esize=4
-	in="/Users/kazeiv/Madagascar/RSFTMP/ASOFI3D/par/madagascar/test_den1.rsf@"
+	in="/home/kalim0a/RSFTMP/ASOFI3D/par/madagascar/test_den1.rsf@"
 	x1=0
 	d1=54
 	n1=60
-1.8-svn	sfcat	ASOFI3D/par/madagascar:	kazeiv@kl-16067	Thu Dec  8 17:11:18 2016
+1.6-svn	sfcat	ASOFI3D/par/madagascar:	kalim0a@kw12159	Thu Dec 22 14:00:42 2016
 
-	d3=54
-	n3=60
+	d2=54
+	n2=60
+	o2=0
 	data_format="native_float"
-	o3=0
 	esize=4
 	in="stdout"
 	in="stdin"
 
-1.8-svn	sfput	ASOFI3D/par/madagascar:	kazeiv@kl-16067	Thu Dec  8 17:11:18 2016
+1.6-svn	sfput	ASOFI3D/par/madagascar:	kalim0a@kw12159	Thu Dec 22 14:00:42 2016
 
 	unit2=m
 	label3=z
 	unit3=m
 	data_format="native_float"
-	in="/Users/kazeiv/Madagascar/RSFTMP/ASOFI3D/par/madagascar/test_rho.rsf@"
+	in="/home/kalim0a/RSFTMP/ASOFI3D/par/madagascar/test_rho.rsf@"
 	label1=y
 	unit1=m
 	label2=x
