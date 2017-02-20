@@ -52,6 +52,7 @@
 //Madagascar
 void removespace(char *str);
 void madinput(char header[],float ***DEN );
+//void madinput(char header[],char binary_file[]);
 
 
 void absorb(float *** absorb_coeff);

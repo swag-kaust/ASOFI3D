@@ -25,7 +25,7 @@ void removespace(char *str) {
 
 
 
-void madinput(char header[], float *** DEN ){
+void madinput(char header[], char binary_file[] ){
 
 
     // -------------  header file Reading ---------------------
@@ -35,7 +35,7 @@ void madinput(char header[], float *** DEN ){
     fprintf(FP,"\n\n\n--------------------------------------------------------- \n");
     fprintf(FP," \n \n *********** Madagascar Input Start *************** \n \n");
     fprintf(FP,"--------------------------------------------------------- \n");
-    fprintf(FP,"\n \n \t \t Madagascar file : \t%s \n",header);
+    fprintf(FP,"\n...Madagascar file : \t%s \n",header);
     fflush( FP);
     // local variables
     int i, ii, j, jj, k, kk;
@@ -51,8 +51,6 @@ void madinput(char header[], float *** DEN ){
     char filename[STRING_SIZE];
     char *s="\"";
     char *token;
-    char binary_file[STRING_SIZE];
-
     char tempbuff[STRING_SIZE];
 
 
@@ -60,9 +58,6 @@ void madinput(char header[], float *** DEN ){
     sprintf(filename,"%s",header);
     ioh_file=fopen(filename,"r");
     if (ioh_file==NULL) err("\t \t \t :( Could not open Header :( ");
-
-
-
 
     while(!feof(ioh_file)){
 	if(fgets(tempbuff,STRING_SIZE,ioh_file)!=NULL ){
@@ -134,37 +129,4 @@ void madinput(char header[], float *** DEN ){
 
     // --------- Binary allocation to Memory ---------------------------
 
-    fprintf(FP,"i\n \n \t MYID = \t%d \n\n",MYID);
-
-    const int format=3;
-
-    ioh_file=fopen(binary_file,"r");
-    fprintf(FP,"\n\n \t \t Binary : \t%s\n\n",binary_file);
-    if (ioh_file==NULL) err("\t \t \t :( No binaries  present :( ");
-
-
-    for (k=1;k<=NZG;k++){
-	for (i=1;i<=NXG;i++){
-	    for (j=1;j<=NYG;j++){
-
-		tempRho=readdsk(ioh_file, format);
-
-		if ((POS[1]==((i-1)/NX)) 
-			&& (POS[2]==((j-1)/NY)) 
-			&& (POS[3]==((k-1)/NZ)))
-		{
-		    if (tempRho!=5000) fprintf(FP,"\n New in %g Nx %d Ny %d Nz %d Nxg %d Nyg %d Nzg %d",tempRho,NX,NY,NZ,POS[1], POS[2], POS[3]);
-		    ii=i-POS[1]*NX;
-		    jj=j-POS[2]*NY;
-		    kk=k-POS[3]*NZ;
-		    DEN[jj][ii][kk]=tempRho;
-		}
-	    }
-	}
-    }
-
-    fclose(ioh_file);
-    fprintf(FP,"\n\n\n--------------------------------------------------------- \n");
-    fprintf(FP," \n \n *********** Madagascar Input Finish *************** \n \n");
-    fprintf(FP,"--------------------------------------------------------- \n");
 }

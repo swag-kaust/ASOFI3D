@@ -29,13 +29,14 @@
 #include "fd.h"
 
 void mad_elastic(float  ***  rho, float ***  pi, float ***  u,
-
-
-
 	float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
 	float *** C44, float *** C55, float *** C66,
 	float ***  taus, float ***  taup, float *  eta){
 
+
+
+
+    extern char RSFDEN[STRING_SIZE];
     /*--------------------------------------------------------------------------*/
     /* extern variables */
     extern float DY;
@@ -52,6 +53,8 @@ void mad_elastic(float  ***  rho, float ***  pi, float ***  u,
     float y;
     int i, j, k, ii, jj, kk;
     char modfile[STRING_SIZE];
+    char binary_file[STRING_SIZE];
+
 
     /*-----------------material property definition -------------------------*/
 
@@ -90,14 +93,14 @@ void mad_elastic(float  ***  rho, float ***  pi, float ***  u,
 	fprintf(FP,"In mad_elastic MYID=%d, POS[1]=%d, POS[2]=%d,POS[3]=%d \n\n",MYID,POS[1],POS[2],POS[3]);
 
 
+
+
+	madinput(RSFDEN,binary_file);
 	// RSF
 	FILE *ioh_file;
-	ioh_file=fopen("/home/kalim0a/some/TD/ASOFI3D/par/test_rho.rsf@","r");
+	ioh_file=fopen(binary_file,"r");
 	if (ioh_file==NULL) err("\t \t \t :( Could not open Density binary :( ");
 	float tempRho;
-
-
-
 
 
 

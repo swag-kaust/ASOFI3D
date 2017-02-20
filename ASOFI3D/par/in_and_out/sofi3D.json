@@ -58,7 +58,7 @@
 "Model" : "comment",
 			"READMOD" : "0",
 			"MFILE" : "model/test",
-			"WRITE_MODELFILES" : "1",
+			"WRITE_MODELFILES" : "2",
 
 "Q-approximation" : "comment",
 			"L" : "0",
@@ -123,6 +123,7 @@
 			"CHECKPT_FILE" : "tmp/checkpoint_sofi3D",
 
 "Madagascar" : "comment",
-			"RSF" : "0",
-	    "RSFDEN" : "madagascar/test_rho.rsf",
+			"RSF" : "1",
+			"RSFDEN" : "./madagascar/test_rho.rsf",
+
 }

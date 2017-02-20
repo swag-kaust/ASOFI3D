@@ -55,7 +55,7 @@ numbOFcont=8;
 % Choose model or snapshot plot (model-->1; snapshot-->2)
 type_switch=2;
 % Choose 2D slice or 3D surf plot
-image_switch=2; % 1 = 2D; 2 = 3D;
+image_switch=1; % 1 = 2D; 2 = 3D;
 % Choose slice geometry and postion (for 2-D plots)
 slice_switch=2; % horizontal(zx)=1; vertical (yx)=2; vertical (yz)=3;
 % slice definition, where to slice trough the 3-D space
