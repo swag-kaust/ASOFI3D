@@ -1,0 +1,13 @@
+#from os
+#os.environ="./"
+from rsf.proj import *
+# 1st layer
+Flow('test_den1',None,'math n1=60 n2=40 n3=60 o1=0 o2=0 o3=0 d1=54.0 d2=54.0 d3=54.0 output=5000')
+# 2nd layer
+Flow('test_den2',None,'math n1=60 n2=20 n3=60 o1=0 o2=0 o3=0 d1=54.0 d2=54.0 d3=54.0 output=10000')
+
+# create 2 layer 3d model
+Flow('test_rho','test_den1 test_den2','cat ${SOURCES[1]} axis=2 d=54.0 o=0 | put label2=x label1=y label3=z unit1=m unit2=m unit3=m')
+
+
+End()

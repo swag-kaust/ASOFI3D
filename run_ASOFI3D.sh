@@ -6,12 +6,16 @@
 source mpiInit.sh
 
 # Go to directory with stock-given scripts
-cd SOFI3D_org/par
+cd ASOFI3D/par
 
 # Compile the whole code
 echo "Compilation"
 ./compileSOFI3D.sh
 echo "OK"
+
+cd madagascar
+scons
+cd -
 
 # Run the code
 echo "Run code"
@@ -26,4 +30,4 @@ echo "OK"
 cd ../..
 
 echo "Done."
-echo "Run MATLAB script ./SOFI3D_org/mfiles/snap3D_allplanes.m, to see the wavefield"
+echo "Run MATLAB script ./ASOFI3D/mfiles/snap3D_allplanes.m, to see the wavefield"
