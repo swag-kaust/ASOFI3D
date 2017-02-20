@@ -81,11 +81,18 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
         case 2 :
 
 
+//#pragma acc data copyin(vx[ny1-1:ny2+1][nx1-1:nx2+1][nz1-1:nz2+1],vy[ny1-1:ny2+1][nx1-1:nx2+1][nz1-1:nz2+1],vz[ny1-1:ny2+1][nx1-1:nx2+1][nz1-1:nz2+1])
+//#pragma acc data copyin (C11,C12,C13,C33,C22,C23,C66ipjp,C44jpkp,C55ipkp)
+//#pragma acc data copyout(sxy,syz,sxz,sxx,syy,szz)
 
+#pragma acc parallel 
+#pragma acc loop independent
             for (j=ny1; j<=ny2; j++)
             {
+#pragma acc loop independent
                 for (i=nx1; i<=nx2; i++)
                 {
+#pragma acc loop independent
                     for (k=nz1; k<=nz2; k++)
                     {
 
@@ -106,8 +113,8 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
                         c66ipjp=C66ipjp[j][i][k]*DT;
                         c44jpkp=C44jpkp[j][i][k]*DT;
                         c55ipkp=C55ipkp[j][i][k]*DT;
-                        g=pi[j][i][k];
-                        f=2.0*u[j][i][k];
+                        //g=pi[j][i][k];
+                        //f=2.0*u[j][i][k];
 
                         c11=C11[j][i][k];
                         c12=C12[j][i][k];
@@ -148,10 +155,15 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
                 b2=-0.046414;
             } /* Holberg coefficients E=0.1 %*/
 
+//#pragma acc data copyin(vx[ny1-1:ny2+1][nx1-1:nx2+1][nz1-1:nz2+1],vy[ny1-1:ny2+1][nx1-1:nx2+1][nz1-1:nz2+1],vz[ny1-1:ny2+1][nx1-1:nx2+1][nz1-1:nz2+1])
+#pragma acc parallel  
+#pragma acc loop independent collapse(3)
             for (j=ny1; j<=ny2; j++)
             {
+//#pragma acc loop independent
                 for (i=nx1; i<=nx2; i++)
                 {
+//#pragma acc loop independent
                     for (k=nz1; k<=nz2; k++)
                     {
 
@@ -173,7 +185,7 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
                         c44jpkp=C44jpkp[j][i][k]*DT;
                         c55ipkp=C55ipkp[j][i][k]*DT;
                         g=pi[j][i][k];
-                        f=2.0*u[j][i][k];
+                        f=2.0f*u[j][i][k];
 
                         c11=C11[j][i][k];
                         c12=C12[j][i][k];
@@ -237,6 +249,7 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
                     }
                 }
             }
+//#pragma acc end parallel 
             break;
 
         case 6 :
@@ -251,10 +264,14 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
                 b3=0.0081781;
             }   /* Holberg coefficients E=0.1 %*/
 
+#pragma acc parallel 
+#pragma acc loop independent
             for (j=ny1; j<=ny2; j++)
             {
+#pragma acc loop independent
                 for (i=nx1; i<=nx2; i++)
                 {
+#pragma acc loop independent
                     for (k=nz1; k<=nz2; k++)
                     {
 
@@ -351,10 +368,14 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
                 b4=-0.0026274;
             } /* Holberg coefficients E=0.1 %*/
 
+#pragma acc parallel 
+#pragma acc loop independent
             for (j=ny1; j<=ny2; j++)
             {
+#pragma acc loop independent
                 for (k=nz1; k<=nz2; k++)
                 {
+#pragma acc loop independent
                     for (i=nx1; i<=nx2; i++)
                     {
 
@@ -464,10 +485,14 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
                 b5=0.001191;
             } /* Holberg coefficients E=0.1 %*/
 
+#pragma acc parallel 
+#pragma acc loop independent
             for (j=ny1; j<=ny2; j++)
             {
+#pragma acc loop independent
                 for (i=nx1; i<=nx2; i++)
                 {
+#pragma acc loop independent
                     for (k=nz1; k<=nz2; k++)
                     {
 
@@ -586,10 +611,14 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
                 b6=-0.00066667;
             }
 
+#pragma acc parallel 
+#pragma acc loop independent
             for (j=ny1; j<=ny2; j++)
             {
+#pragma acc loop independent
                 for (i=nx1; i<=nx2; i++)
                 {
+#pragma acc loop independent
                     for (k=nz1; k<=nz2; k++)
                     {
 

@@ -31,11 +31,11 @@
 
 #include "fd.h"
 #include "globvar.h"
-
+//#include "openacc.h"
 int main(int argc, char **argv)
 {
     //this needs to be moved to the json - ask Mahesh
-    int RTM_FLAG = 0;
+    int RTM_FLAG = 1;
     int ns, nt, nseismograms = 0, nf1, nf2;
     int lsnap, nsnap = 0, lsamp = 0, nlsamp = 0, buffsize;
     int ntr = 0, ntr_loc = 0, ntr_glob = 0, nsrc = 0, nsrc_loc = 0, ishot, nshots; /* removed variable "h", not in use*/
@@ -113,6 +113,11 @@ int main(int argc, char **argv)
     MPI_Comm_size(MPI_COMM_WORLD, &NP);
     MPI_Comm_rank(MPI_COMM_WORLD, &MYID);
 
+
+    // Assign each MPI process to a GPU
+   // acc_init(acc_device_nvidia);
+   // acc_set_device_num(MYID, acc_device_nvidia);
+ 
     setvbuf(stdout, NULL, _IONBF, 0);
 
     /* initialize clock for estimating runtime of program */
@@ -777,13 +782,9 @@ int main(int argc, char **argv)
 
 
     // Madagascar
-     if (RSF) madinput(RSFDEN,rho);
-  //  mad_elastic(rho, pi, u, C11, C12, C13, C22, C23, C33, C44, C55, C66, taus, taup, eta);
 
-
-
-
-
+    if (RSF) madinput(RSFDEN,rho);
+    //mad_elastic(rho, pi, u, C11, C12, C13, C22, C23, C33, C44, C55, C66, taus, taup, eta);
 
     if (RUN_MULTIPLE_SHOTS)
         nshots = nsrc;
@@ -980,6 +981,48 @@ int main(int argc, char **argv)
 
             lsamp = NDTSHIFT + 1;
             nlsamp = 1;
+
+
+
+//#pragma acc data copyin(vx[ny1-1:ny2+1][nx1-1:nx2+1][nz1-1:nz2+1],vy[ny1-1:ny2+1][nx1-1:nx2+1][nz1-1:nz2+1],vz[ny1-1:ny2+1][nx1-1:nx2+1][nz1-1:nz2+1])
+ 
+/*
+
+
+vxyyx, vyzzy, vxzzx, vxxyyzz, vyyzz, vxxzz, vxxyy, 
+vxyyx_2, vyzzy_2, vxzzx_2, vxxyyzz_2, vyyzz_2, vxxzz_2, vxxyy_2, vxyyx_3, vyzzy_3, vxzzx_3, vxxyyzz_3, vyyzz_3, vxxzz_3, vxxyy_3, vxyyx_4, vyzzy_4, vxzzx_4, vxxyyzz_4, vyyzz_4, vxxzz_4, vxxyy_4
+
+in: 
+out: sxx, syy, szz, sxy, syz, sxz,*/
+
+//#pragma acc data copyin (C11,C12,C13,C33,C22,C23,C66ipjp,C44jpkp,C55ipkp)
+//#pragma acc data copyout(sxy,syz,sxz,sxx,syy,szz)
+/*
+#pragma acc data copyin(xb[0],xb[1],yb[0],yb[1],zb[0],zb[1],nt)
+#pragma acc data copyin(vx[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
+#pragma acc data copyin(vy[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
+#pragma acc data copyin(vz[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
+#pragma acc data copyin(C11[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
+#pragma acc data copyin(C12[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
+#pragma acc data copyin(C13[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
+#pragma acc data copyin(C22[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
+#pragma acc data copyin(C23[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
+#pragma acc data copyin(C33[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
+#pragma acc data copyin(C66ipjp[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
+#pragma acc data copyin(C44jpkp[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
+#pragma acc data copyin(C55ipkp[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
+*/
+/*
+#pragma acc data copyout(sxx[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
+#pragma acc data copyout(syy[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
+#pragma acc data copyout(szz[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
+#pragma acc data copyout(sxy[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
+#pragma acc data copyout(syz[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
+#pragma acc data copyout(sxz[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
+*/
+
+
+
             for (nt = 1; nt <= NT; nt++)
             {
                 time_v_update[nt] = 0.0;

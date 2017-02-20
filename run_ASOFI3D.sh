@@ -19,7 +19,7 @@ cd -
 
 # Run the code
 echo "Run code"
-./startSOFI3D.sh 8
+./startSOFI3D.sh $1
 echo "OK"
 
 # Merge snapshots into visualizable ones

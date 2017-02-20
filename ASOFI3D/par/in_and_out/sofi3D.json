@@ -7,7 +7,7 @@
 
 {
 "Imaging" : "comment",
-			"RTM_FLAG" : "0",
+			"RTM_FLAG" : "1",
 
 "Domain Decomposition" : "comment",
 			"NPROCX" : "2",
@@ -31,7 +31,7 @@
 			"fdcoeff values: Taylor=1, Holberg=2" : "comment",
 
 "Time Stepping" : "comment",
-			"TIME" : "5.0",
+			"TIME" : "5",
 			"DT" : "6.6e-3",
 
 "Source" : "comment",
@@ -79,9 +79,9 @@
 
 "Snapshots" : "comment",
 			"SNAP" : "4",
-			"TSNAP1" : "0.05",
-			"TSNAP2" : "1.0",
-			"TSNAPINC" : "0.05",
+			"TSNAP1" : "6.6e-3",
+			"TSNAP2" : "9.6",
+			"TSNAPINC" : "0.2",
 			"IDX" : "1",
 			"IDY" : "1",
 			"IDZ" : "1",
@@ -90,7 +90,7 @@
 			"SNAP_PLANE" : "2",
 
 "Receiver" : "comment",
-			"SEISMO" : "4",
+			"SEISMO" : "1",
 			"READREC" : "0",
 			"REC_FILE" : "./receiver/receiver.dat",
 			"REFRECX, REFRECY, REFRECZ" : "0.0 , 0.0 , 0.0",
@@ -115,7 +115,7 @@
 			"LOG_FILE" : "log/test.log",
 			"LOG" : "1",
 			"OUT_SOURCE_WAVELET" : "1",
-			"OUT_TIMESTEP_INFO" : "250",
+			"OUT_TIMESTEP_INFO" : "50",
 
 "Checkpoints" : "comment",
 			"CHECKPTREAD" : "0",
@@ -125,4 +125,5 @@
 "Madagascar" : "comment",
 			"RSF" : "1",
 			"RSFDEN" : "./madagascar/test_rho.rsf",
+
 }

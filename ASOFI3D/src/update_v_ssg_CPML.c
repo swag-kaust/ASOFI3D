@@ -102,8 +102,12 @@ double update_v_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 	/* boundaries in x-direction */
 
 	if (POS[1]==0){
+#pragma acc parallel 
+#pragma acc loop independent
 		for (j=1;j<=NY;j++){
+#pragma acc loop independent
 			for (i=1;i<=FW;i++){
+#pragma acc loop independent
 				for (k=1;k<=NZ;k++){
 
 					sxx_x = dx*(b1*(sxx[j][i+1][k]-sxx[j][i][k])+b2*(sxx[j][i+2][k]-sxx[j][i-1][k]));
@@ -174,8 +178,12 @@ double update_v_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 	}
 
 	if(POS[1]==NPROCX-1){
+#pragma acc parallel 
+#pragma acc loop independent
 		for (j=1;j<=NY;j++){
+#pragma acc loop independent
 			for (i=nx2+1;i<=nx2+FW;i++){
+#pragma acc loop independent
 				for (k=1;k<=NZ;k++){
 
 					sxx_x = dx*(b1*(sxx[j][i+1][k]-sxx[j][i][k])+b2*(sxx[j][i+2][k]-sxx[j][i-1][k]));
@@ -247,8 +255,12 @@ double update_v_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 	}
 
 	if((POS[2]==0 && FREE_SURF==0)){
+#pragma acc parallel 
+#pragma acc loop independent
 		for (j=1;j<=FW;j++){
+#pragma acc loop independent
 			for (i=nx1;i<=nx2;i++){
+#pragma acc loop independent
 				for (k=1;k<=NZ;k++){
 
 					sxx_x = dx*(b1*(sxx[j][i+1][k]-sxx[j][i][k])+b2*(sxx[j][i+2][k]-sxx[j][i-1][k]));
@@ -299,8 +311,12 @@ double update_v_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 	}
 
 	if(POS[2]==NPROCY-1){
+#pragma acc parallel 
+#pragma acc loop independent
 		for (j=ny2+1;j<=ny2+FW;j++){
+#pragma acc loop independent
 			for (i=nx1;i<=nx2;i++){
+#pragma acc loop independent
 				for (k=1;k<=NZ;k++){
 
 					sxx_x = dx*(b1*(sxx[j][i+1][k]-sxx[j][i][k])+b2*(sxx[j][i+2][k]-sxx[j][i-1][k]));
@@ -352,8 +368,12 @@ double update_v_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 	/* boundaries in z-direction */
 
 	if(POS[3]==0){
+#pragma acc parallel 
+#pragma acc loop independent
 		for (j=ny1;j<=ny2;j++){
+#pragma acc loop independent
 			for (i=nx1;i<=nx2;i++){
+#pragma acc loop independent
 				for (k=1;k<=FW;k++){
 
 					sxx_x = dx*(b1*(sxx[j][i+1][k]-sxx[j][i][k])+b2*(sxx[j][i+2][k]-sxx[j][i-1][k]));
@@ -384,8 +404,12 @@ double update_v_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 	}
 
 	if(POS[3]==NPROCZ-1){
+#pragma acc parallel 
+#pragma acc loop independent
 		for (j=ny1;j<=ny2;j++){
+#pragma acc loop independent
 			for (i=nx1;i<=nx2;i++){
+#pragma acc loop independent
 				for (k=nz2+1;k<=nz2+FW;k++){
 					sxx_x = dx*(b1*(sxx[j][i+1][k]-sxx[j][i][k])+b2*(sxx[j][i+2][k]-sxx[j][i-1][k]));
 					sxy_x = dx*(b1*(sxy[j][i][k]-sxy[j][i-1][k])+b2*(sxy[j][i+1][k]-sxy[j][i-2][k]));

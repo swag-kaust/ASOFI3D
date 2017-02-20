@@ -77,9 +77,13 @@ double update_v(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
                     b1=1.0; /* Taylor coefficients*/
                     if(FDCOEFF==2){
                         b1=1.00100; } /* Holberg coefficients E=0.1 %*/
-                    
+
+#pragma acc parallel 
+#pragma acc loop independent collapse(3)
                     for (j=ny1;j<=ny2;j++){
+//#pragma acc loop independent
                         for (i=nx1;i<=nx2;i++){
+//#pragma acc loop independent
                             for (k=nz1;k<=nz2;k++){
                                 
                                 sxx_x = dx*b1*(sxx[j][i+1][k]-sxx[j][i][k]);
@@ -119,8 +123,12 @@ double update_v(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
                     if(FDCOEFF==2){
                         b1=1.1382; b2=-0.046414;} /* Holberg coefficients E=0.1 %*/
                     
+#pragma acc parallel 
+#pragma acc loop independent collapse(3)
                     for (j=ny1;j<=ny2;j++){
+//#pragma acc loop independent
                         for (i=nx1;i<=nx2;i++){
+//#pragma acc loop independent
                             for (k=nz1;k<=nz2;k++){
                                 
                                 sxx_x = dx*(b1*(sxx[j][i+1][k]-sxx[j][i][k])+b2*(sxx[j][i+2][k]-sxx[j][i-1][k]));
@@ -159,9 +167,13 @@ double update_v(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
                     b1=75.0/64.0; b2=-25.0/384.0; b3=3.0/640.0; /* Taylor coefficients*/
                     if(FDCOEFF==2){
                         b1=1.1965; b2=-0.078804; b3=0.0081781;}   /* Holberg coefficients E=0.1 %*/
-                    
+               
+#pragma acc parallel 
+#pragma acc loop independent     
                     for (j=ny1;j<=ny2;j++){
+#pragma acc loop independent
                         for (i=nx1;i<=nx2;i++){
+#pragma acc loop independent
                             for (k=nz1;k<=nz2;k++){
                                 
                                 sxx_x = dx*(b1*(sxx[j][i+1][k]-sxx[j][i][k])+
@@ -227,8 +239,12 @@ double update_v(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
                     if(FDCOEFF==2){
                         b1=1.2257; b2=-0.099537; b3=0.018063; b4=-0.0026274;} /* Holberg coefficients E=0.1 %*/
                     
+#pragma acc parallel 
+#pragma acc loop independent
                     for (j=ny1;j<=ny2;j++){
+#pragma acc loop independent
                         for (i=nx1;i<=nx2;i++){
+#pragma acc loop independent
                             for (k=nz1;k<=nz2;k++){
                                 
                                 sxx_x = dx*(b1*(sxx[j][i+1][k]-sxx[j][i][k])+
@@ -303,8 +319,12 @@ double update_v(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
                     if(FDCOEFF==2){
                         b1=1.2415; b2=-0.11231; b3=0.026191; b4=-0.0064682; b5=0.001191;} /* Holberg coefficients E=0.1 %*/
                     
+#pragma acc parallel 
+#pragma acc loop independent
                     for (j=ny1;j<=ny2;j++){
+#pragma acc loop independent
                         for (i=nx1;i<=nx2;i++){
+#pragma acc loop independent
                             for (k=nz1;k<=nz2;k++){
                                 
                                 sxx_x = dx*(b1*(sxx[j][i+1][k]-sxx[j][i][k])+
@@ -392,8 +412,12 @@ double update_v(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
                         b1=1.2508; b2=-0.12034; b3=0.032131; b4=-0.010142; b5=0.0029857; b6=-0.00066667;}
                     
                     
+#pragma acc parallel 
+#pragma acc loop independent
                     for (j=ny1;j<=ny2;j++){
+#pragma acc loop independent
                         for (i=nx1;i<=nx2;i++){
+#pragma acc loop independent
                             for (k=nz1;k<=nz2;k++){
                                 
                                 sxx_x = dx*(b1*(sxx[j][i+1][k]-sxx[j][i][k])+
