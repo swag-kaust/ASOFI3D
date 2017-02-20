@@ -11,4 +11,12 @@ module load mpi-openmpi
 
 # default icc
 
-module load intel
+#module load intel
+
+
+
+
+
+
+
+

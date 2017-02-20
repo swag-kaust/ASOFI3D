@@ -95,8 +95,12 @@ double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz
 
 
 	if (POS[1]==0){
+#pragma acc parallel 
+#pragma acc loop independent gang collapse(2)
 		for (j=1;j<=NY;j++){
+#pragma acc loop independent
 			for (i=1;i<=FW;i++){
+#pragma acc loop independent vector
 				for (k=1;k<=NZ;k++){
 
 					vxx = (b1*(vx[j][i][k]-vx[j][i-1][k])+b2*(vx[j][i+1][k]-vx[j][i-2][k]))/DX;
@@ -193,8 +197,12 @@ double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz
 	}
 
 	if(POS[1]==NPROCX-1){
+#pragma acc parallel
+#pragma acc loop independent 
 		for (j=1;j<=NY;j++){
+#pragma acc loop independent
 			for (i=nx2+1;i<=nx2+FW;i++){
+#pragma acc loop independent
 				for (k=1;k<=NZ;k++){
 
 					vxx = (b1*(vx[j][i][k]-vx[j][i-1][k])+b2*(vx[j][i+1][k]-vx[j][i-2][k]))/DX;
@@ -298,8 +306,12 @@ double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz
 	}
 
 	if((POS[2]==0 && FREE_SURF==0)){
+#pragma acc parallel 
+#pragma acc loop independent
 		for (j=1;j<=FW;j++){
+#pragma acc loop independent
 			for (i=nx1;i<=nx2;i++){
+#pragma acc loop independent
 				for (k=1;k<=NZ;k++){
 
 					vxx = (b1*(vx[j][i][k]-vx[j][i-1][k])+b2*(vx[j][i+1][k]-vx[j][i-2][k]))/DX;
@@ -376,8 +388,12 @@ double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz
 	}
 
 	if(POS[2]==NPROCY-1){
+#pragma acc parallel 
+#pragma acc loop independent
 		for (j=ny2+1;j<=ny2+FW;j++){
+#pragma acc loop independent
 			for (i=nx1;i<=nx2;i++){
+#pragma acc loop independent 
 				for (k=1;k<=NZ;k++){
 
 					vxx = (b1*(vx[j][i][k]-vx[j][i-1][k])+b2*(vx[j][i+1][k]-vx[j][i-2][k]))/DX;
@@ -458,8 +474,12 @@ double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz
 
 
 	if(POS[3]==0){
+#pragma acc parallel 
+#pragma acc loop independent
 		for (j=ny1;j<=ny2;j++){
+#pragma acc loop independent
 			for (i=nx1;i<=nx2;i++){
+#pragma acc loop independent
 				for (k=1;k<=FW;k++){
 
 					vxx = (b1*(vx[j][i][k]-vx[j][i-1][k])+b2*(vx[j][i+1][k]-vx[j][i-2][k]))/DX;
@@ -566,8 +586,12 @@ maybe right here, maybe even inside this file...
 
 
 	if(POS[3]==NPROCZ-1){
+#pragma acc parallel 
+#pragma acc loop independent
 		for (j=ny1;j<=ny2;j++){
+#pragma acc loop independent
 			for (i=nx1;i<=nx2;i++){
+#pragma acc loop independent
 				for (k=nz2+1;k<=nz2+FW;k++){
 
 					vxx = (b1*(vx[j][i][k]-vx[j][i-1][k])+b2*(vx[j][i+1][k]-vx[j][i-2][k]))/DX;

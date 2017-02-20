@@ -1,4 +1,4 @@
-1.8-svn	sfmath	ASOFI3D/par/madagascar:	kazeiv@kl-16067	Thu Dec  8 17:11:18 2016
+1.8-svn	sfmath	ASOFI3D/par/madagascar:	kazeiv@kw60129	Tue Dec 13 19:34:53 2016
 
 	x2=1
 	d2=54
@@ -11,7 +11,7 @@
 	data_format="native_float"
 	o3=0
 	esize=4
-	in="/Users/kazeiv/Madagascar/RSFTMP/ASOFI3D/par/madagascar/test_den2.rsf@"
+	in="/home/kazeiv/Madagascar/RSFTMP/ASOFI3D/par/madagascar/test_den2.rsf@"
 	x1=0
 	d1=54
 	n1=60

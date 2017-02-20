@@ -1,0 +1,13 @@
+
+
+double *time_v_update
+time_v_update = dvector(1, NT);
+
+double *time_s_update
+time_s_update = dvector(1, NT);
+
+double *time_s_exchane
+time_s_exchange = dvector(1, NT);
+
+double *time_v_exchange
+time_v_exchange = dvector(1, NT);
