@@ -56,16 +56,9 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
     /* x=1, y=2 in Tsvankin [1997] (e.g.) epsx=epsion1 & epsy=epsilon2 */
     
     /* parameters for layer 1 */
-   /* const float vpv1=2326.0, poi1=0.25, 
-     epsx1=0.135, epsy1=-0.082, delx1=-0.166, 
-     dely1=-0.24, delxy1=-0.089,
-     gamx1=0.438, gamy1=0.25, 
-     rho1=2000.0, h=100000.0; */
-   const float vpv1=2000.0, poi1=0.25, 
-           epsx1=0.0, epsy1=-0.0, 
-           delx1=-0.0, dely1=-0.0, 
-           delxy1=0,
-           gamx1=0.0, gamy1=0.0, rho1=2000.0, h=100000.0; 
+    const float vpv1=2326.0, poi1=0.25, epsx1=0.135, epsy1=-0.082, delx1=-0.166, dely1=-0.24, delxy1=-0.089,
+            gamx1=0.438, gamy1=0.25, rho1=2000.0, h=10000.0;
+    
     /* parameters for layer 2 */
     //const float vp2=5700.0, vs2=3400.0, rho2=2500.0;
     const float vpv2=2326.0, poi2=0.25, epsx2=0., epsy2=0.0, delx2=0., dely2=0., delxy2=0.,
@@ -100,14 +93,9 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
                     /* calculate vertical coordinate in m */
                     
                     y=(float)j*DY;
-                 
-				 
-   
-                    /* two layer case */
                     
-
-
-		if (y<=h){
+                    /* two layer case */
+                    if (y<=h){
                         Vpv=vpv1; Poi=poi1; eps_1=epsx1; eps_2=epsy1; delta_1=delx1; delta_2=dely1;
                         delta_3=delxy1; gamma_1=gamx1; gamma_2=gamy1; Rho=rho1; }
                     
@@ -115,19 +103,13 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
                     else{
                         Vpv=vpv1; Poi=poi1; eps_1=epsx1; eps_2=epsy1; delta_1=delx1; delta_2=dely1;
                         delta_3=delxy1; gamma_1=gamx1; gamma_2=gamy1; Rho=rho1; }
-                // perturbation in the midle of the model
-
-		if (((i-(NZG/2))*(i-(NZG/2)) + (j-(NZG/2))*(j-(NZG/2)) + (k-(NZG/2))*(k-(NZG/2))) <= 5*5){
-			Vpv -= Vpv * 0.1;
-		}
-
-
+                    
                     /*=========================================================
                      * modify up to this point for ELASTIC model definition
                      *=========================================================
                      */
                     
-                    Vsv=Vpv*sqrt((1-2*Poi)/(2-2*Poi));
+                    Vsv=894.; //Vpv*sqrt((1-2*Poi)/(2-2*Poi));
                     muv=Vsv*Vsv*Rho;
                     piv=Vpv*Vpv*Rho;
                     

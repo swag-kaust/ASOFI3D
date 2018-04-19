@@ -1,16 +1,3 @@
-#!/bin/bash
-
-#SBATCH --account=k1056
-#SBATCH --job-name=ASOFI
-#SBATCH --time=00:20:00
-#SBATCH --hint=nomultithread
-#SBATCH --ntasks-per-node=32
-#SBATCH --ntasks-per-socket=16
-#SBATCH	--threads-per-core=1
-#SBATCH --ntasks=4096
-#SBATCH	--nodes=128
-
-
 #----excecute with LAMMPI
 #lamboot -v mpihosts
 #lamboot
@@ -23,10 +10,8 @@
 
 
 #----execute with OPENMPI2
-srun -n 4096 nice -19 ../bin/sofi3D ./in_and_out/sofi3D.json | tee ./in_and_out/sofi3D.jout
+mpirun -np $1 nice -19 ../bin/sofi3D ./in_and_out/sofi3D.json | tee ./in_and_out/sofi3D.jout
 #mpirun --hostfile mpihosts -np 8 nice -19 ../bin/sofi3D ./in_and_out/sofi3D.json | tee ./in_and_out/sofi3D.jout
 
 #merge snapshots
 #../bin/snapmerge ./in_and_out/sofi3D.json
-
-

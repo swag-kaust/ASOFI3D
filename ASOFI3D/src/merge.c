@@ -100,10 +100,14 @@ void merge(int nsnap, int type){
 	for (kp=0;kp<=NPROCZ-1; kp++)
 	    for (ip=0;ip<=NPROCX-1; ip++)
    		for (jp=0;jp<=NPROCY-1; jp++){
-      		sprintf(file,"%s.%i%i%i",mfile,ip,jp,kp);
-      		fp[jp][ip][kp]=fopen(file,"r");
-      		if (fp[jp][ip][kp]==NULL) err("merge: can't read snapfile !"); 
-     	 }
+      		sprintf(file,"%s.%i.%i.%i",mfile,ip,jp,kp);
+      		fprintf(FP,file,"\n");
+		fp[jp][ip][kp]=fopen(file,"r");
+      		if (fp[jp][ip][kp]==NULL){ 
+			//err("merge: can't read snapfile !");
+			err(file); 
+     	 	}
+	}
 
 	fprintf(FP," ... finished. \n");
 

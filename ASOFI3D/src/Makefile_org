@@ -24,19 +24,17 @@ MODEL_SRC_BENCH = benchmod.c
 # CFLAGS=-g -Wall -O4
 
 # On CRAY T3E
-CC=cc
+# CC=cc
 
 # On Linux Cluster using OpenMPI
-#CC=mpicc
-#-ta=tesla:managed -acc -Minfo=accel
-#CC=mpicc -ta=multicore -acc -Minfo=accel
-#LFLAGS=-lm
-#CFLAGS=-Wall -O3
+ CC=mpicc
+ LFLAGS=-lm
+ CFLAGS=-Wall -O3
 
 # On InstitutsCluster2 using intelMPI AND ITAC (no optimization)
-#CC = mpicc
-#LFLAGS = -tcollect
-#CFLAGS = -tcollect -trace
+# CC = mpicc
+# LFLAGS = -tcollect
+# CFLAGS = -tcollect -trace
 
 # On InstitutsCluster2 using Open MPI and scalasca (no optimization)
 #CC = skin mpicc
@@ -58,6 +56,7 @@ CC=cc
 # On HLRN system
 #CC=mpcc
 #LFLAGS=-lm
+
 # ON Linux cluster ALTIX.RZ.UNI-KIEL:DE
 #CC=icc
 #CFLAGS=-mp -O3 -ip0q
