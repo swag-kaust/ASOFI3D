@@ -262,3 +262,5 @@ clean:
 	find . -name "core" -exec rm {} \;
 
 all: clean sofi3D sofi3D_acoustic snapmerge seismerge part_model
+
+

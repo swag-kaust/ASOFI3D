@@ -35,7 +35,7 @@
 int main(int argc, char **argv)
 {
     //this needs to be moved to the json - ask Mahesh
-    int RTM_FLAG = 1;
+    int RTM_FLAG = 0;
     int ns, nt, nseismograms = 0, nf1, nf2;
     int lsnap, nsnap = 0, lsamp = 0, nlsamp = 0, buffsize;
     int ntr = 0, ntr_loc = 0, ntr_glob = 0, nsrc = 0, nsrc_loc = 0, ishot, nshots; /* removed variable "h", not in use*/
