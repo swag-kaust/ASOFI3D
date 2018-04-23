@@ -73,12 +73,12 @@ int ny2, int nz2){
 	}
 
 
-	sprintf(xfile,"%s%s.vx.%i%i%i",SNAP_FILE,ext,POS[1],POS[2],POS[3]);
-	sprintf(yfile,"%s%s.vy.%i%i%i",SNAP_FILE,ext,POS[1],POS[2],POS[3]);
-	sprintf(zfile,"%s%s.vz.%i%i%i",SNAP_FILE,ext,POS[1],POS[2],POS[3]);
-	sprintf(divfile,"%s%s.div.%i%i%i",SNAP_FILE,ext,POS[1],POS[2],POS[3]);
-	sprintf(rotfile,"%s%s.curl.%i%i%i",SNAP_FILE,ext,POS[1],POS[2],POS[3]);
-	sprintf(pfile,"%s%s.p.%i%i%i",SNAP_FILE,ext,POS[1],POS[2],POS[3]);
+	sprintf(xfile,"%s%s.vx.%i.%i.%i",SNAP_FILE,ext,POS[1],POS[2],POS[3]);
+	sprintf(yfile,"%s%s.vy.%i.%i.%i",SNAP_FILE,ext,POS[1],POS[2],POS[3]);
+	sprintf(zfile,"%s%s.vz.%i.%i.%i",SNAP_FILE,ext,POS[1],POS[2],POS[3]);
+	sprintf(divfile,"%s%s.div.%i.%i.%i",SNAP_FILE,ext,POS[1],POS[2],POS[3]);
+	sprintf(rotfile,"%s%s.curl.%i.%i.%i",SNAP_FILE,ext,POS[1],POS[2],POS[3]);
+	sprintf(pfile,"%s%s.p.%i.%i.%i",SNAP_FILE,ext,POS[1],POS[2],POS[3]);
 
         if (LOG){
 	fprintf(fp,"\n\n PE %d is writing snapshot-data at T=%fs to \n",MYID,nt*DT);}

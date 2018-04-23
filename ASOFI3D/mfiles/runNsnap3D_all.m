@@ -10,6 +10,11 @@ runFlag = 0;
 NPROC = 24;
 
 % works on KAUST UBUNTU but not on Mac
+% cd ../..
+% 
+% system('./run_ASOFI3D.sh')
+% 
+% cd SOFI3D_org/mfiles
 
 if runFlag
     cd ../..
@@ -25,7 +30,7 @@ end
 nx=480; ny=480; nz=480; % basic grid size; ny=vertical
 outx=1; outy=1; outz=1; % snap increment in x/y/z direction, outy=vertical
 % spatial discretization, it is assumed that dx=dy=dz=dh
-dh=10.0;
+dh=5.0;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---input, output files
@@ -58,7 +63,7 @@ title_mod='Density model';
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % switch for contour of model overlaying the model or snapshot file
 % 1=yes other=no
-cont_switch=1;
+cont_switch=0;
 % number of contours for the contour-plot
 numbOFcont=8;
 
@@ -67,7 +72,7 @@ type_switch=2;
 % Choose 2D slice or 3D surf plot
 image_switch=2; % 1 = 2D; 2 = 3D;
 % Choose slice geometry and postion (for 2-D plots)
-slice_switch=3; % horizontal(zx)=1; vertical (yx)=2; vertical (yz)=3;
+slice_switch=2; % horizontal(zx)=1; vertical (yx)=2; vertical (yz)=3;
 % slice definition, where to slice trough the 3-D space
 nx=nx/outx;ny=ny/outy;nz=nz/outz;
 zslice=nz/2; % for xy plane
@@ -79,18 +84,18 @@ xslice=nx/2; % for yz plane in grid points
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % time increment for snapshots:
-TSNAP1=0.51;
-TSNAPINC=0.1;
+TSNAP1=0.81;
+TSNAPINC=0.2;
 % firts and last snapshot that is considered for displayin
 firstframe=1;
-lastframe=8;
+lastframe=3;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---3D definitions: defines two rotating planes (xz, yz plane)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-phi1=90; % a horizontal plane (x-z plane) is rotated by phi1 with respect to the rotpoint
-phi2=45; % a horizontal plane (x-z plane) is rotated by phi2 with respect to the rotpoint
+phi1=0; % a horizontal plane (x-z plane) is rotated by phi1 with respect to the rotpoint
+phi2=90; % a horizontal plane (x-z plane) is rotated by phi2 with respect to the rotpoint
 % rotaxis and rotpoint refers to the rotation of the 2D-slices within the 3D volume
 % direction rotation axes [0,1,0] rotation of plane around vertical axis
 % [1,0,0] rotation of plane around x-axis
@@ -111,9 +116,9 @@ viewpoint=[10,-10,10];
 
 % colorbar boundaries for cropping the snapshot value range
 % only used if type_switch=2
-auto_scaling=2; % 1= automatic determination of boundaries, 2= constant values caxis_value , 3= no scaling
-caxis_value_1=0.1e-10;
-caxis_value_2=0.1e-10; % only used if num_switch=2
+auto_scaling=1; % 1= automatic determination of boundaries, 2= constant values caxis_value , 3= no scaling
+caxis_value_1=1e-12;
+caxis_value_2=1e-12; % only used if num_switch=2
 
 % use custom axis limits if axisoverwrite==1, otherwise matlab will
 % determine axis limits automatically
@@ -567,16 +572,16 @@ if image_switch==2
         %         set(h3,'FaceColor','interp','EdgeColor','none','DiffuseStrength',.8);
         
         % black outline of the vertical slice
-%         plot3([0 max(max(xd))],[max(max(zd)) max(max(zd))],[0 0],'-black','LineWidth',2);
-%         plot3([max(max(xd)) max(max(xd))],[max(max(zd)) max(max(zd))],[0 max(max(yd))],'-black','LineWidth',2);
-%         plot3([max(max(xd)) 0],[max(max(zd)) max(max(zd))],[max(max(yd)) max(max(yd))],'-black','LineWidth',2);
-%         plot3([0 0],[max(max(zd)) max(max(zd))],[0 max(max(yd))],'-black','LineWidth',2);
-%         
-%         % black outline of the horizontal slice
-%         plot3([0 max(max(xd2))],[max(max(zd2)) max(max(zd2))],[max(max(yd2)) min(min(yd2))],'-black','LineWidth',2);
-%         plot3([max(max(xd2)) max(max(xd2))],[max(max(zd2)) 0],[max(max(yd2)) max(max(yd2))],'-black','LineWidth',2);
-%         plot3([max(max(xd2)) 0],[0 0],[max(max(yd2)) min(min(yd2))],'-black','LineWidth',2);
-%         plot3([0 0],[0 max(max(zd2))],[max(max(yd2)) max(max(yd2))],'-black','LineWidth',2);
+        plot3([0 max(max(xd))],[max(max(zd)) max(max(zd))],[0 0],'-black','LineWidth',2);
+        plot3([max(max(xd)) max(max(xd))],[max(max(zd)) max(max(zd))],[0 max(max(yd))],'-black','LineWidth',2);
+        plot3([max(max(xd)) 0],[max(max(zd)) max(max(zd))],[max(max(yd)) max(max(yd))],'-black','LineWidth',2);
+        plot3([0 0],[max(max(zd)) max(max(zd))],[0 max(max(yd))],'-black','LineWidth',2);
+        
+        % black outline of the horizontal slice
+        plot3([0 max(max(xd2))],[max(max(zd2)) max(max(zd2))],[max(max(yd2)) min(min(yd2))],'-black','LineWidth',2);
+        plot3([max(max(xd2)) max(max(xd2))],[max(max(zd2)) 0],[max(max(yd2)) max(max(yd2))],'-black','LineWidth',2);
+        plot3([max(max(xd2)) 0],[0 0],[max(max(yd2)) min(min(yd2))],'-black','LineWidth',2);
+        plot3([0 0],[0 max(max(zd2))],[max(max(yd2)) max(max(yd2))],'-black','LineWidth',2);
         
         if cont_switch==1
             % vertical contour slice
@@ -688,4 +693,3 @@ disp(['Script ended...']);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---End of Script
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-

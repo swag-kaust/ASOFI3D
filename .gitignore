@@ -24,6 +24,8 @@ guide_sofi3D.pdf
 /contrib/header/*
 *.dat
 !*/sources/source.dat
+*/snap/*
+*/snap_backup/*
 *.old*
 *.bin*
 *.su*
