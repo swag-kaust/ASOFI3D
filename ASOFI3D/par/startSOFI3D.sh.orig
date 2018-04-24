@@ -23,10 +23,14 @@
 
 
 #----execute with OPENMPI2
+<<<<<<< HEAD
 
-mpirun -np $1 nice -19 ../bin/sofi3D ./in_and_out/sofi3D.json | tee ./in_and_out/sofi3D.jout
+mpirun -np 24 nice -19 ../bin/sofi3D ./in_and_out/sofi3D.json | tee ./in_and_out/sofi3D.jout
 
 
+=======
+srun -n 4096 nice -19 ../bin/sofi3D ./in_and_out/sofi3D.json | tee ./in_and_out/sofi3D.jout
+>>>>>>> 755ec5a91258442d3b5ab2458b3efd3e8238d6fc
 #mpirun --hostfile mpihosts -np 8 nice -19 ../bin/sofi3D ./in_and_out/sofi3D.json | tee ./in_and_out/sofi3D.jout
 
 #merge snapshots

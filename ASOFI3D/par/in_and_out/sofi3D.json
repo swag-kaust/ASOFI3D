@@ -10,19 +10,19 @@
 			"RTM_FLAG" : "0",
 
 "Domain Decomposition" : "comment",
-			"NPROCX" : "16",
-			"NPROCY" : "16",
-			"NPROCZ" : "16",
+			"NPROCX" : "4",
+			"NPROCY" : "1",
+			"NPROCZ" : "4",
 
 "3-D Grid" : "comment",
 
 			"NX" : "2048",
-			"NY" : "2048",
+			"NY" : "32",
 			"NZ" : "2048",
 
-			"DX" : "2.5",
-			"DY" : "2.5",
-			"DZ" : "2.5",
+			"DX" : "10",
+			"DY" : "10",
+			"DZ" : "10",
 
 "FD order" : "comment",
 			"FDORDER" : "4",
@@ -31,8 +31,8 @@
 			"fdcoeff values: Taylor=1, Holberg=2" : "comment",
 
 "Time Stepping" : "comment",
-			"TIME" : "1.25",
-			"DT" : "0.5e-3",
+			"TIME" : "5",
+			"DT" : "1e-3",
 
 "Source" : "comment",
 
@@ -67,12 +67,12 @@
 			"TAU" : "0.00001",
 
 "Boundary Conditions" : "comment",
-			"FREE_SURF" : "0",
+			"FREE_SURF" : "1",
 			"ABS_TYPE" : "1",
 			"FW" : "20.0",
 			"DAMPING" : "8.0",
 			"FPML" : "5.0",
-			"VPPML" : "3500.0",
+			"VPPML" : "1500.0",
 			"NPOWER" : "4.0",
 			"K_MAX_CPML" : "1.0",
 			"BOUNDARY" : "0",
@@ -90,21 +90,21 @@
 			"SNAP_PLANE" : "2",
 
 "Receiver" : "comment",
-			"SEISMO" : "1",
+			"SEISMO" : "2",
 			"READREC" : "0",
 			"REC_FILE" : "./receiver/receiver.dat",
 			"REFRECX, REFRECY, REFRECZ" : "0.0 , 0.0 , 0.0",
-			"XREC1,YREC1, ZREC1" : "54.0 , 2106.0, 2592.0",
-			"XREC2,YREC2, ZREC2" : "3240.0 , 2106.0, 2592.0",
+			"XREC1,YREC1, ZREC1" : "10.0 , 10.0, 10.0",
+			"XREC2,YREC2, ZREC2" : "10.0 , 10.0, 10.0",
 			"NGEOPH" : "1",
 
 "Receiver array" : "comment",
 
-			"REC_ARRAY" : "0",
-			"REC_ARRAY_DEPTH" : "1350.0",
-			"REC_ARRAY_DIST" : "640.0",
-			"DRX" : "2",
-			"DRZ" : "2",
+			"REC_ARRAY" : "1",
+			"REC_ARRAY_DEPTH" : "10.0",
+			"REC_ARRAY_DIST" : "100.0",
+			"DRX" : "5",
+			"DRZ" : "5",
 
 "Seismograms" : "comment",
 			"NDT, NDTSHIFT" : "1, 0",

@@ -3,19 +3,19 @@
 # Just compile + run + prepare snapshots for visualization
 
 # Load MPI modules in case if you are using KAUST workstation
-source mpiInit.sh
+#source mpiInit.sh
 
 # Go to directory with stock-given scripts
 cd ASOFI3D/par
 
 # Compile the whole code
-echo "Compilation"
-./compileSOFI3D.sh
-echo "OK"
+#echo "Compilation"
+#./compileSOFI3D.sh
+#echo "OK"
 
-cd madagascar
-scons
-cd -
+#cd madagascar
+#scons
+#cd -
 
 # Run the code
 echo "Run code"
