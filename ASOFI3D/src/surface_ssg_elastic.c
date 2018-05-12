@@ -25,10 +25,10 @@
 #include "data_structures.h"
 
 void surface_elastic(int ndepth, float *** u, float *** pi,
-		float *** sxx, float ***syy, float ***szz, float *** sxy,float *** syz,
-		Velocity *v,
-		float * K_x, float * a_x, float * b_x, float * K_z, float * a_z, float * b_z, 
-		float *** psi_vxx, float *** psi_vzz ){
+        Tensor3d *s,
+        Velocity *v,
+        float * K_x, float * a_x, float * b_x, float * K_z, float * a_z, float * b_z, 
+        float *** psi_vxx, float *** psi_vzz ) {
 
 	int i, k ,j, fdoh,m,h1;
 	float  vxx, vyy, vzz;
@@ -37,6 +37,12 @@ void surface_elastic(int ndepth, float *** u, float *** pi,
         float ***vx = v->x;
         float ***vy = v->y;
         float ***vz = v->z;
+
+        float ***sxx = s->xx;
+        float ***syy = s->yy;
+        float ***szz = s->zz;
+        float ***sxy = s->xy;
+        float ***syz = s->yz;
 
 	extern int NX, NZ, FDORDER, FDCOEFF, FW, NPROCX, NPROCZ, POS[4];
 	register float b1, b2, b3, b4, b5, b6;

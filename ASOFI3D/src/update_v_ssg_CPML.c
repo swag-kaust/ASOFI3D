@@ -29,18 +29,25 @@
 
 double update_v_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 		int nt, Velocity *v,
-		float *** sxx, float *** syy, float *** szz, float *** sxy,
-		float *** syz, float *** sxz, float  ***  rho,  float  *** rjp, float  *** rkp, float  *** rip,
+		Tensor3d *s,
+                float  ***  rho,  float  *** rjp, float  *** rkp, float  *** rip,
 		float **  srcpos_loc, float ** signals, int nsrc, float *** absorb_coeff, int * stype,
 		float * K_x, float * a_x, float * b_x, float * K_x_half, float * a_x_half, float * b_x_half,
 		float * K_y, float * a_y, float * b_y, float * K_y_half, float * a_y_half, float * b_y_half,
 		float * K_z, float * a_z, float * b_z, float * K_z_half, float * a_z_half, float * b_z_half,
 		float *** psi_sxx_x, float *** psi_sxy_x, float *** psi_sxz_x, float *** psi_sxy_y, float *** psi_syy_y,
-		float *** psi_syz_y, float *** psi_sxz_z, float *** psi_syz_z, float *** psi_szz_z){
+		float *** psi_syz_y, float *** psi_sxz_z, float *** psi_syz_z, float *** psi_szz_z) {
 
         float ***vx = v->x;
         float ***vy = v->y;
         float ***vz = v->z;
+
+        float ***sxx = s->xx;
+        float ***syy = s->yy;
+        float ***szz = s->zz;
+        float ***sxy = s->xy;
+        float ***syz = s->yz;
+        float ***sxz = s->xz;
 
 	extern float DT, DX, DY, DZ;
 	double time=0.0, time1=0.0, time2=0.0;

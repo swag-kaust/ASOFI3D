@@ -22,11 +22,12 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "data_structures.h"
 
 void seismo(int lsamp, int ntr, int **recpos, float **sectionvx, float **sectionvy, 
-		float **sectionvz, float **sectiondiv, float **sectioncurl, float **sectionp,
-		Velocity *v,
-		float ***sxx, float ***syy, float ***szz, float ***pi, float ***u){
+        float **sectionvz, float **sectiondiv, float **sectioncurl, float **sectionp,
+        Velocity *v,
+        Tensor3d *s, float ***pi, float ***u) {
 
 	extern int SEISMO;
 	int i, j, k, itr, ins, nxrec, nyrec, nzrec;
@@ -36,6 +37,9 @@ void seismo(int lsamp, int ntr, int **recpos, float **sectionvx, float **section
         float ***vy = v->y;
         float ***vz = v->z;
 
+        float ***sxx = s->xx;
+        float ***syy = s->yy;
+        float ***szz = s->zz;
 
 	ins=lsamp; /* changed from "ins=lsamp/NDT;" (neccessary after correction of the buggy ns in sofi3D.c) */
 	dh24x=1.0/DX;

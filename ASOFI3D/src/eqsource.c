@@ -3,17 +3,24 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "data_structures.h"
 
-void eqsource(int nt, float *** sxx, float *** syy, float *** szz,
-		float *** sxy, float *** syz, float *** sxz,
-		float **  srcpos_loc, float ** signals, int nsrc, int * stype,
-		float amon, float str, float dip, float rake){
+void eqsource(int nt, Tensor3d *s,
+        float **  srcpos_loc, float ** signals, int nsrc, int * stype,
+        float amon, float str, float dip, float rake) {
 
 	extern float DT, DX, DY, DZ;
 	extern float AMON, STR, DIP, RAKE;
 	int i, j, k, l;
 	float amp, scale_amp;;
 	float m11, m12, m13, m22, m23, m33;
+
+        float ***sxx = s->xx;
+        float ***syy = s->yy;
+        float ***szz = s->zz;
+        float ***sxy = s->xy;
+        float ***syz = s->yz;
+        float ***sxz = s->xz;
 
 	/* adding source wavelet to stress components
            (moment tensor source) at source points */

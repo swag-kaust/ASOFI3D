@@ -26,10 +26,10 @@
 
 
 void snap(FILE *fp, int nt, int nsnap, int format, int type, 
-Velocity *v, float ***sxx, float ***syy, float ***szz,
-float ***u, float ***pi,
-int idx, int idy, int idz, int nx1, int ny1, int nz1, int nx2, 
-int ny2, int nz2){
+        Velocity *v, Tensor3d *s,
+        float ***u, float ***pi,
+        int idx, int idy, int idz, int nx1, int ny1, int nz1, int nx2, 
+        int ny2, int nz2) {
 
 	/* 
 	different data formats of output available:
@@ -62,6 +62,10 @@ int ny2, int nz2){
         float ***vx = v->x;
         float ***vy = v->y;
         float ***vz = v->z;
+
+        float ***sxx = s->xx;
+        float ***syy = s->yy;
+        float ***szz = s->zz;
 
 	switch(format){
 	case 1: 

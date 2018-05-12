@@ -23,9 +23,9 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "data_structures.h"
 
-double exchange_s(int nt, float *** sxx, float *** syy, float *** szz,
-		float *** sxy, float *** syz, float *** sxz,
+double exchange_s(int nt, Tensor3d *s,
 		float *** bufferlef_to_rig, float *** bufferrig_to_lef,
 		float *** buffertop_to_bot, float *** bufferbot_to_top,
 		float *** bufferfro_to_bac, float *** bufferbac_to_fro, MPI_Request * req_send, MPI_Request * req_rec) {
@@ -39,6 +39,12 @@ double exchange_s(int nt, float *** sxx, float *** syy, float *** szz,
 	int i, j, k, l, n, nf1, nf2;
 	double time=0.0, time1=0.0, time2=0.0;
 
+        float ***sxx = s->xx;
+        float ***syy = s->yy;
+        float ***szz = s->zz;
+        float ***sxy = s->xy;
+        float ***syz = s->yz;
+        float ***sxz = s->xz;
 
 	nf1=(3*FDORDER/2)-1;
 	nf2=nf1-1;
