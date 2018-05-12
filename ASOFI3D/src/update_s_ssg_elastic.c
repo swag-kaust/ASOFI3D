@@ -30,8 +30,8 @@
 double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  int nt,
                         Velocity *v,
                         Tensor3d *s,
-                        float *** rxx, float *** ryy,
-                        float *** rzz, float *** rxy, float *** ryz, float *** rxz, float ***  pi, float ***  u,
+                        Tensor3d *r,
+                        float ***  pi, float ***  u,
                         float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
                         float ***  C66ipjp, float ***  C44jpkp, float ***  C55ipkp,
                         float  ***  taus, float  ***  tausipjp, float  ***  tausjpkp, float  ***  tausipkp, float  ***  taup, float *  eta,
@@ -57,6 +57,13 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
     float ***sxy = s->xy;
     float ***syz = s->yz;
     float ***sxz = s->xz;
+
+    float ***rxx = r->xx;
+    float ***ryy = r->yy;
+    float ***rzz = r->zz;
+    float ***rxy = r->xy;
+    float ***ryz = r->yz;
+    float ***rxz = r->xz;
 
     int i, j, k;
     double time=0.0, time1=0.0, time2=0.0;

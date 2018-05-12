@@ -26,7 +26,7 @@
 
 void surface(int ndepth, float *** u, float *** pi, float ***taus, float *** taup,
         float * eta, Tensor3d *s,
-        float *** rxx, float *** ryy, float ***rzz, Velocity *v,
+        Tensor3d *r, Velocity *v,
         float * K_x, float * a_x, float * b_x, float * K_z, float * a_z, float * b_z, 
         float *** psi_vxx, float *** psi_vzz ) {
 
@@ -43,6 +43,10 @@ void surface(int ndepth, float *** u, float *** pi, float ***taus, float *** tau
         float ***szz = s->zz;
         float ***sxy = s->xy;
         float ***syz = s->yz;
+
+        float ***rxx = r->xx;
+        float ***ryy = r->yy;
+        float ***rzz = r->zz;
             
 
 	extern int NX, NZ, L, FDORDER, FDCOEFF;

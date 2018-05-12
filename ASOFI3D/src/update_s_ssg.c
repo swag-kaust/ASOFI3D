@@ -30,8 +30,8 @@
 double update_s(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  int nt,
 		Velocity *v,
 		Tensor3d *s,
-                float *** rxx, float *** ryy,
-		float *** rzz, float *** rxy, float *** ryz, float *** rxz, float ***  pi, float ***  u, float ***  uipjp, float ***  ujpkp, float ***  uipkp,
+                Tensor3d *r,
+                float ***  pi, float ***  u, float ***  uipjp, float ***  ujpkp, float ***  uipkp,
                 float  ***  taus, float  ***  tausipjp, float  ***  tausjpkp, float  ***  tausipkp, float  ***  taup, float *  eta,
                 float *** vxyyx,float *** vyzzy,float *** vxzzx,float *** vxxyyzz,float *** vyyzz,float *** vxxzz,float *** vxxyy,
                 float *** vxyyx_2,float *** vyzzy_2,float *** vxzzx_2,float *** vxxyyzz_2,float *** vyyzz_2,float *** vxxzz_2,float *** vxxyy_2,
@@ -39,7 +39,7 @@ double update_s(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  int nt,
                 float *** vxyyx_4,float *** vyzzy_4,float *** vxzzx_4,float *** vxxyyzz_4,float *** vyyzz_4,float *** vxxzz_4,float *** vxxyy_4,float *** rxx_2, float *** ryy_2,
                 float *** rzz_2, float *** rxy_2, float *** ryz_2, float *** rxz_2,float *** rxx_3, float *** ryy_3,
                 float *** rzz_3, float *** rxy_3, float *** ryz_3, float *** rxz_3,float *** rxx_4, float *** ryy_4,
-                float *** rzz_4, float *** rxy_4, float *** ryz_4, float *** rxz_4){
+                float *** rzz_4, float *** rxy_4, float *** ryz_4, float *** rxz_4) {
 
     extern float DT, DX, DY, DZ;
     extern int L, MYID, FDORDER,FDORDER_TIME, LOG, FDCOEFF;
@@ -56,6 +56,13 @@ double update_s(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  int nt,
     float ***sxy = s->xy;
     float ***syz = s->yz;
     float ***sxz = s->xz;
+
+    float ***rxx = r->xx;
+    float ***ryy = r->yy;
+    float ***rzz = r->zz;
+    float ***rxy = r->xy;
+    float ***ryz = r->yz;
+    float ***rxz = r->xz;
 
     int i, j, k, l=1;
     double time=0.0, time1=0.0, time2=0.0;
