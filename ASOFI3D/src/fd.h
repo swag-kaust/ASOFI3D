@@ -31,6 +31,8 @@
 #include <time.h>
 #include <mpi.h>
 
+#include "data_structures.h"
+
 
 #define iround(x) ((int)(floor)(x+0.5))
 #define min(x,y) ((x<y)?x:y)
@@ -131,13 +133,13 @@ void exchange_v_rsg(int nt, float *** vx, float *** vy, float *** vz,
 		float *** buffertop_to_bot, float *** bufferbot_to_top,
 		float *** bufferfro_to_bac, float *** bufferbac_to_fro);
 
-double exchange_v(int nt, float *** vx, float *** vy, float *** vz,
+double exchange_v(int nt, Velocity *v,
 		float *** bufferlef_to_rig, float *** bufferrig_to_lef,
 		float *** buffertop_to_bot, float *** bufferbot_to_top,
 		float *** bufferfro_to_bac, float *** bufferbac_to_fro, MPI_Request * req_send, MPI_Request * req_rec);
 
 void read_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
-		float *** vx, float *** vy, float *** vz,
+		Velocity *v,
 		float *** sxx, float *** syy, float *** szz, float *** sxy,float *** syz, float *** sxz,
 		float *** rxx, float *** ryy,float *** rzz, float *** rxy, float *** ryz, float *** rxz,
 		float *** psi_sxx_x, float *** psi_sxy_x, float *** psi_sxz_x, float *** psi_sxy_y,
@@ -235,7 +237,7 @@ void saveseis_glob(FILE *fp, float **sectiondata,
 		int  **recpos, int  **recpos_loc, int ntr, float ** srcpos, int nsrc,int ns, int sectiondatatype);
 
 void save_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
-		float *** vx, float *** vy, float *** vz,
+		Velocity *v,
 		float *** sxx, float *** syy, float *** szz, float *** sxy,
 		float *** rxx, float *** ryy,float *** rzz, float *** rxy, float *** ryz, float *** rxz,
 		float *** syz, float *** sxz, float *** psi_sxx_x, float *** psi_sxy_x, float *** psi_sxz_x,
@@ -245,11 +247,11 @@ void save_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 
 void seismo_acoustic(int lsamp, int ntr, int **recpos, float **sectionvx, float **sectionvy,
 		float **sectionvz, float **sectiondiv, float **sectioncurl, float **sectionp,
-		float ***vx, float ***vy, float ***vz, float ***sxx, float ***pi);
+		Velocity *v, float ***sxx, float ***pi);
 
 void seismo(int lsamp, int ntr, int **recpos, float **sectionvx, float **sectionvy,
 		float **sectionvz, float **sectiondiv, float **sectioncurl, float **sectionp,
-		float ***vx, float ***vy, float ***vz,
+		Velocity *v,
 		float ***sxx, float ***syy, float ***szz, float ***pi, float ***u);
 
 void seismo_rsg(int lsamp, int ntr, int **recpos, float **sectionvx, float **sectionvy,
@@ -258,12 +260,12 @@ void seismo_rsg(int lsamp, int ntr, int **recpos, float **sectionvx, float **sec
 		float ***sxx, float ***syy, float ***szz, float ***pi, float ***u);
 
 void snap_acoustic(FILE *fp, int nt, int nsnap, int format, int type,
-		float ***vx, float ***vy, float ***vz, float ***sxx, float ***pi,
+		Velocity *v, float ***sxx, float ***pi,
 		int idx, int idy, int idz, int nx1, int ny1, int nz1, int nx2,
 		int ny2, int nz2);
 
 void snap(FILE *fp, int nt, int nsnap, int format, int type,
-		float ***vx, float ***vy, float ***vz, float ***sxx, float ***syy, float ***szz, float ***u, float ***pi,
+		Velocity *v, float ***sxx, float ***syy, float ***szz, float ***u, float ***pi,
 		int idx, int idy, int idz, int nx1, int ny1, int nz1, int nx2,
 		int ny2, int nz2);
 
@@ -284,24 +286,24 @@ float **splitsrc(float **srcpos,int *nsrc_loc, int nsrc, int * stype_loc, int *s
 
 void surface(int ndepth, float *** u, float *** pi, float ***taus, float *** taup,
 		float * eta, float *** sxx, float ***syy, float ***szz, float *** sxy,float *** syz,
-		float *** rxx, float *** ryy, float ***rzz, float *** vx, float *** vy,
-		float *** vz, float * K_x, float * a_x, float * b_x, float * K_z, float * a_z, float * b_z,
+		float *** rxx, float *** ryy, float ***rzz, Velocity *v,
+                float * K_x, float * a_x, float * b_x, float * K_z, float * a_z, float * b_z,
 		float *** psi_vxx, float *** psi_vzz );
 
 void surface_elastic(int ndepth, float *** u, float *** pi,
 		float *** sxx, float ***syy, float ***szz, float *** sxy,float *** syz,
-		float *** vx, float *** vy, float *** vz,
+		Velocity *v,
 		float * K_x, float * a_x, float * b_x, float * K_z, float * a_z, float * b_z,
 		float *** psi_vxx, float *** psi_vzz );
 
-void surface_acoustic(int ndepth,  float *** pi, float *** sxx, float *** vx, float *** vy, float *** vz);
+void surface_acoustic(int ndepth,  float *** pi, float *** sxx, Velocity *v);
 
 void timing(double * time_v_update,  double * time_s_update, double * time_s_exchange, double * time_v_exchange,
 		double * time_timestep, int ishot);
 
 
 double update_s(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
-                float *** vx, float *** vy, float *** vz,
+                Velocity *v,
                 float *** sxx, float *** syy, float *** szz, float *** sxy,
                 float *** syz, float *** sxz, float *** rxx, float *** ryy,
                 float *** rzz, float *** rxy, float *** ryz, float *** rxz,
@@ -320,7 +322,7 @@ double update_s(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
 
 
 double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
-                        float *** vx, float *** vy, float *** vz,
+                        Velocity *v,
                         float *** sxx, float *** syy, float *** szz, float *** sxy,
                         float *** syz, float *** sxz, float *** rxx, float *** ryy,
                         float *** rzz, float *** rxy, float *** ryz, float *** rxz,
@@ -343,7 +345,7 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, in
  float ***  u, float ***  uipjp, float ***  ujpkp, float ***  uipkp, float  ***  taus, float  ***  tausipjp, float  ***  tausjpkp,
  float  ***  tausipkp, float  ***  taup, float *  eta, float *** absorb_coeffx, float *** absorb_coeffy, float *** absorb_coeffz);*/
 
-double update_s_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt, float *** vx, float *** vy, float *** vz,
+double update_s_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt, Velocity *v,
 		float *** sxx, float *** syy, float *** szz, float *** sxy, float *** syz, float *** sxz, float *** rxx, float *** ryy,
 		float *** rzz, float *** rxy, float *** ryz, float *** rxz, float ***  pi, float ***  u, float ***  uipjp, float ***  ujpkp, float ***  uipkp,
 		float  ***  taus, float  ***  tausipjp, float  ***  tausjpkp, float  ***  tausipkp,  float  ***  taup, float *  eta,
@@ -352,7 +354,7 @@ double update_s_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int n
 		float * K_z, float * a_z, float * b_z, float * K_z_half, float * a_z_half, float * b_z_half,
 		float *** psi_vxx, float *** psi_vyx, float *** psi_vzx, float *** psi_vxy, float *** psi_vyy, float *** psi_vzy, float *** psi_vxz, float *** psi_vyz, float *** psi_vzz);
 
-double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt, float *** vx, float *** vy, float *** vz,
+double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt, Velocity *v,
 		float *** sxx, float *** syy, float *** szz, float *** sxy, float *** syz, float *** sxz, float ***  pi, float ***  u,
 		float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
 		float ***  C66ipjp, float ***  C44jpkp, float ***  C55ipkp,
@@ -362,10 +364,10 @@ double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz
 		float *** psi_vxx, float *** psi_vyx, float *** psi_vzx, float *** psi_vxy, float *** psi_vyy, float *** psi_vzy, float *** psi_vxz, float *** psi_vyz, float *** psi_vzz);
 
 double update_s_acoustic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
-		float *** vx, float *** vy, float *** vz, float *** sxx, float ***  pi);
+		         Velocity *v, float *** sxx, float ***  pi);
 
 double update_s_acoustic_PML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
-		float *** vx, float *** vy, float *** vz,
+		Velocity *v,
 		float *** sxx, float *** sxx1, float *** sxx2, float *** sxx3,
 		float ***  pi, float ***absorb_coeffx, float ***absorb_coeffy, float ***absorb_coeffz);
 
@@ -378,7 +380,7 @@ void update_s_rsg(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
 		float  ***  taus, float  ***  taup, float *  eta);
 
 double update_v(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
-		int nt, float *** vx, float *** vy, float *** vz,
+		int nt, Velocity *v,
 		float *** sxx, float *** syy, float *** szz, float *** sxy,
 		float *** syz, float *** sxz, float  ***  rho,  float  *** rjp, float  *** rkp, float  *** rip,
         float **  srcpos_loc, float ** signals, int nsrc, float ***absorb_coeff, int * stype, float *** svx, float *** svy, float *** svz,
@@ -393,7 +395,7 @@ float *** vx3, float *** vy3, float *** vz3, float *** sxx3, float *** syy3, flo
 float *** sxz3,float  ***  rho, float **  srcpos_loc, float ** signals, int nsrc, float *** absorb_coeffx, float *** absorb_coeffy, float *** absorb_coeffz, int * stype);*/
 
 double update_v_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
-		int nt, float *** vx, float *** vy, float *** vz,
+		int nt, Velocity *v,
 		float *** sxx, float *** syy, float *** szz, float *** sxy,
 		float *** syz, float *** sxz, float  ***  rho,  float  *** rjp, float  *** rkp, float  *** rip,
 		float **  srcpos_loc, float ** signals, int nsrc, float *** absorb_coeff, int * stype,
@@ -404,11 +406,11 @@ double update_v_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 		float *** psi_syz_y, float *** psi_sxz_z, float *** psi_syz_z, float *** psi_szz_z);
 
 double update_v_acoustic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
-		int nt, float *** vx, float *** vy, float *** vz,
+		int nt, Velocity *v,
 		float *** sxx, float  ***  rho, float **  srcpos_loc, float ** signals, int nsrc, float ***absorb_coeff, int * stype);
 
 double update_v_acoustic_PML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
-		int nt, float *** vx, float *** vy, float *** vz, float *** sxx,  float *** vx1,
+		int nt, Velocity *v, float *** sxx,  float *** vx1,
 		float *** vy2, float *** vz3, float  ***  rho, float **  srcpos_loc,
 		float ** signals, int nsrc, float ***absorb_coeffx, float ***absorb_coeffy, float ***absorb_coeffz, int * stype);
 
@@ -437,10 +439,10 @@ void writemod(char modfile[STRING_SIZE], float *** rho, int format);
 
 void writepar(FILE *fp, int ns);
 
-void zero_acoustic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, float *** vx, float *** vy, float *** vz,
+void zero_acoustic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
 		float *** sxx);
 
-void zero_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, float *** vx, float *** vy, float *** vz,
+void zero_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
 		float *** sxx, float *** syy, float *** szz, float *** sxy, float *** syz, float *** sxz,
                   float *** vxyyx,float *** vyzzy,float *** vxzzx,float *** vxxyyzz,float *** vyyzz,float *** vxxzz,float *** vxxyy,
                   float *** vxyyx_2,float *** vyzzy_2,float *** vxzzx_2,float *** vxxyyzz_2,float *** vyyzz_2,float *** vxxzz_2,float *** vxxyy_2,
@@ -450,7 +452,7 @@ void zero_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, float **
                   float *** svx_2, float *** svy_2, float *** svz_2, float *** svx_3, float *** svy_3, float *** svz_3,
                   float *** svx_4, float *** svy_4, float *** svz_4);
 
-void zero(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, float *** vx, float *** vy, float *** vz,
+void zero(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
                   float *** sxx, float *** syy, float *** szz, float *** sxy, float *** syz, float *** sxz,
                   float *** vxyyx,float *** vyzzy,float *** vxzzx,float *** vxxyyzz,float *** vyyzz,float *** vxxzz,float *** vxxyy,
                   float *** vxyyx_2,float *** vyzzy_2,float *** vxzzx_2,float *** vxxyyzz_2,float *** vyyzz_2,float *** vxxzz_2,float *** vxxyy_2,
@@ -464,7 +466,7 @@ void zero(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, float *** vx, fl
           float *** rzz_3, float *** rxy_3, float *** ryz_3, float *** rxz_3,float *** rxx_4, float *** ryy_4,
           float *** rzz_4, float *** rxy_4, float *** ryz_4, float *** rxz_4);
 
-void zero_elastic_CPML( int NX, int NY, int NZ, float *** vx, float *** vy, float *** vz,float *** sxx, float *** syy,
+void zero_elastic_CPML( int NX, int NY, int NZ, Velocity *v, float *** sxx, float *** syy,
 		float *** szz, float *** sxy, float *** syz, float *** sxz, float *** rxx, float *** ryy, float *** rzz,
 		float *** rxy, float *** ryz, float *** rxz, float *** psi_sxx_x, float *** psi_sxy_x, float *** psi_sxz_x,
 		float *** psi_sxy_y, float *** psi_syy_y, float *** psi_syz_y, float *** psi_sxz_z, float *** psi_syz_z,

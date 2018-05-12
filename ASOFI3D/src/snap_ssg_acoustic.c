@@ -22,10 +22,11 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "data_structures.h"
 
 
 void snap_acoustic(FILE *fp, int nt, int nsnap, int format, int type, 
-float ***vx, float ***vy, float ***vz, float ***sxx, float ***pi,
+Velocity *v, float ***sxx, float ***pi,
 int idx, int idy, int idz, int nx1, int ny1, int nz1, int nx2, 
 int ny2, int nz2){
 
@@ -57,6 +58,9 @@ int ny2, int nz2){
 	extern char SNAP_FILE[STRING_SIZE];
 	extern int MYID, POS[4], LOG; /* SNAP_PLANE not used here*/
 
+        float ***vx = v->x;
+        float ***vy = v->y;
+        float ***vz = v->z;
 
 
 	switch(format){

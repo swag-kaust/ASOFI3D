@@ -22,16 +22,21 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "data_structures.h"
 
 void surface(int ndepth, float *** u, float *** pi, float ***taus, float *** taup,
 float * eta, float *** sxx, float ***syy, float ***szz, float *** sxy,float *** syz,
-float *** rxx, float *** ryy, float ***rzz, float *** vx, float *** vy, float *** vz,
+float *** rxx, float *** ryy, float ***rzz, Velocity *v,
 float * K_x, float * a_x, float * b_x, float * K_z, float * a_z, float * b_z, 
 float *** psi_vxx, float *** psi_vzz ){
 
 	int i, k ,j, fdoh,m, h1;
 	float  vxx, vyy, vzz;
 	float b, d, e, f, g, h, dthalbe; /* variables "dh24x, dh24y, dh24z" removed, not in use */
+
+        float *** vx = v->x;
+        float *** vy = v->y;
+        float *** vz = v->z;
 	
 
 	extern int NX, NZ, L, FDORDER, FDCOEFF;

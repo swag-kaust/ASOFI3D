@@ -23,9 +23,10 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "data_structures.h"
 
 double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
-		float *** vx, float *** vy, float *** vz,
+		Velocity *v,
 		float *** sxx, float *** syy, float *** szz, float *** sxy, float *** syz, float *** sxz,
 		float ***  pi, float ***  u,
 		float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
@@ -35,6 +36,10 @@ double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz
 		float * K_z, float * a_z, float * b_z, float * K_z_half, float * a_z_half, float * b_z_half,
 		float *** psi_vxx, float *** psi_vyx, float *** psi_vzx, float *** psi_vxy, float *** psi_vyy, float *** psi_vzy, float *** psi_vxz, float *** psi_vyz, float *** psi_vzz){
 
+
+        float ***vx = v->x;
+        float ***vy = v->y;
+        float ***vz = v->z;
 
 	extern float DT, DX, DY, DZ;
 	extern int MYID, LOG, FDCOEFF, FDORDER;

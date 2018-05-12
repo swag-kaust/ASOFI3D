@@ -24,7 +24,7 @@
 
 #include "fd.h"
 
-double exchange_v(int nt, float *** vx, float *** vy, float *** vz,
+double exchange_v(int nt, Velocity *v,
 		float *** bufferlef_to_rig, float *** bufferrig_to_lef,
 		float *** buffertop_to_bot, float *** bufferbot_to_top,
 		float *** bufferfro_to_bac, float *** bufferbac_to_fro, MPI_Request * req_send, MPI_Request * req_rec){
@@ -38,6 +38,10 @@ double exchange_v(int nt, float *** vx, float *** vy, float *** vz,
 	MPI_Status status;	
 	int i, j, k, l, nf1, nf2;
 	double time=0.0, time1=0.0, time2=0.0;
+
+        float ***vx = v->x;
+        float ***vy = v->y;
+        float ***vz = v->z;
 
 	nf1=(FDORDER/2)-1;
 	nf2=FDORDER/2;

@@ -23,8 +23,9 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "data_structures.h"
 
-double exchange_v(int nt, float *** vx, float *** vy, float *** vz,
+double exchange_v(int nt, Velocity *v,
 		float *** bufferlef_to_rig, float *** bufferrig_to_lef,
 		float *** buffertop_to_bot, float *** bufferbot_to_top,
 		float *** bufferfro_to_bac, float *** bufferbac_to_fro, MPI_Request * req_send, MPI_Request * req_rec){
@@ -34,6 +35,10 @@ double exchange_v(int nt, float *** vx, float *** vy, float *** vz,
 	extern const int TAG1,TAG2,TAG3,TAG4,TAG5,TAG6;
 	extern FILE *FP;
 	extern int OUTNTIMESTEPINFO;
+
+        float ***vx = v->x;
+        float ***vy = v->y;
+        float ***vz = v->z;
 
 	MPI_Status status;	
 	int i, j, k, l, n, nf1, nf2;

@@ -21,8 +21,9 @@
  *
  ---------------------------------------------------------------------- */
 #include "fd.h"
+#include "data_structures.h"
 
-void save_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, float *** vx, float *** vy, float *** vz,
+void save_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
                      float *** sxx, float *** syy, float *** szz, float *** sxy,
                      float *** syz, float *** sxz, float *** rxx, float *** ryy,float *** rzz, float *** rxy, float *** ryz, float *** rxz,
 		     float *** psi_sxx_x, float *** psi_sxy_x, float *** psi_sxz_x, float *** psi_sxy_y,
@@ -39,7 +40,9 @@ void save_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, float
 	extern int L;
 	extern char  CHECKPTFILE[STRING_SIZE];
 
-
+        float ***vx = v->x;
+        float ***vy = v->y;
+        float ***vz = v->z;
 
 	sprintf(checkptfile,"%s",CHECKPTFILE);
 	sprintf(myid,".%d",MYID);

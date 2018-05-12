@@ -24,9 +24,10 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "data_structures.h"
 
 double update_v_acoustic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
-		int nt, float *** vx, float *** vy, float *** vz, float *** sxx, float  ***  rho, float **  srcpos_loc, float ** signals, int nsrc,
+		int nt, Velocity *v, float *** sxx, float  ***  rho, float **  srcpos_loc, float ** signals, int nsrc,
 		float *** absorb_coeff, int * stype){
 
 
@@ -41,6 +42,10 @@ double update_v_acoustic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 	double time=0.0, time1=0.0, time2=0.0;
 	register float b1, b2, b3, b4, b5, b6, dx, dy, dz;
 	register float sxx_x, syy_y, szz_z;
+
+        float ***vx = v->x;
+        float ***vy = v->y;
+        float ***vz = v->z;
 
 	if (LOG)
 		if ((MYID==0) && ((nt+(OUTNTIMESTEPINFO-1))%OUTNTIMESTEPINFO)==0) time1=MPI_Wtime();

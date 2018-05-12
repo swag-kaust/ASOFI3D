@@ -23,7 +23,7 @@
 
 #include "fd.h"
 
-void zero(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, float *** vx, float *** vy, float *** vz,
+void zero(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
                   float *** sxx, float *** syy, float *** szz, float *** sxy, float *** syz, float *** sxz,
                   float *** vxyyx,float *** vyzzy,float *** vxzzx,float *** vxxyyzz,float *** vyyzz,float *** vxxzz,float *** vxxyy,
                   float *** vxyyx_2,float *** vyzzy_2,float *** vxzzx_2,float *** vxxyyzz_2,float *** vyyzz_2,float *** vxxzz_2,float *** vxxyy_2,
@@ -41,6 +41,10 @@ void zero(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, float *** vx, fl
     extern int FDORDER_TIME;
     extern int FDORDER;
     register int i, j, k;
+
+    float ***vx = v->x;
+    float ***vy = v->y;
+    float ***vz = v->z;
     
 
     /* Set memory variables to zero */

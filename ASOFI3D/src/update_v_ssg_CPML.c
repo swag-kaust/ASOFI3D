@@ -24,10 +24,11 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "data_structures.h"
 
 
 double update_v_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
-		int nt, float *** vx, float *** vy, float *** vz,
+		int nt, Velocity *v,
 		float *** sxx, float *** syy, float *** szz, float *** sxy,
 		float *** syz, float *** sxz, float  ***  rho,  float  *** rjp, float  *** rkp, float  *** rip,
 		float **  srcpos_loc, float ** signals, int nsrc, float *** absorb_coeff, int * stype,
@@ -37,6 +38,9 @@ double update_v_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 		float *** psi_sxx_x, float *** psi_sxy_x, float *** psi_sxz_x, float *** psi_sxy_y, float *** psi_syy_y,
 		float *** psi_syz_y, float *** psi_sxz_z, float *** psi_syz_z, float *** psi_szz_z){
 
+        float ***vx = v->x;
+        float ***vy = v->y;
+        float ***vz = v->z;
 
 	extern float DT, DX, DY, DZ;
 	double time=0.0, time1=0.0, time2=0.0;
