@@ -24,7 +24,7 @@
 #include "data_structures.h"
 
 void save_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
-        Velocity *v, Tensor3d *s, float *** rxx, float *** ryy,float *** rzz, float *** rxy, float *** ryz, float *** rxz,
+        Velocity *v, Tensor3d *s, Tensor3d *r,
         float *** psi_sxx_x, float *** psi_sxy_x, float *** psi_sxz_x, float *** psi_sxy_y,
         float *** psi_syy_y, float *** psi_syz_y, float *** psi_sxz_z, float *** psi_syz_z, float *** psi_szz_z,
         float *** psi_vxx, float *** psi_vyx, float *** psi_vzx, float *** psi_vxy, float *** psi_vyy, float *** psi_vzy,
@@ -49,6 +49,13 @@ void save_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
         float ***sxy = s->xy;
         float ***syz = s->yz;
         float ***sxz = s->xz;
+
+        float ***rxx = r->xx;
+        float ***ryy = r->yy;
+        float ***rzz = r->zz;
+        float ***rxy = r->xy;
+        float ***ryz = r->yz;
+        float ***rxz = r->xz;
 
 	sprintf(checkptfile,"%s",CHECKPTFILE);
 	sprintf(myid,".%d",MYID);

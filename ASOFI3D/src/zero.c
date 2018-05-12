@@ -32,8 +32,9 @@ void zero(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
                   float *** vxyyx_4,float *** vyzzy_4,float *** vxzzx_4,float *** vxxyyzz_4,float *** vyyzz_4,float *** vxxzz_4,float *** vxxyy_4,
                   float *** svx, float *** svy, float *** svz,
                   float *** svx_2, float *** svy_2, float *** svz_2, float *** svx_3, float *** svy_3, float *** svz_3,
-          float *** svx_4, float *** svy_4, float *** svz_4, float *** rxx, float *** ryy, float *** rzz,
-          float *** rxy, float *** ryz, float *** rxz,float *** rxx_2, float *** ryy_2,
+          float *** svx_4, float *** svy_4, float *** svz_4,
+          Tensor3d *r,
+          float *** rxx_2, float *** ryy_2,
           float *** rzz_2, float *** rxy_2, float *** ryz_2, float *** rxz_2,float *** rxx_3, float *** ryy_3,
           float *** rzz_3, float *** rxy_3, float *** ryz_3, float *** rxz_3,float *** rxx_4, float *** ryy_4,
           float *** rzz_4, float *** rxy_4, float *** ryz_4, float *** rxz_4){
@@ -53,6 +54,13 @@ void zero(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
     float ***sxy = s->xy;
     float ***syz = s->yz;
     float ***sxz = s->xz;
+
+    float ***rxx = r->xx;
+    float ***ryy = r->yy;
+    float ***rzz = r->zz;
+    float ***rxy = r->xy;
+    float ***ryz = r->yz;
+    float ***rxz = r->xz;
     
 
     /* Set memory variables to zero */

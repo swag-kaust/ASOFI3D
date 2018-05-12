@@ -27,8 +27,7 @@
 double update_s_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
 		     Velocity *v,
 		     Tensor3d *s,
-                     float *** rxx, float *** ryy,
-		float *** rzz, float *** rxy, float *** ryz, float *** rxz, float ***  pi, float ***  u, float ***  uipjp, float ***  ujpkp, float ***  uipkp,
+                     Tensor3d *r, float ***  pi, float ***  u, float ***  uipjp, float ***  ujpkp, float ***  uipkp,
 		float  ***  taus, float  ***  tausipjp, float  ***  tausjpkp, float  ***  tausipkp, float  ***  taup, float *  eta,
 		float * K_x, float * a_x, float * b_x, float * K_x_half, float * a_x_half, float * b_x_half,
 		float * K_y, float * a_y, float * b_y, float * K_y_half, float * a_y_half, float * b_y_half,
@@ -54,6 +53,13 @@ double update_s_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int n
         float ***sxy = s->xy;
         float ***syz = s->yz;
         float ***sxz = s->xz;
+
+        float ***rxx = r->xx;
+        float ***ryy = r->yy;
+        float ***rzz = r->zz;
+        float ***rxy = r->xy;
+        float ***ryz = r->yz;
+        float ***rxz = r->xz;
 
 	int i, j, k, l=1, h1;
 	double time=0.0, time1=0.0, time2=0.0;
