@@ -27,27 +27,33 @@
 
 double update_v(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 		int nt, Velocity *v,
-		float *** sxx, float *** syy, float *** szz, float *** sxy,
-		float *** syz, float *** sxz, float  ***  rho,  float  *** rjp, float  *** rkp, float  *** rip,
+		Tensor3d *s, float  ***  rho,  float  *** rjp, float  *** rkp, float  *** rip,
 		float **  srcpos_loc, float ** signals, int nsrc, float *** absorb_coeff, int * stype, float *** svx, float *** svy, float *** svz,
         float *** svx_2, float *** svy_2, float *** svz_2, float *** svx_3, float *** svy_3, float *** svz_3,
-        float *** svx_4, float *** svy_4, float *** svz_4){
+        float *** svx_4, float *** svy_4, float *** svz_4) {
 
-        float ***vx = v->x;
-        float ***vy = v->y;
-        float ***vz = v->z;
+    float ***vx = v->x;
+    float ***vy = v->y;
+    float ***vz = v->z;
 
-	extern float DT, DX, DY, DZ, SOURCE_ALPHA, SOURCE_BETA;
-	double time=0.0, time1=0.0, time2=0.0;
-	extern int MYID, FDORDER, FDORDER_TIME, LOG, ABS_TYPE, FDCOEFF; /* variable "FW" removed, not in use */
-	extern FILE *FP;
-	extern int OUTNTIMESTEPINFO;
+    float ***sxx = s->xx;
+    float ***syy = s->yy;
+    float ***szz = s->zz;
+    float ***sxy = s->xy;
+    float ***syz = s->yz;
+    float ***sxz = s->xz;
 
-	int i, j, k, l;
-	float  amp, alpha_rad, beta_rad;
-	float b1, b2, b3, b4, b5, b6, dx, dy, dz;
-	float sxx_x, sxy_y, sxz_z, syy_y, sxy_x, syz_z;
-	float szz_z, sxz_x, syz_y;
+    extern float DT, DX, DY, DZ, SOURCE_ALPHA, SOURCE_BETA;
+    double time=0.0, time1=0.0, time2=0.0;
+    extern int MYID, FDORDER, FDORDER_TIME, LOG, ABS_TYPE, FDCOEFF;
+    extern FILE *FP;
+    extern int OUTNTIMESTEPINFO;
+
+    int i, j, k, l;
+    float  amp, alpha_rad, beta_rad;
+    float b1, b2, b3, b4, b5, b6, dx, dy, dz;
+    float sxx_x, sxy_y, sxz_z, syy_y, sxy_x, syz_z;
+    float szz_z, sxz_x, syz_y;
     float c1, c2, c3, c4; /* Coefficients for Adam Bashforth */
 
     float **svx_j,**svy_j,**svz_j;

@@ -27,7 +27,7 @@
 
 double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
 		Velocity *v,
-		float *** sxx, float *** syy, float *** szz, float *** sxy, float *** syz, float *** sxz,
+		Tensor3d *s,
 		float ***  pi, float ***  u,
 		float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
 		float ***  C66ipjp, float ***  C44jpkp, float ***  C55ipkp,
@@ -40,6 +40,13 @@ double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz
         float ***vx = v->x;
         float ***vy = v->y;
         float ***vz = v->z;
+
+        float ***sxx = s->xx;
+        float ***syy = s->yy;
+        float ***szz = s->zz;
+        float ***sxy = s->xy;
+        float ***syz = s->yz;
+        float ***sxz = s->xz;
 
 	extern float DT, DX, DY, DZ;
 	extern int MYID, LOG, FDCOEFF, FDORDER;

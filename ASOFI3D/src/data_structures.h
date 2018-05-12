@@ -8,4 +8,13 @@ typedef struct {
     float ***z;
 } Velocity;
 
+typedef struct {
+    float ***xy;
+    float ***yz;
+    float ***xz;
+    float ***xx;
+    float ***yy;
+    float ***zz;
+} Tensor3d;
+
 #endif

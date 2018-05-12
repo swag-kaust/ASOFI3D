@@ -22,9 +22,10 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "data_structures.h"
 
 void zero_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
-float *** sxx, float *** syy, float *** szz, float *** sxy, float *** syz, float *** sxz,
+                  Tensor3d *s,
                   float *** vxyyx,float *** vyzzy,float *** vxzzx,float *** vxxyyzz,float *** vyyzz,float *** vxxzz,float *** vxxyy,
                   float *** vxyyx_2,float *** vyzzy_2,float *** vxzzx_2,float *** vxxyyzz_2,float *** vyyzz_2,float *** vxxzz_2,float *** vxxyy_2,
                   float *** vxyyx_3,float *** vyzzy_3,float *** vxzzx_3,float *** vxxyyzz_3,float *** vyyzz_3,float *** vxxzz_3,float *** vxxyy_3,
@@ -35,10 +36,17 @@ float *** sxx, float *** syy, float *** szz, float *** sxy, float *** syz, float
 
 
     extern int FDORDER_TIME;
-	register int i, j, k;
+    register int i, j, k;
     float *** vx = v->x;
     float *** vy = v->y;
     float *** vz = v->z;
+
+    float ***sxx = s->xx;
+    float ***syy = s->yy;
+    float ***szz = s->zz;
+    float ***sxy = s->xy;
+    float ***syz = s->yz;
+    float ***sxz = s->xz;
     
     for (j=ny1;j<=ny2;j++){
         for (i=nx1;i<=nx2;i++){

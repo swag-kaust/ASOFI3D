@@ -22,8 +22,9 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "data_structures.h"
 
-void psource(int nt, float *** sxx, float *** syy, float *** szz,
+void psource(int nt, Tensor3d *s,
 float **  srcpos_loc, float ** signals, int nsrc, int * stype){
 
 
@@ -34,7 +35,9 @@ float **  srcpos_loc, float ** signals, int nsrc, int * stype){
 	int i, j, k, l;
 	float amp=0.0;
 
-
+        float ***sxx = s->xx;
+        float ***syy = s->yy;
+        float ***szz = s->zz;
 
 	/* adding source wavelet to stress components 
 	   (explosive source) at source points */

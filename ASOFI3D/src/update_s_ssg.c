@@ -29,7 +29,8 @@
 
 double update_s(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  int nt,
 		Velocity *v,
-		float *** sxx, float *** syy, float *** szz, float *** sxy, float *** syz, float *** sxz, float *** rxx, float *** ryy,
+		Tensor3d *s,
+                float *** rxx, float *** ryy,
 		float *** rzz, float *** rxy, float *** ryz, float *** rxz, float ***  pi, float ***  u, float ***  uipjp, float ***  ujpkp, float ***  uipkp,
                 float  ***  taus, float  ***  tausipjp, float  ***  tausjpkp, float  ***  tausipkp, float  ***  taup, float *  eta,
                 float *** vxyyx,float *** vyzzy,float *** vxzzx,float *** vxxyyzz,float *** vyyzz,float *** vxxzz,float *** vxxyy,
@@ -48,6 +49,13 @@ double update_s(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  int nt,
     float ***vx = v->x;
     float ***vy = v->y;
     float ***vz = v->z;
+
+    float ***sxx = s->xx;
+    float ***syy = s->yy;
+    float ***szz = s->zz;
+    float ***sxy = s->xy;
+    float ***syz = s->yz;
+    float ***sxz = s->xz;
 
     int i, j, k, l=1;
     double time=0.0, time1=0.0, time2=0.0;
