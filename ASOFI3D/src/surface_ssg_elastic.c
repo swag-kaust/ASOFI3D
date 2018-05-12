@@ -22,10 +22,11 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "data_structures.h"
 
 void surface_elastic(int ndepth, float *** u, float *** pi,
 		float *** sxx, float ***syy, float ***szz, float *** sxy,float *** syz,
-		float *** vx, float *** vy, float *** vz,
+		Velocity *v,
 		float * K_x, float * a_x, float * b_x, float * K_z, float * a_z, float * b_z, 
 		float *** psi_vxx, float *** psi_vzz ){
 
@@ -33,6 +34,9 @@ void surface_elastic(int ndepth, float *** u, float *** pi,
 	float  vxx, vyy, vzz;
 	float f, g, h; /* variables "dthalbe, dh24y, dh24z" removed, not in use */
 
+        float ***vx = v->x;
+        float ***vy = v->y;
+        float ***vz = v->z;
 
 	extern int NX, NZ, FDORDER, FDCOEFF, FW, NPROCX, NPROCZ, POS[4];
 	register float b1, b2, b3, b4, b5, b6;

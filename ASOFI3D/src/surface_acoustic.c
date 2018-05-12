@@ -22,12 +22,17 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "data_structures.h"
 
-void surface_acoustic(int ndepth,  float *** pi, float *** sxx, float *** vx, float *** vy, float *** vz){
+void surface_acoustic(int ndepth,  float *** pi, float *** sxx, Velocity *v){
 
 	int i, k ,j, m, fdoh;
 	float  vxx, vyy, vzz;
 	float  h, g;
+
+        float ***vx = v->x;
+        float ***vy = v->y;
+        float ***vz = v->z;
 	
 
 	extern int NX, NZ, FDCOEFF, FDORDER;

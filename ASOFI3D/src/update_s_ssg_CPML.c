@@ -22,9 +22,10 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "data_structures.h"
 
 double update_s_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
-		float *** vx, float *** vy, float *** vz,
+		Velocity *v,
 		float *** sxx, float *** syy, float *** szz, float *** sxy, float *** syz, float *** sxz, float *** rxx, float *** ryy,
 		float *** rzz, float *** rxy, float *** ryz, float *** rxz, float ***  pi, float ***  u, float ***  uipjp, float ***  ujpkp, float ***  uipkp,
 		float  ***  taus, float  ***  tausipjp, float  ***  tausjpkp, float  ***  tausipkp, float  ***  taup, float *  eta,
@@ -41,6 +42,10 @@ double update_s_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int n
 	extern int NPROCX, NPROCY, NPROCZ, POS[4];
 	extern int FW, NY, NZ;
 	extern int OUTNTIMESTEPINFO;
+
+        float ***vx = v->x;
+        float ***vy = v->y;
+        float ***vz = v->z;
 
 	int i, j, k, l=1, h1;
 	double time=0.0, time1=0.0, time2=0.0;

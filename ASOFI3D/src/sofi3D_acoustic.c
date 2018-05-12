@@ -43,6 +43,7 @@
 
 #include "fd.h"
 #include "globvar.h"
+#include "data_structures.h"
 
 int main(int argc, char **argv){
 	int ns, nt, nseismograms=0, nf1, nf2, i;
@@ -53,7 +54,10 @@ int main(int argc, char **argv){
 	double * time_v_update, * time_s_update, * time_s_exchange,* time_v_exchange, * time_timestep;
 	int * xa, * xb, * ya, * yb, * za, * zb;
 	float  ***  sxx=NULL;
-	float  ***  vx=NULL, ***  vy=NULL, ***  vz=NULL;
+        Velocity v;
+	v.x = NULL;
+        v.y = NULL;
+        v.z = NULL;
 	float  ***  sxx1=NULL, ***  syy1=NULL, ***  szz1=NULL;
 	float  ***  vx1=NULL, ***  vy1=NULL, ***  vz1=NULL;
 
@@ -284,9 +288,9 @@ int main(int argc, char **argv){
 
 
 	/* memory allocation for dynamic (wavefield) arrays */
-	vx  =  f3tensor(1-FDORDER/2,NY+FDORDER/2,1-FDORDER/2,NX+FDORDER/2,1-FDORDER/2,NZ+FDORDER/2);
-	vy  =  f3tensor(1-FDORDER/2,NY+FDORDER/2,1-FDORDER/2,NX+FDORDER/2,1-FDORDER/2,NZ+FDORDER/2);
-	vz  =  f3tensor(1-FDORDER/2,NY+FDORDER/2,1-FDORDER/2,NX+FDORDER/2,1-FDORDER/2,NZ+FDORDER/2);
+	v.x  =  f3tensor(1-FDORDER/2,NY+FDORDER/2,1-FDORDER/2,NX+FDORDER/2,1-FDORDER/2,NZ+FDORDER/2);
+	v.y  =  f3tensor(1-FDORDER/2,NY+FDORDER/2,1-FDORDER/2,NX+FDORDER/2,1-FDORDER/2,NZ+FDORDER/2);
+	v.z  =  f3tensor(1-FDORDER/2,NY+FDORDER/2,1-FDORDER/2,NX+FDORDER/2,1-FDORDER/2,NZ+FDORDER/2);
 	sxx =  f3tensor(1-FDORDER/2,NY+FDORDER/2,1-FDORDER/2,NX+FDORDER/2,1-FDORDER/2,NZ+FDORDER/2);
 
 
@@ -557,7 +561,7 @@ int main(int argc, char **argv){
 
 
 		/* initialize wavefield with zero */
-		zero_acoustic(1-FDORDER/2,NX+FDORDER/2,1-FDORDER/2,NY+FDORDER/2,1-FDORDER/2,NZ+FDORDER/2,vx,vy,vz,sxx);
+		zero_acoustic(1-FDORDER/2,NX+FDORDER/2,1-FDORDER/2,NY+FDORDER/2,1-FDORDER/2,NZ+FDORDER/2, &v,sxx);
 
 		/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 		/* start of loop over time steps */
@@ -576,7 +580,7 @@ int main(int argc, char **argv){
 			time_s_update[nt]=0.0;
 
 			/* Check if simulation is still stable */
-			if (isnan(vy[NY/2][NX/2][NZ/2])) err(" Simulation is unstable !");
+			if (isnan(v.y[NY/2][NX/2][NZ/2])) err(" Simulation is unstable !");
 
 			if (LOG)
 				if ((MYID==0) && ((nt+(OUTNTIMESTEPINFO-1))%OUTNTIMESTEPINFO)==0) {
@@ -597,31 +601,31 @@ int main(int argc, char **argv){
 				/* update of particle velocities */
 
 				/* update NON PML boundaries */
-				time_v_update[nt]+=update_v_acoustic(xa[0],xb[0],ya[0],yb[0],za[0],zb[0],nt,vx,vy,vz,sxx,rho,srcpos_loc,signals,nsrc_loc,absorb_coeff,stype_loc);
+				time_v_update[nt]+=update_v_acoustic(xa[0],xb[0],ya[0],yb[0],za[0],zb[0],nt, &v,sxx,rho,srcpos_loc,signals,nsrc_loc,absorb_coeff,stype_loc);
 
 
 				/* update PML boundaries */
 				for(h=1;h<=BLOCK;h++){
 
-					time_v_update[nt]+=update_v_acoustic_PML(xa[h],xb[h],ya[h],yb[h],za[h],zb[h],nt,vx,vy,vz,sxx,
+					time_v_update[nt]+=update_v_acoustic_PML(xa[h],xb[h],ya[h],yb[h],za[h],zb[h],nt, &v, sxx,
 							vx1,vy2,vz3,rho,srcpos_loc,signals,nsrc_loc,absorb_coeffx,
 							absorb_coeffy,absorb_coeffz,stype_loc);
 				}
 
 				/* exchange values of particle velocities at grid boundaries between PEs */
-				time_v_exchange[nt]=exchange_v(nt, vx, vy, vz, bufferlef_to_rig, bufferrig_to_lef, buffertop_to_bot, bufferbot_to_top,
+				time_v_exchange[nt]=exchange_v(nt, &v, bufferlef_to_rig, bufferrig_to_lef, buffertop_to_bot, bufferbot_to_top,
 						bufferfro_to_bac, bufferbac_to_fro, req_send, req_rec);
 
 
 				/* update of components of stress tensor */
 
 				/* update NON PML boundaries */
-				time_s_update[nt]+=update_s_acoustic(xa[0],xb[0],ya[0],yb[0],za[0],zb[0],nt,vx,vy,vz,sxx,pi);
+				time_s_update[nt]+=update_s_acoustic(xa[0],xb[0],ya[0],yb[0],za[0],zb[0],nt,&v,sxx,pi);
 
 				/* update PML boundaries */
 				for(h=1;h<=BLOCK;h++){
 
-					time_s_update[nt]+=update_s_acoustic_PML(xa[h],xb[h],ya[h],yb[h],za[h],zb[h],nt,vx,vy,vz,sxx,
+					time_s_update[nt]+=update_s_acoustic_PML(xa[h],xb[h],ya[h],yb[h],za[h],zb[h],nt,&v,sxx,
 							sxx1,sxx2,sxx3,pi,absorb_coeffx,absorb_coeffy,absorb_coeffz);
 				}
 
@@ -639,18 +643,18 @@ int main(int argc, char **argv){
 				/* update of particle velocities */
 
 				/* update NON PML boundaries */
-				time_v_update[nt]+=update_v_acoustic(xa[0],xb[0],ya[0],yb[0],za[0],zb[0],nt,vx,vy,vz,sxx,
+				time_v_update[nt]+=update_v_acoustic(xa[0],xb[0],ya[0],yb[0],za[0],zb[0],nt,&v,sxx,
 						rho,srcpos_loc,signals,nsrc_loc,absorb_coeff, stype_loc);
 
 
 				/* exchange values of particle velocities at grid boundaries between PEs */
-				time_v_exchange[nt]=exchange_v(nt, vx, vy, vz, bufferlef_to_rig, bufferrig_to_lef, buffertop_to_bot, bufferbot_to_top,
+				time_v_exchange[nt]=exchange_v(nt, &v, bufferlef_to_rig, bufferrig_to_lef, buffertop_to_bot, bufferbot_to_top,
 						bufferfro_to_bac, bufferbac_to_fro, req_send, req_rec);
 
 				/* update of components of stress tensor */
 
 				/* update NON PML boundaries */
-				time_s_update[nt]+=update_s_acoustic(xa[0],xb[0],ya[0],yb[0],za[0],zb[0],nt,vx,vy,vz,sxx,pi);
+				time_s_update[nt]+=update_s_acoustic(xa[0],xb[0],ya[0],yb[0],za[0],zb[0],nt,&v,sxx,pi);
 
 
 				/* exchange values of stress at boundaries between PEs */
@@ -666,13 +670,13 @@ int main(int argc, char **argv){
 
 			/* stress free surface ? */
 			if ((FREE_SURF) && (POS[2]==0))
-				surface_acoustic(1,pi,sxx,vx,vy,vz);
+				surface_acoustic(1,pi,sxx, &v);
 
 
 			/* store amplitudes at receivers in sectionvx-sectionvz */
 			if ((SEISMO) && (ntr>0) && (nt==lsamp)){
 				seismo_acoustic(nlsamp,ntr,recpos_loc,sectionvx,sectionvy,sectionvz,
-						sectiondiv,sectioncurl,sectionp,vx,vy,vz,sxx,pi);
+						sectiondiv,sectioncurl,sectionp, &v,sxx,pi);
 				nlsamp++;
 				lsamp+=NDT;
 			}
@@ -680,7 +684,7 @@ int main(int argc, char **argv){
 
 			/* save snapshot in file */
 			if ((SNAP) && (nt==lsnap) && (nt<=TSNAP2/DT)){
-				snap_acoustic(FP,nt,++nsnap,SNAP_FORMAT,SNAP,vx,vy,vz,sxx,pi,IDX,IDY,IDZ,1,1,1,NX,NY,NZ);
+				snap_acoustic(FP,nt,++nsnap,SNAP_FORMAT,SNAP, &v, sxx,pi,IDX,IDY,IDZ,1,1,1,NX,NY,NZ);
 				lsnap=lsnap+iround(TSNAPINC/DT);
 			}
 
@@ -779,9 +783,9 @@ int main(int argc, char **argv){
 	}*/
 
 	/*de-allocation of memory */
-	free_f3tensor(vx,1-FDORDER/2,NY+FDORDER/2,1-FDORDER/2,NX+FDORDER/2,1-FDORDER/2,NZ+FDORDER/2);
-	free_f3tensor(vy,1-FDORDER/2,NY+FDORDER/2,1-FDORDER/2,NX+FDORDER/2,1-FDORDER/2,NZ+FDORDER/2);
-	free_f3tensor(vz,1-FDORDER/2,NY+FDORDER/2,1-FDORDER/2,NX+FDORDER/2,1-FDORDER/2,NZ+FDORDER/2);
+	free_f3tensor(v.x,1-FDORDER/2,NY+FDORDER/2,1-FDORDER/2,NX+FDORDER/2,1-FDORDER/2,NZ+FDORDER/2);
+	free_f3tensor(v.y,1-FDORDER/2,NY+FDORDER/2,1-FDORDER/2,NX+FDORDER/2,1-FDORDER/2,NZ+FDORDER/2);
+	free_f3tensor(v.z,1-FDORDER/2,NY+FDORDER/2,1-FDORDER/2,NX+FDORDER/2,1-FDORDER/2,NZ+FDORDER/2);
 	free_f3tensor(sxx,1-FDORDER/2,NY+FDORDER/2,1-FDORDER/2,NX+FDORDER/2,1-FDORDER/2,NZ+FDORDER/2);
 
 	free_f3tensor(rho,0,NY+1,0,NX+1,0,NZ+1);

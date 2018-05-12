@@ -25,9 +25,10 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "data_structures.h"
 
 double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  int nt,
-                        float *** vx, float *** vy, float *** vz,
+                        Velocity *v,
                         float *** sxx, float *** syy, float *** szz, float *** sxy, float *** syz, float *** sxz, float *** rxx, float *** ryy,
                         float *** rzz, float *** rxy, float *** ryz, float *** rxz, float ***  pi, float ***  u,
                         float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
@@ -44,6 +45,10 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
     extern int MYID, FDORDER, FDORDER_TIME, LOG, FDCOEFF;
     extern FILE *FP;
     extern int OUTNTIMESTEPINFO;
+
+    float ***vx = v->x;
+    float ***vy = v->y;
+    float ***vz = v->z;
 
     int i, j, k;
     double time=0.0, time1=0.0, time2=0.0;

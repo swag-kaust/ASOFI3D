@@ -20,8 +20,9 @@
  * reads checkpoint file for the continuation of a simulation
  ----------------------------------------------------------------------*/
 #include "fd.h"
+#include "data_structures.h"
 
-void read_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, float *** vx, float *** vy, float *** vz,
+void read_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
                      float *** sxx, float *** syy, float *** szz, float *** sxy, float *** syz, float *** sxz,
 		     float *** rxx, float *** ryy,float *** rzz, float *** rxy, float *** ryz, float *** rxz,
 		     float *** psi_sxx_x, float *** psi_sxy_x, float *** psi_sxz_x, float *** psi_sxy_y,
@@ -37,6 +38,9 @@ void read_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, float
 	extern int ABS_TYPE, NX,NY,NZ,FW,POS[4],NPROCX,NPROCY,NPROCZ,FREE_SURF;
 	extern int L;
 	extern char  CHECKPTFILE[STRING_SIZE];
+        float ***vx = v->x;
+        float ***vy = v->y;
+        float ***vz = v->z;
 	
 
 

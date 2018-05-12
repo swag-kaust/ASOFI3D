@@ -25,13 +25,16 @@
 
 void seismo(int lsamp, int ntr, int **recpos, float **sectionvx, float **sectionvy, 
 		float **sectionvz, float **sectiondiv, float **sectioncurl, float **sectionp,
-		float ***vx, float ***vy, float ***vz,
+		Velocity *v,
 		float ***sxx, float ***syy, float ***szz, float ***pi, float ***u){
 
 	extern int SEISMO;
 	int i, j, k, itr, ins, nxrec, nyrec, nzrec;
 	float amp, dh24x, dh24y, dh24z, vyx, vxy, vxx, vyy, vzx, vyz, vxz, vzy, vzz;
 	extern float DX, DY, DZ;
+        float ***vx = v->x;
+        float ***vy = v->y;
+        float ***vz = v->z;
 
 
 	ins=lsamp; /* changed from "ins=lsamp/NDT;" (neccessary after correction of the buggy ns in sofi3D.c) */

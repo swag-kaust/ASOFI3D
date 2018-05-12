@@ -22,10 +22,11 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "data_structures.h"
 
 void seismo_acoustic(int lsamp, int ntr, int **recpos, float **sectionvx, float **sectionvy, 
 float **sectionvz, float **sectiondiv, float **sectioncurl, float **sectionp, 
-float ***vx, float ***vy, float ***vz, float ***sxx, float ***pi){ 
+Velocity *v, float ***sxx, float ***pi){ 
 		
 	extern int SEISMO;	
 	int  itr, ins, nxrec, nyrec, nzrec, i, j, k;
@@ -33,6 +34,10 @@ float ***vx, float ***vy, float ***vz, float ***sxx, float ***pi){
         float vxx, vyy, vzz;
 	/*float amp, vzy, vxz, vyz, vzx, vxy, vyx;*/
 	extern float DX, DY, DZ;
+
+        float ***vx = v->x;
+        float ***vy = v->y;
+        float ***vz = v->z;
 
 
         ins=lsamp; /* changed from "ins=lsamp/NDT;" (neccessary after correction of the buggy ns in sofi3D.c) */

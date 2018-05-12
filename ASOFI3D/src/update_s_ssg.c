@@ -25,9 +25,10 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "data_structures.h"
 
 double update_s(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  int nt,
-		float *** vx, float *** vy, float *** vz,
+		Velocity *v,
 		float *** sxx, float *** syy, float *** szz, float *** sxy, float *** syz, float *** sxz, float *** rxx, float *** ryy,
 		float *** rzz, float *** rxy, float *** ryz, float *** rxz, float ***  pi, float ***  u, float ***  uipjp, float ***  ujpkp, float ***  uipkp,
                 float  ***  taus, float  ***  tausipjp, float  ***  tausjpkp, float  ***  tausipkp, float  ***  taup, float *  eta,
@@ -39,15 +40,20 @@ double update_s(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  int nt,
                 float *** rzz_3, float *** rxy_3, float *** ryz_3, float *** rxz_3,float *** rxx_4, float *** ryy_4,
                 float *** rzz_4, float *** rxy_4, float *** ryz_4, float *** rxz_4){
 
-	extern float DT, DX, DY, DZ;
-	extern int L, MYID, FDORDER,FDORDER_TIME, LOG, FDCOEFF;
-	extern FILE *FP;
-	extern int OUTNTIMESTEPINFO;
+    extern float DT, DX, DY, DZ;
+    extern int L, MYID, FDORDER,FDORDER_TIME, LOG, FDCOEFF;
+    extern FILE *FP;
+    extern int OUTNTIMESTEPINFO;
 
-	int i, j, k, l=1;
-	double time=0.0, time1=0.0, time2=0.0;
-	float vxx,vxy,vxz,vyx,vyy,vyz,vzx,vzy,vzz;
-	float b,c,e,g,d,f,fipjp,fjpkp,fipkp,dipjp,djpkp,dipkp;
+    float ***vx = v->x;
+    float ***vy = v->y;
+    float ***vz = v->z;
+
+    int i, j, k, l=1;
+    double time=0.0, time1=0.0, time2=0.0;
+    float vxx,vxy,vxz,vyx,vyy,vyz,vzx,vzy,vzz;
+    float b,c,e,g,d,f,fipjp,fjpkp,fipkp,dipjp,djpkp,dipkp;
+
     float vdiag;
     float n1,n2,n3,n4,n5;
     

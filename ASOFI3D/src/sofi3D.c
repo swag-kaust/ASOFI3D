@@ -25,20 +25,22 @@
  * If you want to publish synthetic data calculated with this program please
  * give a reference to the following paper:
  * Bohlen, T., 2002, Parallel 3-D viscoelastic finite-difference seismic modelling,
- * Computers @ Geopsciences, Vol. 28, No. 8, 887-889.
+ * Computers @ Geosciences, Vol. 28, No. 8, 887-889.
  *
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
 #include "globvar.h"
+#include "data_structures.h"
 //#include "openacc.h"
 int main(int argc, char **argv)
 {
-    //this needs to be moved to the json - ask Mahesh
+    // TODO: this needs to be moved to the json - ask Mahesh
     int RTM_FLAG = 0;
     int ns, nt, nseismograms = 0, nf1, nf2;
     int lsnap, nsnap = 0, lsamp = 0, nlsamp = 0, buffsize;
-    int ntr = 0, ntr_loc = 0, ntr_glob = 0, nsrc = 0, nsrc_loc = 0, ishot, nshots; /* removed variable "h", not in use*/
+    int ntr = 0, ntr_loc = 0, ntr_glob = 0, nsrc = 0, nsrc_loc = 0;
+    int ishot, nshots;
 
     double time1 = 0.0, time2 = 0.0, time3 = 0.0, time4 = 0.0;
     double *time_v_update, *time_s_update, *time_s_exchange, *time_v_exchange, *time_timestep;
@@ -49,7 +51,9 @@ int main(int argc, char **argv)
     float ***sxx = NULL, ***syy = NULL, ***szz = NULL;
     float ***rxy = NULL, ***ryz = NULL, ***rxz = NULL;
     float ***rxx = NULL, ***ryy = NULL, ***rzz = NULL;
-    float ***vx = NULL, ***vy = NULL, ***vz = NULL;
+    //float ***vx = NULL, ***vy = NULL, ***vz = NULL;
+    Velocity v;
+    v.x = NULL; v.y = NULL; v.z = NULL;
 
     /* Save old spatial derivations of velocity for Adam Bashforth */
     float ***vxyyx = NULL, ***vyzzy = NULL, ***vxzzx = NULL, ***vxxyyzz = NULL, ***vyyzz = NULL, ***vxxzz = NULL, ***vxxyy = NULL;
@@ -368,9 +372,9 @@ int main(int argc, char **argv)
     /* memory allocation for dynamic (wavefield) arrays */
     if (POS[2] == 0)
     {
-        vx = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-        vy = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-        vz = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+        v.x = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+        v.y = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+        v.z = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
         if (FDORDER_TIME != 2)
         { /* Allocate memory for Adams Bashforth */
@@ -432,9 +436,9 @@ int main(int argc, char **argv)
 
     if (POS[2] > 0)
     {
-        vx = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-        vy = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-        vz = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+        v.x = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+        v.y = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+        v.z = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
         if (FDORDER_TIME != 2)
         { /* Allocate memory for Adams Bashforth */
@@ -832,7 +836,7 @@ int main(int argc, char **argv)
             fprintf(FP, " Reading wavefield from check-point file %s \n", CHECKPTFILE);
         }
 
-        read_checkpoint(-1, NX + 2, -1, NY + 2, -1, NZ + 2, vx, vy, vz, sxx, syy, szz, sxy, syz, sxz, rxx, ryy, rzz, rxy, ryz, rxz,
+        read_checkpoint(-1, NX + 2, -1, NY + 2, -1, NZ + 2, &v, sxx, syy, szz, sxy, syz, sxz, rxx, ryy, rzz, rxy, ryz, rxz,
                         psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y, psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z,
                         psi_vxx, psi_vyx, psi_vzx, psi_vxy, psi_vyy, psi_vzy, psi_vxz, psi_vyz, psi_vzz);
         MPI_Barrier(MPI_COMM_WORLD);
@@ -958,7 +962,7 @@ int main(int argc, char **argv)
             /* initialize wavefield with zero */
             if ((L == 1) && (ABS_TYPE == 2) && (CHECKPTREAD == 0))
             {
-                zero(1 - FDORDER / 2, NX + FDORDER / 2, 1 - FDORDER / 2, NY + FDORDER / 2, 1 - FDORDER / 2, NZ + FDORDER / 2, vx, vy, vz, sxx, syy, szz, sxy, syz, sxz,
+                zero(1 - FDORDER / 2, NX + FDORDER / 2, 1 - FDORDER / 2, NY + FDORDER / 2, 1 - FDORDER / 2, NZ + FDORDER / 2, &v, sxx, syy, szz, sxy, syz, sxz,
                      vxyyx, vyzzy, vxzzx, vxxyyzz, vyyzz, vxxzz, vxxyy, vxyyx_2, vyzzy_2, vxzzx_2, vxxyyzz_2, vyyzz_2, vxxzz_2, vxxyy_2, vxyyx_3,
                      vyzzy_3, vxzzx_3, vxxyyzz_3, vyyzz_3, vxxzz_3, vxxyy_3, vxyyx_4, vyzzy_4, vxzzx_4,
                      vxxyyzz_4, vyyzz_4, vxxzz_4, vxxyy_4, svx, svy, svz, svx_2, svy_2, svz_2, svx_3, svy_3, svz_3, svx_4, svy_4, svz_4, rxx, ryy, rzz, rxy, ryz, rxz, rxx_2, ryy_2, rzz_2, rxy_2, ryz_2, rxz_2, rxx_3, ryy_3, rzz_3, rxy_3, ryz_3, rxz_3, rxx_4, ryy_4, rzz_4, rxy_4, ryz_4, rxz_4);
@@ -966,14 +970,14 @@ int main(int argc, char **argv)
 
             if ((L == 0) && (ABS_TYPE == 2) && (CHECKPTREAD == 0))
             {
-                zero_elastic(1 - FDORDER / 2, NX + FDORDER / 2, 1 - FDORDER / 2, NY + FDORDER / 2, 1 - FDORDER / 2, NZ + FDORDER / 2, vx, vy, vz, sxx, syy, szz, sxy, syz, sxz,
+                zero_elastic(1 - FDORDER / 2, NX + FDORDER / 2, 1 - FDORDER / 2, NY + FDORDER / 2, 1 - FDORDER / 2, NZ + FDORDER / 2, &v, sxx, syy, szz, sxy, syz, sxz,
                              vxyyx, vyzzy, vxzzx, vxxyyzz, vyyzz, vxxzz, vxxyy, vxyyx_2, vyzzy_2, vxzzx_2, vxxyyzz_2, vyyzz_2, vxxzz_2, vxxyy_2, vxyyx_3,
                              vyzzy_3, vxzzx_3, vxxyyzz_3, vyyzz_3, vxxzz_3, vxxyy_3, vxyyx_4, vyzzy_4, vxzzx_4,
                              vxxyyzz_4, vyyzz_4, vxxzz_4, vxxyy_4, svx, svy, svz, svx_2, svy_2, svz_2, svx_3, svy_3, svz_3, svx_4, svy_4, svz_4);
             }
             if ((ABS_TYPE == 1) && (CHECKPTREAD == 0))
             {
-                zero_elastic_CPML(NX, NY, NZ, vx, vy, vz, sxx, syy, szz, sxy, syz, sxz, rxx, ryy, rzz, rxy, ryz, rxz, psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y, psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z, psi_vxx, psi_vyx, psi_vzx, psi_vxy, psi_vyy, psi_vzy, psi_vxz, psi_vyz, psi_vzz, rxx_2, ryy_2, rzz_2, rxy_2, ryz_2, rxz_2, rxx_3, ryy_3, rzz_3, rxy_3, ryz_3, rxz_3, rxx_4, ryy_4, rzz_4, rxy_4, ryz_4, rxz_4);
+                zero_elastic_CPML(NX, NY, NZ, &v, sxx, syy, szz, sxy, syz, sxz, rxx, ryy, rzz, rxy, ryz, rxz, psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y, psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z, psi_vxx, psi_vyx, psi_vzx, psi_vxy, psi_vyy, psi_vzy, psi_vxz, psi_vyz, psi_vzz, rxx_2, ryy_2, rzz_2, rxy_2, ryz_2, rxz_2, rxx_3, ryy_3, rzz_3, rxy_3, ryz_3, rxz_3, rxx_4, ryy_4, rzz_4, rxy_4, ryz_4, rxz_4);
             }
 
             /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
@@ -1031,7 +1035,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 time_s_exchange[nt] = 0.0;
 
                 /* Check if simulation is still stable */
-                if (isnan(vy[NY / 2][NX / 2][NZ / 2]))
+                if (isnan(v.y[NY / 2][NX / 2][NZ / 2]))
                     err(" Simulation is unstable !"); /* maybe just breaking the loop would be better */
 
                 if (LOG)
@@ -1042,11 +1046,11 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                     }
 
                 /* update of particle velocities */
-                time_v_update[nt] = update_v(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, vx, vy, vz, sxx, syy, szz, sxy, syz, sxz, rho, rjp, rkp, rip, srcpos_loc, signals, nsrc_loc, absorb_coeff, stype_loc, svx, svy, svz, svx_2, svy_2, svz_2, svx_3, svy_3, svz_3, svx_4, svy_4, svz_4);
+                time_v_update[nt] = update_v(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v, sxx, syy, szz, sxy, syz, sxz, rho, rjp, rkp, rip, srcpos_loc, signals, nsrc_loc, absorb_coeff, stype_loc, svx, svy, svz, svx_2, svy_2, svz_2, svx_3, svy_3, svz_3, svx_4, svy_4, svz_4);
 
                 if (ABS_TYPE == 1)
                 {
-                    update_v_CPML(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, vx, vy, vz, sxx, syy, szz, sxy, syz, sxz, rho, rjp, rkp, rip, srcpos_loc, signals, nsrc_loc, absorb_coeff, stype_loc, K_x, a_x, b_x, K_x_half, a_x_half, b_x_half, K_y, a_y, b_y, K_y_half, a_y_half, b_y_half, K_z, a_z, b_z, K_z_half, a_z_half, b_z_half, psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y, psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z);
+                    update_v_CPML(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v, sxx, syy, szz, sxy, syz, sxz, rho, rjp, rkp, rip, srcpos_loc, signals, nsrc_loc, absorb_coeff, stype_loc, K_x, a_x, b_x, K_x_half, a_x_half, b_x_half, K_y, a_y, b_y, K_y_half, a_y_half, b_y_half, K_z, a_z, b_z, K_z_half, a_z_half, b_z_half, psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y, psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z);
                 };
 
                 /* Shift spartial derivations of the stress one time step back */
@@ -1086,7 +1090,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
 
                 /* exchange values of particle velocities at grid boundaries between PEs */
 
-                time_v_exchange[nt] = exchange_v(nt, vx, vy, vz, bufferlef_to_rig, bufferrig_to_lef, buffertop_to_bot, bufferbot_to_top,
+                time_v_exchange[nt] = exchange_v(nt, &v, bufferlef_to_rig, bufferrig_to_lef, buffertop_to_bot, bufferbot_to_top,
                                                  bufferfro_to_bac, bufferbac_to_fro, req_send, req_rec);
 
                 /* update of components of stress tensor */
@@ -1094,12 +1098,12 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 /* update NON PML boundaries */
                 if (L > 0)
                 {
-                    time_s_update[nt] = update_s(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, vx, vy, vz, sxx, syy, szz, sxy, syz, sxz, rxx, ryy, rzz, rxy, ryz, rxz,
+                    time_s_update[nt] = update_s(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v, sxx, syy, szz, sxy, syz, sxz, rxx, ryy, rzz, rxy, ryz, rxz,
                                                  pi, u, C66ipjp, C44jpkp, C55ipkp, taus, tausipjp, tausjpkp, tausipkp, taup, eta, vxyyx, vyzzy, vxzzx, vxxyyzz, vyyzz, vxxzz, vxxyy, vxyyx_2, vyzzy_2,
                                                  vxzzx_2, vxxyyzz_2, vyyzz_2, vxxzz_2, vxxyy_2, vxyyx_3, vyzzy_3, vxzzx_3, vxxyyzz_3, vyyzz_3, vxxzz_3, vxxyy_3, vxyyx_4, vyzzy_4, vxzzx_4,
                                                  vxxyyzz_4, vyyzz_4, vxxzz_4, vxxyy_4, rxx_2, ryy_2, rzz_2, rxy_2, ryz_2, rxz_2, rxx_3, ryy_3, rzz_3, rxy_3, ryz_3, rxz_3, rxx_4, ryy_4, rzz_4, rxy_4, ryz_4, rxz_4);
                     if (ABS_TYPE == 1)
-                        update_s_CPML(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, vx, vy, vz, sxx, syy, szz, sxy, syz, sxz, rxx, ryy, rzz,
+                        update_s_CPML(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v, sxx, syy, szz, sxy, syz, sxz, rxx, ryy, rzz,
                                       rxy, ryz, rxz, pi, u,
                                       C66ipjp, C44jpkp, C55ipkp, taus, tausipjp, tausjpkp, tausipkp, taup, eta, K_x, a_x, b_x, K_x_half, a_x_half,
                                       b_x_half, K_y, a_y, b_y, K_y_half, a_y_half, b_y_half, K_z, a_z, b_z, K_z_half, a_z_half, b_z_half,
@@ -1107,12 +1111,12 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 }
                 else
                 {
-                    time_s_update[nt] = update_s_elastic(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, vx, vy, vz, sxx, syy, szz, sxy, syz, sxz, rxx, ryy, rzz, rxy, ryz, rxz,
+                    time_s_update[nt] = update_s_elastic(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v, sxx, syy, szz, sxy, syz, sxz, rxx, ryy, rzz, rxy, ryz, rxz,
                                                          pi, u, C11, C12, C13, C22, C23, C33, C66ipjp, C44jpkp, C55ipkp, taus, tausipjp, tausjpkp, tausipkp, taup, eta, vxyyx, vyzzy, vxzzx, vxxyyzz, vyyzz, vxxzz, vxxyy, vxyyx_2, vyzzy_2,
                                                          vxzzx_2, vxxyyzz_2, vyyzz_2, vxxzz_2, vxxyy_2, vxyyx_3, vyzzy_3, vxzzx_3, vxxyyzz_3, vyyzz_3, vxxzz_3, vxxyy_3, vxyyx_4, vyzzy_4, vxzzx_4,
                                                          vxxyyzz_4, vyyzz_4, vxxzz_4, vxxyy_4);
                     if (ABS_TYPE == 1)
-                        update_s_CPML_elastic(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, vx, vy, vz, sxx, syy, szz, sxy, syz, sxz,
+                        update_s_CPML_elastic(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v, sxx, syy, szz, sxy, syz, sxz,
                                               pi, u,
                                               C11, C12, C13, C22, C23, C33,
                                               C66ipjp, C44jpkp, C55ipkp, K_x, a_x, b_x, K_x_half, a_x_half,
@@ -1264,10 +1268,10 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 if ((FREE_SURF) && (POS[2] == 0))
                 {
                     if (L)
-                        surface(1, u, pi, taus, taup, eta, sxx, syy, szz, sxy, syz, rxx, ryy, rzz, vx, vy, vz, K_x, a_x, b_x,
+                        surface(1, u, pi, taus, taup, eta, sxx, syy, szz, sxy, syz, rxx, ryy, rzz, &v, K_x, a_x, b_x,
                                 K_z, a_z, b_z, psi_vxx, psi_vzz);
                     else
-                        surface_elastic(1, u, pi, sxx, syy, szz, sxy, syz, vx, vy, vz, K_x, a_x, b_x,
+                        surface_elastic(1, u, pi, sxx, syy, szz, sxy, syz, &v, K_x, a_x, b_x,
                                         K_z, a_z, b_z, psi_vxx, psi_vzz);
                 }
 
@@ -1278,7 +1282,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 if ((SEISMO) && (ntr > 0) && (nt == lsamp))
                 {
                     seismo(nlsamp, ntr, recpos_loc, sectionvx, sectionvy, sectionvz,
-                           sectiondiv, sectioncurl, sectionp, vx, vy, vz, sxx, syy, szz, pi, u);
+                           sectiondiv, sectioncurl, sectionp, &v, sxx, syy, szz, pi, u);
                     nlsamp++;
                     lsamp += NDT;
                 }
@@ -1288,7 +1292,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 if ((SNAP) && (nt == lsnap) && (nt <= TSNAP2 / DT))
                 {
                     // fprintf(FP,"irtm = %d !!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n\n", irtm);
-                    snap(FP, nt, ++nsnap, SNAP_FORMAT, SNAP, vx, vy, vz, sxx, syy, szz, u, pi,
+                    snap(FP, nt, ++nsnap, SNAP_FORMAT, SNAP, &v, sxx, syy, szz, u, pi,
                          IDX, IDY, IDZ, 1, 1, 1, NX, NY, NZ);
                     lsnap = lsnap + iround(TSNAPINC / DT);
                 }
@@ -1391,7 +1395,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
             fprintf(FP, " Saving wavefield to check-point file %s \n", CHECKPTFILE);
         }
 
-        save_checkpoint(-1, NX + 2, -1, NY + 2, -1, NZ + 2, vx, vy, vz, sxx, syy, szz, sxy, syz, sxz, rxx, ryy, rzz, rxy, ryz, rxz,
+        save_checkpoint(-1, NX + 2, -1, NY + 2, -1, NZ + 2, &v, sxx, syy, szz, sxy, syz, sxz, rxx, ryy, rzz, rxy, ryz, rxz,
                         psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y, psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z,
                         psi_vxx, psi_vyx, psi_vzx, psi_vxy, psi_vyy, psi_vzy, psi_vxz, psi_vyz, psi_vzz);
         MPI_Barrier(MPI_COMM_WORLD);
@@ -1411,9 +1415,9 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
     /*de-allocation of memory */
     if (POS[2] == 0)
     {
-        free_f3tensor(vx, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-        free_f3tensor(vy, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-        free_f3tensor(vz, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+        free_f3tensor(v.x, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+        free_f3tensor(v.y, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+        free_f3tensor(v.z, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
         free_f3tensor(sxy, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
         free_f3tensor(syz, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
@@ -1474,9 +1478,9 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
 
     if (POS[2] > 0)
     {
-        free_f3tensor(vx, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-        free_f3tensor(vy, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-        free_f3tensor(vz, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+        free_f3tensor(v.x, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+        free_f3tensor(v.y, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+        free_f3tensor(v.z, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
         free_f3tensor(sxy, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
         free_f3tensor(syz, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
