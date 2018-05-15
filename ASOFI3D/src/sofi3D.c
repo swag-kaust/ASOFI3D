@@ -62,7 +62,7 @@ int main(int argc, char **argv)
 
     /* Save old spatial derivatives of velocity for Adam-Bashforth method. */
     VelocityDerivativesTensor dv;
-    float ***vxyyx_2 = NULL, ***vyzzy_2 = NULL, ***vxzzx_2 = NULL, ***vxxyyzz_2 = NULL, ***vyyzz_2 = NULL, ***vxxzz_2 = NULL, ***vxxyy_2 = NULL;
+    VelocityDerivativesTensor dv_2;
     float ***vxyyx_3 = NULL, ***vyzzy_3 = NULL, ***vxzzx_3 = NULL, ***vxxyyzz_3 = NULL, ***vyyzz_3 = NULL, ***vxxzz_3 = NULL, ***vxxyy_3 = NULL;
     float ***vxyyx_4 = NULL, ***vyzzy_4 = NULL, ***vxzzx_4 = NULL, ***vxxyyzz_4 = NULL, ***vyyzz_4 = NULL, ***vxxzz_4 = NULL, ***vxxyy_4 = NULL;
 
@@ -390,13 +390,13 @@ int main(int argc, char **argv)
             dv.xxzz = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
             dv.xxyy = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
-            vxyyx_2 = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            vyzzy_2 = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            vxzzx_2 = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            vxxyyzz_2 = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            vyyzz_2 = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            vxxzz_2 = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            vxxyy_2 = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            dv_2.xyyx = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            dv_2.yzzy = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            dv_2.xzzx = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            dv_2.xxyyzz = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            dv_2.yyzz = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            dv_2.xxzz = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            dv_2.xxyy = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
             vxyyx_3 = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
             vyzzy_3 = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
@@ -446,12 +446,6 @@ int main(int argc, char **argv)
 
         if (FDORDER_TIME != 2)
         { /* Allocate memory for Adams Bashforth */
-            vxyyx_2 = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            vyzzy_2 = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            vxzzx_2 = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            vxxyyzz_2 = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            vyyzz_2 = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            vxxzz_2 = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
             dv.xyyx = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
             dv.yzzy = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
             dv.xzzx = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
@@ -459,6 +453,14 @@ int main(int argc, char **argv)
             dv.yyzz = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
             dv.xxzz = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
             dv.xxyy = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+
+            dv_2.xyyx = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            dv_2.yzzy = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            dv_2.xzzx = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            dv_2.xxyyzz = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            dv_2.yyzz = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            dv_2.xxzz = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            dv_2.xxyy = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
             vxyyx_3 = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
             vyzzy_3 = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
@@ -963,15 +965,16 @@ int main(int argc, char **argv)
             if ((L == 1) && (ABS_TYPE == 2) && (CHECKPTREAD == 0))
             {
                 zero(1 - FDORDER / 2, NX + FDORDER / 2, 1 - FDORDER / 2, NY + FDORDER / 2, 1 - FDORDER / 2, NZ + FDORDER / 2, &v, &s, &dv,
-                     vxyyx_2, vyzzy_2, vxzzx_2, vxxyyzz_2, vyyzz_2, vxxzz_2, vxxyy_2, vxyyx_3,
+                     &dv_2, vxyyx_3,
                      vyzzy_3, vxzzx_3, vxxyyzz_3, vyyzz_3, vxxzz_3, vxxyy_3, vxyyx_4, vyzzy_4, vxzzx_4,
                      vxxyyzz_4, vyyzz_4, vxxzz_4, vxxyy_4, svx, svy, svz, svx_2, svy_2, svz_2, svx_3, svy_3, svz_3, svx_4, svy_4, svz_4, &r, rxx_2, ryy_2, rzz_2, rxy_2, ryz_2, rxz_2, rxx_3, ryy_3, rzz_3, rxy_3, ryz_3, rxz_3, rxx_4, ryy_4, rzz_4, rxy_4, ryz_4, rxz_4);
             }
 
             if ((L == 0) && (ABS_TYPE == 2) && (CHECKPTREAD == 0))
             {
-                zero_elastic(1 - FDORDER / 2, NX + FDORDER / 2, 1 - FDORDER / 2, NY + FDORDER / 2, 1 - FDORDER / 2, NZ + FDORDER / 2, &v, &s, &dv,
-                             vxyyx_2, vyzzy_2, vxzzx_2, vxxyyzz_2, vyyzz_2, vxxzz_2, vxxyy_2, vxyyx_3,
+                zero_elastic(1 - FDORDER / 2, NX + FDORDER / 2, 1 - FDORDER / 2, NY + FDORDER / 2, 1 - FDORDER / 2, NZ + FDORDER / 2,
+                             &v, &s, &dv,
+                             &dv_2, vxyyx_3,
                              vyzzy_3, vxzzx_3, vxxyyzz_3, vyyzz_3, vxxzz_3, vxxyy_3, vxyyx_4, vyzzy_4, vxzzx_4,
                              vxxyyzz_4, vyyzz_4, vxxzz_4, vxxyy_4, svx, svy, svz, svx_2, svy_2, svz_2, svx_3, svy_3, svz_3, svx_4, svy_4, svz_4);
             }
@@ -1102,8 +1105,8 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 {
                     time_s_update[nt] = update_s(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v,
                         &s, &r,
-                                                 pi, u, C66ipjp, C44jpkp, C55ipkp, taus, tausipjp, tausjpkp, tausipkp, taup, eta, &dv, vxyyx_2, vyzzy_2,
-                                                 vxzzx_2, vxxyyzz_2, vyyzz_2, vxxzz_2, vxxyy_2, vxyyx_3, vyzzy_3, vxzzx_3, vxxyyzz_3, vyyzz_3, vxxzz_3, vxxyy_3, vxyyx_4, vyzzy_4, vxzzx_4,
+                                                 pi, u, C66ipjp, C44jpkp, C55ipkp, taus, tausipjp, tausjpkp, tausipkp, taup, eta, &dv,
+                        &dv_2, vxyyx_3, vyzzy_3, vxzzx_3, vxxyyzz_3, vyyzz_3, vxxzz_3, vxxyy_3, vxyyx_4, vyzzy_4, vxzzx_4,
                                                  vxxyyzz_4, vyyzz_4, vxxzz_4, vxxyy_4, rxx_2, ryy_2, rzz_2, rxy_2, ryz_2, rxz_2, rxx_3, ryy_3, rzz_3, rxy_3, ryz_3, rxz_3, rxx_4, ryy_4, rzz_4, rxy_4, ryz_4, rxz_4);
                     if (ABS_TYPE == 1)
                         update_s_CPML(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v,
@@ -1116,8 +1119,9 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 {
                     time_s_update[nt] = update_s_elastic(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v,
                         &s, &r,
-                                                         pi, u, C11, C12, C13, C22, C23, C33, C66ipjp, C44jpkp, C55ipkp, taus, tausipjp, tausjpkp, tausipkp, taup, eta, &dv, vxyyx_2, vyzzy_2,
-                                                         vxzzx_2, vxxyyzz_2, vyyzz_2, vxxzz_2, vxxyy_2, vxyyx_3, vyzzy_3, vxzzx_3, vxxyyzz_3, vyyzz_3, vxxzz_3, vxxyy_3, vxyyx_4, vyzzy_4, vxzzx_4,
+                                                         pi, u, C11, C12, C13, C22, C23, C33, C66ipjp, C44jpkp, C55ipkp, taus, tausipjp, tausjpkp, tausipkp, taup, eta, &dv,
+                        &dv_2,
+                        vxyyx_3, vyzzy_3, vxzzx_3, vxxyyzz_3, vyyzz_3, vxxzz_3, vxxyy_3, vxyyx_4, vyzzy_4, vxzzx_4,
                                                          vxxyyzz_4, vyyzz_4, vxxzz_4, vxxyy_4);
                     if (ABS_TYPE == 1)
                         update_s_CPML_elastic(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v,
@@ -1133,38 +1137,38 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 {
                     shift_v1 = vxyyx_4;
                     vxyyx_4 = vxyyx_3;
-                    vxyyx_3 = vxyyx_2;
-                    vxyyx_2 = dv.xyyx;
+                    vxyyx_3 = dv_2.xyyx;
+                    dv_2.xyyx = dv.xyyx;
                     dv.xyyx = shift_v1;
                     shift_v2 = vyzzy_4;
                     vyzzy_4 = vyzzy_3;
-                    vyzzy_3 = vyzzy_2;
-                    vyzzy_2 = dv.yzzy;
+                    vyzzy_3 = dv_2.yzzy;
+                    dv_2.yzzy = dv.yzzy;
                     dv.yzzy = shift_v2;
                     shift_v3 = vxzzx_4;
                     vxzzx_4 = vxzzx_3;
-                    vxzzx_3 = vxzzx_2;
-                    vxzzx_2 = dv.xzzx;
+                    vxzzx_3 = dv_2.xzzx;
+                    dv_2.xzzx = dv.xzzx;
                     dv.xzzx = shift_v3;
                     shift_v4 = vxxyyzz_4;
                     vxxyyzz_4 = vxxyyzz_3;
-                    vxxyyzz_3 = vxxyyzz_2;
-                    vxxyyzz_2 = dv.xxyyzz;
+                    vxxyyzz_3 = dv_2.xxyyzz;
+                    dv_2.xxyyzz = dv.xxyyzz;
                     dv.xxyyzz = shift_v4;
                     shift_v5 = vyyzz_4;
                     vyyzz_4 = vyyzz_3;
-                    vyyzz_3 = vyyzz_2;
-                    vyyzz_2 = dv.yyzz;
+                    vyyzz_3 = dv_2.yyzz;
+                    dv_2.yyzz = dv.yyzz;
                     dv.yyzz = shift_v5;
                     shift_v6 = vxxzz_4;
                     vxxzz_4 = vxxzz_3;
-                    vxxzz_3 = vxxzz_2;
-                    vxxzz_2 = dv.xxzz;
+                    vxxzz_3 = dv_2.xxzz;
+                    dv_2.xxzz = dv.xxzz;
                     dv.xxzz = shift_v6;
                     shift_v7 = vxxyy_4;
                     vxxyy_4 = vxxyy_3;
-                    vxxyy_3 = vxxyy_2;
-                    vxxyy_2 = dv.xxyy;
+                    vxxyy_3 = dv_2.xxyy;
+                    dv_2.xxyy = dv.xxyy;
                     dv.xxyy = shift_v7;
                     if (L == 1)
                     {
@@ -1203,32 +1207,32 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 if (FDORDER_TIME == 3)
                 {
                     shift_v1 = vxyyx_3;
-                    vxyyx_3 = vxyyx_2;
-                    vxyyx_2 = dv.xyyx;
+                    vxyyx_3 = dv_2.xyyx;
+                    dv_2.xyyx = dv.xyyx;
                     dv.xyyx = shift_v1;
                     shift_v2 = vyzzy_3;
-                    vyzzy_3 = vyzzy_2;
-                    vyzzy_2 = dv.yzzy;
+                    vyzzy_3 = dv_2.yzzy;
+                    dv_2.yzzy = dv.yzzy;
                     dv.yzzy = shift_v2;
                     shift_v3 = vxzzx_3;
-                    vxzzx_3 = vxzzx_2;
-                    vxzzx_2 = dv.xzzx;
+                    vxzzx_3 = dv_2.xzzx;
+                    dv_2.xzzx = dv.xzzx;
                     dv.xzzx = shift_v3;
                     shift_v4 = vxxyyzz_3;
-                    vxxyyzz_3 = vxxyyzz_2;
-                    vxxyyzz_2 = dv.xxyyzz;
+                    vxxyyzz_3 = dv_2.xxyyzz;
+                    dv_2.xxyyzz = dv.xxyyzz;
                     dv.xxyyzz = shift_v4;
                     shift_v5 = vyyzz_3;
-                    vyyzz_3 = vyyzz_2;
-                    vyyzz_2 = dv.yyzz;
+                    vyyzz_3 = dv_2.yyzz;
+                    dv_2.yyzz = dv.yyzz;
                     dv.yyzz = shift_v5;
                     shift_v6 = vxxzz_3;
-                    vxxzz_3 = vxxzz_2;
-                    vxxzz_2 = dv.xxzz;
+                    vxxzz_3 = dv_2.xxzz;
+                    dv_2.xxzz = dv.xxzz;
                     dv.xxzz = shift_v6;
                     shift_v7 = vxxyy_3;
-                    vxxyy_3 = vxxyy_2;
-                    vxxyy_2 = dv.xxyy;
+                    vxxyy_3 = dv_2.xxyy;
+                    dv_2.xxyy = dv.xxyy;
                     dv.xxyy = shift_v7;
                     if (L == 1)
                     {
@@ -1435,13 +1439,13 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
             free_f3tensor(dv.xxzz, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
             free_f3tensor(dv.xxyy, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
-            free_f3tensor(vxyyx_2, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            free_f3tensor(vyzzy_2, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            free_f3tensor(vxzzx_2, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            free_f3tensor(vxxyyzz_2, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            free_f3tensor(vyyzz_2, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            free_f3tensor(vxxzz_2, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            free_f3tensor(vxxyy_2, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            free_f3tensor(dv_2.xyyx, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            free_f3tensor(dv_2.yzzy, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            free_f3tensor(dv_2.xzzx, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            free_f3tensor(dv_2.xxyyzz, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            free_f3tensor(dv_2.yyzz, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            free_f3tensor(dv_2.xxzz, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            free_f3tensor(dv_2.xxyy, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
             free_f3tensor(vxyyx_3, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
             free_f3tensor(vyzzy_3, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
@@ -1498,13 +1502,13 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
             free_f3tensor(dv.xxzz, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
             free_f3tensor(dv.xxyy, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
-            free_f3tensor(vxyyx_2, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            free_f3tensor(vyzzy_2, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            free_f3tensor(vxzzx_2, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            free_f3tensor(vxxyyzz_2, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            free_f3tensor(vyyzz_2, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            free_f3tensor(vxxzz_2, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            free_f3tensor(vxxyy_2, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            free_f3tensor(dv_2.xyyx, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            free_f3tensor(dv_2.yzzy, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            free_f3tensor(dv_2.xzzx, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            free_f3tensor(dv_2.xxyyzz, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            free_f3tensor(dv_2.yyzz, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            free_f3tensor(dv_2.xxzz, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            free_f3tensor(dv_2.xxyy, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
             free_f3tensor(vxyyx_3, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
             free_f3tensor(vyzzy_3, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
