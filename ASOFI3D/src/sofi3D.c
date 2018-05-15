@@ -60,23 +60,23 @@ int main(int argc, char **argv)
     Velocity v;
     v.x = NULL; v.y = NULL; v.z = NULL;
 
-    /* Save old spatial derivations of velocity for Adam Bashforth */
+    /* Save old spatial derivatives of velocity for Adam-Bashforth method. */
     float ***vxyyx = NULL, ***vyzzy = NULL, ***vxzzx = NULL, ***vxxyyzz = NULL, ***vyyzz = NULL, ***vxxzz = NULL, ***vxxyy = NULL;
     float ***vxyyx_2 = NULL, ***vyzzy_2 = NULL, ***vxzzx_2 = NULL, ***vxxyyzz_2 = NULL, ***vyyzz_2 = NULL, ***vxxzz_2 = NULL, ***vxxyy_2 = NULL;
     float ***vxyyx_3 = NULL, ***vyzzy_3 = NULL, ***vxzzx_3 = NULL, ***vxxyyzz_3 = NULL, ***vyyzz_3 = NULL, ***vxxzz_3 = NULL, ***vxxyy_3 = NULL;
     float ***vxyyx_4 = NULL, ***vyzzy_4 = NULL, ***vxzzx_4 = NULL, ***vxxyyzz_4 = NULL, ***vyyzz_4 = NULL, ***vxxzz_4 = NULL, ***vxxyy_4 = NULL;
 
-    /* Save old derivation of the stress for Adam Bashforth */
+    /* Save old derivatives of the stress for Adam-Bashforth method. */
     float ***svx = NULL, ***svy = NULL, ***svz = NULL;
     float ***svx_2 = NULL, ***svy_2 = NULL, ***svz_2 = NULL, ***svx_3 = NULL, ***svy_3 = NULL, ***svz_3 = NULL;
     float ***svx_4 = NULL, ***svy_4 = NULL, ***svz_4 = NULL;
 
-    /* We need some pointers for the time shift for Adam Bashforth*/
+    /* We need these arrays for the time shift for Adam-Bashforth method. */
     float ***shift_s1 = NULL, ***shift_s2 = NULL, ***shift_s3 = NULL;
     float ***shift_v1 = NULL, ***shift_v2 = NULL, ***shift_v3 = NULL, ***shift_v4 = NULL, ***shift_v5 = NULL, ***shift_v6 = NULL, ***shift_v7 = NULL;
     float ***shift_r1 = NULL, ***shift_r2 = NULL, ***shift_r3 = NULL, ***shift_r4 = NULL, ***shift_r5 = NULL, ***shift_r6 = NULL;
 
-    /* We need some pointes for the memory variables for Adams Bashforth */
+    /* We need these arrays for the time shift for Adams-Bashforth method. */
     float ***rxy_2 = NULL, ***ryz_2 = NULL, ***rxz_2 = NULL;
     float ***rxx_2 = NULL, ***ryy_2 = NULL, ***rzz_2 = NULL;
     float ***rxy_3 = NULL, ***ryz_3 = NULL, ***rxz_3 = NULL;
@@ -122,21 +122,20 @@ int main(int argc, char **argv)
     MPI_Comm_size(MPI_COMM_WORLD, &NP);
     MPI_Comm_rank(MPI_COMM_WORLD, &MYID);
 
-
     // Assign each MPI process to a GPU
    // acc_init(acc_device_nvidia);
    // acc_set_device_num(MYID, acc_device_nvidia);
- 
+
     setvbuf(stdout, NULL, _IONBF, 0);
 
-    /* initialize clock for estimating runtime of program */
+    /* Initialize clock for estimating runtime of program. */
     if (MYID == 0)
     {
         time1 = MPI_Wtime();
         clock();
     }
 
-    /* print program name, version, author etc to stdout*/
+    /* Print program name, version, author etc to stdout. */
     if (MYID == 0)
         info(stdout);
     SOFI3DVERS = 33; /* 3D isotropic elastic */
@@ -221,7 +220,7 @@ int main(int argc, char **argv)
     if (((ns < 0) && (MYID == 0)) && (SEISMO > 0))
     {
         /*fprintf(FP," \nSampling interval for seismogram output (DT) : %f \n\n",DT);
-		fprintf(FP," \nSampling interval shift (NDTSHIFT) : %i , TIME : %f NT : %i NDT : %i \n\n",NDTSHIFT,TIME, NT,NDT);*/
+	  fprintf(FP," \nSampling interval shift (NDTSHIFT) : %i , TIME : %f NT : %i NDT : %i \n\n",NDTSHIFT,TIME, NT,NDT);*/
         fprintf(FP, " \nSampling rate for seismogram output (NDT) is out of limit : %i \n\n", ns);
         err(" Check Sampling rate for seismogram output (NDT)!");
     }
@@ -783,7 +782,7 @@ int main(int argc, char **argv)
             model_visco(rho, pi, u, taus, taup, eta); /* viscoelastic modeling, L is specified in input file*/
         }
     }
-    
+
 
 
     fprintf(FP,"\n \n MYID %d rsf %d rsfden %s", MYID,RSF,RSFDEN);
@@ -888,7 +887,6 @@ int main(int argc, char **argv)
     // for (int irtm = 0; irtm <= RTM_FLAG; irtm++)
     // {
     //if (RSF) madinput(RSFDEN,rho);
-    
 
 
 
@@ -993,14 +991,14 @@ int main(int argc, char **argv)
 
 
 //#pragma acc data copyin(vx[ny1-1:ny2+1][nx1-1:nx2+1][nz1-1:nz2+1],vy[ny1-1:ny2+1][nx1-1:nx2+1][nz1-1:nz2+1],vz[ny1-1:ny2+1][nx1-1:nx2+1][nz1-1:nz2+1])
- 
+
 /*
 
 
-vxyyx, vyzzy, vxzzx, vxxyyzz, vyyzz, vxxzz, vxxyy, 
+vxyyx, vyzzy, vxzzx, vxxyyzz, vyyzz, vxxzz, vxxyy,
 vxyyx_2, vyzzy_2, vxzzx_2, vxxyyzz_2, vyyzz_2, vxxzz_2, vxxyy_2, vxyyx_3, vyzzy_3, vxzzx_3, vxxyyzz_3, vyyzz_3, vxxzz_3, vxxyy_3, vxyyx_4, vyzzy_4, vxzzx_4, vxxyyzz_4, vyyzz_4, vxxzz_4, vxxyy_4
 
-in: 
+in:
 out: sxx, syy, szz, sxy, syz, sxz,*/
 
 //#pragma acc data copyin (C11,C12,C13,C33,C22,C23,C66ipjp,C44jpkp,C55ipkp)
@@ -1059,7 +1057,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                         &s, rho, rjp, rkp, rip, srcpos_loc, signals, nsrc_loc, absorb_coeff, stype_loc, K_x, a_x, b_x, K_x_half, a_x_half, b_x_half, K_y, a_y, b_y, K_y_half, a_y_half, b_y_half, K_z, a_z, b_z, K_z_half, a_z_half, b_z_half, psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y, psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z);
                 };
 
-                /* Shift spartial derivations of the stress one time step back */
+                // Shift spatial derivatives of the stress one time step back.
                 if (FDORDER_TIME == 4)
                 {
                     shift_s1 = svx_4;
@@ -1096,8 +1094,8 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
 
                 /* exchange values of particle velocities at grid boundaries between PEs */
 
-                time_v_exchange[nt] = exchange_v(nt, &v, bufferlef_to_rig, bufferrig_to_lef, buffertop_to_bot, bufferbot_to_top,
-                                                 bufferfro_to_bac, bufferbac_to_fro, req_send, req_rec);
+            time_v_exchange[nt] = exchange_v(nt, &v, bufferlef_to_rig, bufferrig_to_lef, buffertop_to_bot, bufferbot_to_top,
+                                             bufferfro_to_bac, bufferbac_to_fro, req_send, req_rec);
 
                 /* update of components of stress tensor */
 
@@ -1132,7 +1130,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                                 psi_vxx, psi_vyx, psi_vzx, psi_vxy, psi_vyy, psi_vzy, psi_vxz, psi_vyz, psi_vzz);
                 }
 
-                /* Shift spartial derivations from the velocity one time step back */
+                // Shift spatial derivatives of velocity one time step back.
                 if (FDORDER_TIME == 4)
                 {
                     shift_v1 = vxyyx_4;
