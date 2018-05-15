@@ -28,7 +28,7 @@ void zero(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
                   Tensor3d *s,
                   VelocityDerivativesTensor *dv,
                   VelocityDerivativesTensor *dv_2,
-                  float *** vxyyx_3,float *** vyzzy_3,float *** vxzzx_3,float *** vxxyyzz_3,float *** vyyzz_3,float *** vxxzz_3,float *** vxxyy_3,
+                  VelocityDerivativesTensor *dv_3,
                   float *** vxyyx_4,float *** vyzzy_4,float *** vxzzx_4,float *** vxxyyzz_4,float *** vyyzz_4,float *** vxxzz_4,float *** vxxyy_4,
                   float *** svx, float *** svy, float *** svz,
                   float *** svx_2, float *** svy_2, float *** svz_2, float *** svx_3, float *** svy_3, float *** svz_3,
@@ -77,6 +77,14 @@ void zero(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
     float ***vyyzz_2   = dv_2->yyzz;
     float ***vxxzz_2   = dv_2->xxzz;
     float ***vxxyy_2   = dv_2->xxyy;
+
+    float ***vxyyx_3   = dv_3->xyyx;
+    float ***vyzzy_3   = dv_3->yzzy;
+    float ***vxzzx_3   = dv_3->xzzx;
+    float ***vxxyyzz_3 = dv_3->xxyyzz;
+    float ***vyyzz_3   = dv_3->yyzz;
+    float ***vxxzz_3   = dv_3->xxzz;
+    float ***vxxyy_3   = dv_3->xxyy;
     
 
     /* Set memory variables to zero */
