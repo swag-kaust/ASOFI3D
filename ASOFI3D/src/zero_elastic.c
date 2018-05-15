@@ -26,7 +26,7 @@
 
 void zero_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
                   Tensor3d *s,
-                  float *** vxyyx,float *** vyzzy,float *** vxzzx,float *** vxxyyzz,float *** vyyzz,float *** vxxzz,float *** vxxyy,
+                  VelocityDerivativesTensor *dv,
                   float *** vxyyx_2,float *** vyzzy_2,float *** vxzzx_2,float *** vxxyyzz_2,float *** vyyzz_2,float *** vxxzz_2,float *** vxxyy_2,
                   float *** vxyyx_3,float *** vyzzy_3,float *** vxzzx_3,float *** vxxyyzz_3,float *** vyyzz_3,float *** vxxzz_3,float *** vxxyy_3,
                   float *** vxyyx_4,float *** vyzzy_4,float *** vxzzx_4,float *** vxxyyzz_4,float *** vyyzz_4,float *** vxxzz_4,float *** vxxyy_4,
@@ -47,6 +47,14 @@ void zero_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity
     float ***sxy = s->xy;
     float ***syz = s->yz;
     float ***sxz = s->xz;
+
+    float ***vxyyx   = dv->xyyx;
+    float ***vyzzy   = dv->yzzy;
+    float ***vxzzx   = dv->xzzx;
+    float ***vxxyyzz = dv->xxyyzz;
+    float ***vyyzz   = dv->yyzz;
+    float ***vxxzz   = dv->xxzz;
+    float ***vxxyy   = dv->xxyy;
     
     for (j=ny1;j<=ny2;j++){
         for (i=nx1;i<=nx2;i++){
