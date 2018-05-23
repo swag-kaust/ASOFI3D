@@ -78,8 +78,7 @@ int main(int argc, char **argv)
     r.xx = NULL; r.yy = NULL; r.zz = NULL;
     /* We need these arrays for the time shift for Adams-Bashforth method. */
     Tensor3d r_2;
-    float ***rxy_3 = NULL, ***ryz_3 = NULL, ***rxz_3 = NULL;
-    float ***rxx_3 = NULL, ***ryy_3 = NULL, ***rzz_3 = NULL;
+    Tensor3d r_3;
     float ***rxy_4 = NULL, ***ryz_4 = NULL, ***rxz_4 = NULL;
     float ***rxx_4 = NULL, ***ryy_4 = NULL, ***rzz_4 = NULL;
 
@@ -528,12 +527,12 @@ int main(int argc, char **argv)
             r_2.yy = f3tensor(1, NY, 1, NX, 1, NZ);
             r_2.zz = f3tensor(1, NY, 1, NX, 1, NZ);
 
-            rxy_3 = f3tensor(1, NY, 1, NX, 1, NZ);
-            ryz_3 = f3tensor(1, NY, 1, NX, 1, NZ);
-            rxz_3 = f3tensor(1, NY, 1, NX, 1, NZ);
-            rxx_3 = f3tensor(1, NY, 1, NX, 1, NZ);
-            ryy_3 = f3tensor(1, NY, 1, NX, 1, NZ);
-            rzz_3 = f3tensor(1, NY, 1, NX, 1, NZ);
+            r_3.xy = f3tensor(1, NY, 1, NX, 1, NZ);
+            r_3.yz = f3tensor(1, NY, 1, NX, 1, NZ);
+            r_3.xz = f3tensor(1, NY, 1, NX, 1, NZ);
+            r_3.xx = f3tensor(1, NY, 1, NX, 1, NZ);
+            r_3.yy = f3tensor(1, NY, 1, NX, 1, NZ);
+            r_3.zz = f3tensor(1, NY, 1, NX, 1, NZ);
             if (FDORDER_TIME == 4)
             {
                 rxy_4 = f3tensor(1, NY, 1, NX, 1, NZ);
@@ -965,7 +964,8 @@ int main(int argc, char **argv)
             {
                 zero(1 - FDORDER / 2, NX + FDORDER / 2, 1 - FDORDER / 2, NY + FDORDER / 2, 1 - FDORDER / 2, NZ + FDORDER / 2, &v, &s, &dv,
                      &dv_2, &dv_3, &dv_4,
-                     svx, svy, svz, svx_2, svy_2, svz_2, svx_3, svy_3, svz_3, svx_4, svy_4, svz_4, &r, &r_2, rxx_3, ryy_3, rzz_3, rxy_3, ryz_3, rxz_3, rxx_4, ryy_4, rzz_4, rxy_4, ryz_4, rxz_4);
+                     svx, svy, svz, svx_2, svy_2, svz_2, svx_3, svy_3, svz_3, svx_4, svy_4, svz_4, 
+                     &r, &r_2, &r_3, rxx_4, ryy_4, rzz_4, rxy_4, ryz_4, rxz_4);
             }
 
             if ((L == 0) && (ABS_TYPE == 2) && (CHECKPTREAD == 0))
@@ -977,7 +977,9 @@ int main(int argc, char **argv)
             }
             if ((ABS_TYPE == 1) && (CHECKPTREAD == 0))
             {
-                zero_elastic_CPML(NX, NY, NZ, &v, &s, &r, psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y, psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z, psi_vxx, psi_vyx, psi_vzx, psi_vxy, psi_vyy, psi_vzy, psi_vxz, psi_vyz, psi_vzz, &r_2, rxx_3, ryy_3, rzz_3, rxy_3, ryz_3, rxz_3, rxx_4, ryy_4, rzz_4, rxy_4, ryz_4, rxz_4);
+                zero_elastic_CPML(NX, NY, NZ, &v, &s, &r,
+                        psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y, psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z, psi_vxx, psi_vyx, psi_vzx, psi_vxy, psi_vyy, psi_vzy, psi_vxz, psi_vyz, psi_vzz,
+                        &r_2, &r_3, rxx_4, ryy_4, rzz_4, rxy_4, ryz_4, rxz_4);
             }
 
             /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
@@ -1105,7 +1107,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                                                  pi, u, C66ipjp, C44jpkp, C55ipkp, taus, tausipjp, tausjpkp, tausipkp, taup, eta,
                         &dv, &dv_2, &dv_3, &dv_4,
                         &r_2,
-                        rxx_3, ryy_3, rzz_3, rxy_3, ryz_3, rxz_3, rxx_4, ryy_4, rzz_4, rxy_4, ryz_4, rxz_4);
+                        &r_3, rxx_4, ryy_4, rzz_4, rxy_4, ryz_4, rxz_4);
                     if (ABS_TYPE == 1)
                         update_s_CPML(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v,
                             &s, &r, pi, u,
@@ -1169,33 +1171,33 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                     if (L == 1)
                     {
                         shift_r1 = rxy_4;
-                        rxy_4 = rxy_3;
-                        rxy_3 = r_2.xy;
+                        rxy_4 = r_3.xy;
+                        r_3.xy = r_2.xy;
                         r_2.xy = r.xy;
                         r.xy = shift_r1;
                         shift_r2 = ryz_4;
-                        ryz_4 = ryz_3;
-                        ryz_3 = r_2.yz;
+                        ryz_4 = r_3.yz;
+                        r_3.yz = r_2.yz;
                         r_2.yz = r.yz;
                         r.yz = shift_r2;
                         shift_r3 = rxz_4;
-                        rxz_4 = rxz_3;
-                        rxz_3 = r_2.xz;
+                        rxz_4 = r_3.xz;
+                        r_3.xz = r_2.xz;
                         r_2.xz = r.xz;
                         r.xz = shift_r3;
                         shift_r4 = rxx_4;
-                        rxx_4 = rxx_3;
-                        rxx_3 = r_2.xx;
+                        rxx_4 = r_3.xx;
+                        r_3.xx = r_2.xx;
                         r.xx = r.xx;
                         r.xx = shift_r4;
                         shift_r5 = ryy_4;
-                        ryy_4 = ryy_3;
-                        ryy_3 = r_2.yy;
+                        ryy_4 = r_3.yy;
+                        r_3.yy = r_2.yy;
                         r_2.yy = r.yy;
                         r.yy = shift_r5;
                         shift_r6 = rzz_4;
-                        rzz_4 = rzz_3;
-                        rzz_3 = r_2.zz;
+                        rzz_4 = r_3.zz;
+                        r_3.zz = r_2.zz;
                         r_2.zz = r.zz;
                         r.zz = shift_r6;
                     }
@@ -1232,28 +1234,28 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                     dv.xxyy = shift_v7;
                     if (L == 1)
                     {
-                        shift_r1 = rxy_3;
-                        rxy_3 = r_2.xy;
+                        shift_r1 = r_3.xy;
+                        r_3.xy = r_2.xy;
                         r_2.xy = r.xy;
                         r.xy = shift_r1;
-                        shift_r2 = ryz_3;
-                        ryz_3 = r_2.yz;
+                        shift_r2 = r_3.yz;
+                        r_3.yz = r_2.yz;
                         r_2.yz = r.yz;
                         r.yz = shift_r2;
-                        shift_r3 = rxz_3;
-                        rxz_3 = r_2.xz;
+                        shift_r3 = r_3.xz;
+                        r_3.xz = r_2.xz;
                         r_2.xz = r.xz;
                         r.xz = shift_r3;
-                        shift_r4 = rxx_3;
-                        rxx_3 = r_2.xx;
+                        shift_r4 = r_3.xx;
+                        r_3.xx = r_2.xx;
                         r_2.xx = r.xx;
                         r.xx = shift_r4;
-                        shift_r5 = ryy_3;
-                        ryy_3 = r_2.yy;
+                        shift_r5 = r_3.yy;
+                        r_3.yy = r_2.yy;
                         r_2.yy = r.yy;
                         r.yy = shift_r5;
-                        shift_r6 = rzz_3;
-                        rzz_3 = r_2.zz;
+                        shift_r6 = r_3.zz;
+                        r_3.zz = r_2.zz;
                         r_2.zz = r.zz;
                         r.zz = shift_r6;
                     }
@@ -1614,12 +1616,12 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
             free_f3tensor(r_2.xy, 1, NY, 1, NX, 1, NZ);
             free_f3tensor(r_2.yz, 1, NY, 1, NX, 1, NZ);
             free_f3tensor(r_2.xz, 1, NY, 1, NX, 1, NZ);
-            free_f3tensor(rxx_3, 1, NY, 1, NX, 1, NZ);
-            free_f3tensor(ryy_3, 1, NY, 1, NX, 1, NZ);
-            free_f3tensor(rzz_3, 1, NY, 1, NX, 1, NZ);
-            free_f3tensor(rxy_3, 1, NY, 1, NX, 1, NZ);
-            free_f3tensor(ryz_3, 1, NY, 1, NX, 1, NZ);
-            free_f3tensor(rxz_3, 1, NY, 1, NX, 1, NZ);
+            free_f3tensor(r_3.xx, 1, NY, 1, NX, 1, NZ);
+            free_f3tensor(r_3.yy, 1, NY, 1, NX, 1, NZ);
+            free_f3tensor(r_3.zz, 1, NY, 1, NX, 1, NZ);
+            free_f3tensor(r_3.xy, 1, NY, 1, NX, 1, NZ);
+            free_f3tensor(r_3.yz, 1, NY, 1, NX, 1, NZ);
+            free_f3tensor(r_3.xz, 1, NY, 1, NX, 1, NZ);
             if (FDORDER_TIME == 4)
             {
                 free_f3tensor(rxx_4, 1, NY, 1, NX, 1, NZ);

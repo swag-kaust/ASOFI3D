@@ -35,9 +35,9 @@ void zero(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
           float *** svx_4, float *** svy_4, float *** svz_4,
           Tensor3d *r,
           Tensor3d *r_2,
-          float *** rxx_3, float *** ryy_3,
-          float *** rzz_3, float *** rxy_3, float *** ryz_3, float *** rxz_3,float *** rxx_4, float *** ryy_4,
-          float *** rzz_4, float *** rxy_4, float *** ryz_4, float *** rxz_4){
+          Tensor3d *r_3,
+          float *** rxx_4, float *** ryy_4,
+          float *** rzz_4, float *** rxy_4, float *** ryz_4, float *** rxz_4) {
     
     
     extern int FDORDER_TIME;
@@ -100,6 +100,13 @@ void zero(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
     float ***rxy_2 = r_2->xy;
     float ***ryz_2 = r_2->yz;
     float ***rxz_2 = r_2->xz;
+
+    float ***rxx_3 = r_3->xx;
+    float ***ryy_3 = r_3->yy;
+    float ***rzz_3 = r_3->zz;
+    float ***rxy_3 = r_3->xy;
+    float ***ryz_3 = r_3->yz;
+    float ***rxz_3 = r_3->xz;
     
 
     /* Set memory variables to zero */
