@@ -58,13 +58,6 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
     float ***syz = s->yz;
     float ***sxz = s->xz;
 
-    float ***rxx = r->xx;
-    float ***ryy = r->yy;
-    float ***rzz = r->zz;
-    float ***rxy = r->xy;
-    float ***ryz = r->yz;
-    float ***rxz = r->xz;
-
     float ***vxyyx   = dv->xyyx;
     float ***vyzzy   = dv->yzzy;
     float ***vxzzx   = dv->xzzx;
