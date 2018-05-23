@@ -39,8 +39,7 @@ double update_s(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  int nt,
                 VelocityDerivativesTensor *dv_4,
                 Tensor3d *r_2,
                 Tensor3d *r_3,
-                float *** rxx_4, float *** ryy_4,
-                float *** rzz_4, float *** rxy_4, float *** ryz_4, float *** rxz_4) {
+                Tensor3d *r_4) {
 
     extern float DT, DX, DY, DZ;
     extern int L, MYID, FDORDER,FDORDER_TIME, LOG, FDCOEFF;
@@ -110,6 +109,13 @@ double update_s(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  int nt,
     float ***rxy_3 = r_3->xy;
     float ***ryz_3 = r_3->yz;
     float ***rxz_3 = r_3->xz;
+
+    float ***rxx_4 = r_4->xx;
+    float ***ryy_4 = r_4->yy;
+    float ***rzz_4 = r_4->zz;
+    float ***rxy_4 = r_4->xy;
+    float ***ryz_4 = r_4->yz;
+    float ***rxz_4 = r_4->xz;
 
     int i, j, k, l=1;
     double time=0.0, time1=0.0, time2=0.0;

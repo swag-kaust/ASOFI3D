@@ -314,8 +314,7 @@ double update_s(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
                 VelocityDerivativesTensor *dv_4,
                 Tensor3d *r_2,
                 Tensor3d *r_3,
-                float *** rxx_4, float *** ryy_4,
-                float *** rzz_4, float *** rxy_4, float *** ryz_4, float *** rxz_4);
+                Tensor3d *r_4);
 
 
 double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
@@ -461,8 +460,7 @@ void zero(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
           Tensor3d *r,
           Tensor3d *r_2,
           Tensor3d *r_3,
-          float *** rxx_4, float *** ryy_4,
-          float *** rzz_4, float *** rxy_4, float *** ryz_4, float *** rxz_4);
+          Tensor3d *r_4);
 
 void zero_elastic_CPML(int NX, int NY, int NZ, Velocity *v,
                        Tensor3d *s,
@@ -473,8 +471,7 @@ void zero_elastic_CPML(int NX, int NY, int NZ, Velocity *v,
                        float *** psi_vzy, float *** psi_vxz, float *** psi_vyz, float *** psi_vzz,
                        Tensor3d *r_2,
                        Tensor3d *r_3,
-                       float *** rxx_4, float *** ryy_4,
-                       float *** rzz_4, float *** rxy_4, float *** ryz_4, float *** rxz_4);
+                       Tensor3d *r_4);
 
 
 /* declaration of functions for json parser in json_parser.c*/

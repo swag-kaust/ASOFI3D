@@ -25,19 +25,18 @@
 #include "data_structures.h"
 
 void zero(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
-                  Tensor3d *s,
-                  VelocityDerivativesTensor *dv,
-                  VelocityDerivativesTensor *dv_2,
-                  VelocityDerivativesTensor *dv_3,
-                  VelocityDerivativesTensor *dv_4,
-                  float *** svx, float *** svy, float *** svz,
-                  float *** svx_2, float *** svy_2, float *** svz_2, float *** svx_3, float *** svy_3, float *** svz_3,
+          Tensor3d *s,
+          VelocityDerivativesTensor *dv,
+          VelocityDerivativesTensor *dv_2,
+          VelocityDerivativesTensor *dv_3,
+          VelocityDerivativesTensor *dv_4,
+          float *** svx, float *** svy, float *** svz,
+          float *** svx_2, float *** svy_2, float *** svz_2, float *** svx_3, float *** svy_3, float *** svz_3,
           float *** svx_4, float *** svy_4, float *** svz_4,
           Tensor3d *r,
           Tensor3d *r_2,
           Tensor3d *r_3,
-          float *** rxx_4, float *** ryy_4,
-          float *** rzz_4, float *** rxy_4, float *** ryz_4, float *** rxz_4) {
+          Tensor3d *r_4) {
     
     
     extern int FDORDER_TIME;
@@ -107,6 +106,13 @@ void zero(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
     float ***rxy_3 = r_3->xy;
     float ***ryz_3 = r_3->yz;
     float ***rxz_3 = r_3->xz;
+
+    float ***rxx_4 = r_4->xx;
+    float ***ryy_4 = r_4->yy;
+    float ***rzz_4 = r_4->zz;
+    float ***rxy_4 = r_4->xy;
+    float ***ryz_4 = r_4->yz;
+    float ***rxz_4 = r_4->xz;
     
 
     /* Set memory variables to zero */
