@@ -312,8 +312,8 @@ double update_s(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
                 VelocityDerivativesTensor *dv_2,
                 VelocityDerivativesTensor *dv_3,
                 VelocityDerivativesTensor *dv_4,
-                float *** rxx_2, float *** ryy_2,
-                float *** rzz_2, float *** rxy_2, float *** ryz_2, float *** rxz_2,float *** rxx_3, float *** ryy_3,
+                Tensor3d *r_2,
+                float *** rxx_3, float *** ryy_3,
                 float *** rzz_3, float *** rxy_3, float *** ryz_3, float *** rxz_3,float *** rxx_4, float *** ryy_4,
                 float *** rzz_4, float *** rxy_4, float *** ryz_4, float *** rxz_4);
 
@@ -459,8 +459,8 @@ void zero(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
           float *** svx_2, float *** svy_2, float *** svz_2, float *** svx_3, float *** svy_3, float *** svz_3,
           float *** svx_4, float *** svy_4, float *** svz_4,
           Tensor3d *r,
-          float *** rxx_2, float *** ryy_2,
-          float *** rzz_2, float *** rxy_2, float *** ryz_2, float *** rxz_2,float *** rxx_3, float *** ryy_3,
+          Tensor3d *r_2,
+          float *** rxx_3, float *** ryy_3,
           float *** rzz_3, float *** rxy_3, float *** ryz_3, float *** rxz_3,float *** rxx_4, float *** ryy_4,
           float *** rzz_4, float *** rxy_4, float *** ryz_4, float *** rxz_4);
 
@@ -470,8 +470,9 @@ void zero_elastic_CPML(int NX, int NY, int NZ, Velocity *v,
                        float *** psi_sxx_x, float *** psi_sxy_x, float *** psi_sxz_x,
 		float *** psi_sxy_y, float *** psi_syy_y, float *** psi_syz_y, float *** psi_sxz_z, float *** psi_syz_z,
 		float *** psi_szz_z, float *** psi_vxx, float *** psi_vyx, float *** psi_vzx, float *** psi_vxy, float *** psi_vyy,
-                       float *** psi_vzy, float *** psi_vxz, float *** psi_vyz, float *** psi_vzz,float *** rxx_2, float *** ryy_2,
-                       float *** rzz_2, float *** rxy_2, float *** ryz_2, float *** rxz_2,float *** rxx_3, float *** ryy_3,
+                       float *** psi_vzy, float *** psi_vxz, float *** psi_vyz, float *** psi_vzz,
+                       Tensor3d *r_2,
+                       float *** rxx_3, float *** ryy_3,
                        float *** rzz_3, float *** rxy_3, float *** ryz_3, float *** rxz_3,float *** rxx_4, float *** ryy_4,
                        float *** rzz_4, float *** rxy_4, float *** ryz_4, float *** rxz_4);
 

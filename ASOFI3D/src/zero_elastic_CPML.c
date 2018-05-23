@@ -27,8 +27,9 @@
 
 void zero_elastic_CPML(int NX, int NY, int NZ, Velocity *v,
                        Tensor3d *s, Tensor3d *r,
-                       float *** psi_sxx_x, float *** psi_sxy_x, float *** psi_sxz_x, float *** psi_sxy_y, float *** psi_syy_y, float *** psi_syz_y, float *** psi_sxz_z, float *** psi_syz_z, float *** psi_szz_z, float *** psi_vxx, float *** psi_vyx, float *** psi_vzx, float *** psi_vxy, float *** psi_vyy, float *** psi_vzy, float *** psi_vxz, float *** psi_vyz, float *** psi_vzz,float *** rxx_2, float *** ryy_2,
-                       float *** rzz_2, float *** rxy_2, float *** ryz_2, float *** rxz_2,float *** rxx_3, float *** ryy_3,
+                       float *** psi_sxx_x, float *** psi_sxy_x, float *** psi_sxz_x, float *** psi_sxy_y, float *** psi_syy_y, float *** psi_syz_y, float *** psi_sxz_z, float *** psi_syz_z, float *** psi_szz_z, float *** psi_vxx, float *** psi_vyx, float *** psi_vzx, float *** psi_vxy, float *** psi_vyy, float *** psi_vzy, float *** psi_vxz, float *** psi_vyz, float *** psi_vzz,
+                       Tensor3d *r_2,
+                       float *** rxx_3, float *** ryy_3,
                        float *** rzz_3, float *** rxy_3, float *** ryz_3, float *** rxz_3,float *** rxx_4, float *** ryy_4,
                        float *** rzz_4, float *** rxy_4, float *** ryz_4, float *** rxz_4){
 
@@ -53,6 +54,13 @@ void zero_elastic_CPML(int NX, int NY, int NZ, Velocity *v,
     float ***rxy = r->xy;
     float ***ryz = r->yz;
     float ***rxz = r->xz;
+
+    float ***rxx_2 = r_2->xx;
+    float ***ryy_2 = r_2->yy;
+    float ***rzz_2 = r_2->zz;
+    float ***rxy_2 = r_2->xy;
+    float ***ryz_2 = r_2->yz;
+    float ***rxz_2 = r_2->xz;
 
     l=1;
     if(ABS_TYPE==1 && FDORDER==2){l=2;}

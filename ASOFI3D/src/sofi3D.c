@@ -52,10 +52,6 @@ int main(int argc, char **argv)
     Tensor3d s;
     s.xy = NULL; s.yz = NULL; s.xz = NULL;
     s.xx = NULL; s.yy = NULL; s.zz = NULL;
-    /* TODO: define what `r` means. */
-    Tensor3d r;
-    r.xy = NULL; r.yz = NULL; r.xz = NULL;
-    r.xx = NULL; r.yy = NULL; r.zz = NULL;
     /* Velocity vector. */
     Velocity v;
     v.x = NULL; v.y = NULL; v.z = NULL;
@@ -76,9 +72,12 @@ int main(int argc, char **argv)
     float ***shift_v1 = NULL, ***shift_v2 = NULL, ***shift_v3 = NULL, ***shift_v4 = NULL, ***shift_v5 = NULL, ***shift_v6 = NULL, ***shift_v7 = NULL;
     float ***shift_r1 = NULL, ***shift_r2 = NULL, ***shift_r3 = NULL, ***shift_r4 = NULL, ***shift_r5 = NULL, ***shift_r6 = NULL;
 
+    /* TODO: define what `r` means. */
+    Tensor3d r;
+    r.xy = NULL; r.yz = NULL; r.xz = NULL;
+    r.xx = NULL; r.yy = NULL; r.zz = NULL;
     /* We need these arrays for the time shift for Adams-Bashforth method. */
-    float ***rxy_2 = NULL, ***ryz_2 = NULL, ***rxz_2 = NULL;
-    float ***rxx_2 = NULL, ***ryy_2 = NULL, ***rzz_2 = NULL;
+    Tensor3d r_2;
     float ***rxy_3 = NULL, ***ryz_3 = NULL, ***rxz_3 = NULL;
     float ***rxx_3 = NULL, ***ryy_3 = NULL, ***rzz_3 = NULL;
     float ***rxy_4 = NULL, ***ryz_4 = NULL, ***rxz_4 = NULL;
@@ -522,12 +521,12 @@ int main(int argc, char **argv)
 
         if (FDORDER_TIME != 2)
         { /* Allocate memory for Adams Bashforth */
-            rxy_2 = f3tensor(1, NY, 1, NX, 1, NZ);
-            ryz_2 = f3tensor(1, NY, 1, NX, 1, NZ);
-            rxz_2 = f3tensor(1, NY, 1, NX, 1, NZ);
-            rxx_2 = f3tensor(1, NY, 1, NX, 1, NZ);
-            ryy_2 = f3tensor(1, NY, 1, NX, 1, NZ);
-            rzz_2 = f3tensor(1, NY, 1, NX, 1, NZ);
+            r_2.xy = f3tensor(1, NY, 1, NX, 1, NZ);
+            r_2.yz = f3tensor(1, NY, 1, NX, 1, NZ);
+            r_2.xz = f3tensor(1, NY, 1, NX, 1, NZ);
+            r_2.xx = f3tensor(1, NY, 1, NX, 1, NZ);
+            r_2.yy = f3tensor(1, NY, 1, NX, 1, NZ);
+            r_2.zz = f3tensor(1, NY, 1, NX, 1, NZ);
 
             rxy_3 = f3tensor(1, NY, 1, NX, 1, NZ);
             ryz_3 = f3tensor(1, NY, 1, NX, 1, NZ);
@@ -966,7 +965,7 @@ int main(int argc, char **argv)
             {
                 zero(1 - FDORDER / 2, NX + FDORDER / 2, 1 - FDORDER / 2, NY + FDORDER / 2, 1 - FDORDER / 2, NZ + FDORDER / 2, &v, &s, &dv,
                      &dv_2, &dv_3, &dv_4,
-                     svx, svy, svz, svx_2, svy_2, svz_2, svx_3, svy_3, svz_3, svx_4, svy_4, svz_4, &r, rxx_2, ryy_2, rzz_2, rxy_2, ryz_2, rxz_2, rxx_3, ryy_3, rzz_3, rxy_3, ryz_3, rxz_3, rxx_4, ryy_4, rzz_4, rxy_4, ryz_4, rxz_4);
+                     svx, svy, svz, svx_2, svy_2, svz_2, svx_3, svy_3, svz_3, svx_4, svy_4, svz_4, &r, &r_2, rxx_3, ryy_3, rzz_3, rxy_3, ryz_3, rxz_3, rxx_4, ryy_4, rzz_4, rxy_4, ryz_4, rxz_4);
             }
 
             if ((L == 0) && (ABS_TYPE == 2) && (CHECKPTREAD == 0))
@@ -978,7 +977,7 @@ int main(int argc, char **argv)
             }
             if ((ABS_TYPE == 1) && (CHECKPTREAD == 0))
             {
-                zero_elastic_CPML(NX, NY, NZ, &v, &s, &r, psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y, psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z, psi_vxx, psi_vyx, psi_vzx, psi_vxy, psi_vyy, psi_vzy, psi_vxz, psi_vyz, psi_vzz, rxx_2, ryy_2, rzz_2, rxy_2, ryz_2, rxz_2, rxx_3, ryy_3, rzz_3, rxy_3, ryz_3, rxz_3, rxx_4, ryy_4, rzz_4, rxy_4, ryz_4, rxz_4);
+                zero_elastic_CPML(NX, NY, NZ, &v, &s, &r, psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y, psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z, psi_vxx, psi_vyx, psi_vzx, psi_vxy, psi_vyy, psi_vzy, psi_vxz, psi_vyz, psi_vzz, &r_2, rxx_3, ryy_3, rzz_3, rxy_3, ryz_3, rxz_3, rxx_4, ryy_4, rzz_4, rxy_4, ryz_4, rxz_4);
             }
 
             /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
@@ -1105,7 +1104,8 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                         &s, &r,
                                                  pi, u, C66ipjp, C44jpkp, C55ipkp, taus, tausipjp, tausjpkp, tausipkp, taup, eta,
                         &dv, &dv_2, &dv_3, &dv_4,
-                        rxx_2, ryy_2, rzz_2, rxy_2, ryz_2, rxz_2, rxx_3, ryy_3, rzz_3, rxy_3, ryz_3, rxz_3, rxx_4, ryy_4, rzz_4, rxy_4, ryz_4, rxz_4);
+                        &r_2,
+                        rxx_3, ryy_3, rzz_3, rxy_3, ryz_3, rxz_3, rxx_4, ryy_4, rzz_4, rxy_4, ryz_4, rxz_4);
                     if (ABS_TYPE == 1)
                         update_s_CPML(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v,
                             &s, &r, pi, u,
@@ -1170,33 +1170,33 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                     {
                         shift_r1 = rxy_4;
                         rxy_4 = rxy_3;
-                        rxy_3 = rxy_2;
-                        rxy_2 = r.xy;
+                        rxy_3 = r_2.xy;
+                        r_2.xy = r.xy;
                         r.xy = shift_r1;
                         shift_r2 = ryz_4;
                         ryz_4 = ryz_3;
-                        ryz_3 = ryz_2;
-                        ryz_2 = r.yz;
+                        ryz_3 = r_2.yz;
+                        r_2.yz = r.yz;
                         r.yz = shift_r2;
                         shift_r3 = rxz_4;
                         rxz_4 = rxz_3;
-                        rxz_3 = rxz_2;
-                        rxz_2 = r.xz;
+                        rxz_3 = r_2.xz;
+                        r_2.xz = r.xz;
                         r.xz = shift_r3;
                         shift_r4 = rxx_4;
                         rxx_4 = rxx_3;
-                        rxx_3 = rxx_2;
-                        rxx_2 = r.xx;
+                        rxx_3 = r_2.xx;
+                        r.xx = r.xx;
                         r.xx = shift_r4;
                         shift_r5 = ryy_4;
                         ryy_4 = ryy_3;
-                        ryy_3 = ryy_2;
-                        ryy_2 = r.yy;
+                        ryy_3 = r_2.yy;
+                        r_2.yy = r.yy;
                         r.yy = shift_r5;
                         shift_r6 = rzz_4;
                         rzz_4 = rzz_3;
-                        rzz_3 = rzz_2;
-                        rzz_2 = r.zz;
+                        rzz_3 = r_2.zz;
+                        r_2.zz = r.zz;
                         r.zz = shift_r6;
                     }
                 }
@@ -1233,28 +1233,28 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                     if (L == 1)
                     {
                         shift_r1 = rxy_3;
-                        rxy_3 = rxy_2;
-                        rxy_2 = r.xy;
+                        rxy_3 = r_2.xy;
+                        r_2.xy = r.xy;
                         r.xy = shift_r1;
                         shift_r2 = ryz_3;
-                        ryz_3 = ryz_2;
-                        ryz_2 = r.yz;
+                        ryz_3 = r_2.yz;
+                        r_2.yz = r.yz;
                         r.yz = shift_r2;
                         shift_r3 = rxz_3;
-                        rxz_3 = rxz_2;
-                        rxz_2 = r.xz;
+                        rxz_3 = r_2.xz;
+                        r_2.xz = r.xz;
                         r.xz = shift_r3;
                         shift_r4 = rxx_3;
-                        rxx_3 = rxx_2;
-                        rxx_2 = r.xx;
+                        rxx_3 = r_2.xx;
+                        r_2.xx = r.xx;
                         r.xx = shift_r4;
                         shift_r5 = ryy_3;
-                        ryy_3 = ryy_2;
-                        ryy_2 = r.yy;
+                        ryy_3 = r_2.yy;
+                        r_2.yy = r.yy;
                         r.yy = shift_r5;
                         shift_r6 = rzz_3;
-                        rzz_3 = rzz_2;
-                        rzz_2 = r.zz;
+                        rzz_3 = r_2.zz;
+                        r_2.zz = r.zz;
                         r.zz = shift_r6;
                     }
                 }
@@ -1608,12 +1608,12 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
         free_f3tensor(r.xz, 1, NY, 1, NX, 1, NZ);
         if (FDORDER_TIME > 2)
         {
-            free_f3tensor(rxx_2, 1, NY, 1, NX, 1, NZ);
-            free_f3tensor(ryy_2, 1, NY, 1, NX, 1, NZ);
-            free_f3tensor(rzz_2, 1, NY, 1, NX, 1, NZ);
-            free_f3tensor(rxy_2, 1, NY, 1, NX, 1, NZ);
-            free_f3tensor(ryz_2, 1, NY, 1, NX, 1, NZ);
-            free_f3tensor(rxz_2, 1, NY, 1, NX, 1, NZ);
+            free_f3tensor(r_2.xx, 1, NY, 1, NX, 1, NZ);
+            free_f3tensor(r_2.yy, 1, NY, 1, NX, 1, NZ);
+            free_f3tensor(r_2.zz, 1, NY, 1, NX, 1, NZ);
+            free_f3tensor(r_2.xy, 1, NY, 1, NX, 1, NZ);
+            free_f3tensor(r_2.yz, 1, NY, 1, NX, 1, NZ);
+            free_f3tensor(r_2.xz, 1, NY, 1, NX, 1, NZ);
             free_f3tensor(rxx_3, 1, NY, 1, NX, 1, NZ);
             free_f3tensor(ryy_3, 1, NY, 1, NX, 1, NZ);
             free_f3tensor(rzz_3, 1, NY, 1, NX, 1, NZ);

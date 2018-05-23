@@ -34,8 +34,8 @@ void zero(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
                   float *** svx_2, float *** svy_2, float *** svz_2, float *** svx_3, float *** svy_3, float *** svz_3,
           float *** svx_4, float *** svy_4, float *** svz_4,
           Tensor3d *r,
-          float *** rxx_2, float *** ryy_2,
-          float *** rzz_2, float *** rxy_2, float *** ryz_2, float *** rxz_2,float *** rxx_3, float *** ryy_3,
+          Tensor3d *r_2,
+          float *** rxx_3, float *** ryy_3,
           float *** rzz_3, float *** rxy_3, float *** ryz_3, float *** rxz_3,float *** rxx_4, float *** ryy_4,
           float *** rzz_4, float *** rxy_4, float *** ryz_4, float *** rxz_4){
     
@@ -54,13 +54,6 @@ void zero(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
     float ***sxy = s->xy;
     float ***syz = s->yz;
     float ***sxz = s->xz;
-
-    float ***rxx = r->xx;
-    float ***ryy = r->yy;
-    float ***rzz = r->zz;
-    float ***rxy = r->xy;
-    float ***ryz = r->yz;
-    float ***rxz = r->xz;
 
     float ***vxyyx   = dv->xyyx;
     float ***vyzzy   = dv->yzzy;
@@ -93,6 +86,20 @@ void zero(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
     float ***vyyzz_4   = dv_4->yyzz;
     float ***vxxzz_4   = dv_4->xxzz;
     float ***vxxyy_4   = dv_4->xxyy;
+
+    float ***rxx = r->xx;
+    float ***ryy = r->yy;
+    float ***rzz = r->zz;
+    float ***rxy = r->xy;
+    float ***ryz = r->yz;
+    float ***rxz = r->xz;
+
+    float ***rxx_2 = r_2->xx;
+    float ***ryy_2 = r_2->yy;
+    float ***rzz_2 = r_2->zz;
+    float ***rxy_2 = r_2->xy;
+    float ***ryz_2 = r_2->yz;
+    float ***rxz_2 = r_2->xz;
     
 
     /* Set memory variables to zero */
