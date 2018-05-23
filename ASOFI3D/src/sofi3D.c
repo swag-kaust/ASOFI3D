@@ -50,11 +50,8 @@ int main(int argc, char **argv)
 
     /* Stress tensor. */
     Tensor3d s;
-    s.xy = NULL; s.yz = NULL; s.xz = NULL;
-    s.xx = NULL; s.yy = NULL; s.zz = NULL;
     /* Velocity vector. */
     Velocity v;
-    v.x = NULL; v.y = NULL; v.z = NULL;
 
     /* Save old spatial derivatives of velocity for Adam-Bashforth method. */
     VelocityDerivativesTensor dv;
@@ -467,36 +464,17 @@ int main(int argc, char **argv)
     if (L)
     { /* no allocation in case of purely elastic simulation */
         /* memory allocation for dynamic (model) arrays */
-        r.xy = f3tensor(1, NY, 1, NX, 1, NZ);
-        r.yz = f3tensor(1, NY, 1, NX, 1, NZ);
-        r.xz = f3tensor(1, NY, 1, NX, 1, NZ);
-        r.xx = f3tensor(1, NY, 1, NX, 1, NZ);
-        r.yy = f3tensor(1, NY, 1, NX, 1, NZ);
-        r.zz = f3tensor(1, NY, 1, NX, 1, NZ);
+        init_tensor3d(&r, 1, NY, 1, NX, 1, NZ);
 
+        // Allocate memory for Adams-Bashforth method.
         if (FDORDER_TIME != 2)
-        { /* Allocate memory for Adams Bashforth */
-            r_2.xy = f3tensor(1, NY, 1, NX, 1, NZ);
-            r_2.yz = f3tensor(1, NY, 1, NX, 1, NZ);
-            r_2.xz = f3tensor(1, NY, 1, NX, 1, NZ);
-            r_2.xx = f3tensor(1, NY, 1, NX, 1, NZ);
-            r_2.yy = f3tensor(1, NY, 1, NX, 1, NZ);
-            r_2.zz = f3tensor(1, NY, 1, NX, 1, NZ);
+        {
+            init_tensor3d(&r_2, 1, NY, 1, NX, 1, NZ);
+            init_tensor3d(&r_3, 1, NY, 1, NX, 1, NZ);
 
-            r_3.xy = f3tensor(1, NY, 1, NX, 1, NZ);
-            r_3.yz = f3tensor(1, NY, 1, NX, 1, NZ);
-            r_3.xz = f3tensor(1, NY, 1, NX, 1, NZ);
-            r_3.xx = f3tensor(1, NY, 1, NX, 1, NZ);
-            r_3.yy = f3tensor(1, NY, 1, NX, 1, NZ);
-            r_3.zz = f3tensor(1, NY, 1, NX, 1, NZ);
             if (FDORDER_TIME == 4)
             {
-                r_4.xy = f3tensor(1, NY, 1, NX, 1, NZ);
-                r_4.yz = f3tensor(1, NY, 1, NX, 1, NZ);
-                r_4.xz = f3tensor(1, NY, 1, NX, 1, NZ);
-                r_4.xx = f3tensor(1, NY, 1, NX, 1, NZ);
-                r_4.yy = f3tensor(1, NY, 1, NX, 1, NZ);
-                r_4.zz = f3tensor(1, NY, 1, NX, 1, NZ);
+                init_tensor3d(&r_4, 1, NY, 1, NX, 1, NZ);
             }
         }
 
@@ -1378,11 +1356,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
      */
     if (POS[2] == 0)
     {
-        free_velocity(
-                &v,
-                0 - FDORDER / 2, NY + l * FDORDER / 2,
-                1 - l * FDORDER / 2, NX + l * FDORDER / 2,
-                1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+        free_velocity(&v, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
         free_f3tensor(s.xy, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
         free_f3tensor(s.yz, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
@@ -1420,11 +1394,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
 
     if (POS[2] > 0)
     {
-        free_velocity(
-                &v,
-                1 - l * FDORDER / 2, NY + l * FDORDER / 2,
-                1 - l * FDORDER / 2, NX + l * FDORDER / 2,
-                1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+        free_velocity(&v, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
         free_f3tensor(s.xy, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
         free_f3tensor(s.yz, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
@@ -1517,36 +1487,18 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
 
     if (L)
     {
-        free_f3tensor(r.xx, 1, NY, 1, NX, 1, NZ);
-        free_f3tensor(r.yy, 1, NY, 1, NX, 1, NZ);
-        free_f3tensor(r.zz, 1, NY, 1, NX, 1, NZ);
-        free_f3tensor(r.xy, 1, NY, 1, NX, 1, NZ);
-        free_f3tensor(r.yz, 1, NY, 1, NX, 1, NZ);
-        free_f3tensor(r.xz, 1, NY, 1, NX, 1, NZ);
+        free_tensor3d(&r, 1, NY, 1, NX, 1, NZ);
+
         if (FDORDER_TIME > 2)
         {
-            free_f3tensor(r_2.xx, 1, NY, 1, NX, 1, NZ);
-            free_f3tensor(r_2.yy, 1, NY, 1, NX, 1, NZ);
-            free_f3tensor(r_2.zz, 1, NY, 1, NX, 1, NZ);
-            free_f3tensor(r_2.xy, 1, NY, 1, NX, 1, NZ);
-            free_f3tensor(r_2.yz, 1, NY, 1, NX, 1, NZ);
-            free_f3tensor(r_2.xz, 1, NY, 1, NX, 1, NZ);
-            free_f3tensor(r_3.xx, 1, NY, 1, NX, 1, NZ);
-            free_f3tensor(r_3.yy, 1, NY, 1, NX, 1, NZ);
-            free_f3tensor(r_3.zz, 1, NY, 1, NX, 1, NZ);
-            free_f3tensor(r_3.xy, 1, NY, 1, NX, 1, NZ);
-            free_f3tensor(r_3.yz, 1, NY, 1, NX, 1, NZ);
-            free_f3tensor(r_3.xz, 1, NY, 1, NX, 1, NZ);
+            free_tensor3d(&r_2, 1, NY, 1, NX, 1, NZ);
+            free_tensor3d(&r_3, 1, NY, 1, NX, 1, NZ);
             if (FDORDER_TIME == 4)
             {
-                free_f3tensor(r_4.xx, 1, NY, 1, NX, 1, NZ);
-                free_f3tensor(r_4.yy, 1, NY, 1, NX, 1, NZ);
-                free_f3tensor(r_4.zz, 1, NY, 1, NX, 1, NZ);
-                free_f3tensor(r_4.xy, 1, NY, 1, NX, 1, NZ);
-                free_f3tensor(r_4.yz, 1, NY, 1, NX, 1, NZ);
-                free_f3tensor(r_4.xz, 1, NY, 1, NX, 1, NZ);
+                free_tensor3d(&r_4, 1, NY, 1, NX, 1, NZ);
             }
         }
+
         free_f3tensor(taus, 0, NY + 1, 0, NX + 1, 0, NZ + 1);
         free_f3tensor(taup, 0, NY + 1, 0, NX + 1, 0, NZ + 1);
         free_vector(eta, 1, L);
