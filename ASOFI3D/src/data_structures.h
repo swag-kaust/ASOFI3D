@@ -46,4 +46,12 @@ void free_velocity(
         Velocity *v,
         int nrl, int nrh, int ncl, int nch, int ndl, int ndh);
 
+void init_velocity_derivatives_tensor(
+        VelocityDerivativesTensor *dv,
+        int nrl, int nrh, int ncl, int nch, int ndl, int ndh);
+
+void free_velocity_derivatives_tensor(
+        VelocityDerivativesTensor *dv,
+        int nrl, int nrh, int ncl, int nch, int ndl, int ndh);
+
 #endif

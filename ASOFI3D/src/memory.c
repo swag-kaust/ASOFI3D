@@ -18,3 +18,29 @@ void free_velocity(
     free_f3tensor(v->y, nrl, nrh, ncl, nch, ndl, ndh);
     free_f3tensor(v->z, nrl, nrh, ncl, nch, ndl, ndh);
 }
+
+void init_velocity_derivatives_tensor(
+        VelocityDerivativesTensor *dv,
+        int nrl, int nrh, int ncl, int nch, int ndl, int ndh) {
+
+    dv->xyyx = f3tensor(nrl, nrh, ncl, nch, ndl, ndh);
+    dv->yzzy = f3tensor(nrl, nrh, ncl, nch, ndl, ndh);
+    dv->xzzx = f3tensor(nrl, nrh, ncl, nch, ndl, ndh);
+    dv->yyzz = f3tensor(nrl, nrh, ncl, nch, ndl, ndh);
+    dv->xxzz = f3tensor(nrl, nrh, ncl, nch, ndl, ndh);
+    dv->xxyy = f3tensor(nrl, nrh, ncl, nch, ndl, ndh);
+    dv->xxyyzz = f3tensor(nrl, nrh, ncl, nch, ndl, ndh);
+}
+
+void free_velocity_derivatives_tensor(
+        VelocityDerivativesTensor *dv,
+        int nrl, int nrh, int ncl, int nch, int ndl, int ndh) {
+
+    free_f3tensor(dv->xyyx, nrl, nrh, ncl, nch, ndl, ndh);
+    free_f3tensor(dv->yzzy, nrl, nrh, ncl, nch, ndl, ndh);
+    free_f3tensor(dv->xzzx, nrl, nrh, ncl, nch, ndl, ndh);
+    free_f3tensor(dv->yyzz, nrl, nrh, ncl, nch, ndl, ndh);
+    free_f3tensor(dv->xxzz, nrl, nrh, ncl, nch, ndl, ndh);
+    free_f3tensor(dv->xxyy, nrl, nrh, ncl, nch, ndl, ndh);
+    free_f3tensor(dv->xxyyzz, nrl, nrh, ncl, nch, ndl, ndh);
+}
