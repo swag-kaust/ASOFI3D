@@ -145,6 +145,7 @@ SOFI3D_SRC = \
 		eqsource.c \
 		seismo_ssg.c \
 		matcopy.c \
+		memory.c \
 		surface_ssg.c \
 		surface_ssg_elastic.c \
 		update_s_ssg.c \
@@ -173,6 +174,7 @@ SOFI3D_SRC_BENCH = \
 		eqsource.c \
 		seismo_ssg.c \
 		matcopy.c \
+		memory.c \
 		surface_ssg.c \
 		surface_ssg_elastic.c \
 		update_s_ssg.c \

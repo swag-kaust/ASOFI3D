@@ -35,4 +35,15 @@ typedef struct {
     float ***xxyy;
 } VelocityDerivativesTensor;
 
+/* ****************************************************************************
+   Allocation and deallocation operations.
+*/
+void init_velocity(
+        Velocity *v,
+        int nrl, int nrh, int ncl, int nch, int ndl, int ndh);
+
+void free_velocity(
+        Velocity *v,
+        int nrl, int nrh, int ncl, int nch, int ndl, int ndh);
+
 #endif
