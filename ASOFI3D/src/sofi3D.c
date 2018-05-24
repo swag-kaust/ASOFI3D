@@ -61,8 +61,9 @@ int main(int argc, char **argv)
 
     /* Save old derivatives of the stress for Adam-Bashforth method. */
     StressDerivativesWrtVelocity ds_dv;
-    float ***svx_2 = NULL, ***svy_2 = NULL, ***svz_2 = NULL, ***svx_3 = NULL, ***svy_3 = NULL, ***svz_3 = NULL;
-    float ***svx_4 = NULL, ***svy_4 = NULL, ***svz_4 = NULL;
+    StressDerivativesWrtVelocity ds_dv_2;
+    StressDerivativesWrtVelocity ds_dv_3;
+    StressDerivativesWrtVelocity ds_dv_4;
 
     /* We need these arrays for the time shift for Adam-Bashforth method. */
     float ***shift_s1 = NULL, ***shift_s2 = NULL, ***shift_s3 = NULL;
@@ -380,26 +381,16 @@ int main(int argc, char **argv)
         { /* Allocate memory for Adams Bashforth */
             init_velocity_derivatives_tensor(
                     &dv, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-
             init_velocity_derivatives_tensor(&dv_2, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-
             init_velocity_derivatives_tensor(&dv_3, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
             init_stress_derivatives_wrt_velocity(&ds_dv, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-
-            svx_2 = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            svy_2 = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            svz_2 = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-
-            svx_3 = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            svy_3 = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            svz_3 = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            init_stress_derivatives_wrt_velocity(&ds_dv_2, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            init_stress_derivatives_wrt_velocity(&ds_dv_3, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
             if (FDORDER_TIME == 4)
             {
-                svx_4 = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-                svy_4 = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-                svz_4 = f3tensor(0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+                init_stress_derivatives_wrt_velocity(&ds_dv_4, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
                 init_velocity_derivatives_tensor(&dv_4, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
             }
@@ -411,35 +402,21 @@ int main(int argc, char **argv)
 
     if (POS[2] > 0)
     {
-        init_velocity(
-                &v,
-                1 - l * FDORDER / 2, NY + l * FDORDER / 2,
-                1 - l * FDORDER / 2, NX + l * FDORDER / 2,
-                1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+        init_velocity(&v, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
         if (FDORDER_TIME != 2)
         { /* Allocate memory for Adams Bashforth */
             init_velocity_derivatives_tensor(&dv, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-
             init_velocity_derivatives_tensor(&dv_2, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-
             init_velocity_derivatives_tensor(&dv_3, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
             init_stress_derivatives_wrt_velocity(&ds_dv, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-
-            svx_2 = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            svy_2 = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            svz_2 = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-
-            svx_3 = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            svy_3 = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            svz_3 = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            init_stress_derivatives_wrt_velocity(&ds_dv_2, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            init_stress_derivatives_wrt_velocity(&ds_dv_3, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
             if (FDORDER_TIME == 4)
             {
-                svx_4 = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-                svy_4 = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-                svz_4 = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+                init_stress_derivatives_wrt_velocity(&ds_dv_4, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
                 init_velocity_derivatives_tensor(&dv_4, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
             }
@@ -894,7 +871,7 @@ int main(int argc, char **argv)
             {
                 zero(1 - FDORDER / 2, NX + FDORDER / 2, 1 - FDORDER / 2, NY + FDORDER / 2, 1 - FDORDER / 2, NZ + FDORDER / 2, &v, &s, &dv,
                      &dv_2, &dv_3, &dv_4,
-                     &ds_dv, svx_2, svy_2, svz_2, svx_3, svy_3, svz_3, svx_4, svy_4, svz_4, 
+                     &ds_dv, &ds_dv_2, &ds_dv_3, &ds_dv_4, 
                      &r, &r_2, &r_3, &r_4);
             }
 
@@ -903,7 +880,7 @@ int main(int argc, char **argv)
                 zero_elastic(1 - FDORDER / 2, NX + FDORDER / 2, 1 - FDORDER / 2, NY + FDORDER / 2, 1 - FDORDER / 2, NZ + FDORDER / 2,
                              &v, &s,
                              &dv, &dv_2, &dv_3, &dv_4,
-                             &ds_dv, svx_2, svy_2, svz_2, svx_3, svy_3, svz_3, svx_4, svy_4, svz_4);
+                             &ds_dv, &ds_dv_2, &ds_dv_3, &ds_dv_4);
             }
             if ((ABS_TYPE == 1) && (CHECKPTREAD == 0))
             {
@@ -978,9 +955,10 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                     }
 
                 /* update of particle velocities */
-                time_v_update[nt] = update_v(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v,
-                    &s, rho, rjp, rkp, rip, srcpos_loc, signals, nsrc_loc, absorb_coeff, stype_loc, 
-                    &ds_dv, svx_2, svy_2, svz_2, svx_3, svy_3, svz_3, svx_4, svy_4, svz_4);
+                time_v_update[nt] = update_v(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt,
+                        &v, &s,
+                        rho, rjp, rkp, rip, srcpos_loc, signals, nsrc_loc, absorb_coeff, stype_loc, 
+                        &ds_dv, &ds_dv_2, &ds_dv_3, &ds_dv_4);
 
                 if (ABS_TYPE == 1)
                 {
@@ -991,42 +969,45 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 // Shift spatial derivatives of the stress one time step back.
                 if (FDORDER_TIME == 4)
                 {
-                    shift_s1 = svx_4;
-                    svx_4 = svx_3;
-                    svx_3 = svx_2;
-                    svx_2 = ds_dv.x;
+                    shift_s1 = ds_dv_4.x;
+                    ds_dv_4.x = ds_dv_3.x;
+                    ds_dv_3.x = ds_dv_2.x;
+                    ds_dv_2.x = ds_dv.x;
                     ds_dv.x = shift_s1;
-                    shift_s2 = svy_4;
-                    svy_4 = svy_3;
-                    svy_3 = svy_2;
-                    svy_2 = ds_dv.y;
+                    shift_s2 = ds_dv_4.y;
+                    ds_dv_4.y = ds_dv_3.y;
+                    ds_dv_3.y = ds_dv_2.y;
+                    ds_dv_2.y = ds_dv.y;
                     ds_dv.y = shift_s2;
-                    shift_s3 = svz_4;
-                    svz_4 = svz_3;
-                    svz_3 = svz_2;
-                    svz_2 = ds_dv.z;
+                    shift_s3 = ds_dv_4.z;
+                    ds_dv_4.z = ds_dv_3.z;
+                    ds_dv_3.z = ds_dv_2.z;
+                    ds_dv_2.z = ds_dv.z;
                     ds_dv.z = shift_s3;
                 }
                 if (FDORDER_TIME == 3)
                 {
-                    shift_s1 = svx_3;
-                    svx_3 = svx_2;
-                    svx_2 = ds_dv.x;
+                    shift_s1 = ds_dv_3.x;
+                    ds_dv_3.x = ds_dv_2.x;
+                    ds_dv_2.x = ds_dv.x;
                     ds_dv.x = shift_s1;
-                    shift_s2 = svy_3;
-                    svy_3 = svy_2;
-                    svy_2 = ds_dv.y;
+                    shift_s2 = ds_dv_3.y;
+                    ds_dv_3.y = ds_dv_2.y;
+                    ds_dv_2.y = ds_dv.y;
                     ds_dv.y = shift_s2;
-                    shift_s3 = svz_3;
-                    svz_3 = svz_2;
-                    svz_2 = ds_dv.z;
+                    shift_s3 = ds_dv_3.z;
+                    ds_dv_3.z = ds_dv_2.z;
+                    ds_dv_2.z = ds_dv.z;
                     ds_dv.z = shift_s3;
                 }
 
                 /* exchange values of particle velocities at grid boundaries between PEs */
 
-            time_v_exchange[nt] = exchange_v(nt, &v, bufferlef_to_rig, bufferrig_to_lef, buffertop_to_bot, bufferbot_to_top,
-                                             bufferfro_to_bac, bufferbac_to_fro, req_send, req_rec);
+                time_v_exchange[nt] = exchange_v(
+                        nt, &v,
+                        bufferlef_to_rig, bufferrig_to_lef, buffertop_to_bot,
+                        bufferbot_to_top, bufferfro_to_bac, bufferbac_to_fro,
+                        req_send, req_rec);
 
                 /* update of components of stress tensor */
 
@@ -1196,7 +1177,8 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 {
                     psource(nt, &s, srcpos_loc, signals, nsrc_loc, stype_loc);
                     /* eqsource is a implementation of moment tensor points sources. */
-                    eqsource(nt, &s, srcpos_loc, signals, nsrc_loc, stype_loc, amon, str, dip, rake);
+                    eqsource(nt, &s, srcpos_loc, signals, nsrc_loc, stype_loc,
+                            amon, str, dip, rake);
                 }
 
                 /* stress free surface ? */
@@ -1211,8 +1193,11 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 }
 
                 /* exchange values of stress at boundaries between PEs */
-                time_s_exchange[nt] = exchange_s(nt, &s,
-                        sbufferlef_to_rig, sbufferrig_to_lef, sbuffertop_to_bot, sbufferbot_to_top, sbufferfro_to_bac, sbufferbac_to_fro, sreq_send, sreq_rec);
+                time_s_exchange[nt] = exchange_s(
+                        nt, &s,
+                        sbufferlef_to_rig, sbufferrig_to_lef,
+                        sbuffertop_to_bot, sbufferbot_to_top, sbufferfro_to_bac,
+                        sbufferbac_to_fro, sreq_send, sreq_rec);
 
                 /* store amplitudes at receivers in e.g. sectionvx, sectionvz, sectiondiv, ...*/
                 if ((SEISMO) && (ntr > 0) && (nt == lsamp))
@@ -1367,22 +1352,14 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
             free_velocity_derivatives_tensor(&dv_3, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
             free_stress_derivatives_wrt_velocity(&ds_dv, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-
-            free_f3tensor(svx_2, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            free_f3tensor(svy_2, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            free_f3tensor(svz_2, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-
-            free_f3tensor(svx_3, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            free_f3tensor(svy_3, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            free_f3tensor(svz_3, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            free_stress_derivatives_wrt_velocity(&ds_dv_2, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            free_stress_derivatives_wrt_velocity(&ds_dv_3, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
             if (FDORDER_TIME == 4)
             {
                 free_velocity_derivatives_tensor(&dv_4, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
-                free_f3tensor(svx_4, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-                free_f3tensor(svy_4, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-                free_f3tensor(svz_4, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            free_stress_derivatives_wrt_velocity(&ds_dv_4, 0 - FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
             }
         }
     }
@@ -1403,22 +1380,14 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
             free_velocity_derivatives_tensor(&dv_3, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
             free_stress_derivatives_wrt_velocity(&ds_dv, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-
-            free_f3tensor(svx_2, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            free_f3tensor(svy_2, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            free_f3tensor(svz_2, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-
-            free_f3tensor(svx_3, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            free_f3tensor(svy_3, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-            free_f3tensor(svz_3, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            free_stress_derivatives_wrt_velocity(&ds_dv_2, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            free_stress_derivatives_wrt_velocity(&ds_dv_3, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
             if (FDORDER_TIME == 4)
             {
                 free_velocity_derivatives_tensor(&dv_4, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
-                free_f3tensor(svx_4, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-                free_f3tensor(svy_4, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-                free_f3tensor(svz_4, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+            free_stress_derivatives_wrt_velocity(&ds_dv_4, 1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
             }
         }
     }

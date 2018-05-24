@@ -381,8 +381,9 @@ double update_v(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
         float  ***  rho,  float  *** rjp, float  *** rkp, float  *** rip,
         float **  srcpos_loc, float ** signals, int nsrc, float ***absorb_coeff, int * stype,
         StressDerivativesWrtVelocity *ds_dv,
-        float *** svx_2, float *** svy_2, float *** svz_2, float *** svx_3, float *** svy_3, float *** svz_3,
-        float *** svx_4, float *** svy_4, float *** svz_4);
+        StressDerivativesWrtVelocity *ds_dv_2,
+        StressDerivativesWrtVelocity *ds_dv_3,
+        StressDerivativesWrtVelocity *ds_dv_4);
 
 /*double update_v_PML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt, float *** vx, float *** vy, float *** vz,
 float *** sxx, float *** syy, float *** szz, float *** sxy,float *** syz, float *** sxz, float *** vx1, float *** vy1,
@@ -446,8 +447,9 @@ void zero_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity
                   VelocityDerivativesTensor *dv_3,
                   VelocityDerivativesTensor *dv_4,
                   StressDerivativesWrtVelocity *ds_dv,
-                  float *** svx_2, float *** svy_2, float *** svz_2, float *** svx_3, float *** svy_3, float *** svz_3,
-                  float *** svx_4, float *** svy_4, float *** svz_4);
+                  StressDerivativesWrtVelocity *ds_dv_2,
+                  StressDerivativesWrtVelocity *ds_dv_3,
+                  StressDerivativesWrtVelocity *ds_dv_4);
 
 void zero(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
           Tensor3d *s,
@@ -456,8 +458,9 @@ void zero(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
           VelocityDerivativesTensor *dv_3,
           VelocityDerivativesTensor *dv_4,
           StressDerivativesWrtVelocity *ds_dv,
-          float *** svx_2, float *** svy_2, float *** svz_2, float *** svx_3, float *** svy_3, float *** svz_3,
-          float *** svx_4, float *** svy_4, float *** svz_4,
+          StressDerivativesWrtVelocity *ds_dv_2,
+          StressDerivativesWrtVelocity *ds_dv_3,
+          StressDerivativesWrtVelocity *ds_dv_4,
           Tensor3d *r,
           Tensor3d *r_2,
           Tensor3d *r_3,
