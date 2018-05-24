@@ -28,7 +28,8 @@
 double update_v(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 		int nt, Velocity *v,
 		Tensor3d *s, float  ***  rho,  float  *** rjp, float  *** rkp, float  *** rip,
-		float **  srcpos_loc, float ** signals, int nsrc, float *** absorb_coeff, int * stype, float *** svx, float *** svy, float *** svz,
+		float **  srcpos_loc, float ** signals, int nsrc, float *** absorb_coeff, int * stype,
+        StressDerivativesWrtVelocity *ds_dv,
         float *** svx_2, float *** svy_2, float *** svz_2, float *** svx_3, float *** svy_3, float *** svz_3,
         float *** svx_4, float *** svy_4, float *** svz_4) {
 
@@ -42,6 +43,10 @@ double update_v(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
     float ***sxy = s->xy;
     float ***syz = s->yz;
     float ***sxz = s->xz;
+
+    float ***svx = ds_dv->x;
+    float ***svy = ds_dv->y;
+    float ***svz = ds_dv->z;
 
     extern float DT, DX, DY, DZ, SOURCE_ALPHA, SOURCE_BETA;
     double time=0.0, time1=0.0, time2=0.0;

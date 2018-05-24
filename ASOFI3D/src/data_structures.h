@@ -35,6 +35,16 @@ typedef struct {
     float ***xxyy;
 } VelocityDerivativesTensor;
 
+/* Derivatives of the stress with respect to the velocity components.
+ * For example, x-component of this structure is the derivative
+ * with respect to the x-component of the velocity.
+ */
+typedef struct {
+    float ***x;
+    float ***y;
+    float ***z;
+} StressDerivativesWrtVelocity;
+
 /* ****************************************************************************
    Allocation and deallocation operations.
 */
@@ -60,6 +70,14 @@ void init_velocity_derivatives_tensor(
 
 void free_velocity_derivatives_tensor(
         VelocityDerivativesTensor *dv,
+        int nrl, int nrh, int ncl, int nch, int ndl, int ndh);
+
+void init_stress_derivatives_wrt_velocity(
+        StressDerivativesWrtVelocity *ds_dv,
+        int nrl, int nrh, int ncl, int nch, int ndl, int ndh);
+
+void free_stress_derivatives_wrt_velocity(
+        StressDerivativesWrtVelocity *ds_dv,
         int nrl, int nrh, int ncl, int nch, int ndl, int ndh);
 
 #endif
