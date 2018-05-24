@@ -30,9 +30,9 @@ void zero_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity
                   VelocityDerivativesTensor *dv_2,
                   VelocityDerivativesTensor *dv_3,
                   VelocityDerivativesTensor *dv_4,
-                  float *** svx, float *** svy, float *** svz,
+                  StressDerivativesWrtVelocity *ds_dv,
                   float *** svx_2, float *** svy_2, float *** svz_2, float *** svx_3, float *** svy_3, float *** svz_3,
-                  float *** svx_4, float *** svy_4, float *** svz_4){
+                  float *** svx_4, float *** svy_4, float *** svz_4) {
 
 
     extern int FDORDER_TIME;
@@ -79,6 +79,10 @@ void zero_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity
     float ***vyyzz_4   = dv_4->yyzz;
     float ***vxxzz_4   = dv_4->xxzz;
     float ***vxxyy_4   = dv_4->xxyy;
+
+    float ***svx = ds_dv->x;
+    float ***svy = ds_dv->y;
+    float ***svz = ds_dv->z;
     
     for (j=ny1;j<=ny2;j++){
         for (i=nx1;i<=nx2;i++){

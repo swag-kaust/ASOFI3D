@@ -68,3 +68,22 @@ void free_velocity_derivatives_tensor(
     free_f3tensor(dv->xxyy, nrl, nrh, ncl, nch, ndl, ndh);
     free_f3tensor(dv->xxyyzz, nrl, nrh, ncl, nch, ndl, ndh);
 }
+
+void init_stress_derivatives_wrt_velocity(
+        StressDerivativesWrtVelocity *ds_dv,
+        int nrl, int nrh, int ncl, int nch, int ndl, int ndh) {
+
+
+    ds_dv->x = f3tensor(nrl, nrh, ncl, nch, ndl, ndh);
+    ds_dv->y = f3tensor(nrl, nrh, ncl, nch, ndl, ndh);
+    ds_dv->z = f3tensor(nrl, nrh, ncl, nch, ndl, ndh);
+}
+
+void free_stress_derivatives_wrt_velocity(
+        StressDerivativesWrtVelocity *ds_dv,
+        int nrl, int nrh, int ncl, int nch, int ndl, int ndh) {
+
+    free_f3tensor(ds_dv->x, nrl, nrh, ncl, nch, ndl, ndh);
+    free_f3tensor(ds_dv->y, nrl, nrh, ncl, nch, ndl, ndh);
+    free_f3tensor(ds_dv->z, nrl, nrh, ncl, nch, ndl, ndh);
+}
