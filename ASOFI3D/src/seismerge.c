@@ -1,22 +1,4 @@
 /*------------------------------------------------------------------------
- * Copyright (C) 2011 For the list of authors, see file AUTHORS.
- *
- * This file is part of SOFI3D.
- * 
- * SOFI3D is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, version 2.0 of the License only.
- * 
- * SOFI3D is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with SOFI3D. See file COPYING and/or 
-  * <http://www.gnu.org/licenses/gpl-2.0.html>.
---------------------------------------------------------------------------*/
-/*------------------------------------------------------------------------
  *  merging SEG-Y files with non-native endian quick and dirty (The SEG-Y header of
  *	first file is preserved, except for number of traces.)
  *  seismerge <segyfile-name_without_cpu-no> <maximum_cpu-no> <output-filename>
