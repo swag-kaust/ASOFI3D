@@ -1,18 +1,57 @@
-/* ----------------------------------------------------------------------
- * calculation of v updates in CPML boundary (4th order spatial FD sheme)
- * Implementation acoording to Komatitsch, D. and Martin, R.(2007): "An unsplit convolutional perfectly matched layer
- * improved at grazing incidence for the seismic wave equation", geophysics, Vol.72, No.5
- * similar to sofi2D
- *  ----------------------------------------------------------------------*/
-
 #include "fd.h"
 #include "data_structures.h"
 
 
+/**
+ * Correct particle velocity using CPML boundary condition.
+ * 
+ * CPML (convolutional perfectly matched layer) is an absorbing boundary
+ * condition.
+ * Correction is done for the 4th order spatial FD sheme.
+ *
+ * Parameters:
+ * nx1, nx2, ny1, ny2, nz1, nz2 :
+ *     Grid dimensions.
+ * nt :
+ *     Time step.
+ * v :
+ *     Velocity field.
+ * s :
+ *     Stress tensor.
+ * rho, rjp, rkp, rip :
+ *     ??? Describe these parameters ???
+ * srcpos_loc :
+ *     ??? Describe this parameter ???
+ * signals :
+ *     ??? Describe this parameter ???
+ * nsrc :
+ *     ??? Describe this parameter ???
+ * absorb_coeff :
+ *    ??? Absorption coefficient.
+ * stype :
+ *     ??? Describe this parameter ???
+ * K_x, a_x, b_x, K_x_half, a_x_half, b_x_half :
+ *     ??? Describe these parameters ???
+ * K_y, a_y, b_y, K_y_half, a_y_half, b_y_half :
+ *     ??? Describe these parameters ???
+ * K_z, a_z, b_z, K_z_half, a_z_half, b_z_half :
+ *     ??? Describe these parameters ???
+ * psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y,
+ * psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z :
+ *     ??? Describe these parameters ???
+ *
+ * References
+ * ----------
+ * Komatitsch, D. and Martin, R., 2007
+ * An unsplit convolutional perfectly matched layer
+ * improved at grazing incidence for the seismic wave equation
+ * Geophysics, Vol. 72, No. 5
+ * https://doi.org/10.1190/1.2757586
+ */
 double update_v_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 		int nt, Velocity *v,
 		Tensor3d *s,
-                float  ***  rho,  float  *** rjp, float  *** rkp, float  *** rip,
+		float  ***  rho,  float  *** rjp, float  *** rkp, float  *** rip,
 		float **  srcpos_loc, float ** signals, int nsrc, float *** absorb_coeff, int * stype,
 		float * K_x, float * a_x, float * b_x, float * K_x_half, float * a_x_half, float * b_x_half,
 		float * K_y, float * a_y, float * b_y, float * K_y_half, float * a_y_half, float * b_y_half,
