@@ -103,8 +103,8 @@ int main(int argc, char **argv)
     MPI_Comm_rank(MPI_COMM_WORLD, &MYID);
 
     // Assign each MPI process to a GPU
-   // acc_init(acc_device_nvidia);
-   // acc_set_device_num(MYID, acc_device_nvidia);
+    // acc_init(acc_device_nvidia);
+    // acc_set_device_num(MYID, acc_device_nvidia);
 
     setvbuf(stdout, NULL, _IONBF, 0);
 
@@ -199,8 +199,8 @@ int main(int argc, char **argv)
     lsnap = iround(TSNAP1 / DT); /* first snapshot at this timestep */
     if (((ns < 0) && (MYID == 0)) && (SEISMO > 0))
     {
-        /*fprintf(FP," \nSampling interval for seismogram output (DT) : %f \n\n",DT);
-	  fprintf(FP," \nSampling interval shift (NDTSHIFT) : %i , TIME : %f NT : %i NDT : %i \n\n",NDTSHIFT,TIME, NT,NDT);*/
+        //fprintf(FP," \nSampling interval for seismogram output (DT) : %f \n\n",DT);
+        //fprintf(FP," \nSampling interval shift (NDTSHIFT) : %i , TIME : %f NT : %i NDT : %i \n\n",NDTSHIFT,TIME, NT,NDT);
         fprintf(FP, " \nSampling rate for seismogram output (NDT) is out of limit : %i \n\n", ns);
         err(" Check Sampling rate for seismogram output (NDT)!");
     }
@@ -220,7 +220,7 @@ int main(int argc, char **argv)
     NZ = IENDZ;
 
     /* compute receiver locations within each subgrid and
-	   store local receiver coordinates in recpos_loc */
+       store local receiver coordinates in recpos_loc */
     if (SEISMO)
     {
         fprintf(FP, "\n ------------------ READING RECEIVER PARAMETERS ----------------- \n");
@@ -574,214 +574,214 @@ int main(int argc, char **argv)
         }
     }
     int irtm;
-        for (irtm = 0; irtm <= RTM_FLAG; irtm++)
+    for (irtm = 0; irtm <= RTM_FLAG; irtm++)
     {
         if (irtm>0)
         {
             lsnap =  iround(TSNAP1 / DT);
         }
-    if (MYID == 0)
-        fprintf(FP, " ... memory allocation for PE %d was successfull.\n\n", MYID);
+        if (MYID == 0)
+            fprintf(FP, " ... memory allocation for PE %d was successfull.\n\n", MYID);
 
-    /* memory for source position definition */
-    srcpos1 = fmatrix(1, 6, 1, 1);
-
-
+        /* memory for source position definition */
+        srcpos1 = fmatrix(1, 6, 1, 1);
 
 
-    /* Reading source positions from SOURCE_FILE */
-    fprintf(FP, "\n ------------------ READING SOURCE PARAMETERS ------------------- \n");
-    switch (SRCREC)
-    {
-        case 0:
-            if (MYID == 0)
-                err("SRCREC parameter is invalid (SRCREC!=1)! No source parameters specified!");
-            break;
-        case 1:
-            if (MYID == 0)
-            {
-                fprintf(FP, "\n Reading source parameters from file: %s (ASOFI3D source format)\n", SOURCE_FILE);
 
-                if ((fpsrc = fopen(SOURCE_FILE, "r")) == NULL)
-                    err(" Source file could not be opened !");
-                while (fgets(buffer, STRING_SIZE, fpsrc))
-                {
-                    sscanf(buffer, "%s", bufferstring);
-                    /* checks if the line contains a '%'character which indicates a comment line,
-					and if the reading of a string was successful, which is not the case for an empty line*/
-                    if ((strchr(buffer, '#') == 0) && (sscanf(buffer, "%s", bufferstring) == 1))
-                        ++(nsrc);
-                }
-                rewind(fpsrc);
-                if ((nsrc) == 0)
-                    fprintf(FP, "\n WARNING: Could not determine number of sources parameter sets in input file. Assuming %d.\n", (nsrc = 0));
-                else
-                    fprintf(FP, " Number of source positions specified in %s : %d \n", SOURCE_FILE, nsrc);
-            }
 
-            MPI_Barrier(MPI_COMM_WORLD);
-            MPI_Bcast(&nsrc, 1, MPI_INT, 0, MPI_COMM_WORLD);
-
-            stype = ivector(1, nsrc);
-            srcpos = sources(fpsrc, &nsrc, stype);
-
-            /*originally, SOURCE_TYPE=stype is defined in the source file, if not, SOURCE_TYPE is taken from the input file */
-            /*if (stype==NULL) printf("PE%d: Source type(s) undefined?! \n",MYID);*/
-
-            break;
-        case 2:
-            if ((PLANE_WAVE_DEPTH > 0))
-            {
+        /* Reading source positions from SOURCE_FILE */
+        fprintf(FP, "\n ------------------ READING SOURCE PARAMETERS ------------------- \n");
+        switch (SRCREC)
+        {
+            case 0:
+                if (MYID == 0)
+                    err("SRCREC parameter is invalid (SRCREC!=1)! No source parameters specified!");
+                break;
+            case 1:
                 if (MYID == 0)
                 {
-                    /*stype=(int *)malloc(nsrc*sizeof(int));*/ /* for unknown reasons, the pointer does not point to memory that has been allocated by a subroutine this way */
+                    fprintf(FP, "\n Reading source parameters from file: %s (ASOFI3D source format)\n", SOURCE_FILE);
 
-                    /*determining the number of sources in the specified plane normal/tilted to the surface/upper model boundary*/
-                    nsrc = (NXG - 2 * FW + 1) * (NZG - 2 * FW + 1);
-                    /*fprintf(FP,"\n nsrc= %i with NGX=%i, NYG=%i and FW=%i. \n",nsrc,NXG,NYG,FW);*/
+                    if ((fpsrc = fopen(SOURCE_FILE, "r")) == NULL)
+                        err(" Source file could not be opened !");
+                    while (fgets(buffer, STRING_SIZE, fpsrc))
+                    {
+                        sscanf(buffer, "%s", bufferstring);
+                        /* checks if the line contains a '%'character which indicates a comment line,
+                           and if the reading of a string was successful, which is not the case for an empty line*/
+                        if ((strchr(buffer, '#') == 0) && (sscanf(buffer, "%s", bufferstring) == 1))
+                            ++(nsrc);
+                    }
+                    rewind(fpsrc);
+                    if ((nsrc) == 0)
+                        fprintf(FP, "\n WARNING: Could not determine number of sources parameter sets in input file. Assuming %d.\n", (nsrc = 0));
+                    else
+                        fprintf(FP, " Number of source positions specified in %s : %d \n", SOURCE_FILE, nsrc);
                 }
 
                 MPI_Barrier(MPI_COMM_WORLD);
                 MPI_Bcast(&nsrc, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
                 stype = ivector(1, nsrc);
-                srcpos = pwsources(&nsrc, stype);
-            }
-            else
-            {
-                err("SRCREC parameter specifies PLANE_WAVE excitation, but PLANE_WAVE_DEPTH<=0!");
-            }
-            break;
-        /*more source file formats or source file options can be implemented here*/
-        default:
-            err("SRCREC parameter is invalid (SRCREC!=1 or SRCREC!=2)! No source parameters specified!");
-            break;
-    }
+                srcpos = sources(fpsrc, &nsrc, stype);
 
-    /* create model grids check the function readmod*/
-    fprintf(FP, "\n ------------------ MODEL CREATION AND OUTPUT-(aniso READMOD=1 needs to be implemented still)---\n");
-    if (READMOD)
-        readmod(rho, pi, u, taus, taup, eta);
-    else
-    {
-        if (L == 0)
-            model_elastic(rho, pi, u, C11, C12, C13, C22, C23, C33, C44, C55, C66, taus, taup, eta); /* elastic modeling, L is specified in input file*/
+                /*originally, SOURCE_TYPE=stype is defined in the source file, if not, SOURCE_TYPE is taken from the input file */
+                /*if (stype==NULL) printf("PE%d: Source type(s) undefined?! \n",MYID);*/
+
+                break;
+            case 2:
+                if ((PLANE_WAVE_DEPTH > 0))
+                {
+                    if (MYID == 0)
+                    {
+                        /*stype=(int *)malloc(nsrc*sizeof(int));*/ /* for unknown reasons, the pointer does not point to memory that has been allocated by a subroutine this way */
+
+                        /*determining the number of sources in the specified plane normal/tilted to the surface/upper model boundary*/
+                        nsrc = (NXG - 2 * FW + 1) * (NZG - 2 * FW + 1);
+                        /*fprintf(FP,"\n nsrc= %i with NGX=%i, NYG=%i and FW=%i. \n",nsrc,NXG,NYG,FW);*/
+                    }
+
+                    MPI_Barrier(MPI_COMM_WORLD);
+                    MPI_Bcast(&nsrc, 1, MPI_INT, 0, MPI_COMM_WORLD);
+
+                    stype = ivector(1, nsrc);
+                    srcpos = pwsources(&nsrc, stype);
+                }
+                else
+                {
+                    err("SRCREC parameter specifies PLANE_WAVE excitation, but PLANE_WAVE_DEPTH<=0!");
+                }
+                break;
+                /*more source file formats or source file options can be implemented here*/
+            default:
+                err("SRCREC parameter is invalid (SRCREC!=1 or SRCREC!=2)! No source parameters specified!");
+                break;
+        }
+
+        /* create model grids check the function readmod*/
+        fprintf(FP, "\n ------------------ MODEL CREATION AND OUTPUT-(aniso READMOD=1 needs to be implemented still)---\n");
+        if (READMOD)
+            readmod(rho, pi, u, taus, taup, eta);
         else
         {
-            model_visco(rho, pi, u, taus, taup, eta); /* viscoelastic modeling, L is specified in input file*/
+            if (L == 0)
+                model_elastic(rho, pi, u, C11, C12, C13, C22, C23, C33, C44, C55, C66, taus, taup, eta); /* elastic modeling, L is specified in input file*/
+            else
+            {
+                model_visco(rho, pi, u, taus, taup, eta); /* viscoelastic modeling, L is specified in input file*/
+            }
         }
-    }
 
 
 
-    fprintf(FP,"\n \n MYID %d rsf %d rsfden %s", MYID,RSF,RSFDEN);
+        fprintf(FP,"\n \n MYID %d rsf %d rsfden %s", MYID,RSF,RSFDEN);
 
 
-    // Madagascar
+        // Madagascar
 
-    if (RSF) madinput(RSFDEN,rho);
-    //mad_elastic(rho, pi, u, C11, C12, C13, C22, C23, C33, C44, C55, C66, taus, taup, eta);
+        if (RSF) madinput(RSFDEN,rho);
+        //mad_elastic(rho, pi, u, C11, C12, C13, C22, C23, C33, C44, C55, C66, taus, taup, eta);
 
-    if (RUN_MULTIPLE_SHOTS)
-        nshots = nsrc;
-    else
-        nshots = 1;
-    /*printf("\n ------------------ checkfd by MYID %i -------------------- \n", MYID);*/
-    /* check if the FD run will be stable and free of numerical dispersion */
-    checkfd(FP, rho, pi, u, taus, taup, eta, srcpos, nsrc, recpos, ntr_glob);
+        if (RUN_MULTIPLE_SHOTS)
+            nshots = nsrc;
+        else
+            nshots = 1;
+        /*printf("\n ------------------ checkfd by MYID %i -------------------- \n", MYID);*/
+        /* check if the FD run will be stable and free of numerical dispersion */
+        checkfd(FP, rho, pi, u, taus, taup, eta, srcpos, nsrc, recpos, ntr_glob);
 
-    /* calculate 3-D array for exponential damping of reflections
+        /* calculate 3-D array for exponential damping of reflections
            at the edges of the numerical mesh (PML-boundary)*/
-    /*if(ABS_TYPE==1){
-	  absorb_PML(absorb_coeffx, absorb_coeffy, absorb_coeffz);
-        }*/
+        /*if(ABS_TYPE==1){
+          absorb_PML(absorb_coeffx, absorb_coeffy, absorb_coeffz);
+          }*/
 
-    /* calculate damping coefficients for CPML boundary*/
-    if (ABS_TYPE == 1)
-    {
-        CPML_coeff(K_x, alpha_prime_x, a_x, b_x, K_x_half, alpha_prime_x_half, a_x_half, b_x_half, K_y, alpha_prime_y, a_y, b_y, K_y_half, alpha_prime_y_half, a_y_half, b_y_half, K_z, alpha_prime_z, a_z, b_z, K_z_half, alpha_prime_z_half, a_z_half, b_z_half);
-    }
-
-    /* calculate 3-D array for exponential damping of reflections
-	   at the edges of the numerical mesh */
-    if (ABS_TYPE == 2)
-    {
-        absorb(absorb_coeff);
-    }
-
-    /* For the calculation of the material parameters between gridpoints
-	   the parameters have to be averaged. For this, values lying at 0 and NX+1,
-	for example, are required on the local grid. These are now copied from the
-	neighbouring grids */
-    matcopy(rho, pi, u, C11, C12, C13, C22, C23, C33, C44, C55, C66, taus, taup);
-
-    /* spatial averaging of material parameters, i.e. Tau for S-waves, shear modulus, and density */
-    av_mat(rho, pi, u, C44, C55, C66, taus, taup, C66ipjp, C44jpkp, C55ipkp, tausipjp, tausjpkp, tausipkp, rjp, rkp, rip);
-
-    MPI_Barrier(MPI_COMM_WORLD);
-
-    if (CHECKPTREAD)
-    {
-        if (MYID == 0)
+        /* calculate damping coefficients for CPML boundary*/
+        if (ABS_TYPE == 1)
         {
-            time3 = MPI_Wtime();
-            fprintf(FP, " Reading wavefield from check-point file %s \n", CHECKPTFILE);
+            CPML_coeff(K_x, alpha_prime_x, a_x, b_x, K_x_half, alpha_prime_x_half, a_x_half, b_x_half, K_y, alpha_prime_y, a_y, b_y, K_y_half, alpha_prime_y_half, a_y_half, b_y_half, K_z, alpha_prime_z, a_z, b_z, K_z_half, alpha_prime_z_half, a_z_half, b_z_half);
         }
 
-        read_checkpoint(-1, NX + 2, -1, NY + 2, -1, NZ + 2, &v, &s, &r,
-                        psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y, psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z,
-                        psi_vxx, psi_vyx, psi_vzx, psi_vxy, psi_vyy, psi_vzy, psi_vxz, psi_vyz, psi_vzz);
+        /* calculate 3-D array for exponential damping of reflections
+           at the edges of the numerical mesh */
+        if (ABS_TYPE == 2)
+        {
+            absorb(absorb_coeff);
+        }
+
+        /* For the calculation of the material parameters between gridpoints
+           the parameters have to be averaged. For this, values lying at 0 and NX+1,
+           for example, are required on the local grid. These are now copied from the
+           neighbouring grids */
+        matcopy(rho, pi, u, C11, C12, C13, C22, C23, C33, C44, C55, C66, taus, taup);
+
+        /* spatial averaging of material parameters, i.e. Tau for S-waves, shear modulus, and density */
+        av_mat(rho, pi, u, C44, C55, C66, taus, taup, C66ipjp, C44jpkp, C55ipkp, tausipjp, tausjpkp, tausipkp, rjp, rkp, rip);
+
         MPI_Barrier(MPI_COMM_WORLD);
+
+        if (CHECKPTREAD)
+        {
+            if (MYID == 0)
+            {
+                time3 = MPI_Wtime();
+                fprintf(FP, " Reading wavefield from check-point file %s \n", CHECKPTFILE);
+            }
+
+            read_checkpoint(-1, NX + 2, -1, NY + 2, -1, NZ + 2, &v, &s, &r,
+                    psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y, psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z,
+                    psi_vxx, psi_vyx, psi_vzx, psi_vxy, psi_vyy, psi_vzy, psi_vxz, psi_vyz, psi_vzz);
+            MPI_Barrier(MPI_COMM_WORLD);
+            if (MYID == 0)
+            {
+                time4 = MPI_Wtime();
+                fprintf(FP, " finished (real time: %4.2f s).\n", time4 - time3);
+            }
+        }
+
+        /* comunication initialisation for persistent communication */
+        /*comm_ini(bufferlef_to_rig, bufferrig_to_lef,
+          buffertop_to_bot, bufferbot_to_top, bufferfro_to_bac,
+          bufferbac_to_fro, req_send, req_rec);
+
+          comm_ini_s(sbufferlef_to_rig, sbufferrig_to_lef,
+          sbuffertop_to_bot, sbufferbot_to_top, sbufferfro_to_bac,
+          sbufferbac_to_fro, sreq_send, sreq_rec);*/
+
+        /* initialisation of PML and ABS domain */
+        if (ABS_TYPE == 1)
+        {
+            CPML_ini_elastic(xb, yb, zb);
+        }
+
+        if (ABS_TYPE == 2)
+        {
+            xb[0] = 1;
+            xb[1] = NX;
+            yb[0] = 1;
+            yb[1] = NY;
+            zb[0] = 1;
+            zb[1] = NZ;
+        }
+
         if (MYID == 0)
         {
-            time4 = MPI_Wtime();
-            fprintf(FP, " finished (real time: %4.2f s).\n", time4 - time3);
+            time2 = MPI_Wtime();
+            fprintf(FP, "\n\n\n **************************************************\n");
+            fprintf(FP, " *********** STARTING TIME STEPPING ***************\n");
+            fprintf(FP, " **************************************************\n");
+            fprintf(FP, " real time before starting time loop: %4.2f s.\n", time2 - time1);
         }
-    }
 
-    /* comunication initialisation for persistent communication */
-    /*comm_ini(bufferlef_to_rig, bufferrig_to_lef,
-	    buffertop_to_bot, bufferbot_to_top, bufferfro_to_bac,
-	    bufferbac_to_fro, req_send, req_rec);
-
-	comm_ini_s(sbufferlef_to_rig, sbufferrig_to_lef,
-	    sbuffertop_to_bot, sbufferbot_to_top, sbufferfro_to_bac,
-	    sbufferbac_to_fro, sreq_send, sreq_rec);*/
-
-    /* initialisation of PML and ABS domain */
-    if (ABS_TYPE == 1)
-    {
-        CPML_ini_elastic(xb, yb, zb);
-    }
-
-    if (ABS_TYPE == 2)
-    {
-        xb[0] = 1;
-        xb[1] = NX;
-        yb[0] = 1;
-        yb[1] = NY;
-        zb[0] = 1;
-        zb[1] = NZ;
-    }
-
-    if (MYID == 0)
-    {
-        time2 = MPI_Wtime();
-        fprintf(FP, "\n\n\n **************************************************\n");
-        fprintf(FP, " *********** STARTING TIME STEPPING ***************\n");
-        fprintf(FP, " **************************************************\n");
-        fprintf(FP, " real time before starting time loop: %4.2f s.\n", time2 - time1);
-    }
-
-    // for (int irtm = 0; irtm <= RTM_FLAG; irtm++)
-    // {
-    //if (RSF) madinput(RSFDEN,rho);
+        // for (int irtm = 0; irtm <= RTM_FLAG; irtm++)
+        // {
+        //if (RSF) madinput(RSFDEN,rho);
 
 
 
 
 
-    for (ishot = 1; ishot <= nshots; ishot++)
+        for (ishot = 1; ishot <= nshots; ishot++)
         {
             fprintf(FP, "\n MYID=%d *****  Starting simulation for shot %d of %d  ********** \n", MYID, ishot, nshots);
             for (nt = 1; nt <= 6; nt++)
@@ -836,7 +836,7 @@ int main(int argc, char **argv)
 
             //     signals = wavelet(srcpos_loc, nsrc_loc);
 
-			// 	fprintf(FP, "nsrc = %d  nsrc_loc = %d",nsrc, nsrc_loc);
+            // 	fprintf(FP, "nsrc = %d  nsrc_loc = %d",nsrc, nsrc_loc);
             //     // srcpos_loc = splitsrc(srcpos,&nsrc_loc, nsrc, stype_loc, stype);
             // }
 
@@ -854,17 +854,17 @@ int main(int argc, char **argv)
             if ((L == 1) && (ABS_TYPE == 2) && (CHECKPTREAD == 0))
             {
                 zero(1 - FDORDER / 2, NX + FDORDER / 2, 1 - FDORDER / 2, NY + FDORDER / 2, 1 - FDORDER / 2, NZ + FDORDER / 2, &v, &s, &dv,
-                     &dv_2, &dv_3, &dv_4,
-                     &ds_dv, &ds_dv_2, &ds_dv_3, &ds_dv_4, 
-                     &r, &r_2, &r_3, &r_4);
+                        &dv_2, &dv_3, &dv_4,
+                        &ds_dv, &ds_dv_2, &ds_dv_3, &ds_dv_4, 
+                        &r, &r_2, &r_3, &r_4);
             }
 
             if ((L == 0) && (ABS_TYPE == 2) && (CHECKPTREAD == 0))
             {
                 zero_elastic(1 - FDORDER / 2, NX + FDORDER / 2, 1 - FDORDER / 2, NY + FDORDER / 2, 1 - FDORDER / 2, NZ + FDORDER / 2,
-                             &v, &s,
-                             &dv, &dv_2, &dv_3, &dv_4,
-                             &ds_dv, &ds_dv_2, &ds_dv_3, &ds_dv_4);
+                        &v, &s,
+                        &dv, &dv_2, &dv_3, &dv_4,
+                        &ds_dv, &ds_dv_2, &ds_dv_3, &ds_dv_4);
             }
             if ((ABS_TYPE == 1) && (CHECKPTREAD == 0))
             {
@@ -881,20 +881,20 @@ int main(int argc, char **argv)
 
 
 
-//#pragma acc data copyin(vx[ny1-1:ny2+1][nx1-1:nx2+1][nz1-1:nz2+1],vy[ny1-1:ny2+1][nx1-1:nx2+1][nz1-1:nz2+1],vz[ny1-1:ny2+1][nx1-1:nx2+1][nz1-1:nz2+1])
+            //#pragma acc data copyin(vx[ny1-1:ny2+1][nx1-1:nx2+1][nz1-1:nz2+1],vy[ny1-1:ny2+1][nx1-1:nx2+1][nz1-1:nz2+1],vz[ny1-1:ny2+1][nx1-1:nx2+1][nz1-1:nz2+1])
 
-/*
+            /*
 
 
-vxyyx, vyzzy, vxzzx, vxxyyzz, vyyzz, vxxzz, vxxyy,
-vxyyx_2, vyzzy_2, vxzzx_2, vxxyyzz_2, vyyzz_2, vxxzz_2, vxxyy_2, vxyyx_3, vyzzy_3, vxzzx_3, vxxyyzz_3, vyyzz_3, vxxzz_3, vxxyy_3, vxyyx_4, vyzzy_4, vxzzx_4, vxxyyzz_4, vyyzz_4, vxxzz_4, vxxyy_4
+               vxyyx, vyzzy, vxzzx, vxxyyzz, vyyzz, vxxzz, vxxyy,
+               vxyyx_2, vyzzy_2, vxzzx_2, vxxyyzz_2, vyyzz_2, vxxzz_2, vxxyy_2, vxyyx_3, vyzzy_3, vxzzx_3, vxxyyzz_3, vyyzz_3, vxxzz_3, vxxyy_3, vxyyx_4, vyzzy_4, vxzzx_4, vxxyyzz_4, vyyzz_4, vxxzz_4, vxxyy_4
 
 in:
 out: sxx, syy, szz, sxy, syz, sxz,*/
 
-//#pragma acc data copyin (C11,C12,C13,C33,C22,C23,C66ipjp,C44jpkp,C55ipkp)
-//#pragma acc data copyout(sxy,syz,sxz,sxx,syy,szz)
-/*
+            //#pragma acc data copyin (C11,C12,C13,C33,C22,C23,C66ipjp,C44jpkp,C55ipkp)
+            //#pragma acc data copyout(sxy,syz,sxz,sxx,syy,szz)
+            /*
 #pragma acc data copyin(xb[0],xb[1],yb[0],yb[1],zb[0],zb[1],nt)
 #pragma acc data copyin(vx[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
 #pragma acc data copyin(vy[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
@@ -909,7 +909,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
 #pragma acc data copyin(C44jpkp[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
 #pragma acc data copyin(C55ipkp[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
 */
-/*
+            /*
 #pragma acc data copyout(sxx[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
 #pragma acc data copyout(syy[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
 #pragma acc data copyout(szz[yb[0]-1:yb[1]+1][xb[0]-1:xb[1]+1][zb[0]-1:zb[1]+1])
@@ -947,7 +947,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 if (ABS_TYPE == 1)
                 {
                     update_v_CPML(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v,
-                        &s, rho, rjp, rkp, rip, srcpos_loc, signals, nsrc_loc, absorb_coeff, stype_loc, K_x, a_x, b_x, K_x_half, a_x_half, b_x_half, K_y, a_y, b_y, K_y_half, a_y_half, b_y_half, K_z, a_z, b_z, K_z_half, a_z_half, b_z_half, psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y, psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z);
+                            &s, rho, rjp, rkp, rip, srcpos_loc, signals, nsrc_loc, absorb_coeff, stype_loc, K_x, a_x, b_x, K_x_half, a_x_half, b_x_half, K_y, a_y, b_y, K_y_half, a_y_half, b_y_half, K_z, a_z, b_z, K_z_half, a_z_half, b_z_half, psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y, psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z);
                 };
 
                 // Shift spatial derivatives of the stress one time step back.
@@ -999,23 +999,23 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 if (L > 0)
                 {
                     time_s_update[nt] = update_s(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v,
-                        &s, &r,
-                                                 pi, u, C66ipjp, C44jpkp, C55ipkp, taus, tausipjp, tausjpkp, tausipkp, taup, eta,
-                        &dv, &dv_2, &dv_3, &dv_4,
-                        &r_2, &r_3, &r_4);
+                            &s, &r,
+                            pi, u, C66ipjp, C44jpkp, C55ipkp, taus, tausipjp, tausjpkp, tausipkp, taup, eta,
+                            &dv, &dv_2, &dv_3, &dv_4,
+                            &r_2, &r_3, &r_4);
                     if (ABS_TYPE == 1)
                         update_s_CPML(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v,
-                            &s, &r, pi, u,
-                                      C66ipjp, C44jpkp, C55ipkp, taus, tausipjp, tausjpkp, tausipkp, taup, eta, K_x, a_x, b_x, K_x_half, a_x_half,
-                                      b_x_half, K_y, a_y, b_y, K_y_half, a_y_half, b_y_half, K_z, a_z, b_z, K_z_half, a_z_half, b_z_half,
-                                      psi_vxx, psi_vyx, psi_vzx, psi_vxy, psi_vyy, psi_vzy, psi_vxz, psi_vyz, psi_vzz);
+                                &s, &r, pi, u,
+                                C66ipjp, C44jpkp, C55ipkp, taus, tausipjp, tausjpkp, tausipkp, taup, eta, K_x, a_x, b_x, K_x_half, a_x_half,
+                                b_x_half, K_y, a_y, b_y, K_y_half, a_y_half, b_y_half, K_z, a_z, b_z, K_z_half, a_z_half, b_z_half,
+                                psi_vxx, psi_vyx, psi_vzx, psi_vxy, psi_vyy, psi_vzy, psi_vxz, psi_vyz, psi_vzz);
                 }
                 else
                 {
                     time_s_update[nt] = update_s_elastic(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v,
-                        &s, &r,
-                                                         pi, u, C11, C12, C13, C22, C23, C33, C66ipjp, C44jpkp, C55ipkp, taus, tausipjp, tausjpkp, tausipkp, taup, eta,
-                        &dv, &dv_2, &dv_3, &dv_4);
+                            &s, &r,
+                            pi, u, C11, C12, C13, C22, C23, C33, C66ipjp, C44jpkp, C55ipkp, taus, tausipjp, tausjpkp, tausipkp, taup, eta,
+                            &dv, &dv_2, &dv_3, &dv_4);
                     if (ABS_TYPE == 1)
                         update_s_CPML_elastic(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v,
                                 &s, pi, u,
@@ -1173,7 +1173,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                                 K_z, a_z, b_z, psi_vxx, psi_vzz);
                     else
                         surface_elastic(1, u, pi, &s, &v, K_x, a_x, b_x,
-                                        K_z, a_z, b_z, psi_vxx, psi_vzz);
+                                K_z, a_z, b_z, psi_vxx, psi_vzz);
                 }
 
                 /* exchange values of stress at boundaries between PEs */
@@ -1187,7 +1187,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 if ((SEISMO) && (ntr > 0) && (nt == lsamp))
                 {
                     seismo(nlsamp, ntr, recpos_loc, sectionvx, sectionvy, sectionvz,
-                           sectiondiv, sectioncurl, sectionp, &v, &s, pi, u);
+                            sectiondiv, sectioncurl, sectionp, &v, &s, pi, u);
                     nlsamp++;
                     lsamp += NDT;
                 }
@@ -1198,7 +1198,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 {
                     // fprintf(FP,"irtm = %d !!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n\n", irtm);
                     snap(FP, nt, ++nsnap, SNAP_FORMAT, SNAP, &v, &s, u, pi,
-                         IDX, IDY, IDZ, 1, 1, 1, NX, NY, NZ);
+                            IDX, IDY, IDZ, 1, 1, 1, NX, NY, NZ);
                     lsnap = lsnap + iround(TSNAPINC / DT);
                 }
 
@@ -1254,7 +1254,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                         break;
                     case 4: /* everything */
                         /*fprintf(FP," start merging, ntr= %d : \n",ntr_glob);
-				fprintf(stdout,"Message from PE %d\n",MYID);*/
+                          fprintf(stdout,"Message from PE %d\n",MYID);*/
                         catseis(sectionvx, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
                             saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 1);
@@ -1301,8 +1301,8 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
         }
 
         save_checkpoint(-1, NX + 2, -1, NY + 2, -1, NZ + 2, &v, &s, &r,
-                        psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y, psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z,
-                        psi_vxx, psi_vyx, psi_vzx, psi_vxy, psi_vyy, psi_vzy, psi_vxz, psi_vyz, psi_vzz);
+                psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y, psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z,
+                psi_vxx, psi_vyx, psi_vzx, psi_vxy, psi_vyy, psi_vzy, psi_vxz, psi_vyz, psi_vzz);
         MPI_Barrier(MPI_COMM_WORLD);
         if (MYID == 0)
         {
@@ -1344,7 +1344,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
             {
                 free_velocity_derivatives_tensor(&dv_4, NRL, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
-            free_stress_derivatives_wrt_velocity(&ds_dv_4, NRL, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+                free_stress_derivatives_wrt_velocity(&ds_dv_4, NRL, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
             }
         }
     }
@@ -1373,7 +1373,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
             {
                 free_velocity_derivatives_tensor(&dv_4, NRL, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
 
-            free_stress_derivatives_wrt_velocity(&ds_dv_4, NRL, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+                free_stress_derivatives_wrt_velocity(&ds_dv_4, NRL, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
             }
         }
     }
