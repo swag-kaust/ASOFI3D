@@ -1,22 +1,4 @@
 /*------------------------------------------------------------------------
- * Copyright (C) 2011 For the list of authors, see file AUTHORS.
- *
- * This file is part of SOFI3D.
- * 
- * SOFI3D is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, version 2.0 of the License only.
- * 
- * SOFI3D is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with SOFI3D. See file COPYING and/or 
-  * <http://www.gnu.org/licenses/gpl-2.0.html>.
---------------------------------------------------------------------------*/
-/*------------------------------------------------------------------------
  * Implementation acoording to Komatitsch, D. and Martin, R.(2007): "An unsplit convolutional perfectly matched layer improved at grazing incidence for the seismic wave equation", geophysics, Vol.72, No.5 
  * similar to fdveps (2D) 
  *  ----------------------------------------------------------------------*/
