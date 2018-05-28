@@ -1,20 +1,20 @@
 /* ----------------------------------------------------------------------
  * This is program ASOFI3D.
  * Parallel 3-D Viscoelastic Finite Difference Seismic Modelling
- * using the Standard Staggered Grid (SSG)
- *
+ * using the Standard Staggered Grid (SSG).
  *
  * If you want to publish synthetic data calculated with this program please
  * give a reference to the following paper:
- * Bohlen, T., 2002, Parallel 3-D viscoelastic finite-difference seismic modelling,
+ * Bohlen, T., 2002,
+ * Parallel 3-D viscoelastic finite-difference seismic modelling,
  * Computers @ Geosciences, Vol. 28, No. 8, 887-889.
  *
  *  ----------------------------------------------------------------------*/
-
 #include "fd.h"
 #include "globvar.h"
 #include "data_structures.h"
 //#include "openacc.h"
+
 int main(int argc, char **argv)
 {
     // TODO: this needs to be moved to the json - ask Mahesh
@@ -38,28 +38,29 @@ int main(int argc, char **argv)
     /* Velocity vector. */
     Velocity v;
 
-    /* Save old spatial derivatives of velocity for Adam-Bashforth method. */
+    // Save old spatial derivatives of velocity for the Adam-Bashforth method.
     VelocityDerivativesTensor dv;
     VelocityDerivativesTensor dv_2;
     VelocityDerivativesTensor dv_3;
     VelocityDerivativesTensor dv_4;
 
-    /* Save old derivatives of the stress for Adam-Bashforth method. */
+    // Save old derivatives of the stress for the Adam-Bashforth method.
     StressDerivativesWrtVelocity ds_dv;
     StressDerivativesWrtVelocity ds_dv_2;
     StressDerivativesWrtVelocity ds_dv_3;
     StressDerivativesWrtVelocity ds_dv_4;
 
-    /* We need these arrays for the time shift for Adam-Bashforth method. */
+    // We need these arrays for the time shift for the Adam-Bashforth method.
     float ***shift_s1 = NULL, ***shift_s2 = NULL, ***shift_s3 = NULL;
     float ***shift_v1 = NULL, ***shift_v2 = NULL, ***shift_v3 = NULL, ***shift_v4 = NULL, ***shift_v5 = NULL, ***shift_v6 = NULL, ***shift_v7 = NULL;
     float ***shift_r1 = NULL, ***shift_r2 = NULL, ***shift_r3 = NULL, ***shift_r4 = NULL, ***shift_r5 = NULL, ***shift_r6 = NULL;
 
-    /* TODO: define what `r` means. */
+    // Relaxation tensor.
     Tensor3d r;
     r.xy = NULL; r.yz = NULL; r.xz = NULL;
     r.xx = NULL; r.yy = NULL; r.zz = NULL;
-    /* We need these arrays for the time shift for Adams-Bashforth method. */
+
+    // We need these arrays for the time shift for Adams-Bashforth method.
     Tensor3d r_2;
     Tensor3d r_3;
     Tensor3d r_4;
