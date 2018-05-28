@@ -60,22 +60,20 @@ double update_v(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
     float **svx_j_2,**svy_j_2,**svz_j_2;
     float **svx_j_3,**svy_j_3,**svz_j_3;
     float **svx_j_4,**svy_j_4,**svz_j_4;
-    
+
     float *svx_j_i,*svy_j_i,*svz_j_i;
     float *svx_j_i_2,*svy_j_i_2,*svz_j_i_2;
     float *svx_j_i_3,*svy_j_i_3,*svz_j_i_3;
     float *svx_j_i_4,*svy_j_i_4,*svz_j_i_4;
-    
-    
+
+
 	if (LOG)
 		if ((MYID==0) && ((nt+(OUTNTIMESTEPINFO-1))%OUTNTIMESTEPINFO)==0) time1=MPI_Wtime();
 
-    
-    
-    switch (FDORDER_TIME){
-            
+    switch (FDORDER_TIME) {
+
         case 2:
-            
+
             switch (FDORDER){
                     
                 case 2 :
