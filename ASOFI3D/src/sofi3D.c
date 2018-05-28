@@ -364,71 +364,43 @@ int main(int argc, char **argv)
     if (POS[2] == 0)
     {
         NRL = 0 - FDORDER / 2;
-        NRH = NY + l * FDORDER / 2;
-        NCL = 1 - l * FDORDER / 2;
-        NCH = NX + l * FDORDER / 2;
-        NDL = 1 - l * FDORDER / 2;
-        NDH = NZ + l * FDORDER / 2;
-        init_velocity(&v, NRL, NRH, NCL, NCH, NDL, NDH);
-
-        if (FDORDER_TIME != 2)
-        {
-            // Allocate memory for the quantities necessary
-            // for the Adams-Bashforth method. */
-            init_velocity_derivatives_tensor(&dv, NRL, NRH, NCL, NCH, NDL, NDH);
-            init_velocity_derivatives_tensor(&dv_2, NRL, NRH, NCL, NCH, NDL, NDH);
-            init_velocity_derivatives_tensor(&dv_3, NRL, NRH, NCL, NCH, NDL, NDH);
-
-            init_stress_derivatives_wrt_velocity(&ds_dv, NRL, NRH, NCL, NCH, NDL, NDH);
-            init_stress_derivatives_wrt_velocity(&ds_dv_2, NRL, NRH, NCL, NCH, NDL, NDH);
-            init_stress_derivatives_wrt_velocity(&ds_dv_3, NRL, NRH, NCL, NCH, NDL, NDH);
-
-            if (FDORDER_TIME == 4)
-            {
-                init_stress_derivatives_wrt_velocity(&ds_dv_4, NRL, NRH, NCL, NCH, NDL, NDH);
-                init_velocity_derivatives_tensor(&dv_4, NRL, NRH, NCL, NCH, NDL, NDH);
-            }
-        }
-
-        s.xy = f3tensor(NRL, NRH, NCL, NCH, NDL, NDH);
-        s.yz = f3tensor(NRL, NRH, NCL, NCH, NDL, NDH);
+    } else {
+        NRL = 1 - l * FDORDER / 2;
     }
 
-    if (POS[2] > 0)
+    NRH = NY + l * FDORDER / 2;
+    NCL = 1 - l * FDORDER / 2;
+    NCH = NX + l * FDORDER / 2;
+    NDL = 1 - l * FDORDER / 2;
+    NDH = NZ + l * FDORDER / 2;
+    init_velocity(&v, NRL, NRH, NCL, NCH, NDL, NDH);
+
+    if (FDORDER_TIME != 2)
     {
-        NRL = 1 - l * FDORDER / 2;
-        NRH = NY + l * FDORDER / 2;
-        NCL = 1 - l * FDORDER / 2;
-        NCH = NX + l * FDORDER / 2;
-        NRL = 1 - l * FDORDER / 2;
-        NRH = NZ + l * FDORDER / 2;
-        init_velocity(&v, NRL, NRH, NCL, NCH, NRL, NRH);
+        // Allocate memory for the quantities necessary
+        // for the Adams-Bashforth method. */
+        init_velocity_derivatives_tensor(&dv, NRL, NRH, NCL, NCH, NDL, NDH);
+        init_velocity_derivatives_tensor(&dv_2, NRL, NRH, NCL, NCH, NDL, NDH);
+        init_velocity_derivatives_tensor(&dv_3, NRL, NRH, NCL, NCH, NDL, NDH);
 
-        if (FDORDER_TIME != 2)
-        { /* Allocate memory for Adams Bashforth */
-            init_velocity_derivatives_tensor(&dv, NRL, NRH, NCL, NCH, NRL, NRH);
-            init_velocity_derivatives_tensor(&dv_2, NRL, NRH, NCL, NCH, NRL, NRH);
-            init_velocity_derivatives_tensor(&dv_3, NRL, NRH, NCL, NCH, NRL, NRH);
+        init_stress_derivatives_wrt_velocity(&ds_dv, NRL, NRH, NCL, NCH, NDL, NDH);
+        init_stress_derivatives_wrt_velocity(&ds_dv_2, NRL, NRH, NCL, NCH, NDL, NDH);
+        init_stress_derivatives_wrt_velocity(&ds_dv_3, NRL, NRH, NCL, NCH, NDL, NDH);
 
-            init_stress_derivatives_wrt_velocity(&ds_dv, NRL, NRH, NCL, NCH, NRL, NRH);
-            init_stress_derivatives_wrt_velocity(&ds_dv_2, NRL, NRH, NCL, NCH, NRL, NRH);
-            init_stress_derivatives_wrt_velocity(&ds_dv_3, NRL, NRH, NCL, NCH, NRL, NRH);
-
-            if (FDORDER_TIME == 4)
-            {
-                init_stress_derivatives_wrt_velocity(&ds_dv_4, NRL, NRH, NCL, NCH, NRL, NRH);
-                init_velocity_derivatives_tensor(&dv_4, NRL, NRH, NCL, NCH, NRL, NRH);
-            }
+        if (FDORDER_TIME == 4)
+        {
+            init_stress_derivatives_wrt_velocity(&ds_dv_4, NRL, NRH, NCL, NCH, NDL, NDH);
+            init_velocity_derivatives_tensor(&dv_4, NRL, NRH, NCL, NCH, NDL, NDH);
         }
-
-        s.xy = f3tensor(NRL, NRH, NCL, NCH, NRL, NRH);
-        s.yz = f3tensor(NRL, NRH, NCL, NCH, NRL, NRH);
     }
 
-    s.xz = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-    s.xx = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-    s.yy = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
-    s.zz = f3tensor(1 - l * FDORDER / 2, NY + l * FDORDER / 2, 1 - l * FDORDER / 2, NX + l * FDORDER / 2, 1 - l * FDORDER / 2, NZ + l * FDORDER / 2);
+    s.xy = f3tensor(NRL, NRH, NCL, NCH, NDL, NDH);
+    s.yz = f3tensor(NRL, NRH, NCL, NCH, NDL, NDH);
+
+    s.xz = f3tensor(1 - l * FDORDER / 2, NRH, NCL, NCH, NRL, NRH);
+    s.xx = f3tensor(1 - l * FDORDER / 2, NRH, NCL, NCH, NRL, NRH);
+    s.yy = f3tensor(1 - l * FDORDER / 2, NRH, NCL, NCH, NRL, NRH);
+    s.zz = f3tensor(1 - l * FDORDER / 2, NRH, NCL, NCH, NRL, NRH);
 
     xb = ivector(0, 1);
     yb = ivector(0, 1);
