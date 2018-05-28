@@ -1,12 +1,39 @@
-/*------------------------------------------------------------------------
- *   updating particle velocities at gridpoints [nx1...nx2][ny1...ny2][nz1...nz2]
- *   by a staggered grid finite difference scheme of 4th order accuracy in space
- *   and second order accuracy in time
- *  ----------------------------------------------------------------------*/
-
 #include "fd.h"
 #include "data_structures.h"
 
+/*
+ * Update particle velocities by a staggered grid finite-difference scheme.
+ *
+ * Update depends on the required order of approximations in time
+ * (`FDORDER_TIME`) and space (`FDORDER`).
+ *
+ * Parameters
+ * ----------
+ *  nx1, nx2, ny1, ny2, nz1, nz2:
+ *      Dimensions of the grid points.
+ *  nt :
+ *      Time step.
+ *  v :
+ *      Velocity field.
+ *  s :
+ *      Stress tensor.
+ *  rho, rjp, rkp, rip :
+ *      ??? Describe these parameters ???
+ *  srcpos_loc :
+ *      ??? Describe this parameter ???
+ *	signals :
+ *      ??? Describe this parameter ???
+ *  nsrc :
+ *      ??? Describe this parameter ???
+ *  absorb_coeff :
+ *		??? Absorption coefficient.
+ *	stype :
+ *      ??? Describe this parameter ???
+ *  ds_dv, ds_dv_2, ds_dv_3, ds_dv_4 :
+ *      Derivatives of stress with respect to the velocity components on time
+ *      steps nt, nt-1, nt-2, and nt-3, respectively.
+ *
+ */
 double update_v(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 		int nt, Velocity *v,
 		Tensor3d *s, float  ***  rho,  float  *** rjp, float  *** rkp, float  *** rip,
