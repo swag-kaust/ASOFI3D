@@ -574,9 +574,6 @@ int main(int argc, char **argv)
         /* memory for source position definition */
         srcpos1 = fmatrix(1, 6, 1, 1);
 
-
-
-
         /* Reading source positions from SOURCE_FILE */
         fprintf(FP, "\n ------------------ READING SOURCE PARAMETERS ------------------- \n");
         switch (SRCREC)
@@ -843,7 +840,7 @@ int main(int argc, char **argv)
             {
                 zero(1 - FDORDER / 2, NX + FDORDER / 2, 1 - FDORDER / 2, NY + FDORDER / 2, 1 - FDORDER / 2, NZ + FDORDER / 2, &v, &s, &dv,
                         &dv_2, &dv_3, &dv_4,
-                        &ds_dv, &ds_dv_2, &ds_dv_3, &ds_dv_4, 
+                        &ds_dv, &ds_dv_2, &ds_dv_3, &ds_dv_4,
                         &r, &r_2, &r_3, &r_4);
             }
 
@@ -929,7 +926,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 /* update of particle velocities */
                 time_v_update[nt] = update_v(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt,
                         &v, &s,
-                        rho, rjp, rkp, rip, srcpos_loc, signals, nsrc_loc, absorb_coeff, stype_loc, 
+                        rho, rjp, rkp, rip, srcpos_loc, signals, nsrc_loc, absorb_coeff, stype_loc,
                         &ds_dv, &ds_dv_2, &ds_dv_3, &ds_dv_4);
 
                 if (ABS_TYPE == 1)
