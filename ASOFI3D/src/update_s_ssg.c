@@ -1,27 +1,48 @@
-/*------------------------------------------------------------------------
- *   updating stress at gridpoints [nx1...nx2][ny1...ny2][nz1...nz2]
- *   by a staggered grid finite difference scheme of various order accuracy in space
- *   and second order accuracy in time
- *   viscoelastic version
- *
- *  ----------------------------------------------------------------------*/
-
 #include "fd.h"
 #include "data_structures.h"
 
-double update_s(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  int nt,
-		Velocity *v,
-		Tensor3d *s,
-                Tensor3d *r,
-                float ***  pi, float ***  u, float ***  uipjp, float ***  ujpkp, float ***  uipkp,
-                float  ***  taus, float  ***  tausipjp, float  ***  tausjpkp, float  ***  tausipkp, float  ***  taup, float *  eta,
-                VelocityDerivativesTensor *dv,
-                VelocityDerivativesTensor *dv_2,
-                VelocityDerivativesTensor *dv_3,
-                VelocityDerivativesTensor *dv_4,
-                Tensor3d *r_2,
-                Tensor3d *r_3,
-                Tensor3d *r_4) {
+/**
+ * Update stress for the viscoelastic model by a staggered grid scheme.
+ *
+ * Update depends on the required order of approximations in time
+ * (`FDORDER_TIME`) and space (`FDORDER`).
+ *
+ * Parameters
+ * ----------
+ *  nx1, nx2, ny1, ny2, nz1, nz2:
+ *      Dimensions of the grid points.
+ *  nt :
+ *      Time step.
+ *  v :
+ *      Velocity field.
+ *  s :
+ *      Stress tensor.
+ *  r :
+ *      Relaxation tensor.
+ *  pi, u, uipjp, ujpkp, uipkp, taus, tausipjp, tausjpkp, tausipkp, taup, eta :
+ *      ??? Describe these parameters ???
+ *  dv, dv_2, dv_3, dv_4 :
+ *      Derivatives of the velocity on time steps nt, nt-1, nt-2, and nt-3,
+ *      respectively.
+ *  r_2, r_3, r_4 :
+ *		Relaxation tensor at time steps nt-1, nt-2, and nt-3, respectively.
+ *
+ */
+double update_s(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
+        Velocity *v,
+        Tensor3d *s,
+        Tensor3d *r,
+        float ***pi, float ***u,
+		float ***uipjp, float ***ujpkp, float ***uipkp,
+        float ***taus, float ***tausipjp, float ***tausjpkp,
+		float ***tausipkp, float ***taup, float *eta,
+        VelocityDerivativesTensor *dv,
+        VelocityDerivativesTensor *dv_2,
+        VelocityDerivativesTensor *dv_3,
+        VelocityDerivativesTensor *dv_4,
+        Tensor3d *r_2,
+        Tensor3d *r_3,
+        Tensor3d *r_4) {
 
     extern float DT, DX, DY, DZ;
     extern int L, MYID, FDORDER,FDORDER_TIME, LOG, FDCOEFF;
