@@ -1,47 +1,85 @@
-/*------------------------------------------------------------------------
- * Implementation acoording to Komatitsch, D. and Martin, R.(2007): "An unsplit convolutional perfectly matched layer improved at grazing incidence for the seismic wave equation", geophysics, Vol.72, No.5 
- * similar to fdveps (2D) 
- *  ----------------------------------------------------------------------*/
-
 #include "fd.h"
 #include "data_structures.h"
 
+/*
+ * Correct stress using CPML boundary condition.
+ * 
+ * CPML (convolutional perfectly matched layer) is an absorbing boundary
+ * condition.
+ * Correction is done for the 4th order spatial FD sheme.
+ *
+ * Parameters:
+ * nx1, nx2, ny1, ny2, nz1, nz2 :
+ *     Grid dimensions.
+ * nt :
+ *     Time step.
+ * v :
+ *     Velocity field.
+ * s :
+ *     Stress tensor.
+ * r :
+ *     Relaxation tensor.
+ * pi, u, uipjp, ujpkp, uipkp, taus, tausipjp, tausjpkp, tausipkp, taup, eta :
+ *     ??? Describe these parameters ???
+ * K_x, a_x, b_x, K_x_half, a_x_half, b_x_half :
+ *     ??? Describe these parameters ???
+ * K_y, a_y, b_y, K_y_half, a_y_half, b_y_half :
+ *     ??? Describe these parameters ???
+ * K_z, a_z, b_z, K_z_half, a_z_half, b_z_half :
+ *     ??? Describe these parameters ???
+ * psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y,
+ * psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z :
+ *     ??? Describe these parameters ???
+ *
+ * References
+ * ----------
+ * Komatitsch, D. and Martin, R., 2007
+ * An unsplit convolutional perfectly matched layer
+ * improved at grazing incidence for the seismic wave equation
+ * Geophysics, Vol. 72, No. 5
+ * https://doi.org/10.1190/1.2757586
+ */
 double update_s_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
-		     Velocity *v,
-		     Tensor3d *s,
-                     Tensor3d *r, float ***  pi, float ***  u, float ***  uipjp, float ***  ujpkp, float ***  uipkp,
-		float  ***  taus, float  ***  tausipjp, float  ***  tausjpkp, float  ***  tausipkp, float  ***  taup, float *  eta,
-		float * K_x, float * a_x, float * b_x, float * K_x_half, float * a_x_half, float * b_x_half,
-		float * K_y, float * a_y, float * b_y, float * K_y_half, float * a_y_half, float * b_y_half,
-		float * K_z, float * a_z, float * b_z, float * K_z_half, float * a_z_half, float * b_z_half,
-		float *** psi_vxx, float *** psi_vyx, float *** psi_vzx, float *** psi_vxy, float *** psi_vyy, float *** psi_vzy, float *** psi_vxz, float *** psi_vyz, float *** psi_vzz){
+        Velocity *v,
+        Tensor3d *s,
+        Tensor3d *r,
+        float ***pi, float ***u, float ***uipjp, float ***ujpkp, float ***uipkp,
+        float ***taus, float ***tausipjp, float ***tausjpkp,
+        float ***tausipkp, float ***taup, float *  eta,
+        float * K_x, float * a_x, float * b_x, float * K_x_half, float * a_x_half, float * b_x_half,
+        float * K_y, float * a_y, float * b_y, float * K_y_half, float * a_y_half, float * b_y_half,
+        float * K_z, float * a_z, float * b_z, float * K_z_half, float * a_z_half, float * b_z_half,
+        float *** psi_vxx, float *** psi_vyx, float *** psi_vzx,
+        float *** psi_vxy, float *** psi_vyy, float *** psi_vzy,
+        float *** psi_vxz, float *** psi_vyz, float *** psi_vzz)
+{
 
 
-	extern float DT, DX, DY, DZ;
-	extern int L, MYID, LOG, FDCOEFF, FDORDER;
-	extern FILE *FP;
-	extern int FREE_SURF;
-	extern int NPROCX, NPROCY, NPROCZ, POS[4];
-	extern int FW, NY, NZ;
-	extern int OUTNTIMESTEPINFO;
+    extern float DT, DX, DY, DZ;
+    extern int L, MYID, LOG, FDCOEFF, FDORDER;
+    extern FILE *FP;
+    extern int FREE_SURF;
+    extern int NPROCX, NPROCY, NPROCZ, POS[4];
+    extern int FW, NY, NZ;
+    extern int OUTNTIMESTEPINFO;
 
-        float ***vx = v->x;
-        float ***vy = v->y;
-        float ***vz = v->z;
+    float ***vx = v->x;
+    float ***vy = v->y;
+    float ***vz = v->z;
 
-        float ***sxx = s->xx;
-        float ***syy = s->yy;
-        float ***szz = s->zz;
-        float ***sxy = s->xy;
-        float ***syz = s->yz;
-        float ***sxz = s->xz;
+    float ***sxx = s->xx;
+    float ***syy = s->yy;
+    float ***szz = s->zz;
+    float ***sxy = s->xy;
+    float ***syz = s->yz;
+    float ***sxz = s->xz;
 
-        float ***rxx = r->xx;
-        float ***ryy = r->yy;
-        float ***rzz = r->zz;
-        float ***rxy = r->xy;
-        float ***ryz = r->yz;
-        float ***rxz = r->xz;
+    float ***rxx = r->xx;
+    float ***ryy = r->yy;
+    float ***rzz = r->zz;
+    float ***rxy = r->xy;
+    float ***ryz = r->yz;
+    float ***rxz = r->xz;
 
 	int i, j, k, l=1, h1;
 	double time=0.0, time1=0.0, time2=0.0;
