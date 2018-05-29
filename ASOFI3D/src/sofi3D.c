@@ -70,27 +70,50 @@ int main(int argc, char **argv)
     Tensor3d r_3;
     Tensor3d r_4;
 
-    float ***rho, ***pi, ***u;
+    // Density.
+    float ***rho;
+    // P-wave modulus ($\lambda + 2\mu$).
+    float ***pi;
+    // Shear modulus.
+    float ***u;
+    // Anisotropic elastic coefficients in Voigt notation.
     float ***C11, ***C22, ***C33, ***C12, ***C13, ***C23, ***C44, ***C55, ***C66;
+    // Relaxation parameters.
     float ***taus = NULL, ***taup = NULL, *eta = NULL;
+    // Staggered parameters.
     float ***C66ipjp, ***C44jpkp, ***C55ipkp, ***tausipjp = NULL, ***tausjpkp = NULL, ***tausipkp = NULL, ***rjp, ***rkp, ***rip;
 
-    float **srcpos = NULL, **srcpos_loc = NULL, **srcpos1 = NULL, **signals = NULL;
+    // Global sources positions, local sources positions.
+    float **srcpos = NULL, **srcpos_loc = NULL, **srcpos1 = NULL;
+    // Amplitudes of the signals.
+    float **signals = NULL;
+    // Global receiver positions, local receiver positions.
     int **recpos = NULL, **recpos_loc = NULL;
+
+
+    // Seismograms sections.
     float **sectionvx = NULL, **sectionvy = NULL, **sectionvz = NULL, **sectionp = NULL,
           **sectioncurl = NULL, **sectiondiv = NULL;
+
+
+    // Buffers that exchanges velocity on the subdomain boundaries.
     float ***bufferlef_to_rig, ***bufferrig_to_lef;
     float ***buffertop_to_bot, ***bufferbot_to_top;
     float ***bufferfro_to_bac, ***bufferbac_to_fro;
 
+    // Buffers that exchange stress tensor on the subdomain boundaries.
     float ***sbufferlef_to_rig, ***sbufferrig_to_lef;
     float ***sbuffertop_to_bot, ***sbufferbot_to_top;
     float ***sbufferfro_to_bac, ***sbufferbac_to_fro;
 
+    // Seismogram data collected from all MPI processes.
     float **seismo_fulldata = NULL;
     int *recswitch = NULL;
 
+    // Parameters of the Perfectly Matched Layer (PML).
     float *K_x = NULL, *alpha_prime_x = NULL, *a_x = NULL, *b_x = NULL, *K_x_half = NULL, *alpha_prime_x_half = NULL, *a_x_half = NULL, *b_x_half = NULL, *K_y = NULL, *alpha_prime_y = NULL, *a_y = NULL, *b_y = NULL, *K_y_half = NULL, *alpha_prime_y_half = NULL, *a_y_half = NULL, *b_y_half = NULL, *K_z = NULL, *alpha_prime_z = NULL, *a_z = NULL, *b_z = NULL, *K_z_half = NULL, *alpha_prime_z_half = NULL, *a_z_half = NULL, *b_z_half = NULL;
+
+    // Memory variables.
     float ***psi_sxx_x = NULL, ***psi_syy_y = NULL, ***psi_szz_z = NULL, ***psi_sxy_y = NULL, ***psi_sxy_x = NULL, ***psi_sxz_x = NULL, ***psi_sxz_z = NULL, ***psi_syz_y = NULL, ***psi_syz_z = NULL, ***psi_vxx = NULL, ***psi_vyy = NULL, ***psi_vzz = NULL, ***psi_vxy = NULL, ***psi_vxz = NULL, ***psi_vyx = NULL, ***psi_vyz = NULL, ***psi_vzx = NULL, ***psi_vzy = NULL;
 
     MPI_Request *req_send, *req_rec, *sreq_send, *sreq_rec;
@@ -103,7 +126,9 @@ int main(int argc, char **argv)
     char buffer[STRING_SIZE], bufferstring[10];
     FILE *fpsrc = NULL;
 
-    /* Initialize MPI environment */
+    // Initialize MPI environment.
+    // NP is initialized to the number of process (or PE - processing element).
+    // MYID is initialized to the index of the process (from 0 to NP-1).
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &NP);
     MPI_Comm_rank(MPI_COMM_WORLD, &MYID);
