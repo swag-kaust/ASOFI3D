@@ -1,7 +1,7 @@
 #include "fd.h"
 #include "data_structures.h"
 
-/*
+/**
  * Update particle velocities by a staggered grid finite-difference scheme.
  *
  * Update depends on the required order of approximations in time
@@ -12,23 +12,23 @@
  *  nx1, nx2, ny1, ny2, nz1, nz2:
  *      Dimensions of the grid points.
  *  nt :
- *      Time step.
+ *      Time step index.
  *  v :
  *      Velocity field.
  *  s :
  *      Stress tensor.
  *  rho, rjp, rkp, rip :
- *      ??? Describe these parameters ???
+ *      Density and its shifts on the staggered grid.
  *  srcpos_loc :
- *      ??? Describe this parameter ???
+ *      Positions of the sources on the local subdomain.
  *	signals :
- *      ??? Describe this parameter ???
+ *      Amplitudes of the sources.
  *  nsrc :
- *      ??? Describe this parameter ???
+ *      Number of sources.
  *  absorb_coeff :
- *		??? Absorption coefficient.
+ *		Absorption coefficient.
  *	stype :
- *      ??? Describe this parameter ???
+ *      Types of the sources.
  *  ds_dv, ds_dv_2, ds_dv_3, ds_dv_4 :
  *      Derivatives of stress with respect to the velocity components on time
  *      steps nt, nt-1, nt-2, and nt-3, respectively.

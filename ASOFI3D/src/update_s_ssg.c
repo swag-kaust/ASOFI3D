@@ -19,8 +19,14 @@
  *      Stress tensor.
  *  r :
  *      Relaxation tensor.
- *  pi, u, uipjp, ujpkp, uipkp, taus, tausipjp, tausjpkp, tausipkp, taup, eta :
- *      ??? Describe these parameters ???
+ *  pi :
+ *      P-wave modulus ($\lambda + 2\mu$).
+ *  u :
+ *      Shear modulus ($\mu$).
+ *  uipjp, ujpkp, uipkp :
+ *      Shifts of the shear modulus due to the staggered grid.
+ *  taus, tausipjp, tausjpkp, tausipkp, taup, eta :
+ *      Relaxation parameters.
  *  dv, dv_2, dv_3, dv_4 :
  *      Derivatives of the velocity on time steps nt, nt-1, nt-2, and nt-3,
  *      respectively.
