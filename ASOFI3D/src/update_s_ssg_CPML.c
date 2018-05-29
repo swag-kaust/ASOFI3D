@@ -1,7 +1,7 @@
 #include "fd.h"
 #include "data_structures.h"
 
-/*
+/**
  * Correct stress using CPML boundary condition.
  * 
  * CPML (convolutional perfectly matched layer) is an absorbing boundary
@@ -19,17 +19,23 @@
  *     Stress tensor.
  * r :
  *     Relaxation tensor.
- * pi, u, uipjp, ujpkp, uipkp, taus, tausipjp, tausjpkp, tausipkp, taup, eta :
- *     ??? Describe these parameters ???
+ * pi :
+ *     P-wave modulus ($\lambda + 2\mu$).
+ * u :
+ *     Shear modulus ($\mu$).
+ * uipjp, ujpkp, uipkp :
+ *     Shifted shear modulus due to the staggered grid.
+ * taus, tausipjp, tausjpkp, tausipkp, taup, eta :
+ *     Relaxation parameters.
  * K_x, a_x, b_x, K_x_half, a_x_half, b_x_half :
- *     ??? Describe these parameters ???
+ *     Parameters of the Perfectly Matched Layer (PML) along x-axis.
  * K_y, a_y, b_y, K_y_half, a_y_half, b_y_half :
- *     ??? Describe these parameters ???
+ *     Parameters of the Perfectly Matched Layer (PML) along y-axis.
  * K_z, a_z, b_z, K_z_half, a_z_half, b_z_half :
- *     ??? Describe these parameters ???
+ *     Parameters of the Perfectly Matched Layer (PML) along z-axis.
  * psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y,
  * psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z :
- *     ??? Describe these parameters ???
+ *     Memory variables for attenuation modeling.
  *
  * References
  * ----------
@@ -135,15 +141,15 @@ double update_s_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int n
 			for (i=1;i<=FW;i++){
 				for (k=1;k<=NZ;k++){
 
-					vxx = (b1*(vx[j][i][k]-vx[j][i-1][k])+b2*(vx[j][i+1][k]-vx[j][i-2][k]))/DX;
-					vxy = (b1*(vx[j+1][i][k]-vx[j][i][k])+b2*(vx[j+2][i][k]-vx[j-1][i][k]))/DY;
-					vxz = (b1*(vx[j][i][k+1]-vx[j][i][k])+b2*(vx[j][i][k+2]-vx[j][i][k-1]))/DZ;
-					vyx = (b1*(vy[j][i+1][k]-vy[j][i][k])+b2*(vy[j][i+2][k]-vy[j][i-1][k]))/DX;
-					vyy = (b1*(vy[j][i][k]-vy[j-1][i][k])+b2*(vy[j+1][i][k]-vy[j-2][i][k]))/DY;
-					vyz = (b1*(vy[j][i][k+1]-vy[j][i][k])+b2*(vy[j][i][k+2]-vy[j][i][k-1]))/DZ;
-					vzx = (b1*(vz[j][i+1][k]-vz[j][i][k])+b2*(vz[j][i+2][k]-vz[j][i-1][k]))/DX;
-					vzy = (b1*(vz[j+1][i][k]-vz[j][i][k])+b2*(vz[j+2][i][k]-vz[j-1][i][k]))/DY;
-					vzz = (b1*(vz[j][i][k]-vz[j][i][k-1])+b2*(vz[j][i][k+1]-vz[j][i][k-2]))/DZ;
+					vxx = (b1*(vx[j][i][k]-vx[j][i-1][k]) + b2*(vx[j][i+1][k] - vx[j][i-2][k]))/DX;
+					vxy = (b1*(vx[j+1][i][k]-vx[j][i][k]) + b2*(vx[j+2][i][k] - vx[j-1][i][k]))/DY;
+					vxz = (b1*(vx[j][i][k+1]-vx[j][i][k]) + b2*(vx[j][i][k+2] - vx[j][i][k-1]))/DZ;
+					vyx = (b1*(vy[j][i+1][k]-vy[j][i][k]) + b2*(vy[j][i+2][k] - vy[j][i-1][k]))/DX;
+					vyy = (b1*(vy[j][i][k]-vy[j-1][i][k]) + b2*(vy[j+1][i][k] - vy[j-2][i][k]))/DY;
+					vyz = (b1*(vy[j][i][k+1]-vy[j][i][k]) + b2*(vy[j][i][k+2] - vy[j][i][k-1]))/DZ;
+					vzx = (b1*(vz[j][i+1][k]-vz[j][i][k]) + b2*(vz[j][i+2][k] - vz[j][i-1][k]))/DX;
+					vzy = (b1*(vz[j+1][i][k]-vz[j][i][k]) + b2*(vz[j+2][i][k] - vz[j-1][i][k]))/DY;
+					vzz = (b1*(vz[j][i][k]-vz[j][i][k-1]) + b2*(vz[j][i][k+1] - vz[j][i][k-2]))/DZ;
 
 					psi_vxx[j][i][k] = b_x[i] * psi_vxx[j][i][k] + a_x[i] * vxx;
 					vxx = vxx / K_x[i] + psi_vxx[j][i][k];
