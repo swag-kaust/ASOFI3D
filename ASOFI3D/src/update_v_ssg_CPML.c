@@ -19,26 +19,20 @@
  * s :
  *     Stress tensor.
  * rho, rjp, rkp, rip :
- *     ??? Describe these parameters ???
- * srcpos_loc :
- *     ??? Describe this parameter ???
- * signals :
- *     ??? Describe this parameter ???
- * nsrc :
- *     ??? Describe this parameter ???
+ *     Density and its shifts on the staggered grid.
+ * srcpos_loc, signals, nsrc, stype :
+ *     Source parameters. NOT USED.
  * absorb_coeff :
- *    ??? Absorption coefficient.
- * stype :
- *     ??? Describe this parameter ???
+ *     Absorption coefficient ?. NOT USED.
  * K_x, a_x, b_x, K_x_half, a_x_half, b_x_half :
- *     ??? Describe these parameters ???
+ *     Parameters of the Perfectly Matched Layer (PML) along x-axis.
  * K_y, a_y, b_y, K_y_half, a_y_half, b_y_half :
- *     ??? Describe these parameters ???
+ *     Parameters of the Perfectly Matched Layer (PML) along y-axis.
  * K_z, a_z, b_z, K_z_half, a_z_half, b_z_half :
- *     ??? Describe these parameters ???
+ *     Parameters of the Perfectly Matched Layer (PML) along z-axis.
  * psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y,
  * psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z :
- *     ??? Describe these parameters ???
+ *     Memory variables.
  *
  * References
  * ----------
