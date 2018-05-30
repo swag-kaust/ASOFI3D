@@ -11,14 +11,14 @@
 
 "Domain Decomposition" : "comment",
 			"NPROCX" : "4",
-			"NPROCY" : "1",
-			"NPROCZ" : "4",
+			"NPROCY" : "2",
+			"NPROCZ" : "2",
 
 "3-D Grid" : "comment",
 
-			"NX" : "2048",
-			"NY" : "32",
-			"NZ" : "2048",
+			"NX" : "128",
+			"NY" : "128",
+			"NZ" : "128",
 
 			"DX" : "10",
 			"DY" : "10",
@@ -31,7 +31,7 @@
 			"fdcoeff values: Taylor=1, Holberg=2" : "comment",
 
 "Time Stepping" : "comment",
-			"TIME" : "5",
+			"TIME" : "0.55",
 			"DT" : "1e-3",
 
 "Source" : "comment",
@@ -67,7 +67,7 @@
 			"TAU" : "0.00001",
 
 "Boundary Conditions" : "comment",
-			"FREE_SURF" : "1",
+			"FREE_SURF" : "0",
 			"ABS_TYPE" : "1",
 			"FW" : "20.0",
 			"DAMPING" : "8.0",
@@ -79,8 +79,8 @@
 
 "Snapshots" : "comment",
 			"SNAP" : "3",
-			"TSNAP1" : "0.61",
-			"TSNAP2" : "1.22",
+			"TSNAP1" : "0.5",
+			"TSNAP2" : "0.6",
 			"TSNAPINC" : "0.2",
 			"IDX" : "2",
 			"IDY" : "2",
@@ -94,13 +94,13 @@
 			"READREC" : "0",
 			"REC_FILE" : "./receiver/receiver.dat",
 			"REFRECX, REFRECY, REFRECZ" : "0.0 , 0.0 , 0.0",
-			"XREC1,YREC1, ZREC1" : "10.0 , 10.0, 10.0",
-			"XREC2,YREC2, ZREC2" : "10.0 , 10.0, 10.0",
+			"XREC1,YREC1, ZREC1" : "10.0 , 20.0, 500.0",
+			"XREC2,YREC2, ZREC2" : "1000.0 , 20.0, 500.0",
 			"NGEOPH" : "1",
 
 "Receiver array" : "comment",
 
-			"REC_ARRAY" : "1",
+			"REC_ARRAY" : "0",
 			"REC_ARRAY_DEPTH" : "10.0",
 			"REC_ARRAY_DIST" : "100.0",
 			"DRX" : "5",
@@ -108,7 +108,7 @@
 
 "Seismograms" : "comment",
 			"NDT, NDTSHIFT" : "1, 0",
-			"SEIS_FORMAT" : "1",
+			"SEIS_FORMAT" : "2",
 			"SEIS_FILE" : "./su/test",
 
 "Monitoring the simulation" : "comment",
