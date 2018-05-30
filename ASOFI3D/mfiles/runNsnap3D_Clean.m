@@ -6,8 +6,8 @@
 close all; clear all; 
 %clc;
 
-runFlag = 0;
-NPROC = 24;
+runFlag = 1;
+NPROC = 16;
 
 % works on KAUST UBUNTU but not on Mac
 if runFlag
@@ -21,7 +21,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---model/snapshot dimensions (gridsize and grid spacing)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-nx=240; ny=240; nz=240; % basic grid size; ny=vertical
+nx=128; ny=128; nz=128; % basic grid size; ny=vertical
 outx=1; outy=1; outz=1; % snap increment in x/y/z direction, outy=vertical
 % spatial discretization, it is assumed that dx=dy=dz=dh
 dh=20.0;

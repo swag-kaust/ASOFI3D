@@ -12,8 +12,8 @@ clc;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---model/snapshot dimensions (gridsize and grid spacing)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-nx=60; ny=60; nz=60; % basic grid size; ny=vertical
-outx=1; outy=1; outz=1; % snap increment in x/y/z direction, outy=vertical
+nx=128; ny=128; nz=128; % basic grid size; ny=vertical
+outx=2; outy=2; outz=2; % snap increment in x/y/z direction, outy=vertical
 % spatial discretization, it is assumed that dx=dy=dz=dh
 dh=54.0;
 
@@ -29,7 +29,7 @@ file_inp1='../par/snap/test.bin.div';
 % Input file2 (snapshot file2)
 file_inp2='../par/snap/test.bin.curl';
 % Model file (for single display or contour plot ontop of snapshot)
-file_mod='../par/model/test.SOFI3D.rho';
+file_mod='../par/snap/test.bin.curl';
 
 % Output file
 % switch for saving snapshots to picture file 1=yes (jpg) 2= yes (png) other=no
@@ -48,7 +48,7 @@ title_mod='Density model';
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % switch for contour of model overlaying the model or snapshot file
 % 1=yes other=no
-cont_switch=1;
+cont_switch=0;
 % number of contours for the contour-plot
 numbOFcont=8;
 
@@ -69,11 +69,11 @@ xslice=nx/2; % for yz plane in grid points
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % time increment for snapshots:
-TSNAP1=6.6e-3;
+TSNAP1=0.61;
 TSNAPINC=0.2;
 % firts and last snapshot that is considered for displayin
 firstframe=1;
-lastframe=60;
+lastframe=1;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---3D definitions: defines two rotating planes (xz, yz plane)
@@ -99,7 +99,7 @@ viewpoint=[0,10,0];
 
 % colorbar boundaries for cropping the snapshot value range
 % only used if type_switch=2
-auto_scaling=2; % 1= automatic determination of boundaries, 2= constant values caxis_value , 3= no scaling
+auto_scaling=1; % 1= automatic determination of boundaries, 2= constant values caxis_value , 3= no scaling
 caxis_value_1=1e-12;
 caxis_value_2=1e-12; % only used if num_switch=2
 
