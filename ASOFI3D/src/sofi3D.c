@@ -422,10 +422,10 @@ int main(int argc, char **argv)
     s.xy = f3tensor(NRL, NRH, NCL, NCH, NDL, NDH);
     s.yz = f3tensor(NRL, NRH, NCL, NCH, NDL, NDH);
 
-    s.xz = f3tensor(1 - l * FDORDER / 2, NRH, NCL, NCH, NRL, NRH);
-    s.xx = f3tensor(1 - l * FDORDER / 2, NRH, NCL, NCH, NRL, NRH);
-    s.yy = f3tensor(1 - l * FDORDER / 2, NRH, NCL, NCH, NRL, NRH);
-    s.zz = f3tensor(1 - l * FDORDER / 2, NRH, NCL, NCH, NRL, NRH);
+    s.xz = f3tensor(1 - l * FDORDER / 2, NRH, NCL, NCH, NDL, NDH);
+    s.xx = f3tensor(1 - l * FDORDER / 2, NRH, NCL, NCH, NDL, NDH);
+    s.yy = f3tensor(1 - l * FDORDER / 2, NRH, NCL, NCH, NDL, NDH);
+    s.zz = f3tensor(1 - l * FDORDER / 2, NRH, NCL, NCH, NDL, NDH);
 
     xb = ivector(0, 1);
     yb = ivector(0, 1);
@@ -1330,32 +1330,32 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
     /* ------------------------------------------------------------------------
      * Deallocation of memory.
      */
-    free_velocity(&v, NRL, NRH, NCL, NCH, NRL, NRH);
+    free_velocity(&v, NRL, NRH, NCL, NCH, NDL, NDH);
 
     if (FDORDER_TIME != 2)
     {
-        free_velocity_derivatives_tensor(&dv, NRL, NRH, NCL, NCH, NRL, NRH);
-        free_velocity_derivatives_tensor(&dv_2, NRL, NRH, NCL, NCH, NRL, NRH);
-        free_velocity_derivatives_tensor(&dv_3, NRL, NRH, NCL, NCH, NRL, NRH);
+        free_velocity_derivatives_tensor(&dv, NRL, NRH, NCL, NCH, NDL, NDH);
+        free_velocity_derivatives_tensor(&dv_2, NRL, NRH, NCL, NCH, NDL, NDH);
+        free_velocity_derivatives_tensor(&dv_3, NRL, NRH, NCL, NCH, NDL, NDH);
 
-        free_stress_derivatives_wrt_velocity(&ds_dv, NRL, NRH, NCL, NCH, NRL, NRH);
-        free_stress_derivatives_wrt_velocity(&ds_dv_2, NRL, NRH, NCL, NCH, NRL, NRH);
-        free_stress_derivatives_wrt_velocity(&ds_dv_3, NRL, NRH, NCL, NCH, NRL, NRH);
+        free_stress_derivatives_wrt_velocity(&ds_dv, NRL, NRH, NCL, NCH, NDL, NDH);
+        free_stress_derivatives_wrt_velocity(&ds_dv_2, NRL, NRH, NCL, NCH, NDL, NDH);
+        free_stress_derivatives_wrt_velocity(&ds_dv_3, NRL, NRH, NCL, NCH, NDL, NDH);
 
         if (FDORDER_TIME == 4)
         {
-            free_velocity_derivatives_tensor(&dv_4, NRL, NRH, NCL, NCH, NRL, NRH);
-            free_stress_derivatives_wrt_velocity(&ds_dv_4, NRL, NRH, NCL, NCH, NRL, NRH);
+            free_velocity_derivatives_tensor(&dv_4, NRL, NRH, NCL, NCH, NDL, NDH);
+            free_stress_derivatives_wrt_velocity(&ds_dv_4, NRL, NRH, NCL, NCH, NDL, NDH);
         }
     }
 
-    free_f3tensor(s.xy, NRL, NRH, NCL, NCH, NRL, NRH);
-    free_f3tensor(s.yz, NRL, NRH, NCL, NCH, NRL, NRH);
+    free_f3tensor(s.xy, NRL, NRH, NCL, NCH, NDL, NDH);
+    free_f3tensor(s.yz, NRL, NRH, NCL, NCH, NDL, NDH);
 
-    free_f3tensor(s.xz, 1 - l * FDORDER / 2, NRH, NCL, NCH, NRL, NRH);
-    free_f3tensor(s.xx, 1 - l * FDORDER / 2, NRH, NCL, NCH, NRL, NRH);
-    free_f3tensor(s.yy, 1 - l * FDORDER / 2, NRH, NCL, NCH, NRL, NRH);
-    free_f3tensor(s.zz, 1 - l * FDORDER / 2, NRH, NCL, NCH, NRL, NRH);
+    free_f3tensor(s.xz, 1 - l * FDORDER / 2, NRH, NCL, NCH, NDL, NDH);
+    free_f3tensor(s.xx, 1 - l * FDORDER / 2, NRH, NCL, NCH, NDL, NDH);
+    free_f3tensor(s.yy, 1 - l * FDORDER / 2, NRH, NCL, NCH, NDL, NDH);
+    free_f3tensor(s.zz, 1 - l * FDORDER / 2, NRH, NCL, NCH, NDL, NDH);
 
     if (ABS_TYPE == 1)
     {
