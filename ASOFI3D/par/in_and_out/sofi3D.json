@@ -108,7 +108,7 @@
 
 "Seismograms" : "comment",
 			"NDT, NDTSHIFT" : "1, 0",
-			"SEIS_FORMAT" : "2",
+			"SEIS_FORMAT" : "1",
 			"SEIS_FILE" : "./su/test",
 
 "Monitoring the simulation" : "comment",
