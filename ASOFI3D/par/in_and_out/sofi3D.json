@@ -90,7 +90,7 @@
 			"SNAP_PLANE" : "2",
 
 "Receiver" : "comment",
-			"SEISMO" : "2",
+			"SEISMO" : "1",
 			"READREC" : "0",
 			"REC_FILE" : "./receiver/receiver.dat",
 			"REFRECX, REFRECY, REFRECZ" : "0.0 , 0.0 , 0.0",
@@ -108,7 +108,7 @@
 
 "Seismograms" : "comment",
 			"NDT, NDTSHIFT" : "1, 0",
-			"SEIS_FORMAT" : "2",
+			"SEIS_FORMAT" : "1",
 			"SEIS_FILE" : "./su/test",
 
 "Monitoring the simulation" : "comment",
