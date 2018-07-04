@@ -46,12 +46,12 @@ LOG_FILE.*
 
 ### IDE and text editors files ###
 # CodeBlocks
-*/src/*.cbp
-*/src/*.layout
+src/*.cbp
+src/*.layout
 # Vim plugin YouCompleteMe for C/C++ code autocompletion
-*/src/.ycm_extra_conf.py
+src/.ycm_extra_conf.py
 # Vim database for C code (functions, variables, etc. and their locations).
-*/src/tags
+src/tags
 
 ### C ###
 # Object files

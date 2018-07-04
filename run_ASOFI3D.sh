@@ -14,7 +14,7 @@ if [[ $# -gt 0 ]]; then
 fi
 
 # Go to directory with stock-given scripts
-cd ASOFI3D/par
+cd par
 
 # Compile the whole code
 #echo "Compilation"
@@ -46,7 +46,7 @@ else
     exit 1
 fi
 
-cd ../..
+cd ..
 
 printf "%s\n" "$sep"
 printf "Done.\n"
