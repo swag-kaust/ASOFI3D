@@ -1,9 +1,17 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# Compile and run ASOFI3D solver and then prepare snapshots for visualization.
 
-# Just compile + run + prepare snapshots for visualization
+# Correctly determine the exit status of a pipe.
+set -o pipefail
 
-# Load MPI modules in case if you are using KAUST workstation
-#source mpiInit.sh
+# Separator line to separate output of different stages.
+sep="************************************************************************"
+
+# Number of the MPI processes. Default value is adapted for Macbook Pro laptop.
+nmpiprocs=4
+if [[ $# -gt 0 ]]; then
+    nmpiprocs="$1"
+fi
 
 # Go to directory with stock-given scripts
 cd ASOFI3D/par
@@ -18,16 +26,29 @@ cd ASOFI3D/par
 #cd -
 
 # Run the code
-echo "Run code"
-./startSOFI3D.sh $1
-echo "OK"
+printf "Run code\n"
+./startSOFI3D.sh "$nmpiprocs"
+if [ $? -eq 0 ]; then
+    printf "OK\n"
+else
+    printf "ERROR: running ASOFI3D solver has failed. Check the output above\n"
+    exit 1
+fi
 
-# Merge snapshots into visualizable ones
-echo "Prepare snapshots"
+# Merge snapshots made by individual MPI processes for visualization.
+printf "%s\n" "$sep"
+printf "Prepare snapshots\n"
 ../bin/snapmerge in_and_out/sofi3D.json
-echo "OK"
+if [ $? -eq 0 ]; then
+    printf "OK\n"
+else
+    printf "ERROR: merging snapshots has failed\n"
+    exit 1
+fi
 
 cd ../..
 
-echo "Done."
-echo "Run MATLAB script ./ASOFI3D/mfiles/snap3D_allplanes.m, to see the wavefield"
+printf "%s\n" "$sep"
+printf "Done.\n"
+script="./ASOFI3D/mfiles/snap3D_allplanes.m"
+printf "Run MATLAB script %s to see the wavefield.\n" "$script"

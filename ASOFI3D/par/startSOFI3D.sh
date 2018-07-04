@@ -1,4 +1,9 @@
 #!/bin/bash
+# Run solver with MPI writing the output to the screen and a file.
+# TODO: consider removing this script as it contains only one command.
+
+# Correctly determine the exit status of a pipe.
+set -o pipefail
 
 #SBATCH --account=k1056
 #SBATCH --job-name=ASOFI
@@ -24,8 +29,7 @@
 
 #----execute with OPENMPI2
 
-mpirun -np $1 nice -19 ../bin/sofi3D ./in_and_out/sofi3D.json | tee ./in_and_out/sofi3D.jout
-
+mpirun -n $1 nice -19 ../bin/sofi3D ./in_and_out/sofi3D.json | tee ./in_and_out/sofi3D.jout
 
 #mpirun --hostfile mpihosts -np 8 nice -19 ../bin/sofi3D ./in_and_out/sofi3D.json | tee ./in_and_out/sofi3D.jout
 
