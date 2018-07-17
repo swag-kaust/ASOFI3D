@@ -13,8 +13,19 @@ if [[ $# -gt 0 ]]; then
     nmpiprocs="$1"
 fi
 
-# Go to directory with stock-given scripts
-cd par
+# Working directory for simulation input and output.
+sim_dir="par/"
+if [[ $# -gt 1 ]]; then
+    sim_dir="$2"
+fi
+
+# Add `bin` directory to $PATH to be able to execute programs
+# (sofi3d, snapmerge, etc.) without specifying the file path.
+script_dir="$(cd "$(dirname $0)" && pwd)"
+export PATH=${script_dir}/bin:$PATH
+
+# Go to the working directory with simulation input files.
+pushd "$sim_dir" > /dev/null || exit 1
 
 # Compile the whole code
 #echo "Compilation"
@@ -26,8 +37,9 @@ cd par
 #cd -
 
 # Run the code
+config_file="in_and_out/sofi3D.json"
 printf "Run code\n"
-./startSOFI3D.sh "$nmpiprocs"
+mpirun -n $nmpiprocs nice -19 sofi3D $config_file | tee in_and_out/sofi3D.jout
 if [ $? -eq 0 ]; then
     printf "OK\n"
 else
@@ -38,7 +50,7 @@ fi
 # Merge snapshots made by individual MPI processes for visualization.
 printf "%s\n" "$sep"
 printf "Prepare snapshots\n"
-../bin/snapmerge in_and_out/sofi3D.json
+snapmerge $config_file
 if [ $? -eq 0 ]; then
     printf "OK\n"
 else
@@ -46,7 +58,7 @@ else
     exit 1
 fi
 
-cd ..
+popd > /dev/null || exit 1
 
 printf "%s\n" "$sep"
 printf "Done.\n"
