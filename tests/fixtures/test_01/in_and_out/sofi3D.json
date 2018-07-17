@@ -10,8 +10,8 @@
 			"RTM_FLAG" : "0",
 
 "Domain Decomposition" : "comment",
-			"NPROCX" : "2",
-			"NPROCY" : "2",
+			"NPROCX" : "4",
+			"NPROCY" : "4",
 			"NPROCZ" : "1",
 
 "3-D Grid" : "comment",
@@ -108,7 +108,7 @@
 
 "Seismograms" : "comment",
 			"NDT, NDTSHIFT" : "1, 0",
-			"SEIS_FORMAT" : "1",
+			"SEIS_FORMAT" : "5",
 			"SEIS_FILE" : "./su/test",
 
 "Monitoring the simulation" : "comment",
