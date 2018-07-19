@@ -16,10 +16,10 @@ void err2(char errformat[],char errfilename[]){
 void err(char err_text[]){
 	extern int MYID;
 
-	fprintf(stdout,"Message from PE %d\n",MYID);
-	fprintf(stdout,"R U N - T I M E  E R R O R: \n");
-	fprintf(stdout,"%s\n",err_text);
-	fprintf(stdout,"...now exiting to system.\n");
+	fprintf(stderr,"Message from PE %d\n",MYID);
+	fprintf(stderr,"R U N - T I M E  E R R O R: \n");
+	fprintf(stderr,"%s\n",err_text);
+	fprintf(stderr,"...now exiting to system.\n");
 	
 	MPI_Abort(MPI_COMM_WORLD, 1);
 	/*exit(1);*/
