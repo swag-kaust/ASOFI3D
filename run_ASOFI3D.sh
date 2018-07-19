@@ -41,26 +41,26 @@ config_file="in_and_out/sofi3D.json"
 printf "Run code\n"
 mpirun -n $nmpiprocs nice -19 sofi3D $config_file | tee in_and_out/sofi3D.jout
 if [ $? -eq 0 ]; then
-    printf "OK\n"
+    echo "OK"
 else
-    printf "ERROR: running ASOFI3D solver has failed. Check the output above\n"
+    echo "ERROR: running ASOFI3D solver has failed. Check the output above" > /dev/stderr
     exit 1
 fi
 
 # Merge snapshots made by individual MPI processes for visualization.
-printf "%s\n" "$sep"
-printf "Prepare snapshots\n"
+echo "$sep"
+echo "Prepare snapshots"
 snapmerge $config_file
 if [ $? -eq 0 ]; then
-    printf "OK\n"
+    echo "OK"
 else
-    printf "ERROR: merging snapshots has failed\n"
+    echo "ERROR: merging snapshots has failed" > /dev/stderr
     exit 1
 fi
 
 popd > /dev/null || exit 1
 
-printf "%s\n" "$sep"
-printf "Done.\n"
+echo "$sep"
+echo "Done."
 script="./ASOFI3D/mfiles/snap3D_allplanes.m"
 printf "Run MATLAB script %s to see the wavefield.\n" "$script"
