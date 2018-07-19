@@ -366,4 +366,9 @@ local.properties
 # TeXlipse plugin
 .texlipse
 
+
+### Shell ###
+.env
+*autoenv*sh
+
 !ASOFI3D/par/sources/source.dat
