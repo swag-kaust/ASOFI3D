@@ -32,7 +32,7 @@ cd ..
 echo "TEST_01: Running solver. Output is captured to tmp/ASOFI3D.log"
 ./run_ASOFI3D.sh 16 tmp/ > tmp/ASOFI3D.log &
 task_id=$!
-animate_progress $task_id "TEST_01: Running ASOFI3D"
+animate_progress $task_id "TEST_01: Running solver"
 
 code=$?
 if [ "$code" -ne "0" ]; then
@@ -43,6 +43,10 @@ fi
 # Convert seismograms in SEG-Y format to the Madagascar RSF format.
 sfsegyread < tmp/su/test_vx.sgy --out=stdout \
     tfile=tmp/su/test_vx_trace.rsf > tmp/su/test_vx.rsf
+
+sfsegyread < ${TEST_PATH}/su/test_vx.sgy \
+    tfile=${TEST_PATH}/su/test_vx_trace.rsf \
+    > ${TEST_PATH}/su/test_vx.rsf
 
 # Read the files.
 # Compare with the old output.
