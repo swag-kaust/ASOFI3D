@@ -5,7 +5,8 @@
  *   this function can generate a
  *   	-> homogeneneous full space
  *   	-> layer over half space
- *
+ * 		-> spherical perturbation in the middle of the model 
+ * 
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
@@ -25,7 +26,8 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
 
     /* local variables */
     float muv, piv;
-    float Vpv, Vsv, Rho, Poi, Epsx, Delx, Gamx;
+	float Vpv, Vsv, Rho, Poi;
+	float C_11, C_33, C_55, C_44, C_66, eps_1, eps_2, delta_1, delta_2, delta_3, gamma_1, gamma_2;
     float *** vpv=NULL, *** vsv=NULL, *** epsx=NULL, *** epsy=NULL, *** gamx=NULL;
     float *** delx=NULL, *** dely=NULL, *** delxy=NULL, *** gamy=NULL;
     float y;
@@ -88,10 +90,14 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
                     if (y<=h){
                         Vpv=vpv1;
                         Poi=poi1;
+                        eps_1=epsx1; eps_2=epsy1; delta_1=delx1; delta_2=dely1;
+			delta_3=delxy1; gamma_1=gamx1; gamma_2=gamy1;
                         Rho=rho1;
                     } else{
                         Vpv=vpv2;
                         Poi=poi2;
+                        eps_1=epsx2; eps_2=epsy2; delta_1=delx2; delta_2=dely2;
+			delta_3=delxy2; gamma_1=gamx2; gamma_2=gamy2;
                         Rho=rho2;
                     }
                     // perturbation in the midle of the model
@@ -115,13 +121,15 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
                     if ((POS[1]==((i-1)/NX)) &&
                             (POS[2]==((j-1)/NY)) &&
                             (POS[3]==((k-1)/NZ))){
+
                         ii=i-POS[1]*NX;
                         jj=j-POS[2]*NY;
                         kk=k-POS[3]*NZ;
 
+						// leftovers from isotropic case -- necessary for PML
                         u[jj][ii][kk]=muv;
                         pi[jj][ii][kk]=piv;
-                        //VTI
+						/*VTI
                         C11[jj][ii][kk] = (1+2*Epsx)*Rho*Vpv*Vpv;
                         C22[jj][ii][kk] = C11[jj][ii][kk];
                         C33[jj][ii][kk] = Rho*Vpv*Vpv;
@@ -131,25 +139,52 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
                         C23[jj][ii][kk]=C13[jj][ii][kk];
                         C44[jj][ii][kk]=Rho*Vsv*Vsv/(1+2*Gamx);
                         C55[jj][ii][kk]=Rho*Vsv*Vsv/(1+2*Gamx);
-			rho[jj][ii][kk]=Rho;
+						  rho[jj][ii][kk]=Rho;                        
+						 */
+						//ORTHO 123 in SOFI sense
+						/*C_33 = Rho*Vpv*Vpv;
+						C_55 = Rho*Vsv*Vsv;
+						C_66 = (1+2*gamma_1)*C_55;
+						C_11 = (1+2*eps_2)*C_33;
+						C_44 = C_66/(1+2*gamma_2);
 
-                        //ORTHO
-                        // C_33 = Rho*Vpv*Vpv;
-                        // C_55 = Rho*Vsv*Vsv;
-                        // C_66 = (1+2*gamma_1)*C_55;
-                        // C_11 = (1+2*eps_2)*C_33;
-                        // C_44 = C_66/(1+2*gamma_2);
+						C11[jj][ii][kk]=C_11;
+						C22[jj][ii][kk]=(1+2*eps_1)*C_33;
+						C33[jj][ii][kk]=C_33;
 
-                        // C33[jj][ii][kk]=C_33;
-                        // C55[jj][ii][kk]=C_55;
-                        // C11[jj][ii][kk]=C_11;
-                        // C22[jj][ii][kk]=(1+2*eps_1)*C_33;
-                        // C66[jj][ii][kk]=C_66;
-                        // C44[jj][ii][kk]=C_44;
-                        // C13[jj][ii][kk]=-C_55+sqrt(2*C_33*(C_33-C_55)*delta_2 + (C_33-C_55)*(C_33-C_55));
-                        // C12[jj][ii][kk]=-C_66+sqrt(2*delta_3*C_11*(C_11-C_66) + (C_11-C_66)*(C_11-C_66));
-                        // C23[jj][ii][kk]=-C_44+sqrt(2*delta_1*C_33*(C_33-C_44) + (C_33-C_44)*(C_33-C_44));
-                        // rho[jj][ii][kk]=Rho;
+						C44[jj][ii][kk]=C_44;
+						C55[jj][ii][kk]=C_55;
+						C66[jj][ii][kk]=C_66;
+											
+						C12[jj][ii][kk]=-C_66+sqrt(2*delta_3*C_11*(C_11-C_66) + (C_11-C_66)*(C_11-C_66));
+						C13[jj][ii][kk]=-C_55+sqrt(2*delta_2*C_33*(C_33-C_55) + (C_33-C_55)*(C_33-C_55));
+						C23[jj][ii][kk]=-C_44+sqrt(2*delta_1*C_33*(C_33-C_44) + (C_33-C_44)*(C_33-C_44));*/
+
+
+						//ORTHO humane flipped axis 2-3 indices (so that the third axis is vertical)
+						// C33 <-> C22
+						// C55 <-> C66
+						// C12 <-> C13
+
+						C_33 = Rho*Vpv*Vpv;
+						C_55 = Rho*Vsv*Vsv;
+						C_66 = (1+2*gamma_1)*C_55;
+						C_11 = (1+2*eps_2)*C_33;
+						C_44 = C_66/(1+2*gamma_2);
+						
+						C11[jj][ii][kk]=C_11;
+						C33[jj][ii][kk]=(1+2*eps_1)*C_33;
+						C22[jj][ii][kk]=C_33;
+						
+						C44[jj][ii][kk]=C_44;
+						C66[jj][ii][kk]=C_55;
+						C55[jj][ii][kk]=C_66;
+											
+						C13[jj][ii][kk]=-C_66+sqrt(2*delta_3*C_11*(C_11-C_66) + (C_11-C_66)*(C_11-C_66));
+						C12[jj][ii][kk]=-C_55+sqrt(2*delta_2*C_33*(C_33-C_55) + (C_33-C_55)*(C_33-C_55));
+						C23[jj][ii][kk]=-C_44+sqrt(2*delta_1*C_33*(C_33-C_44) + (C_33-C_44)*(C_33-C_44));
+						
+						rho[jj][ii][kk]=Rho;
 
                         if (WRITE_MODELFILES==1) {
                             vpv[jj][ii][kk]=Vpv;
@@ -164,7 +199,7 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
 
     /* each PE writes his model to disk */
 
-    /* all models are written to file */
+	/* all models are written to file we need to add anisotropic models output here*/
     if (WRITE_MODELFILES==1) {
         sprintf(modfile,"%s.SOFI3D.pi",MFILE);
         writemod(modfile,pi,3);
