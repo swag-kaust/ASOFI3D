@@ -157,7 +157,7 @@ int main(int argc, char **argv)
         if (argc > 1)
         {
             strncpy(FILEINP, argv[1], STRING_SIZE);
-            fprintf(stderr, " Input parameter filename read from command line : %s. \n\n", FILEINP);
+            fprintf(stdout, " Input parameter filename read from command line : %s. \n\n", FILEINP);
             if (strlen(FILEINP) > STRING_SIZE - 1)
             {
                 fprintf(stderr, "\n ASOFI3D cannot handle paths with more than %d characters.\n", STRING_SIZE - 1);
