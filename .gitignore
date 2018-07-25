@@ -379,3 +379,5 @@ local.properties
 ### Test fixtures ###
 tests/fixtures/*/su/*.rsf
 tests/fixtures/*/su/*.rsf@
+tests/fixtures/test_01/su/test_vx.rsf
+tests/fixtures/test_01/su/test_vx.rsf@
