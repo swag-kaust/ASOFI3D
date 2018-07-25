@@ -23,17 +23,18 @@ cd src
 make sofi3D > /dev/null
 if [ "$?" -ne "0" ]; then
     cd ..
-    echo TEST_01: FAIL > /dev/stderr
+    echo TEST_02: FAIL > /dev/stderr
     exit 1
 fi
 cd ..
 
 # Run code.
-./run_ASOFI3D.sh 16 tmp/ > /dev/null
+echo "TEST_02: Running solver. Output is captured to tmp/ASOFI3D.log"
+./run_ASOFI3D.sh 16 tmp/ > tmp/ASOFI3D.log
 code=$?
 
 if [ "$code" -ne "0" ]; then
-    echo TEST_01: FAIL > /dev/stderr
+    echo TEST_02: FAIL Running ASOFI3D failed > /dev/stderr
     exit 1
 fi
 
@@ -59,7 +60,7 @@ sfsegyread < ${TEST_PATH}/su/fullspace_p.sgy \
 tests/compare_datasets.py tmp/su/fullspace_vx.rsf ${TEST_PATH}/su/fullspace_vx.rsf
 result=$?
 if [ "$result" -ne "0" ]; then
-    echo "TEST_01: FAIL Vx seismograms differ" > /dev/stderr
+    echo "TEST_02: FAIL Vx seismograms differ" > /dev/stderr
     exit 1
 fi
 
@@ -68,11 +69,11 @@ tests/compare_datasets.py tmp/su/fullspace_p.rsf \
                           --rtol=1e-1 --atol=1e-5
 result=$?
 if [ "$result" -ne "0" ]; then
-    echo "TEST_01: FAIL Pressure seismograms differ" > /dev/stderr
+    echo "TEST_02: FAIL Pressure seismograms differ" > /dev/stderr
     exit 1
 fi
 
 # Teardown
 git checkout -- ${MODEL}
 
-echo "TEST_01: PASS"
+echo "TEST_02: PASS"
