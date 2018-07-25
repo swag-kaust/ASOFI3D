@@ -32,7 +32,7 @@ def main(argv=None):
     p.add_argument('--rtol', help='Relative tolerance',
                    type=float, default=1e-5)
     p.add_argument('--atol', help='Absolute tolerance',
-                   type=float, default=1e-8)
+                   type=float, default=1e-15)
     p.add_argument('--verbose', '-v', help='Print results to stdout',
                    action='store_true')
 
