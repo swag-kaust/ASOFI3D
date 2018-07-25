@@ -31,8 +31,8 @@
 			"fdcoeff values: Taylor=1, Holberg=2" : "comment",
 
 "Time Stepping" : "comment",
-			"TIME" : "0.55",
-			"DT" : "1e-3",
+			"TIME" : "1.0",
+			"DT" : "2e-3",
 
 "Source" : "comment",
 
