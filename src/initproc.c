@@ -19,19 +19,19 @@ void initproc(void)	{
 	}
 
 
-	/*C-- determine the length of the subarray on this processor*/
-	IENDX = NX/NPROCX;
-	IENDY = NY/NPROCY;
-	IENDZ = NZ/NPROCZ;
+	// Determine the length of the subarray on this processor.
+	IENDX = NX / NPROCX;
+	IENDY = NY / NPROCY;
+	IENDZ = NZ / NPROCZ;
 
 	/* POS(1) indicates x POSition of the processor in the 
 		     logical 3D processor array*/
-	if ((NX%NPROCX)>0)
-		err(" NX%NPROX must be zero  !");
-	if ((NY%NPROCY)>0)
-		err(" NY%NPROY must be zero  !");
-	if ((NZ%NPROCZ)>0)
-		err(" NZ%NPROZ must be zero  !");
+	if ((NX % NPROCX) > 0)
+		err("NX % NPROCX must be zero!");
+	if ((NY % NPROCY) > 0)
+		err("NY % NPROCY must be zero!");
+	if ((NZ % NPROCZ) > 0)
+		err("NZ % NPROCZ must be zero!");
 
 	MPI_Barrier(MPI_COMM_WORLD);
 	if (MYID==0){
