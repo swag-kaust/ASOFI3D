@@ -8,34 +8,34 @@ MODEL="src/hh_elastic.c"
 TEST_PATH="tests/fixtures/test_02"
 
 # Setup function prepares environment for the test (creates directories).
-# setup
+setup
 
-# # Preserve old model.
-# mv $MODEL ${MODEL}.bak
-# 
-# # Copy test model.
-# cp "${TEST_PATH}/model/fullspace.c"             src/hh_elastic.c
-# cp "${TEST_PATH}/in_and_out/fullspace.json"     tmp/in_and_out/sofi3D.json
-# cp "${TEST_PATH}/sources/fullspace_sources.dat" tmp/sources/
-# 
-# # Compile code.
-# cd src
-# make sofi3D > /dev/null
-# if [ "$?" -ne "0" ]; then
-#     cd ..
-#     echo TEST_01: FAIL > /dev/stderr
-#     exit 1
-# fi
-# cd ..
-# 
-# # Run code.
-# ./run_ASOFI3D.sh 16 tmp/ > /dev/null
-# code=$?
-# 
-# if [ "$code" -ne "0" ]; then
-#     echo TEST_01: FAIL > /dev/stderr
-#     exit 1
-# fi
+# Preserve old model.
+mv $MODEL ${MODEL}.bak
+
+# Copy test model.
+cp "${TEST_PATH}/model/fullspace.c"             src/hh_elastic.c
+cp "${TEST_PATH}/in_and_out/fullspace.json"     tmp/in_and_out/sofi3D.json
+cp "${TEST_PATH}/sources/fullspace_sources.dat" tmp/sources/
+
+# Compile code.
+cd src
+make sofi3D > /dev/null
+if [ "$?" -ne "0" ]; then
+    cd ..
+    echo TEST_01: FAIL > /dev/stderr
+    exit 1
+fi
+cd ..
+
+# Run code.
+./run_ASOFI3D.sh 16 tmp/ > /dev/null
+code=$?
+
+if [ "$code" -ne "0" ]; then
+    echo TEST_01: FAIL > /dev/stderr
+    exit 1
+fi
 
 # Convert seismograms in SEG-Y format to the Madagascar RSF format.
 sfsegyread < tmp/su/fullspace_vx.sgy \
