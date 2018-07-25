@@ -24,6 +24,7 @@ guide_sofi3D.pdf
 /contrib/header/*
 *.dat
 !*/sources/source.dat
+!sources/fullspace_sources.dat
 */snap/*
 */snap_backup/*
 *.old*
