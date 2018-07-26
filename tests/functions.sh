@@ -9,6 +9,7 @@ setup () {
     mkdir tmp/model
     mkdir tmp/snap
     mkdir tmp/sources
+    mkdir tmp/receiver
     mkdir tmp/su
 }
 
