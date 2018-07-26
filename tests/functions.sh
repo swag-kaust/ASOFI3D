@@ -27,16 +27,16 @@ animate_progress () {
     while kill -0 $task_id > /dev/null 2>&1 ; do
         echo -en "\r"
         echo -en "${message} |"
-        sleep 1;
+        sleep 0.5;
         echo -en "\r"
         echo -en "${message} /"
-        sleep 1;
+        sleep 0.5;
         echo -en "\r"
         echo -en "${message} -"
-        sleep 1;
+        sleep 0.5;
         echo -en "\r"
         echo -en "${message} \\"
-        sleep 1;
+        sleep 0.5;
     done
     echo -en "\r"
     echo "${message}"
