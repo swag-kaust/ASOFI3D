@@ -23,7 +23,6 @@ guide_sofi3D.pdf
 *.strip
 /contrib/header/*
 *.dat
-!tests/*/source*.dat
 */snap/*
 */snap_backup/*
 *.old*
@@ -380,3 +379,5 @@ tests/fixtures/*/su/*.rsf
 tests/fixtures/*/su/*.rsf@
 tests/fixtures/test_01/su/test_vx.rsf
 tests/fixtures/test_01/su/test_vx.rsf@
+# Don't ignore source and receiver files used for test fixtures.
+!tests/fixtures/**/*.dat
