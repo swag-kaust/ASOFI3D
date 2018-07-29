@@ -1,0 +1,129 @@
+#-----------------------------------------------------------------
+#      JSON PARAMETER FILE FOR SOFI3D
+#-----------------------------------------------------------------
+# description: example of json input file
+# description/name of the model: homogeneous full space (hh.c)
+#
+
+{
+"Imaging" : "comment",
+			"RTM_FLAG" : "0",
+
+"Domain Decomposition" : "comment",
+			"NPROCX" : "4",
+			"NPROCY" : "4",
+			"NPROCZ" : "1",
+
+"3-D Grid" : "comment",
+
+			"NX" : "128",
+			"NY" : "128",
+			"NZ" : "128",
+
+			"DX" : "10",
+			"DY" : "10",
+			"DZ" : "10",
+
+"FD order" : "comment",
+			"FDORDER" : "4",
+			"FDORDER_TIME" : "2",
+			"FDCOEFF" : "2",
+			"fdcoeff values: Taylor=1, Holberg=2" : "comment",
+
+"Time Stepping" : "comment",
+			"TIME" : "0.55",
+			"DT" : "1e-3",
+
+"Source" : "comment",
+
+			"SOURCE_SHAPE" : "1",
+			"source shape values: ricker=1;fumue=2;from_SIGNAL_FILE=3;SIN**3=4" : "comment",
+			"SIGNAL_FILE" : "signal_mseis.tz",
+
+			"SOURCE_TYPE" : "1",
+			"source_type values (point_source): explosive=1;force_in_x=2;in_y=3;in_z=4;custom=5;earthquake=6" : "comment",
+			"SOURCE_ALPHA, SOURCE_BETA" : "0.0 , 0.0",
+			"AMON, STR, DIP, RAKE" : "1.0e2 , 45.0 , 90.0 , 45.0",
+			"SRCREC" : "1",
+			"srcrec values :  read from SOURCE_FILE=1, PLANE_WAVE=2 (internal)" : "comment",
+
+			"SOURCE_FILE" : "./sources/source.dat",
+			"RUN_MULTIPLE_SHOTS" : "1",
+
+			"PLANE_WAVE_DEPTH" : "2106.0",
+			"PLANE_WAVE_ANGLE" : "0.0",
+			"TS" : "0.1",
+			"FC" : "10.0",
+
+"Model" : "comment",
+			"READMOD" : "0",
+			"MFILE" : "model/test",
+			"WRITE_MODELFILES" : "0",
+
+"Q-approximation" : "comment",
+			"L" : "0",
+			"FREF" : "5.0",
+			"FL1" : "5.0",
+			"TAU" : "0.00001",
+
+"Boundary Conditions" : "comment",
+			"FREE_SURF" : "0",
+			"ABS_TYPE" : "1",
+			"FW" : "20.0",
+			"DAMPING" : "8.0",
+			"FPML" : "5.0",
+			"VPPML" : "1500.0",
+			"NPOWER" : "4.0",
+			"K_MAX_CPML" : "1.0",
+			"BOUNDARY" : "0",
+
+"Snapshots" : "comment",
+			"SNAP" : "0",
+			"TSNAP1" : "0.5",
+			"TSNAP2" : "0.6",
+			"TSNAPINC" : "0.2",
+			"IDX" : "2",
+			"IDY" : "2",
+			"IDZ" : "2",
+			"SNAP_FORMAT" : "3",
+			"SNAP_FILE" : "./snap/test",
+			"SNAP_PLANE" : "2",
+
+"Receiver" : "comment",
+			"SEISMO" : "2",
+			"READREC" : "1",
+			"REC_FILE" : "./receiver/receiver.dat",
+			"REFRECX, REFRECY, REFRECZ" : "0.0 , 0.0 , 0.0",
+			"XREC1,YREC1, ZREC1" : "10.0 , 20.0, 500.0",
+			"XREC2,YREC2, ZREC2" : "1000.0 , 20.0, 500.0",
+			"NGEOPH" : "1",
+
+"Receiver array" : "comment",
+
+			"REC_ARRAY" : "0",
+			"REC_ARRAY_DEPTH" : "10.0",
+			"REC_ARRAY_DIST" : "100.0",
+			"DRX" : "5",
+			"DRZ" : "5",
+
+"Seismograms" : "comment",
+			"NDT, NDTSHIFT" : "1, 0",
+			"SEIS_FORMAT" : "5",
+			"SEIS_FILE" : "./su/test",
+
+"Monitoring the simulation" : "comment",
+			"LOG_FILE" : "log/test.log",
+			"LOG" : "1",
+			"OUT_SOURCE_WAVELET" : "1",
+			"OUT_TIMESTEP_INFO" : "50",
+
+"Checkpoints" : "comment",
+			"CHECKPTREAD" : "0",
+			"CHECKPTWRITE" : "0",
+			"CHECKPT_FILE" : "tmp/checkpoint_sofi3D",
+
+"Madagascar" : "comment",
+			"RSF" : "0",
+			"RSFDEN" : "./madagascar/test_rho.rsf",
+
+}
