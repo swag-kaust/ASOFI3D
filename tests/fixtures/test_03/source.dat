@@ -1,0 +1,22 @@
+500.0		500.0		500.0		0.0		10.0		1.0
+750.0		750.0		750.0		0.0		10.0		1.0
+
+#
+# Definition of (distributed) source positions:
+# position, time-delay, centre frequency, and amplitude
+#
+# (comment line is indicated by # or % as first character)
+#
+# Parameters for each source node (one source node per line):
+#
+#  NSRC (one separateline)
+# 	XSRC		YSRC		ZSRC		TD		FC		AMP
+#
+# Symbols:
+# XSRC= x-coordinate of source point [meter]
+# YSRC= y-coordinate of source point [meter]
+# ZSRC= z-coordinate of source point [meter] (vertical)
+# TD= excitation time (time-delay) for source node [s]
+# FC= centre frequency of source signal [Hz]
+# AMP= maximum amplitude of source signal
+
