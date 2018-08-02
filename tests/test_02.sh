@@ -60,7 +60,9 @@ sfsegyread < ${TEST_PATH}/su/fullspace_p.sgy \
 
 # Read the files.
 # Compare with the recorded output.
-tests/compare_datasets.py tmp/su/fullspace_vx.rsf ${TEST_PATH}/su/fullspace_vx.rsf
+tests/compare_datasets.py tmp/su/fullspace_vx.rsf \
+                          ${TEST_PATH}/su/fullspace_vx.rsf \
+                          --rtol=1e-8 --atol=1e-10
 result=$?
 if [ "$result" -ne "0" ]; then
     echo "TEST_02: FAIL Vx seismograms differ" > /dev/stderr
