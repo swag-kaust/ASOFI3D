@@ -1,0 +1,16 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: ubuntu:16.04
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: bash .circleci/install_deps.sh
+      - run:
+          name: Build code
+          command: make all
+      - run:
+          name: Test code
+          command: make test
