@@ -9,4 +9,3 @@ all :
 .PHONY : test
 test :
 	tests/test_01.sh
-	tests/test_02.sh
