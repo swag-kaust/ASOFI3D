@@ -11,6 +11,7 @@ apt-get --yes --quiet install wget > /dev/null
 # Switch to a nonroot user.
 adduser --disabled-password --gecos "" user
 su user
+echo "Switch to user 'user'"
 
 # Install Python 2.7 and Madagascar.
 MINICONDA_URL=https://repo.continuum.io/miniconda
@@ -27,3 +28,6 @@ conda install --quiet --yes --channel swag-kaust madagascar
 # Checking the installed versions
 python -V
 gcc --version
+
+NP=$(nproc)
+echo ${NP}
