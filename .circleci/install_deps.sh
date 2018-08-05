@@ -4,7 +4,7 @@
 # Install build tools (gcc, openmpi, make, and cmake).
 apt-get -qq update > /dev/null &&
 apt-get --yes --quiet install build-essential cmake > /dev/null
-apt-get --yes --quiet install openmpi > /dev/null
+apt-get --yes --quiet install libopenmpi-dev
 
 apt-get --yes --quiet install wget > /dev/null
 
