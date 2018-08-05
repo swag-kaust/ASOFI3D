@@ -10,7 +10,7 @@ jobs:
           command: bash .circleci/install_deps.sh
       - run:
           name: Build code
-          command: make all
+          command: su --preserve-environment --command "make all" user
       - run:
           name: Test code
-          command: make test
+          command: su --preserve-environment --command "make test" user
