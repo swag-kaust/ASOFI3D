@@ -8,6 +8,10 @@ apt-get --yes --quiet install libopenmpi-dev
 
 apt-get --yes --quiet install wget > /dev/null
 
+# Switch to a nonroot user.
+adduser --disabled-password --gecos "" user
+su user
+
 # Install Python 2.7 and Madagascar.
 MINICONDA_URL=https://repo.continuum.io/miniconda
 MINICONDA_FILE=Miniconda2-latest-Linux-x86_64.sh
