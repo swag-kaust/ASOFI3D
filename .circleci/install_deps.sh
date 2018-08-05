@@ -8,18 +8,16 @@ apt-get --yes --quiet install libopenmpi-dev
 
 apt-get --yes --quiet install wget > /dev/null
 
-# Switch to a nonroot user.
-adduser --disabled-password --gecos "" user
-su user
-echo "Switch to user 'user'"
+# Create a nonroot user.
+adduser --disabled-password --gecos "" asofi3duser
 
 # Install Python 2.7 and Madagascar.
 MINICONDA_URL=https://repo.continuum.io/miniconda
 MINICONDA_FILE=Miniconda2-latest-Linux-x86_64.sh
 
 wget "$MINICONDA_URL/$MINICONDA_FILE" --output-file=wget.log;
-bash "$MINICONDA_FILE" -b -p "$HOME/miniconda"
-export PATH=$HOME/miniconda/bin:$PATH
+bash "$MINICONDA_FILE" -b -p /opt/miniconda
+export PATH=/opt/miniconda/bin:$PATH
 
 conda create --yes --name env python=2.7
 source activate env
