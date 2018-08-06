@@ -27,5 +27,8 @@ conda install --quiet --yes --channel swag-kaust madagascar
 python -V
 gcc --version
 
+# Make a non-root user an owner of the code.
+chown -R asofi3duser *
+
 NP=$(nproc)
 echo ${NP}
