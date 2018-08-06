@@ -4,7 +4,7 @@
 
 .PHONY : all
 all :
-	cd src && $(MAKE) all
+	ls -l && cd src && $(MAKE) all
 
 .PHONY : test
 test :
