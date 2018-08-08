@@ -2,15 +2,12 @@ version: 2
 jobs:
   build:
     docker:
-      - image: ubuntu:16.04
+      - image: swagkaust/swagimage:2018-08.01
     steps:
       - checkout
       - run:
-          name: Install dependencies
-          command: bash .circleci/install_deps.sh
-      - run:
           name: Build code
-          command: su --preserve-environment --command "echo $PWD; echo $PATH; ls -l; make all" asofi3duser
+          command: echo $PWD && ls -l && make all
       - run:
           name: Test code
-          command: su --preserve-environment --command "make test" asofi3duser
+          command: echo $PWD && ls -l && make test
