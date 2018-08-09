@@ -45,6 +45,7 @@ RUN MINICONDA_URL=https://repo.continuum.io/miniconda && \
 
 RUN adduser --disabled-password --gecos '' user
 RUN echo ". /opt/miniconda/etc/profile.d/conda.sh" >> /home/user/.bashrc
+RUN echo "conda activate envpy27" >> /home/user/.bashrc
 
 USER user
 WORKDIR /home/user

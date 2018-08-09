@@ -2,12 +2,12 @@ version: 2
 jobs:
   build:
     docker:
-      - image: swagkaust/swagimage:2018-08.02
+      - image: swagkaust/swagimage:2018-08.03
     steps:
       - checkout
       - run:
           name: Build code
-          command: echo $PWD && ls -l && make all
+          command: make all
       - run:
           name: Test code
-          command: echo $PWD && ls -l && make test
+          command: make test
