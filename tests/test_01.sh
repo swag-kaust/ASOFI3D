@@ -40,13 +40,12 @@ if [ "$code" -ne "0" ]; then
     exit 1
 fi
 
-echo $PATH | tr ":" "\n"
-
 # Convert seismograms in SEG-Y format to the Madagascar RSF format.
-sfsegyread < tmp/su/test_vx.sgy --out=stdout \
-    tfile=tmp/su/test_vx_trace.rsf > tmp/su/test_vx.rsf
+sfsegyread tape=tmp/su/test_vx.sgy \
+    tfile=tmp/su/test_vx_trace.rsf \
+    > tmp/su/test_vx.rsf
 
-sfsegyread < ${TEST_PATH}/su/test_vx.sgy \
+sfsegyread tape=${TEST_PATH}/su/test_vx.sgy \
     tfile=${TEST_PATH}/su/test_vx_trace.rsf \
     > ${TEST_PATH}/su/test_vx.rsf
 
