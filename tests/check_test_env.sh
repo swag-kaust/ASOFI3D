@@ -5,12 +5,12 @@ function exists ()
     command -v "$1" >/dev/null 2>&1
 }
 
-function success ()
+function print_success ()
 {
     echo -e " \033[0;32m+\033[0m  $*";
 }
 
-function error ()
+function print_error ()
 {
     echo -e " \033[1;31m-\033[0m  $*";
 }
@@ -19,41 +19,41 @@ success=true
 
 if exists mpicc
 then
-    success "Program mpicc is found"
+    print_success "Program mpicc is found"
 else
     success=false
-    error "Program mpicc is not found"
+    print_error "Program mpicc is not found"
 fi
 
 if exists python
 then
-    success "Program python is found"
+    print_success "Program python is found"
 else
     success=false
-    error "Program python is not found"
+    print_error "Program python is not found"
 fi
 
 if exists sfsegyread
 then
-    success "Program sfsegyread is found"
+    print_success "Program sfsegyread is found"
 else
     success=false
-    error "Program sfsegyread is not found"
+    print_error "Program sfsegyread is not found"
 fi
 
 python -c 'import rsf.api as rsf' >/dev/null 2>&1
 if [ $? -eq 0 ]
 then
-    success "Importing rsf.api in python works"
+    print_success "Importing rsf.api in python works"
 else
     success=false
-    error "Importing rsf.api in python does not work"
+    print_error "Importing rsf.api in python does not work"
 fi
 
 if [ "$success" = true ]
 then
-    success "Requirements for tests are satisfied"
+    print_success "Requirements for tests are satisfied"
 else
-    error "Requirements for tests are not satisfied. Cannot proceed"
+    print_error "Requirements for tests are not satisfied. Cannot proceed"
     exit 1
 fi

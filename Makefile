@@ -8,4 +8,5 @@ all :
 
 .PHONY : test
 test :
+	tests/check_test_env.sh
 	tests/test_01.sh
