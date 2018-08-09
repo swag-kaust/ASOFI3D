@@ -32,6 +32,7 @@ RUN MINICONDA_URL=https://repo.continuum.io/miniconda && \
     MINICONDA_FILE=Miniconda2-latest-Linux-x86_64.sh && \
     wget --quiet "$MINICONDA_URL/$MINICONDA_FILE" --output-file=wget.log && \
     bash "$MINICONDA_FILE" -b -p /opt/miniconda && \
+    rm "$MINICONDA_FILE" && \
 	# Enable conda for the current user.
     . /opt/miniconda/etc/profile.d/conda.sh && \
 	# Enable conda for all users.
@@ -43,7 +44,9 @@ RUN MINICONDA_URL=https://repo.continuum.io/miniconda && \
     conda install --quiet --yes --channel swag-kaust madagascar
 
 RUN adduser --disabled-password --gecos '' user
+RUN echo ". /opt/miniconda/etc/profile.d/conda.sh" >> /home/user/.bashrc
+
 USER user
 WORKDIR /home/user
 
-CMD [ "/bin/bash", "--login" ]
+CMD [ "/bin/bash" ]
