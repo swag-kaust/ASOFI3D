@@ -7,7 +7,17 @@ jobs:
       - checkout
       - run:
           name: Build code
-          command: make all
+          command: |
+            . /etc/profile.d/conda.sh
+            conda activate envpy27
+            echo $PATH
+            make all
       - run:
           name: Test code
-          command: make test
+          command: |
+            echo "Test code, before sourcing conda.sh: ${PATH}"
+            . /etc/profile.d/conda.sh
+            echo "Test code, after sourcing conda.sh: ${PATH}"
+            conda activate envpy27
+            echo "Test code, after activating envpy27: ${PATH}"
+            make test
