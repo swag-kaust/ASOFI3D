@@ -22,23 +22,30 @@ animate_progress () {
     #
     # Examples:
     #     $ animate_progress $! "Task is running"
-    task_id=$1
-    message=$2
+    task_id="$1"
+    message="$2"
+    pause=0.2
 
-    while kill -0 $task_id > /dev/null 2>&1 ; do
-        echo -en "\r"
-        echo -en "${message} |"
-        sleep 0.5;
-        echo -en "\r"
-        echo -en "${message} /"
-        sleep 0.5;
-        echo -en "\r"
-        echo -en "${message} -"
-        sleep 0.5;
-        echo -en "\r"
-        echo -en "${message} \\"
-        sleep 0.5;
-    done
-    echo -en "\r"
-    echo "${message}"
+    if [ "${CI}" ]
+    then
+        wait $task_id
+    else
+        while kill -0 "${task_id}" > /dev/null 2>&1
+        do
+            printf "\r"
+            printf "%s |" "${message}"
+            sleep $pause
+            printf "\r"
+            printf "%s /" "${message}"
+            sleep $pause
+            printf "\r"
+            printf "%s -" "${message}"
+            sleep $pause
+            printf "\r"
+            printf "%s \\" "${message}"
+            sleep $pause
+        done
+        printf "\r"
+        printf "%s\n" "${message}"
+    fi
 }
