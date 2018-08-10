@@ -19,14 +19,6 @@ if [[ $# -gt 1 ]]; then
     sim_dir="$2"
 fi
 
-# Add `bin` directory to $PATH to be able to execute programs
-# (sofi3d, snapmerge, etc.) without specifying the file path.
-script_dir="$(cd "$(dirname $0)" && pwd)"
-export PATH=${script_dir}/bin:$PATH
-
-# Go to the working directory with simulation input files.
-pushd "$sim_dir" > /dev/null || exit 1
-
 # Compile the whole code.
 echo "$sep"
 echo "Compilation"
@@ -37,6 +29,14 @@ else
     echo "ERROR: Compilation failed" > /dev/stderr
     exit 1
 fi
+
+# Add `bin` directory to $PATH to be able to execute programs
+# (sofi3d, snapmerge, etc.) without specifying the file path.
+script_dir="$(cd "$(dirname $0)" && pwd)"
+export PATH=${script_dir}/bin:$PATH
+
+# Go to the working directory with simulation input files.
+pushd "$sim_dir" > /dev/null || exit 1
 
 # Run the code
 config_file="in_and_out/sofi3D.json"

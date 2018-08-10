@@ -12,10 +12,10 @@ clc;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---model/snapshot dimensions (gridsize and grid spacing)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-nx=128; ny=128; nz=128; % basic grid size; ny=vertical
+nx=256; ny=192; nz=128; % basic grid size; ny=vertical
 outx=2; outy=2; outz=2; % snap increment in x/y/z direction, outy=vertical
 % spatial discretization, it is assumed that dx=dy=dz=dh
-dh=54.0;
+dh=10.0;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---input, output files
@@ -29,7 +29,7 @@ file_inp1='../par/snap/test.bin.div';
 % Input file2 (snapshot file2)
 file_inp2='../par/snap/test.bin.curl';
 % Model file (for single display or contour plot ontop of snapshot)
-file_mod='../par/snap/test.bin.curl';
+file_mod='../par/model/test.SOFI3D.rho';
 
 % Output file
 % switch for saving snapshots to picture file 1=yes (jpg) 2= yes (png) other=no
@@ -38,7 +38,7 @@ filesave=0;
 file_out='../par/snap/pic_test';
 
 % title strings for each sub-figure
-title_inp1='P-wave vield (div)';
+title_inp1='P-wave field (div)';
 title_inp2='S-wave field (curl)';
 title_mod='Density model';
 
@@ -55,9 +55,9 @@ numbOFcont=8;
 % Choose model or snapshot plot (model-->1; snapshot-->2)
 type_switch=2;
 % Choose 2D slice or 3D surf plot
-image_switch=1; % 1 = 2D; 2 = 3D;
+image_switch=2; % 1 = 2D; 2 = 3D;
 % Choose slice geometry and postion (for 2-D plots)
-slice_switch=2; % horizontal(zx)=1; vertical (yx)=2; vertical (yz)=3;
+slice_switch=1; % horizontal(zx)=1; vertical (yx)=2; vertical (yz)=3;
 % slice definition, where to slice trough the 3-D space
 nx=nx/outx;ny=ny/outy;nz=nz/outz;
 zslice=nz/2; % for xy plane
@@ -238,7 +238,7 @@ if image_switch==1
     end
     
     
-    h1=figure(2);
+    h1=figure(1);
     % determination of screen size
     scrsz = get(0,'ScreenSize');
     % determination size of window for plotting
@@ -277,7 +277,7 @@ if image_switch==1
             % to display slices in any other plane besides y-x, we have to load
             % each single yx slice and extract a single line and put them together
             
-            for l=1:ny;
+            for l=1:nz
                 file1_data=fread(fid_file1,[ny,nx],'float');
                 if num_switch==2
                     file2_data=fread(fid_file2,[ny,nx],'float');
@@ -480,7 +480,7 @@ if image_switch==2
     end
     
     % loop over number of snaphsots
-    for i=firstframe:1:lastframe;
+    for i=firstframe:lastframe
         
         % calculating time of snapshot
         tsnap=(i-1)*TSNAPINC+TSNAP1;
@@ -496,19 +496,15 @@ if image_switch==2
         % creating a grid
         [X,Z,Y]=meshgrid(x,z,y);
         
-        %surface height of horizontal z-x plane
-        yplane=zeros(ny,nx);
-        yplane(:,:)=(ny*dh*outy)/2+rotpoint(2); 
-        
-        %surface height of vertical y-x plane
-        zplane=zeros(nz,nx);
-        zplane(:,:)=(nz*dh*outz)/2+rotpoint(3); 
-        
+        %surface height of horizontal y-x plane
+        xyplane=zeros(ny,nx);
+        xyplane(:,:)=(nz*dh*outy)/2+rotpoint(2); 
+                      
         % creating a vertical slice plane in y-x plane
-        hslice = surf(x,y,yplane);
+        hslice = surf(x,y,xyplane);
         % rotate slice plane with, with respect to a point from which rotation is defined
         % in case of rotpoint=[0,0,0], this point is the center of the model/snaphot
-        rotate(hslice,rotaxis,phi1,[mean(x)-rotpoint(1),mean(y)-rotpoint(2),mean(mean(zplane))-rotpoint(3)]);
+        rotate(hslice,rotaxis,phi1,[mean(x)-rotpoint(1),mean(y)-rotpoint(2),mean(mean(xyplane))-rotpoint(3)]);
         % get boundaries of rotated plane
         xd = get(hslice,'XData');
         yd = get(hslice,'YData');
@@ -517,10 +513,10 @@ if image_switch==2
         delete(hslice);
         
         % creating a horizontal slice plane in z-x plane
-        hslice2 = surf(x,z,zplane);
+        hslice2 = surf(x,y,xyplane);
         % rotate slice plane with, with respect to a point from which rotation is defined
         % in case of rotpoint=[0,0,0], this point is the center of the model/snaphot
-        rotate(hslice2,rotaxis,phi2,[mean(x)-rotpoint(1),mean(z)-rotpoint(2),mean(mean(yplane))-rotpoint(3)]);
+        rotate(hslice2,rotaxis,phi2,[mean(x)-rotpoint(1),mean(y)-rotpoint(2),mean(mean(xyplane))-rotpoint(3)]);
         % get boundaries of rotated plane
         xd2 = get(hslice2,'XData');
         yd2 = get(hslice2,'YData');
