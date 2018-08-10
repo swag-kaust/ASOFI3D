@@ -27,14 +27,16 @@ export PATH=${script_dir}/bin:$PATH
 # Go to the working directory with simulation input files.
 pushd "$sim_dir" > /dev/null || exit 1
 
-# Compile the whole code
-#echo "Compilation"
-#./compileSOFI3D.sh
-#echo "OK"
-
-#cd madagascar
-#scons
-#cd -
+# Compile the whole code.
+echo "$sep"
+echo "Compilation"
+make asofi3D
+if [ "$?" -eq 0 ]; then
+    echo "Compilation successful"
+else
+    echo "ERROR: Compilation failed" > /dev/stderr
+    exit 1
+fi
 
 # Run the code
 config_file="in_and_out/sofi3D.json"
