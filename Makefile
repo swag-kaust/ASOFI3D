@@ -6,6 +6,10 @@
 all :
 	$(MAKE) --directory=src all
 
+.PHONY : asofi3D sofi3D
+asofi3D sofi3D :
+	$(MAKE) --directory=src sofi3D
+
 .PHONY : test
 test :
 	tests/check_test_env.sh
