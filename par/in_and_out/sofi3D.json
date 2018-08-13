@@ -125,5 +125,5 @@
 "Madagascar" : "comment",
 			"RSF" : "0",
 			"RSFDEN" : "./madagascar/test_rho.rsf",
-
+			"EXTRAPARAMETER" : "12345"
 }
