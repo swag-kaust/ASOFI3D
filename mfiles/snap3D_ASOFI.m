@@ -4,17 +4,31 @@
 %---Please note : y dentotes the vertical axis!!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 close all; clearvars; clc;
+a = pwd;
+cd ~/TD_SHAHEEN/par/
+system('../bin/snapmerge_WS ./in_and_out/sofi3D.json');
+cd(a)
 
+%% prepare colormap
 createSRGBcolormap;
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%---start of input parameter definition
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%---model/snapshot dimensions (gridsize and grid spacing)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-nx=512; ny=192; nz=256; % basic grid size; ny=vertical
-outx=2; outy=2; outz=2; % snap increment in x/y/z direction, outy=vertical
-% spatial discretization, it is assumed that dx=dy=dz=dh
-dh=10.0;
+
+%% prepare json
+json_text = fileread('../par/in_and_out/sofi3D.json');
+i = find(json_text=='{');
+j = find(json_text=='}');
+b = json_text(i:j);
+aaaaa = jsondecode(b);
+
+%% read parameters from json
+nx = str2num(aaaaa.NX);
+ny = str2num(aaaaa.NY);
+nz = str2num(aaaaa.NZ);
+
+outx = str2num(aaaaa.IDX);
+outy = str2num(aaaaa.IDY);
+outz = str2num(aaaaa.IDZ);
+
+dh = str2num(aaaaa.DX); 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---input, output files
@@ -28,7 +42,7 @@ file_inp1='../par/snap/test.bin.div';
 % Input file2 (snapshot file2)
 file_inp2='../par/snap/test.bin.curl';
 % Model file (for single display or contour plot ontop of snapshot)
-file_mod='../par/model/test.SOFI3D.rho';
+file_mod='../par/model/test.SOFI3D.pi';
 
 % Output file
 % switch for saving snapshots to picture file 1=yes (jpg) 2= yes (png) other=no
@@ -47,7 +61,7 @@ title_mod='Density model';
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % switch for contour of model overlaying the model or snapshot file
 % 1=yes other=no
-cont_switch=0;
+cont_switch=1;
 % number of contours for the contour-plot
 numbOFcont=8;
 
@@ -72,7 +86,7 @@ TSNAP1=0.61;
 TSNAPINC=0.2;
 % firts and last snapshot that is considered for displayin
 firstframe=1;
-lastframe=1;
+lastframe=3;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---3D definitions: defines two rotating planes (xz, yz plane)
