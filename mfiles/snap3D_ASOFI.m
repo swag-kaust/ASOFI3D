@@ -4,20 +4,29 @@
 %---Please note : y dentotes the vertical axis!!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 close all; clearvars; clc;
-a = pwd;
-cd ~/TD_SHAHEEN/par/
-system('../bin/snapmerge_WS ./in_and_out/sofi3D.json');
-cd(a)
 
-%% prepare colormap
-createSRGBcolormap;
-
-%% prepare json
+%% read from json to aaaaa
 json_text = fileread('../par/in_and_out/sofi3D.json');
 i = find(json_text=='{');
 j = find(json_text=='}');
 b = json_text(i:j);
 aaaaa = jsondecode(b);
+
+%% merge snapshots if they were not merged before
+
+a = pwd;
+cd ../par/
+dir_Full = dir([aaaaa.SNAP_FILE,'.bin.div']);
+dir_000 = dir([aaaaa.SNAP_FILE,'.bin.div.0.0.0']);
+
+if dir_Full.datenum < dir_000.datenum
+    system('../bin/snapmerge_WS ./in_and_out/sofi3D.json');
+end
+
+cd(a)
+
+%% prepare colormap
+createSRGBcolormap;
 
 %% read parameters from json
 nx = str2num(aaaaa.NX);
