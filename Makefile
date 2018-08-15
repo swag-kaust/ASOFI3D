@@ -14,7 +14,7 @@ asofi3D :
 test :
 	tests/check_test_env.sh
 	tests/test_01.sh
-	tests/test_02.sh
+	# tests/test_02.sh
 	tests/test_03.sh
 	tests/test_04.sh
 	tests/test_05.sh
