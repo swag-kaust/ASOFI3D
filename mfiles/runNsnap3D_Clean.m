@@ -6,7 +6,7 @@
 close all; clear all; 
 %clc;
 
-runFlag = 1;
+runFlag = 0;
 NPROC = 16;
 
 % works on KAUST UBUNTU but not on Mac
@@ -21,10 +21,10 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---model/snapshot dimensions (gridsize and grid spacing)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-nx=128; ny=128; nz=128; % basic grid size; ny=vertical
-outx=1; outy=1; outz=1; % snap increment in x/y/z direction, outy=vertical
+nx=256; ny=192; nz=128; % basic grid size; ny=vertical
+outx=2; outy=2; outz=2; % snap increment in x/y/z direction, outy=vertical
 % spatial discretization, it is assumed that dx=dy=dz=dh
-dh=20.0;
+dh=10.0;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---input, output files
@@ -69,8 +69,8 @@ image_switch=2; % 1 = 2D; 2 = 3D;
 slice_switch=3; % horizontal(zx)=1; vertical (yx)=2; vertical (yz)=3;
 % slice definition, where to slice trough the 3-D space
 nx=nx/outx;ny=ny/outy;nz=nz/outz;
-zslice=nz/2; % for xy plane
-yslice=ny/2; % for xz plane
+zslice=ny/2; % for xy plane
+yslice=nz/2; % for xz plane
 xslice=nx/2; % for yz plane in grid points
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -82,7 +82,7 @@ TSNAP1=0.51;
 TSNAPINC=0.1;
 % firts and last snapshot that is considered for displayin
 firstframe=1;
-lastframe=6;
+lastframe=1;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---3D definitions: defines two rotating planes (xz, yz plane)

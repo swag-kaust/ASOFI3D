@@ -1,21 +1,43 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%---script for the visualization of snapshots gained from the SOFI3D simulation
-%---most parameters are as specified in SOFI3D parameter-file, e.g. sofi3D.json
+%---script for the visualization of snapshots gained from the ASOFI simulation
+%---most parameters are as specified in ASOFI parameter-file, e.g. sofi3D.json
 %---Please note : y dentotes the vertical axis!!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-close all;
-clear all;
-clc;
+close all; clearvars; clc;
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%---start of input parameter definition
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%---model/snapshot dimensions (gridsize and grid spacing)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-nx=256; ny=192; nz=128; % basic grid size; ny=vertical
-outx=2; outy=2; outz=2; % snap increment in x/y/z direction, outy=vertical
-% spatial discretization, it is assumed that dx=dy=dz=dh
-dh=10.0;
+%% read from json to aaaaa
+json_text = fileread('../par/in_and_out/sofi3D.json');
+i = find(json_text=='{');
+j = find(json_text=='}');
+b = json_text(i:j);
+aaaaa = jsondecode(b);
+
+%% merge snapshots if they were not merged before
+
+a = pwd;
+cd ../par/
+dir_Full = dir([aaaaa.SNAP_FILE,'.bin.div']);
+dir_000 = dir([aaaaa.SNAP_FILE,'.bin.div.0.0.0']);
+
+if dir_Full.datenum < dir_000.datenum
+    system('../bin/snapmerge_WS ./in_and_out/sofi3D.json');
+end
+
+cd(a)
+
+%% prepare colormap
+createSRGBcolormap;
+
+%% read parameters from json
+nx = str2num(aaaaa.NX);
+ny = str2num(aaaaa.NY);
+nz = str2num(aaaaa.NZ);
+
+outx = str2num(aaaaa.IDX);
+outy = str2num(aaaaa.IDY);
+outz = str2num(aaaaa.IDZ);
+
+dh = str2num(aaaaa.DX); 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---input, output files
@@ -29,7 +51,7 @@ file_inp1='../par/snap/test.bin.div';
 % Input file2 (snapshot file2)
 file_inp2='../par/snap/test.bin.curl';
 % Model file (for single display or contour plot ontop of snapshot)
-file_mod='../par/model/test.SOFI3D.rho';
+file_mod='../par/model/test.SOFI3D.pi';
 
 % Output file
 % switch for saving snapshots to picture file 1=yes (jpg) 2= yes (png) other=no
@@ -48,7 +70,7 @@ title_mod='Density model';
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % switch for contour of model overlaying the model or snapshot file
 % 1=yes other=no
-cont_switch=0;
+cont_switch=1;
 % number of contours for the contour-plot
 numbOFcont=8;
 
@@ -73,7 +95,7 @@ TSNAP1=0.61;
 TSNAPINC=0.2;
 % firts and last snapshot that is considered for displayin
 firstframe=1;
-lastframe=1;
+lastframe=3;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---3D definitions: defines two rotating planes (xz, yz plane)
@@ -99,9 +121,9 @@ viewpoint=[0,10,0];
 
 % colorbar boundaries for cropping the snapshot value range
 % only used if type_switch=2
-auto_scaling=1; % 1= automatic determination of boundaries, 2= constant values caxis_value , 3= no scaling
-caxis_value_1=1e-12;
-caxis_value_2=1e-12; % only used if num_switch=2
+auto_scaling=2; % 1= automatic determination of boundaries, 2= constant values caxis_value , 3= no scaling
+caxis_value_1=5e-11;
+caxis_value_2=caxis_value_1; % only used if num_switch=2
 
 % use custom axis limits if axisoverwrite==1, otherwise matlab will
 % determine axis limits automatically
@@ -182,7 +204,7 @@ disp(['   ']);
 if image_switch==1
     % in case of snapshot files use seismic colormap
     if type_switch==2
-        colormap(load('./seismic.map'));
+        myMap = colormap(load('./srgb.map'));
     end
     % creating variables for snapshot content
     % file1_data (and file2_data) depending on number of snapshots
@@ -467,7 +489,7 @@ if image_switch==2
     if type_switch==2
         % loading snapshot data of input1
         fid=fopen(file_inp1,'r','ieee-le');
-        colormap(load('./seismic.map'));
+        colormap(load('./srgb.map'));
         
         % adding contour of model to snapshot data
         if cont_switch==1
@@ -550,17 +572,17 @@ if image_switch==2
         %         h3 = slice(X,Z,Y,file1_data,10,[],[]);
         %         set(h3,'FaceColor','interp','EdgeColor','none','DiffuseStrength',.8);
         
-        % black outline of the vertical slice
-        plot3([0 max(max(xd))],[max(max(zd)) max(max(zd))],[0 0],'-black','LineWidth',2);
-        plot3([max(max(xd)) max(max(xd))],[max(max(zd)) max(max(zd))],[0 max(max(yd))],'-black','LineWidth',2);
-        plot3([max(max(xd)) 0],[max(max(zd)) max(max(zd))],[max(max(yd)) max(max(yd))],'-black','LineWidth',2);
-        plot3([0 0],[max(max(zd)) max(max(zd))],[0 max(max(yd))],'-black','LineWidth',2);
-        
-        % black outline of the horizontal slice
-        plot3([0 max(max(xd2))],[max(max(zd2)) max(max(zd2))],[max(max(yd2)) min(min(yd2))],'-black','LineWidth',2);
-        plot3([max(max(xd2)) max(max(xd2))],[max(max(zd2)) 0],[max(max(yd2)) max(max(yd2))],'-black','LineWidth',2);
-        plot3([max(max(xd2)) 0],[0 0],[max(max(yd2)) min(min(yd2))],'-black','LineWidth',2);
-        plot3([0 0],[0 max(max(zd2))],[max(max(yd2)) max(max(yd2))],'-black','LineWidth',2);
+%         % black outline of the vertical slice
+%         plot3([0 max(max(xd))],[max(max(zd)) max(max(zd))],[0 0],'-black','LineWidth',2);
+%         plot3([max(max(xd)) max(max(xd))],[max(max(zd)) max(max(zd))],[0 max(max(yd))],'-black','LineWidth',2);
+%         plot3([max(max(xd)) 0],[max(max(zd)) max(max(zd))],[max(max(yd)) max(max(yd))],'-black','LineWidth',2);
+%         plot3([0 0],[max(max(zd)) max(max(zd))],[0 max(max(yd))],'-black','LineWidth',2);
+%         
+%         % black outline of the horizontal slice
+%         plot3([0 max(max(xd2))],[max(max(zd2)) max(max(zd2))],[max(max(yd2)) min(min(yd2))],'-black','LineWidth',2);
+%         plot3([max(max(xd2)) max(max(xd2))],[max(max(zd2)) 0],[max(max(yd2)) max(max(yd2))],'-black','LineWidth',2);
+%         plot3([max(max(xd2)) 0],[0 0],[max(max(yd2)) min(min(yd2))],'-black','LineWidth',2);
+%         plot3([0 0],[0 max(max(zd2))],[max(max(yd2)) max(max(yd2))],'-black','LineWidth',2);
         
         if cont_switch==1
             % vertical contour slice
