@@ -1,5 +1,7 @@
 # About
 
+[![CircleCI](https://circleci.com/gh/swag-kaust/TD/tree/master.svg?style=svg)](https://circleci.com/gh/swag-kaust/TD/tree/master)
+
 ASOFI3D stands for Anisotropic Seismic mOdeling with FInite differences.
 This code is an extension of 
 [SOFI3D](https://git.scc.kit.edu/GPIAG-Software/SOFI3D/wikis/home)
