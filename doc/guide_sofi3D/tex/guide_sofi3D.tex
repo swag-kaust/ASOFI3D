@@ -1105,7 +1105,7 @@ In our example, we specify 100 receiver location. Due to the small size of the m
 			"DRZ" : "2",
 \end{verbatim}
 
-A horizontal 2-D array of receivers is simulated if REC\_ARRAY$>$0. This option specifies the number of receiver planes horizontal to the x-y-plane (surface of the model). The first plane is located in depth REC\_ARRAY\_DEPTH meter. The second plane in REC\_ARRAY\_DEPTH + REC\_ARRAY\_DIST, the last in REC\_ARRAY\_DEPTH + (REC\_ARRAY-1) $\times$ REC\_ARRAY\_DIST. The distance between receivers within each plane is DRX and DRY grid points (DRX*DX and DRY*DY meters).
+A horizontal 2-D array of receivers is simulated if REC\_ARRAY$>$0. This option specifies the number of receiver planes horizontal to the x-z-plane (surface of the model). The first plane is located in depth REC\_ARRAY\_DEPTH meter. The second plane in REC\_ARRAY\_DEPTH + REC\_ARRAY\_DIST, the last in REC\_ARRAY\_DEPTH + (REC\_ARRAY-1) $\times$ REC\_ARRAY\_DIST. The distance between receivers within each plane is DRX and DRZ grid points (DRX*DX and DRZ*DZ meters).
 
 \subsubsection{Seismograms}
 \label{seismograms}
@@ -1874,3 +1874,5 @@ the fact that the PML frame is thinner than the exponential damping frame.
 
 \bibliography{thesis}
 \end{document}
+\grid
+\grid
