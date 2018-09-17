@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: swagkaust/swagimage:2018-08.03
+      - image: swagkaust/swagimage:2018-08.04
     steps:
       - checkout
       - run:

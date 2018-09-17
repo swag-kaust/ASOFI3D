@@ -33,15 +33,15 @@ RUN MINICONDA_URL=https://repo.continuum.io/miniconda && \
     wget --quiet "$MINICONDA_URL/$MINICONDA_FILE" --output-file=wget.log && \
     bash "$MINICONDA_FILE" -b -p /opt/miniconda && \
     rm "$MINICONDA_FILE" && \
-	# Enable conda for the current user.
+    # Enable conda for the current user.
     . /opt/miniconda/etc/profile.d/conda.sh && \
-	# Enable conda for all users.
-	ln -s /opt/miniconda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
+    # Enable conda for all users.
+    ln -s /opt/miniconda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
     conda activate base && \
-	conda update --name base conda && \
-    conda create --yes --name envpy27 python=2.7 numpy && \
+    conda update --quet conda && \
+    conda create --yes --quiet --name envpy27 python=2.7 numpy && \
     conda activate envpy27 && \
-    conda install --quiet --yes --channel swag-kaust madagascar
+    conda install --yes --quiet --channel swag-kaust madagascar
 
 RUN adduser --disabled-password --gecos '' user
 RUN echo ". /opt/miniconda/etc/profile.d/conda.sh" >> /home/user/.bashrc
