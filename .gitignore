@@ -373,6 +373,8 @@ local.properties
 *autoenv*sh
 
 !ASOFI3D/par/sources/source.dat
+!par/sources/*.dat
+
 
 ### Test fixtures ###
 tests/fixtures/*/su/*.rsf
