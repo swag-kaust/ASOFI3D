@@ -722,7 +722,7 @@ void checkfd(FILE *fp, float *** prho, float *** ppi, float *** pu,
 		fprintf(fp," You have specified a width of %i gridpoints.\n",FW);
 		if ((FW<20)&&(MYID==0))
 			warning(" Be aware of strong artificial reflections from grid boundaries ! \n");
-		if(FDORDER>4)
+		if ((FDORDER>4)&&(MYID==0))
 			warning(" CPML Update of FDORDER > 4 not implemented yet, coefficients of FDORDER==4 are used instead!");
 	}
 	if (((((NX)<FW) || ((NY)<FW)) || ((NZ)<FW)) && (MYID==0))	{
