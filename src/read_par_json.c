@@ -18,7 +18,7 @@ void read_par_json(FILE *fp, char *fileinp)
     extern float DX, DY, DZ, TIME, DT, TS, *FL, TAU, FREF, PLANE_WAVE_DEPTH, PLANE_WAVE_ANGLE;
     extern float XREC1, XREC2, YREC1, YREC2, ZREC1, ZREC2, SOURCE_ALPHA, SOURCE_BETA, AMON, STR, DIP, RAKE;
     extern float REC_ARRAY_DEPTH, REC_ARRAY_DIST;
-    extern int SEISMO, NDT, NDTSHIFT, NGEOPH, SEIS_FORMAT[6], FREE_SURF, READMOD, MOD_FORMAT[6], READREC, RUN_MULTIPLE_SHOTS;
+    extern int SEISMO, NDT, NDTSHIFT, NGEOPH, SEIS_FORMAT[6], FREE_SURF, READMOD, READREC, RUN_MULTIPLE_SHOTS;
     extern int BOUNDARY, REC_ARRAY, LOG, IDX, IDY, IDZ, ABS_TYPE, WRITE_MODELFILES;
     extern float TSNAP1, TSNAP2, TSNAPINC, REFREC[4], DAMPING, FPML, VPPML, NPOWER, K_MAX_CPML;
     extern char MFILE[STRING_SIZE], SIGNAL_FILE[STRING_SIZE], LOG_FILE[STRING_SIZE], CHECKPTFILE[STRING_SIZE];
@@ -605,52 +605,8 @@ void read_par_json(FILE *fp, char *fileinp)
         add_object_tolist(varname_tmp1, value_tmp1, &number_defaultobjects, varnamedefault_list, valuedefault_list);
     }
 
-    if (get_int_from_objectlist("READMOD", number_readobjects, &READMOD, varname_list, value_list))
+    if (get_int_from_objectlist("READMOD", number_readobjects, &READMOD, varname_list, value_list)) {
         err("Variable READMOD could not be retrieved from the json input file!");
-    else
-    {
-        if (get_int_from_objectlist("MOD_FORMAT0", number_readobjects, &MOD_FORMAT[0], varname_list, value_list))
-        {
-            strcpy(varname_tmp1, "MOD_FORMAT0");
-            strcpy(value_tmp1, "0");
-            add_object_tolist(varname_tmp1, value_tmp1, &number_defaultobjects, varnamedefault_list, valuedefault_list);
-        }
-        if (get_int_from_objectlist("MOD_FORMAT1", number_readobjects, &MOD_FORMAT[1], varname_list, value_list))
-        {
-            strcpy(varname_tmp1, "MOD_FORMAT1");
-            strcpy(value_tmp1, "0");
-            add_object_tolist(varname_tmp1, value_tmp1, &number_defaultobjects, varnamedefault_list, valuedefault_list);
-        }
-        if (get_int_from_objectlist("MOD_FORMAT2", number_readobjects, &MOD_FORMAT[2], varname_list, value_list))
-        {
-            strcpy(varname_tmp1, "MOD_FORMAT2");
-            strcpy(value_tmp1, "0");
-            add_object_tolist(varname_tmp1, value_tmp1, &number_defaultobjects, varnamedefault_list, valuedefault_list);
-        }
-        if (get_int_from_objectlist("MOD_FORMAT3", number_readobjects, &MOD_FORMAT[3], varname_list, value_list))
-        {
-            strcpy(varname_tmp1, "MOD_FORMAT3");
-            strcpy(value_tmp1, "0");
-            add_object_tolist(varname_tmp1, value_tmp1, &number_defaultobjects, varnamedefault_list, valuedefault_list);
-        }
-        if (get_int_from_objectlist("MOD_FORMAT4", number_readobjects, &MOD_FORMAT[4], varname_list, value_list))
-        {
-            strcpy(varname_tmp1, "MOD_FORMAT4");
-            strcpy(value_tmp1, "0");
-            add_object_tolist(varname_tmp1, value_tmp1, &number_defaultobjects, varnamedefault_list, valuedefault_list);
-        }
-        if (get_int_from_objectlist("MOD_FORMAT5", number_readobjects, &MOD_FORMAT[5], varname_list, value_list))
-        {
-            strcpy(varname_tmp1, "MOD_FORMAT5");
-            strcpy(value_tmp1, "0");
-            add_object_tolist(varname_tmp1, value_tmp1, &number_defaultobjects, varnamedefault_list, valuedefault_list);
-        }
-        if (get_int_from_objectlist("MOD_FORMAT6", number_readobjects, &MOD_FORMAT[6], varname_list, value_list))
-        {
-            strcpy(varname_tmp1, "MOD_FORMAT6");
-            strcpy(value_tmp1, "0");
-            add_object_tolist(varname_tmp1, value_tmp1, &number_defaultobjects, varnamedefault_list, valuedefault_list);
-        }
     }
 
     /*=================================
