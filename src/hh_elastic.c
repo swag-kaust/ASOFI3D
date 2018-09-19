@@ -19,6 +19,7 @@ void model_elastic(float ***rho, float ***pi, float ***u, float ***C11, float **
     extern int NX, NY, NZ, NXG, NYG, NZG, POS[4], L, MYID;
     extern char MFILE[STRING_SIZE];
     extern int WRITE_MODELFILES;
+    extern int READMOD;
     extern FILE *FP;
 
     /* local variables */
@@ -34,9 +35,14 @@ void model_elastic(float ***rho, float ***pi, float ***u, float ***C11, float **
     int i, j, k, ii, jj, kk;
     char modfile[STRING_SIZE];
 
-    /*-----------------material property definition -------------------------*/
+    // Model parameters for model generation.
+    extern float VPV1, VSV1, EPSX1, EPSY1, DELX1, DELY1, DELXY1;
+    extern float GAMX1, GAMY1, RHO1, DH1;
+    extern float VPV2, VSV2, EPSX2, EPSY2, DELX2, DELY2, DELXY2;
+    extern float GAMX2, GAMY2, RHO2, DH2;
 
-    /* x=1, y=2 in Tsvankin [1997] (e.g.) epsx=epsion1 & epsy=epsilon2 */
+    fprintf(FP, "RHO1 = %f\n", RHO1);
+    fprintf(FP, "RHO2 = %f\n", RHO2);
 
     /* parameters for layer 1 */
     /* const float vpv1=2326.0, poi1=0.25, 
@@ -44,31 +50,71 @@ void model_elastic(float ***rho, float ***pi, float ***u, float ***C11, float **
 	   dely1=-0.24, delxy1=-0.089,
 	   gamx1=0.438, gamy1=0.25, 
 	   rho1=2000.0, h=100000.0; */
-    const float vpv1 = 3000.0,
-                poi1 = 0.25,
-                epsx1 = 0.0,
-                epsy1 = 0.0,
-                delx1 = -0.0,
-                dely1 = 0.0,
-                delxy1 = 0,
-                gamx1 = 0.0,
-                gamy1 = 0.0,
-                rho1 = 2000.0,
-                h = 960;
+    float vpv1 = 3000.0,
+          poi1 = 0.25,
+          vsv1 = vpv1 * sqrt((1 - 2 * poi1) / (2 - 2 * poi1)),
+          // vsv1 = 1732.0508075688772,
+          epsx1 = 0.0,
+          epsy1 = 0.0,
+          delx1 = -0.0,
+          dely1 = 0.0,
+          delxy1 = 0,
+          gamx1 = 0.0,
+          gamy1 = 0.0,
+          rho1 = 2000.0,
+          h = 960;
     /* parameters for layer 2 */
-    const float vpv2 = 3000.0,
-                vsv2 = 1477.16,
-                vp2vs2 = (vpv2 * vpv2) / (vsv2 * vsv2),
-                poi2 = 0.25, //0.5*(vp2vs2 - 2) / (vp2vs2 -1),
-        epsx2 = 0,
-                epsy2 = 0,
-                delx2 = 0,
-                dely2 = 0,
-                delxy2 = 0,
-                gamx2 = 0.2,
-                gamy2 = 0.2,
-                rho2 = 2000.0,
-                dh = 200;
+    float vpv2 = 3000.0,
+          poi2 = 0.25, //0.5*(vp2vs2 - 2) / (vp2vs2 -1),
+          vsv2 = vpv2 * sqrt((1 - 2 * poi2) / (2 - 2 * poi2)),
+          // vsv1 = 1732.0508075688772,
+          epsx2 = 0,
+          epsy2 = 0,
+          delx2 = 0,
+          dely2 = 0,
+          delxy2 = 0,
+          gamx2 = 0.2,
+          gamy2 = 0.2,
+          rho2 = 2000.0,
+          dh = 200;
+
+    /*-----------------material property definition -------------------------*/
+
+    /* x=1, y=2 in Tsvankin [1997] (e.g.) epsx=epsion1 & epsy=epsilon2 */
+
+    if (READMOD == -1) {
+        float tmp;
+        vpv1 = VPV1;
+        vsv1 = VSV1;
+        tmp = (vpv1 * vpv1) / (vsv1 * vsv1);
+        poi1 = 0.5*(tmp - 2) / (tmp -1);
+        epsx1 = EPSX1;
+        epsy1 = EPSY1;
+        delx1 = DELX1;
+        dely1 = DELY1;
+        delxy1 = DELXY1;
+        gamx1 = GAMX1;
+        gamy1 = GAMY1;
+        rho1 = RHO1;
+        h = DH1;
+
+        vpv2 = VPV2;
+        vsv2 = VSV2;
+        tmp = (vpv2 * vpv2) / (vsv2 * vsv2);
+        poi2 = 0.5*(tmp - 2) / (tmp -1);
+        epsx2 = EPSX2;
+        epsy2 = EPSY2;
+        delx2 = DELX2;
+        dely2 = DELY2;
+        delxy2 = DELXY2;
+        gamx2 = GAMX2;
+        gamy2 = GAMY2;
+        rho2 = RHO2;
+        dh = DH2;
+    }
+
+    fprintf(FP, "rho1 = %f\n", rho1);
+    fprintf(FP, "rho2 = %f\n", rho2);
 
     // parameters for a perturbation
     const float pertRad = 5.0,
@@ -87,6 +133,9 @@ void model_elastic(float ***rho, float ***pi, float ***u, float ***C11, float **
         gamy = f3tensor(0, NY + 1, 0, NX + 1, 0, NZ + 1);
     }
 
+    fprintf(FP, "rho1 = %f\n", rho1);
+    fprintf(FP, "rho2 = %f\n", rho2);
+
     /*elastic simulation */
     if (L == 0)
     {
@@ -100,6 +149,11 @@ void model_elastic(float ***rho, float ***pi, float ***u, float ***C11, float **
                 {
                     /*note that "y" is used for the vertical coordinate*/
                     /* calculate vertical coordinate in m */
+
+                    if ((rho1 < 0.1) && (i == 1) && (j == 1) && (k == 1)) {
+                        fprintf(FP, "Rho < 0.1 for (%d, %d, %d)\n", i, j, k);
+                        err("Hello");
+                    }
 
                     y = (float)j * DY;
                     /* two layer case */
@@ -140,7 +194,6 @@ void model_elastic(float ***rho, float ***pi, float ***u, float ***C11, float **
 					 * modify up to this point for ELASTIC model definition
 					 *=========================================================
 					 */
-
                     Vsv = Vpv * sqrt((1 - 2 * Poi) / (2 - 2 * Poi));
                     muv = Vsv * Vsv * Rho;
                     piv = Vpv * Vpv * Rho;

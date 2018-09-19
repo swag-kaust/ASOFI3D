@@ -26,6 +26,12 @@ void exchange_par(void){
 	extern char SNAP_FILE[STRING_SIZE], SOURCE_FILE[STRING_SIZE], REC_FILE[STRING_SIZE], SEIS_FILE[STRING_SIZE];
 	extern char  FILEINP[STRING_SIZE];
 
+    // Model parameters for model generation.
+    extern float VPV1, VSV1, EPSX1, EPSY1, DELX1, DELY1, DELXY1;
+    extern float GAMX1, GAMY1, RHO1, DH1;
+    extern float VPV2, VSV2, EPSX2, EPSY2, DELX2, DELY2, DELXY2;
+    extern float GAMX2, GAMY2, RHO2, DH2;
+
 
 	int idum[NPAR];
 	float fdum[NPAR];
@@ -70,6 +76,33 @@ void exchange_par(void){
 		fdum[36]  = STR;
 		fdum[37]  = DIP;
 		fdum[38]  = RAKE;
+
+        // Model parameters, top layer.
+        fdum[39]  = VPV1;
+        fdum[40]  = VSV1;
+        fdum[41]  = EPSX1;
+        fdum[42]  = EPSY1;
+        fdum[43]  = DELX1;
+        fdum[44]  = DELY1;
+        fdum[45]  = DELXY1;
+        fdum[46]  = GAMX1;
+        fdum[47]  = GAMY1;
+        fdum[48]  = RHO1;
+        fdum[49]  = DH1;
+
+        // Model parameters, bottom layer.
+        fdum[50]  = VPV2;
+        fdum[51]  = VSV2;
+        fdum[52]  = EPSX2;
+        fdum[53]  = EPSY2;
+        fdum[54]  = DELX2;
+        fdum[55]  = DELY2;
+        fdum[56]  = DELXY2;
+        fdum[57]  = GAMX2;
+        fdum[58]  = GAMY2;
+        fdum[59]  = RHO2;
+        fdum[60]  = DH2;
+
 
 
 		idum[0]  = FDORDER;
@@ -192,6 +225,35 @@ void exchange_par(void){
 	DIP = fdum[37];
 	RAKE = fdum[38];
 
+    // Model parameters, top layer.
+    VPV1   = fdum[39];
+    VSV1   = fdum[40];
+    EPSX1  = fdum[41];
+    EPSY1  = fdum[42];
+    DELX1  = fdum[43];
+    DELY1  = fdum[44];
+    DELXY1 = fdum[45];
+    GAMX1  = fdum[46];
+    GAMY1  = fdum[47];
+    RHO1   = fdum[48];
+    DH1    = fdum[49];
+
+    // Model parameters, bottom layer.
+    VPV2   = fdum[50];
+    VSV2   = fdum[51];
+    EPSX2  = fdum[52];
+    EPSY2  = fdum[53];
+    DELX2  = fdum[54];
+    DELY2  = fdum[55];
+    DELXY2 = fdum[56];
+    GAMX2  = fdum[57];
+    GAMY2  = fdum[58];
+    RHO2   = fdum[59];
+    DH2    = fdum[60];
+
+
+    // -------------------
+    // Integer parameters.
 	FDORDER = idum[0];
 	NPROCX = idum[1];
 	NPROCY = idum[2];

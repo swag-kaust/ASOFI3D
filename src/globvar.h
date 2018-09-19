@@ -48,3 +48,9 @@ float FC=0.0,AMP=1.0, REFSRC[3]={0.0, 0.0, 0.0}, SRC_DT, SRCTSHIFT=0.0;
 int SRC_MF=0, SIGNAL_FORMAT[6]={0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 int SRCOUT_PAR[6]={0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, FSRC=1, JSRC=2147483647, LSRC=0;
 char SRCOUT_FILE[STRING_SIZE]="";
+
+// Model parameters for model generation.
+float VPV1, VSV1, EPSX1, EPSY1, DELX1, DELY1, DELXY1;
+float GAMX1, GAMY1, RHO1, DH1;
+float VPV2, VSV2, EPSX2, EPSY2, DELX2, DELY2, DELXY2;
+float GAMX2, GAMY2, RHO2, DH2;

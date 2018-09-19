@@ -22,7 +22,7 @@
 #define fsign(x) ((x<0.0)?(-1):1)
 
 #define PI (3.141592653589793)
-#define NPAR 50
+#define NPAR 100
 //#define STRING_SIZE 74 //previous value, sometimes not enough to handle longer file names
 #define STRING_SIZE 256
 #define REQUEST_COUNT 6
