@@ -625,7 +625,7 @@ void read_par_json(FILE *fp, char *fileinp)
         if (get_float_from_objectlist("EPSX1", number_readobjects, &EPSX1, varname_list, value_list)) {
             err("Variable EPSX1 could not be retrieved from the json input file!");
         }
-        if (get_float_from_objectlist("EPSY1", number_readobjects, &VPV1, varname_list, value_list)) {
+        if (get_float_from_objectlist("EPSY1", number_readobjects, &EPSY1, varname_list, value_list)) {
             err("Variable EPSY1 could not be retrieved from the json input file!");
         }
         if (get_float_from_objectlist("DELX1", number_readobjects, &DELX1, varname_list, value_list)) {
@@ -659,7 +659,7 @@ void read_par_json(FILE *fp, char *fileinp)
         if (get_float_from_objectlist("EPSX2", number_readobjects, &EPSX2, varname_list, value_list)) {
             err("Variable EPSX2 could not be retrieved from the json input file!");
         }
-        if (get_float_from_objectlist("EPSY2", number_readobjects, &VPV2, varname_list, value_list)) {
+        if (get_float_from_objectlist("EPSY2", number_readobjects, &EPSY2, varname_list, value_list)) {
             err("Variable EPSY2 could not be retrieved from the json input file!");
         }
         if (get_float_from_objectlist("DELX2", number_readobjects, &DELX2, varname_list, value_list)) {
