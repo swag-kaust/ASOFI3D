@@ -320,6 +320,51 @@ void model_elastic(float ***rho, float ***pi, float ***u, float ***C11, float **
         MPI_Barrier(MPI_COMM_WORLD);
         if (MYID == 0)
             mergemod(modfile, 3);
+
+        sprintf(modfile, "%s.SOFI3D.C11", MFILE);
+        writemod(modfile, C11, 3);
+        MPI_Barrier(MPI_COMM_WORLD);
+        if (MYID == 0) mergemod(modfile, 3);
+
+        sprintf(modfile, "%s.SOFI3D.C22", MFILE);
+        writemod(modfile, C22, 3);
+        MPI_Barrier(MPI_COMM_WORLD);
+        if (MYID == 0) mergemod(modfile, 3);
+
+        sprintf(modfile, "%s.SOFI3D.C33", MFILE);
+        writemod(modfile, C33, 3);
+        MPI_Barrier(MPI_COMM_WORLD);
+        if (MYID == 0) mergemod(modfile, 3);
+
+        sprintf(modfile, "%s.SOFI3D.C44", MFILE);
+        writemod(modfile, C44, 3);
+        MPI_Barrier(MPI_COMM_WORLD);
+        if (MYID == 0) mergemod(modfile, 3);
+
+        sprintf(modfile, "%s.SOFI3D.C55", MFILE);
+        writemod(modfile, C55, 3);
+        MPI_Barrier(MPI_COMM_WORLD);
+        if (MYID == 0) mergemod(modfile, 3);
+
+        sprintf(modfile, "%s.SOFI3D.C66", MFILE);
+        writemod(modfile, C66, 3);
+        MPI_Barrier(MPI_COMM_WORLD);
+        if (MYID == 0) mergemod(modfile, 3);
+
+        sprintf(modfile, "%s.SOFI3D.C12", MFILE);
+        writemod(modfile, C12, 3);
+        MPI_Barrier(MPI_COMM_WORLD);
+        if (MYID == 0) mergemod(modfile, 3);
+
+        sprintf(modfile, "%s.SOFI3D.C13", MFILE);
+        writemod(modfile, C13, 3);
+        MPI_Barrier(MPI_COMM_WORLD);
+        if (MYID == 0) mergemod(modfile, 3);
+
+        sprintf(modfile, "%s.SOFI3D.C23", MFILE);
+        writemod(modfile, C23, 3);
+        MPI_Barrier(MPI_COMM_WORLD);
+        if (MYID == 0) mergemod(modfile, 3);
     }
 
     /* only density is written to file */
