@@ -295,18 +295,21 @@ void readmod(float ***rho, float ***pi, float ***u, float ***C11, float ***C12, 
 		MPI_Barrier(MPI_COMM_WORLD);
 		if (MYID==0) mergemod(filename,3);
 
+        // Notice that the stiffness parameters are written
+        // to disk in the conventional notation (third axis is vertical);
+        // that's why there is a mismatch between filenames and variable names.
         sprintf(filename, "%s.SOFI3D.C11", MFILE);
         writemod(filename, C11, 3);
         MPI_Barrier(MPI_COMM_WORLD);
         if (MYID == 0) mergemod(filename, 3);
 
         sprintf(filename, "%s.SOFI3D.C22", MFILE);
-        writemod(filename, C22, 3);
+        writemod(filename, C33, 3);
         MPI_Barrier(MPI_COMM_WORLD);
         if (MYID == 0) mergemod(filename, 3);
 
         sprintf(filename, "%s.SOFI3D.C33", MFILE);
-        writemod(filename, C33, 3);
+        writemod(filename, C22, 3);
         MPI_Barrier(MPI_COMM_WORLD);
         if (MYID == 0) mergemod(filename, 3);
 
@@ -316,22 +319,22 @@ void readmod(float ***rho, float ***pi, float ***u, float ***C11, float ***C12, 
         if (MYID == 0) mergemod(filename, 3);
 
         sprintf(filename, "%s.SOFI3D.C55", MFILE);
-        writemod(filename, C55, 3);
-        MPI_Barrier(MPI_COMM_WORLD);
-        if (MYID == 0) mergemod(filename, 3);
-
-        sprintf(filename, "%s.SOFI3D.C66", MFILE);
         writemod(filename, C66, 3);
         MPI_Barrier(MPI_COMM_WORLD);
         if (MYID == 0) mergemod(filename, 3);
 
+        sprintf(filename, "%s.SOFI3D.C66", MFILE);
+        writemod(filename, C55, 3);
+        MPI_Barrier(MPI_COMM_WORLD);
+        if (MYID == 0) mergemod(filename, 3);
+
         sprintf(filename, "%s.SOFI3D.C12", MFILE);
-        writemod(filename, C12, 3);
+        writemod(filename, C13, 3);
         MPI_Barrier(MPI_COMM_WORLD);
         if (MYID == 0) mergemod(filename, 3);
 
         sprintf(filename, "%s.SOFI3D.C13", MFILE);
-        writemod(filename, C13, 3);
+        writemod(filename, C12, 3);
         MPI_Barrier(MPI_COMM_WORLD);
         if (MYID == 0) mergemod(filename, 3);
 
