@@ -671,7 +671,7 @@ int main(int argc, char **argv)
         /* create model grids check the function readmod*/
         fprintf(FP, "\n ------------------ MODEL CREATION AND OUTPUT-(aniso READMOD=1 needs to be implemented still)---\n");
         if (READMOD == 1)
-            readmod(rho, pi, u, taus, taup, eta);
+            readmod(rho, pi, u, C11, C12, C13, C22, C23, C33, C44, C55, C66, taus, taup, eta);
         else
         {
             if (L == 0) {

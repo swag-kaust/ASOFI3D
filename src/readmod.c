@@ -5,10 +5,7 @@
  *  ----------------------------------------------------------------------*/
 #include "fd.h"
 
-void readmod(float  ***  rho, float ***  pi, float ***  u, 
-		float ***  taus, float ***  taup, float *  eta){
-
-
+void readmod(float ***rho, float ***pi, float ***u, float ***C11, float ***C12, float ***C13, float ***C22, float ***C23, float ***C33, float ***C44, float ***C55, float ***C66, float ***taus, float ***taup, float *eta) {
 	extern float DT, *FL, TAU, TS, FREF;
 	extern int NX, NY, NZ, NXG, NYG, NZG, POS[4], L, MYID;
 	extern int WRITE_MODELFILES;
@@ -19,11 +16,18 @@ void readmod(float  ***  rho, float ***  pi, float ***  u,
 	/* local variables */
 	float Rho=0.0, Vp=0.0, Vs=0.0, Qp=0.0, Qs=0.0;
 	float muv=0.0, piv=0.0;
+
+    // Point model stiffness parameters.
+    float 	C_11, C_22, C_33,
+    		C_44, C_55, C_66,
+        	C_12, C_13, C_23;
 	float *pts=NULL, sumu=0.0, sumpi=0.0, ws=0.0;
 	float *** pwavemod=NULL, *** swavemod=NULL;
 	float *** qpmod=NULL, *** qsmod=NULL;
 	int i, j, l, k, ii, jj, kk;
 	FILE *fp_vs, *fp_vp, *fp_rho, *fp_qp=NULL ,*fp_qs=NULL;
+    FILE *fp_C11, *fp_C22, *fp_C33, *fp_C44, *fp_C55, *fp_C66;
+    FILE *fp_C12, *fp_C13, *fp_C23;
 	char filename[STRING_SIZE];
 
 	/* choose data format: ASCII: format=2, BINARY: format=3*/
@@ -61,6 +65,51 @@ void readmod(float  ***  rho, float ***  pi, float ***  u,
 	fp_rho=fopen(filename,"r");
 	if (fp_rho==NULL) err(" Could not open model file for densities ! ");
 
+	fprintf(FP,"\t C11:\n\t %s.C11\n\n",MFILE);
+	sprintf(filename,"%s.C11",MFILE);
+	fp_C11=fopen(filename,"r");
+	if (fp_C11==NULL) err(" Could not open model file for C11! ");
+
+	fprintf(FP,"\t C22:\n\t %s.C22\n\n",MFILE);
+	sprintf(filename,"%s.C22",MFILE);
+	fp_C22=fopen(filename,"r");
+	if (fp_C22==NULL) err(" Could not open model file for C22!");
+
+	fprintf(FP,"\t C33:\n\t %s.C33\n\n",MFILE);
+	sprintf(filename,"%s.C33",MFILE);
+	fp_C33=fopen(filename,"r");
+	if (fp_C33==NULL) err(" Could not open model file for C33!");
+
+	fprintf(FP,"\t C44:\n\t %s.C44\n\n",MFILE);
+	sprintf(filename,"%s.C44",MFILE);
+	fp_C44=fopen(filename,"r");
+	if (fp_C44==NULL) err(" Could not open model file for C44!");
+
+	fprintf(FP,"\t C55:\n\t %s.C55\n\n",MFILE);
+	sprintf(filename,"%s.C55",MFILE);
+	fp_C55=fopen(filename,"r");
+	if (fp_C55==NULL) err(" Could not open model file for C55!");
+
+	fprintf(FP,"\t C66:\n\t %s.C66\n\n",MFILE);
+	sprintf(filename,"%s.C66",MFILE);
+	fp_C66=fopen(filename,"r");
+	if (fp_C66==NULL) err(" Could not open model file for C66!");
+
+	fprintf(FP,"\t C12:\n\t %s.C12\n\n",MFILE);
+	sprintf(filename,"%s.C12",MFILE);
+	fp_C12=fopen(filename,"r");
+	if (fp_C12==NULL) err(" Could not open model file for C12!");
+
+	fprintf(FP,"\t C13:\n\t %s.C13\n\n",MFILE);
+	sprintf(filename,"%s.C13",MFILE);
+	fp_C13=fopen(filename,"r");
+	if (fp_C13==NULL) err(" Could not open model file for C13!");
+
+	fprintf(FP,"\t C23:\n\t %s.C23\n\n",MFILE);
+	sprintf(filename,"%s.C23",MFILE);
+	fp_C23=fopen(filename,"r");
+	if (fp_C23==NULL) err(" Could not open model file for C23!");
+
 	/*elastic simulation */
 	if (L==0) {
 		/* loop over global grid */
@@ -70,6 +119,15 @@ void readmod(float  ***  rho, float ***  pi, float ***  u,
 					Vp=readdsk(fp_vp, format);
 					Vs=readdsk(fp_vs, format);
 					Rho=readdsk(fp_rho , format);
+                    C_11 = readdsk(fp_C11, format);
+                    C_22 = readdsk(fp_C22, format);
+                    C_33 = readdsk(fp_C33, format);
+                    C_44 = readdsk(fp_C44, format);
+                    C_55 = readdsk(fp_C55, format);
+                    C_66 = readdsk(fp_C66, format);
+                    C_12 = readdsk(fp_C12, format);
+                    C_13 = readdsk(fp_C13, format);
+                    C_23 = readdsk(fp_C23, format);
 
 					muv=Vs*Vs*Rho;
 					piv=Vp*Vp*Rho;
@@ -86,6 +144,20 @@ void readmod(float  ***  rho, float ***  pi, float ***  u,
 						u[jj][ii][kk]=muv;
 						rho[jj][ii][kk]=Rho;
 						pi[jj][ii][kk]=piv;
+
+
+						C11[jj][ii][kk] = C_11;
+                        C33[jj][ii][kk] = C_22;
+                        C22[jj][ii][kk] = C_33;
+
+                        C44[jj][ii][kk] = C_44;
+                        C66[jj][ii][kk] = C_55;
+                        C55[jj][ii][kk] = C_66;
+
+                        C13[jj][ii][kk] = C_12;
+                        C12[jj][ii][kk] = C_13;
+                        C23[jj][ii][kk] = C_23;
+                        
 
 						if (WRITE_MODELFILES) {
 							pwavemod[jj][ii][kk]=Vp;
@@ -222,6 +294,51 @@ void readmod(float  ***  rho, float ***  pi, float ***  u,
 		writemod(filename,swavemod,3);
 		MPI_Barrier(MPI_COMM_WORLD);
 		if (MYID==0) mergemod(filename,3);
+
+        sprintf(filename, "%s.SOFI3D.C11", MFILE);
+        writemod(filename, C11, 3);
+        MPI_Barrier(MPI_COMM_WORLD);
+        if (MYID == 0) mergemod(filename, 3);
+
+        sprintf(filename, "%s.SOFI3D.C22", MFILE);
+        writemod(filename, C22, 3);
+        MPI_Barrier(MPI_COMM_WORLD);
+        if (MYID == 0) mergemod(filename, 3);
+
+        sprintf(filename, "%s.SOFI3D.C33", MFILE);
+        writemod(filename, C33, 3);
+        MPI_Barrier(MPI_COMM_WORLD);
+        if (MYID == 0) mergemod(filename, 3);
+
+        sprintf(filename, "%s.SOFI3D.C44", MFILE);
+        writemod(filename, C44, 3);
+        MPI_Barrier(MPI_COMM_WORLD);
+        if (MYID == 0) mergemod(filename, 3);
+
+        sprintf(filename, "%s.SOFI3D.C55", MFILE);
+        writemod(filename, C55, 3);
+        MPI_Barrier(MPI_COMM_WORLD);
+        if (MYID == 0) mergemod(filename, 3);
+
+        sprintf(filename, "%s.SOFI3D.C66", MFILE);
+        writemod(filename, C66, 3);
+        MPI_Barrier(MPI_COMM_WORLD);
+        if (MYID == 0) mergemod(filename, 3);
+
+        sprintf(filename, "%s.SOFI3D.C12", MFILE);
+        writemod(filename, C12, 3);
+        MPI_Barrier(MPI_COMM_WORLD);
+        if (MYID == 0) mergemod(filename, 3);
+
+        sprintf(filename, "%s.SOFI3D.C13", MFILE);
+        writemod(filename, C13, 3);
+        MPI_Barrier(MPI_COMM_WORLD);
+        if (MYID == 0) mergemod(filename, 3);
+
+        sprintf(filename, "%s.SOFI3D.C23", MFILE);
+        writemod(filename, C23, 3);
+        MPI_Barrier(MPI_COMM_WORLD);
+        if (MYID == 0) mergemod(filename, 3);
 	}
 
 	sprintf(filename,"%s.SOFI3D.rho",MFILE);
