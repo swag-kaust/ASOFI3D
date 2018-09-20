@@ -18,7 +18,7 @@ void read_par_json(FILE *fp, char *fileinp)
     extern float DX, DY, DZ, TIME, DT, TS, *FL, TAU, FREF, PLANE_WAVE_DEPTH, PLANE_WAVE_ANGLE;
     extern float XREC1, XREC2, YREC1, YREC2, ZREC1, ZREC2, SOURCE_ALPHA, SOURCE_BETA, AMON, STR, DIP, RAKE;
     extern float REC_ARRAY_DEPTH, REC_ARRAY_DIST;
-    extern int SEISMO, NDT, NDTSHIFT, NGEOPH, SEIS_FORMAT[6], FREE_SURF, READMOD, MOD_FORMAT[6], READREC, RUN_MULTIPLE_SHOTS;
+    extern int SEISMO, NDT, NDTSHIFT, NGEOPH, SEIS_FORMAT[6], FREE_SURF, READMOD, READREC, RUN_MULTIPLE_SHOTS;
     extern int BOUNDARY, REC_ARRAY, LOG, IDX, IDY, IDZ, ABS_TYPE, WRITE_MODELFILES;
     extern float TSNAP1, TSNAP2, TSNAPINC, REFREC[4], DAMPING, FPML, VPPML, NPOWER, K_MAX_CPML;
     extern char MFILE[STRING_SIZE], SIGNAL_FILE[STRING_SIZE], LOG_FILE[STRING_SIZE], CHECKPTFILE[STRING_SIZE];
@@ -26,6 +26,12 @@ void read_par_json(FILE *fp, char *fileinp)
     extern char SEIS_FILE[STRING_SIZE];
     extern int NPROCX, NPROCY, NPROCZ, CHECKPTREAD, CHECKPTWRITE, OUTNTIMESTEPINFO, OUTSOURCEWAVELET;
     extern int ASCIIEBCDIC, LITTLEBIG, IEEEIBM;
+
+    // Model parameters for model generation.
+    extern float VPV1, VSV1, EPSX1, EPSY1, DELX1, DELY1, DELXY1;
+    extern float GAMX1, GAMY1, RHO1, DH1;
+    extern float VPV2, VSV2, EPSX2, EPSY2, DELX2, DELY2, DELXY2;
+    extern float GAMX2, GAMY2, RHO2, DH2;
 
     extern float FC, AMP, REFSRC[3], SRC_DT, SRCTSHIFT;
     extern int SRC_MF, SIGNAL_FORMAT[6], SRCOUT_PAR[6], FSRC, JSRC, LSRC;
@@ -605,51 +611,77 @@ void read_par_json(FILE *fp, char *fileinp)
         add_object_tolist(varname_tmp1, value_tmp1, &number_defaultobjects, varnamedefault_list, valuedefault_list);
     }
 
-    if (get_int_from_objectlist("READMOD", number_readobjects, &READMOD, varname_list, value_list))
+    if (get_int_from_objectlist("READMOD", number_readobjects, &READMOD, varname_list, value_list)) {
         err("Variable READMOD could not be retrieved from the json input file!");
-    else
-    {
-        if (get_int_from_objectlist("MOD_FORMAT0", number_readobjects, &MOD_FORMAT[0], varname_list, value_list))
-        {
-            strcpy(varname_tmp1, "MOD_FORMAT0");
-            strcpy(value_tmp1, "0");
-            add_object_tolist(varname_tmp1, value_tmp1, &number_defaultobjects, varnamedefault_list, valuedefault_list);
+    }
+
+    if (READMOD == -1) {
+        if (get_float_from_objectlist("VPV1", number_readobjects, &VPV1, varname_list, value_list)) {
+            err("Variable VPV1 could not be retrieved from the json input file!");
         }
-        if (get_int_from_objectlist("MOD_FORMAT1", number_readobjects, &MOD_FORMAT[1], varname_list, value_list))
-        {
-            strcpy(varname_tmp1, "MOD_FORMAT1");
-            strcpy(value_tmp1, "0");
-            add_object_tolist(varname_tmp1, value_tmp1, &number_defaultobjects, varnamedefault_list, valuedefault_list);
+        if (get_float_from_objectlist("VSV1", number_readobjects, &VSV1, varname_list, value_list)) {
+            err("Variable VSV1 could not be retrieved from the json input file!");
         }
-        if (get_int_from_objectlist("MOD_FORMAT2", number_readobjects, &MOD_FORMAT[2], varname_list, value_list))
-        {
-            strcpy(varname_tmp1, "MOD_FORMAT2");
-            strcpy(value_tmp1, "0");
-            add_object_tolist(varname_tmp1, value_tmp1, &number_defaultobjects, varnamedefault_list, valuedefault_list);
+        if (get_float_from_objectlist("EPSX1", number_readobjects, &EPSX1, varname_list, value_list)) {
+            err("Variable EPSX1 could not be retrieved from the json input file!");
         }
-        if (get_int_from_objectlist("MOD_FORMAT3", number_readobjects, &MOD_FORMAT[3], varname_list, value_list))
-        {
-            strcpy(varname_tmp1, "MOD_FORMAT3");
-            strcpy(value_tmp1, "0");
-            add_object_tolist(varname_tmp1, value_tmp1, &number_defaultobjects, varnamedefault_list, valuedefault_list);
+        if (get_float_from_objectlist("EPSY1", number_readobjects, &EPSY1, varname_list, value_list)) {
+            err("Variable EPSY1 could not be retrieved from the json input file!");
         }
-        if (get_int_from_objectlist("MOD_FORMAT4", number_readobjects, &MOD_FORMAT[4], varname_list, value_list))
-        {
-            strcpy(varname_tmp1, "MOD_FORMAT4");
-            strcpy(value_tmp1, "0");
-            add_object_tolist(varname_tmp1, value_tmp1, &number_defaultobjects, varnamedefault_list, valuedefault_list);
+        if (get_float_from_objectlist("DELX1", number_readobjects, &DELX1, varname_list, value_list)) {
+            err("Variable DELX1 could not be retrieved from the json input file!");
         }
-        if (get_int_from_objectlist("MOD_FORMAT5", number_readobjects, &MOD_FORMAT[5], varname_list, value_list))
-        {
-            strcpy(varname_tmp1, "MOD_FORMAT5");
-            strcpy(value_tmp1, "0");
-            add_object_tolist(varname_tmp1, value_tmp1, &number_defaultobjects, varnamedefault_list, valuedefault_list);
+        if (get_float_from_objectlist("DELY1", number_readobjects, &DELY1, varname_list, value_list)) {
+            err("Variable DELY1 could not be retrieved from the json input file!");
         }
-        if (get_int_from_objectlist("MOD_FORMAT6", number_readobjects, &MOD_FORMAT[6], varname_list, value_list))
-        {
-            strcpy(varname_tmp1, "MOD_FORMAT6");
-            strcpy(value_tmp1, "0");
-            add_object_tolist(varname_tmp1, value_tmp1, &number_defaultobjects, varnamedefault_list, valuedefault_list);
+        if (get_float_from_objectlist("DELXY1", number_readobjects, &DELXY1, varname_list, value_list)) {
+            err("Variable DELXY1 could not be retrieved from the json input file!");
+        }
+        if (get_float_from_objectlist("GAMX1", number_readobjects, &GAMX1, varname_list, value_list)) {
+            err("Variable GAMX1 could not be retrieved from the json input file!");
+        }
+        if (get_float_from_objectlist("GAMY1", number_readobjects, &GAMY1, varname_list, value_list)) {
+            err("Variable GAMY1 could not be retrieved from the json input file!");
+        }
+        if (get_float_from_objectlist("RHO1", number_readobjects, &RHO1, varname_list, value_list)) {
+            err("Variable RHO1 could not be retrieved from the json input file!");
+        }
+        if (get_float_from_objectlist("DH1", number_readobjects, &DH1, varname_list, value_list)) {
+            err("Variable DH1 could not be retrieved from the json input file!");
+        }
+
+        if (get_float_from_objectlist("VPV2", number_readobjects, &VPV2, varname_list, value_list)) {
+            err("Variable VPV2 could not be retrieved from the json input file!");
+        }
+        if (get_float_from_objectlist("VSV2", number_readobjects, &VSV2, varname_list, value_list)) {
+            err("Variable VSV2 could not be retrieved from the json input file!");
+        }
+        if (get_float_from_objectlist("EPSX2", number_readobjects, &EPSX2, varname_list, value_list)) {
+            err("Variable EPSX2 could not be retrieved from the json input file!");
+        }
+        if (get_float_from_objectlist("EPSY2", number_readobjects, &EPSY2, varname_list, value_list)) {
+            err("Variable EPSY2 could not be retrieved from the json input file!");
+        }
+        if (get_float_from_objectlist("DELX2", number_readobjects, &DELX2, varname_list, value_list)) {
+            err("Variable DELX2 could not be retrieved from the json input file!");
+        }
+        if (get_float_from_objectlist("DELY2", number_readobjects, &DELY2, varname_list, value_list)) {
+            err("Variable DELY2 could not be retrieved from the json input file!");
+        }
+        if (get_float_from_objectlist("DELXY2", number_readobjects, &DELXY2, varname_list, value_list)) {
+            err("Variable DELXY2 could not be retrieved from the json input file!");
+        }
+        if (get_float_from_objectlist("GAMX2", number_readobjects, &GAMX2, varname_list, value_list)) {
+            err("Variable GAMX2 could not be retrieved from the json input file!");
+        }
+        if (get_float_from_objectlist("GAMY2", number_readobjects, &GAMY2, varname_list, value_list)) {
+            err("Variable GAMY2 could not be retrieved from the json input file!");
+        }
+        if (get_float_from_objectlist("RHO2", number_readobjects, &RHO2, varname_list, value_list)) {
+            err("Variable RHO2 could not be retrieved from the json input file!");
+        }
+        if (get_float_from_objectlist("DH2", number_readobjects, &DH2, varname_list, value_list)) {
+            err("Variable DH2 could not be retrieved from the json input file!");
         }
     }
 

@@ -59,6 +59,6 @@ if [ "$result" -ne "0" ]; then
 fi
 
 # Teardown
-git checkout -- ${MODEL}
+cp ${MODEL}.bak ${MODEL}
 
 echo "TEST_01: PASS"

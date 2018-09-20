@@ -190,7 +190,7 @@ void writepar(FILE *fp, int ns){
 
 
 	
-	if (READMOD){
+	if (READMOD == 1){
 		fprintf(fp," ------------------------- MODEL-FILES -------------------------\n");
 		fprintf(fp," Names of model-files: \n");
 		fprintf(fp,"\t shear wave velocities:\n\t %s.vs\n",MFILE);
