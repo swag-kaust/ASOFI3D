@@ -24,7 +24,7 @@ void model_elastic(float ***rho, float ***pi, float ***u, float ***C11, float **
 
     /* local variables */
     float muv, piv;
-    float Vpv, Vsv, Rho, Poi, Epsx, Epsy, Delx, Dely, Delxy, Gamx, Gamy;
+    float Vpv, Vsv, Rho, Poi;
     float 	C_11, C_22, C_33,
     		C_44, C_55, C_66,
         	C_12, C_13, C_23;
