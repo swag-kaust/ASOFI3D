@@ -41,9 +41,6 @@ void model_elastic(float ***rho, float ***pi, float ***u, float ***C11, float **
     extern float VPV2, VSV2, EPSX2, EPSY2, DELX2, DELY2, DELXY2;
     extern float GAMX2, GAMY2, RHO2, DH2;
 
-    fprintf(FP, "RHO1 = %f\n", RHO1);
-    fprintf(FP, "RHO2 = %f\n", RHO2);
-
     /* parameters for layer 1 */
     /* const float vpv1=2326.0, poi1=0.25, 
 	   epsx1=0.135, epsy1=-0.082, delx1=-0.166, 
@@ -113,9 +110,6 @@ void model_elastic(float ***rho, float ***pi, float ***u, float ***C11, float **
         dh = DH2;
     }
 
-    fprintf(FP, "rho1 = %f\n", rho1);
-    fprintf(FP, "rho2 = %f\n", rho2);
-
     // parameters for a perturbation
     const float pertRad = 5.0,
                 relPertVpv = 0.0;
@@ -133,9 +127,6 @@ void model_elastic(float ***rho, float ***pi, float ***u, float ***C11, float **
         gamy = f3tensor(0, NY + 1, 0, NX + 1, 0, NZ + 1);
     }
 
-    fprintf(FP, "rho1 = %f\n", rho1);
-    fprintf(FP, "rho2 = %f\n", rho2);
-
     /*elastic simulation */
     if (L == 0)
     {
@@ -149,11 +140,6 @@ void model_elastic(float ***rho, float ***pi, float ***u, float ***C11, float **
                 {
                     /*note that "y" is used for the vertical coordinate*/
                     /* calculate vertical coordinate in m */
-
-                    if ((rho1 < 0.1) && (i == 1) && (j == 1) && (k == 1)) {
-                        fprintf(FP, "Rho < 0.1 for (%d, %d, %d)\n", i, j, k);
-                        err("Hello");
-                    }
 
                     y = (float)j * DY;
                     /* two layer case */
