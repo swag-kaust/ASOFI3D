@@ -204,7 +204,11 @@ void read_par_json(FILE *fp, char *fileinp);
 
 void readmod_acoustic(float  ***  rho, float ***  pi, int ishot);
 
-void readmod(float  ***  rho, float ***  pi, float ***  u, float ***  taus, float ***  taup, float *  eta);
+void readmod(float ***rho, float ***pi, float ***u,
+             float ***C11, float ***C12, float ***C13,
+             float ***C22, float ***C23, float ***C33,
+             float ***C44, float ***C55, float ***C66,
+             float ***taus, float ***taup, float *eta);
 
 int **receiver(FILE *fp, int *ntr);
 
