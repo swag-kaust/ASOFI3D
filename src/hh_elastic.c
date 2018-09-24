@@ -41,12 +41,10 @@ void model_elastic(float ***rho, float ***pi, float ***u, float ***C11, float **
     extern float VPV2, VSV2, EPSX2, EPSY2, DELX2, DELY2, DELXY2;
     extern float GAMX2, GAMY2, RHO2, DH2;
 
-    /* parameters for layer 1 */
-    /* const float vpv1=2326.0, poi1=0.25, 
-	   epsx1=0.135, epsy1=-0.082, delx1=-0.166, 
-	   dely1=-0.24, delxy1=-0.089,
-	   gamx1=0.438, gamy1=0.25, 
-	   rho1=2000.0, h=100000.0; */
+    /*-----------------material property definition -------------------------*/
+    /* x=1, y=2 in Tsvankin [1997] (e.g.) epsx=epsion1 & epsy=epsilon2 */
+
+    /* Parameters for layer 1 */
     float vpv1 = 3000.0,
           poi1 = 0.25,
           vsv1 = vpv1 * sqrt((1 - 2 * poi1) / (2 - 2 * poi1)),
@@ -60,9 +58,10 @@ void model_elastic(float ***rho, float ***pi, float ***u, float ***C11, float **
           gamy1 = 0.0,
           rho1 = 2000.0,
           h = 960;
-    /* parameters for layer 2 */
+
+    /* Parameters for layer 2 */
     float vpv2 = 3000.0,
-          poi2 = 0.25, //0.5*(vp2vs2 - 2) / (vp2vs2 -1),
+          poi2 = 0.25,  // poi2 = 0.5*(vp2vs2 - 2) / (vp2vs2 -1),
           vsv2 = vpv2 * sqrt((1 - 2 * poi2) / (2 - 2 * poi2)),
           // vsv1 = 1732.0508075688772,
           epsx2 = 0,
@@ -74,10 +73,6 @@ void model_elastic(float ***rho, float ***pi, float ***u, float ***C11, float **
           gamy2 = 0.2,
           rho2 = 2000.0,
           dh = 200;
-
-    /*-----------------material property definition -------------------------*/
-
-    /* x=1, y=2 in Tsvankin [1997] (e.g.) epsx=epsion1 & epsy=epsilon2 */
 
     if (READMOD == -1) {
         float tmp;
@@ -127,7 +122,7 @@ void model_elastic(float ***rho, float ***pi, float ***u, float ***C11, float **
         gamy = f3tensor(0, NY + 1, 0, NX + 1, 0, NZ + 1);
     }
 
-    /*elastic simulation */
+    /* Elastic simulation. */
     if (L == 0)
     {
         /* loop over global grid */
@@ -168,18 +163,13 @@ void model_elastic(float ***rho, float ***pi, float ***u, float ***C11, float **
                         gamma_2 = gamy2;
                         Rho = rho2;
                     }
-                    // perturbation in the midle of the model
 
+                    // Perturbation in the middle of the model.
                     if (((i - (NZG / 2)) * (i - (NZG / 2)) + (j - (NZG / 2)) * (j - (NZG / 2)) + (k - (NZG / 2)) * (k - (NZG / 2))) <= pertRad * pertRad)
                     {
                         Vpv += Vpv * relPertVpv;
                     }
 
-                    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    /*=========================================================
-					 * modify up to this point for ELASTIC model definition
-					 *=========================================================
-					 */
                     Vsv = Vpv * sqrt((1 - 2 * Poi) / (2 - 2 * Poi));
                     muv = Vsv * Vsv * Rho;
                     piv = Vpv * Vpv * Rho;
@@ -210,27 +200,8 @@ void model_elastic(float ***rho, float ***pi, float ***u, float ***C11, float **
 						  C55[jj][ii][kk]=Rho*Vsv*Vsv/(1+2*Gamx);
 						  rho[jj][ii][kk]=Rho;                        
 						 */
-                        //ORTHO 123 in SOFI sense
-                        /*C_33 = Rho*Vpv*Vpv;
-						C_55 = Rho*Vsv*Vsv;
-						C_66 = (1+2*gamma_1)*C_55;
-						C_11 = (1+2*eps_2)*C_33;
-						C_44 = C_66/(1+2*gamma_2);
-						
-						C11[jj][ii][kk]=C_11;
-						C22[jj][ii][kk]=(1+2*eps_1)*C_33;
-						C33[jj][ii][kk]=C_33;
-						
-						C44[jj][ii][kk]=C_44;
-						C55[jj][ii][kk]=C_55;
-						C66[jj][ii][kk]=C_66;
-											
-						C12[jj][ii][kk]=-C_66+sqrt(2*delta_3*C_11*(C_11-C_66) + (C_11-C_66)*(C_11-C_66));
-						C13[jj][ii][kk]=-C_55+sqrt(2*delta_2*C_33*(C_33-C_55) + (C_33-C_55)*(C_33-C_55));
-						C23[jj][ii][kk]=-C_44+sqrt(2*delta_1*C_33*(C_33-C_44) + (C_33-C_44)*(C_33-C_44));*/
 
-                        // humane notation - third axis is vertical
-
+                        // Humane notation - third axis is vertical
                         C_33 = Rho * Vpv * Vpv;
                         C_55 = Rho * Vsv * Vsv;
                         C_66 = (1 + 2 * gamma_1) * C_55;
@@ -241,8 +212,10 @@ void model_elastic(float ***rho, float ***pi, float ***u, float ***C11, float **
 						C_12 = -C_66 + sqrt(2 * delta_3 * C_11 * (C_11 - C_66) + (C_11 - C_66) * (C_11 - C_66));
 						C_23 = -C_44 + sqrt(2 * delta_1 * C_33 * (C_33 - C_44) + (C_33 - C_44) * (C_33 - C_44));
 						
-						// SOFI NOTATION 2nd axis is vertical
-						//ORTHO humane flipped axis 2-3 indices (so that the third axis is vertical)
+                        // We need to convert here from humane notation
+                        // to ASOFI3D notation, where 2nd axis is vertical
+                        // instead of the 3rd axis.
+						// Conversion is done in the following way:
                         // C33 <-> C22
                         // C55 <-> C66
                         // C12 <-> C13
