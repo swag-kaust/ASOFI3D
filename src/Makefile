@@ -58,6 +58,7 @@ CC=cc
 # On HLRN system
 #CC=mpcc
 #LFLAGS=-lm
+
 # ON Linux cluster ALTIX.RZ.UNI-KIEL:DE
 #CC=icc
 #CFLAGS=-mp -O3 -ip0q
