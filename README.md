@@ -3,7 +3,7 @@
 [![CircleCI](https://circleci.com/gh/swag-kaust/TD/tree/master.svg?style=svg)](https://circleci.com/gh/swag-kaust/TD/tree/master)
 
 ASOFI3D stands for Anisotropic Seismic mOdeling with FInite differences.
-This code is an extension of 
+This code is a modification of SOFI3D to accomodate orthorhombic anisotropy 
 [SOFI3D](https://git.scc.kit.edu/GPIAG-Software/SOFI3D/wikis/home)
 
 # Obtaining the code
@@ -32,6 +32,22 @@ Then while in the root directory of the code, command
 
 will compile all codes (solver and auxiliary utilities).
 Currently, compilation emits multiple warnings that can be safely ignored.
+
+# Recommended usage
+
+Copy whole par folder to an arbitrary location in examples
+cd to your new folder
+modify parameter file 
+in_and_out/asofi3d.json
+run script 
+run_ASOFI3D.sh <number of MPI processes>
+
+for example the default working:
+cp -r par examples/example_1
+cd examples/example_1
+run_ASOFI3D.sh 4
+
+from there
 
 # Running the code
 
