@@ -11,7 +11,7 @@ jobs:
             . /etc/profile.d/conda.sh
             conda activate envpy27
             echo $PATH
-            make all
+            make all CC=mpicc CFLAGS="-Wall -O3" LDLIBS=-lm
       - run:
           name: Test code
           command: |
