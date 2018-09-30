@@ -1,14 +1,14 @@
-# Default target to be used if not specified on the command line:
-# that is, `make` is equivalent to `make all`.
-.DEFAULT_GOAL := all
-
 .PHONY : all
 all :
 	$(MAKE) --directory=src all
 
 .PHONY : asofi3D sofi3D
-asofi3D sofi3D:
+asofi3D sofi3D asofi3d sofi3d :
 	$(MAKE) --directory=src sofi3D
+
+.PHONY : clean
+clean :
+	$(MAKE) --directory=src clean
 
 .PHONY : test
 test :
