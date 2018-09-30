@@ -198,40 +198,40 @@ This equation is satisfied for any volume, independently if it is filled with a 
 with
 
 \EQ{2:18:1}{\begin{split}
-	\lambda\; \text{and}\; \mu:\; & \text{Lam$\acute{\rm e}$ parameter}\notag
+    \lambda\; \text{and}\; \mu:\; & \text{Lam$\acute{\rm e}$ parameter}\notag
 \end{split}}
 
 \EQ{2:18:1:1}{\epsilon_{ij}=\biggl(\frac{\partial u_i}{\partial x_j}+\frac{\partial u_j}{\partial x_i}\biggr)\; \text{deformation tensor} \notag}  
 \EQ{2:18:2}{\theta = \epsilon_{11} + \epsilon_{22} + \epsilon_{33}:\; \text{cubic dilatation} \notag}
 \EQ{2:18:3}{\delta_{ij}=
 \begin{cases}
-	1 & \text{for } i=j\\
-	0 & \text{else}
+    1 & \text{for } i=j\\
+    0 & \text{else}
 \end{cases} 
 \biggr \}: \;\text{Kronecker symbol} \notag}
 
 For a {\bf{viscoelastic medium}} the stress-strain relationship is more complicated:
 
 \EQ{2:19}{\begin{split}
-	\dot{p}_{ij}&=\frac{\partial v_k}{\partial x_k}\{\pi (1+\tau^s)-2 \mu(1+\tau^s)\}+2\frac{\partial v_i}{\partial x_j}
-	\mu(1+\tau^s)+\sum\limits_{l=1}^L r_{ijl}\; \text{if $i$=$j$}\\
-	\dot{p}_{ij}&=\biggl(\frac{\partial v_i}{\partial x_j}+\frac{\partial v_j}{\partial x_i}\biggr) \mu (1+\tau^s)+\sum\limits_{l=1}^L r_{ijl}\; \text{if $i$$\ne$$j$}
+    \dot{p}_{ij}&=\frac{\partial v_k}{\partial x_k}\{\pi (1+\tau^s)-2 \mu(1+\tau^s)\}+2\frac{\partial v_i}{\partial x_j}
+    \mu(1+\tau^s)+\sum\limits_{l=1}^L r_{ijl}\; \text{if $i$=$j$}\\
+    \dot{p}_{ij}&=\biggl(\frac{\partial v_i}{\partial x_j}+\frac{\partial v_j}{\partial x_i}\biggr) \mu (1+\tau^s)+\sum\limits_{l=1}^L r_{ijl}\; \text{if $i$$\ne$$j$}
 \end{split}}
 
  with the memory variables 
 
  \EQ{2:20}{\begin{split}
-	 \dot{r}_{ijl}&=-\frac{1}{\tau_{\sigma l}}\biggl\{(\pi \tau^p - 2 \mu \tau^s)\frac{\partial v_k}{\partial x_k} + 2 \frac{\partial
- 	v_i}{\partial x_j} \mu \tau^s + r_{ijl} \biggr\}\; \text{if $i$ = $j$} \notag\\
- 	\dot{r}_{ijl}&=-\frac{1}{\tau_{\sigma l}}\biggl\{\mu \tau^s \biggl(\frac{\partial v_i}{\partial x_j}+ \frac{\partial v_j}{\partial x_i} 
- 	\biggr) + r_{ijl} \biggr\}\; \text{if $i$ $\ne$ $j$} \notag\\
+     \dot{r}_{ijl}&=-\frac{1}{\tau_{\sigma l}}\biggl\{(\pi \tau^p - 2 \mu \tau^s)\frac{\partial v_k}{\partial x_k} + 2 \frac{\partial
+    v_i}{\partial x_j} \mu \tau^s + r_{ijl} \biggr\}\; \text{if $i$ = $j$} \notag\\
+    \dot{r}_{ijl}&=-\frac{1}{\tau_{\sigma l}}\biggl\{\mu \tau^s \biggl(\frac{\partial v_i}{\partial x_j}+ \frac{\partial v_j}{\partial x_i} 
+    \biggr) + r_{ijl} \biggr\}\; \text{if $i$ $\ne$ $j$} \notag\\
  \end{split}}
 
 $\tau^s$ and $\tau^p$ are related to the seismic quality factor $Q_s$, $Q_p$ for the S- respectively the P-wave velocity, by 
 
 \EQ{2:21}{\begin{split}
-	\tau^s &= 2/Q_s\\
-	\tau^p &= 2/Q_p \notag
+    \tau^s &= 2/Q_s\\
+    \tau^p &= 2/Q_p \notag
 \end{split}}  
 
 \section{Solving the Elastic Wave Equation with Finite Differences}
@@ -239,8 +239,8 @@ To solve the equations \ER{1:15} and \ER{2:18} for an elastic medium, or \ER{1:1
 and $n \in N | [1,NT]$, where $NX$, $NY$, $NZ$ and $NT$ denote the number of spatial grid points and time steps. Finally the partial derivatives  are replaced by {\bf{(finite)-difference}} operators. The derivative of a function y after a variable x can be approximated by a forward $D^+$ or a backward operator $D^-$:
 
 \EQ{disc:1}{\begin{split}
-	D^+_x y&= \frac{y[i+1]-y[i]}{dh} \hspace{1 cm} \text{forward operator}\\
-	D^-_x y&= \frac{y[i]-y[i-1]}{dh} \hspace{1 cm} \text{backward operator}\\
+    D^+_x y&= \frac{y[i+1]-y[i]}{dh} \hspace{1 cm} \text{forward operator}\\
+    D^-_x y&= \frac{y[i]-y[i-1]}{dh} \hspace{1 cm} \text{backward operator}\\
 \end{split}}
 
 To calculate with a larger grid point distance the variables are arranged on a staggered grid (\cite{virieux:86} and \cite{levander:88}) (Figure \ref{fig_cell}).  Please note, that the vertical axis is denoted by \textit{Y}, e.g. the indices of the stress components are labeled accordingly. To satisfy the stability of the {\bf{Standard Staggered Grid (SSG)}} code the density $\rho$, respectively. the Lame parameter $\mu$ are arithmetically and harmonically averaged (\cite{bohlen:06}):
@@ -257,24 +257,24 @@ To calculate with a larger grid point distance the variables are arranged on a s
 In the previous section, the partial derivation was simply replaced by a finite difference quotient. In this section, a more systematical approach  is used. First the first derivation of the variable f at a grid point i is calculated using the following Taylor expansion:
 
 \EQ{op_acc:1}{\begin{split}
-	(2k-1)\frac{\partial f}{\partial x}\biggr|_i&=\frac{1}{dh}(f_{i+(k-1/2)}-f_{i-(k-1/2)})\\
-	&+\frac{1}{dh}\sum_{l=2}^N \frac{(k-\frac{1}{2} dh)^{2l-1}}{(2l-1)!}\frac{\partial^{(2l-1)}f}{\partial
-	x^{(2l-1)}}\biggr|_i+{\mathcal{O}}(dh)^{2N} \notag
+    (2k-1)\frac{\partial f}{\partial x}\biggr|_i&=\frac{1}{dh}(f_{i+(k-1/2)}-f_{i-(k-1/2)})\\
+    &+\frac{1}{dh}\sum_{l=2}^N \frac{(k-\frac{1}{2} dh)^{2l-1}}{(2l-1)!}\frac{\partial^{(2l-1)}f}{\partial
+    x^{(2l-1)}}\biggr|_i+{\mathcal{O}}(dh)^{2N} \notag
 \end{split}}
 
 For an FD operator with length 2N N equations with a weighting factor $\beta_k$ are added:
 
 \EQ{op_acc:2}{\begin{split}
-	[\sum_{k=1}^{N} \beta_k (2k-1)]\frac{\partial f}{\partial x}\biggr|_i&=\frac{1}{dh} \sum_{k=1}^{N} \beta_k (f_{i+(k-1/2)}-f_{i-(k-1/2)})\\
-	&+\frac{1}{dh}\sum_{k=1}^{N} \sum_{l=2}^N \beta_k \frac{(k-\frac{1}{2} dh)^{2l-1}}{(2l-1)!}\frac{\partial^{(2l-1)}f}{\partial
-	x^{(2l-1)}}\biggr|_i+{\mathcal{O}}(dh)^{2N}
+    [\sum_{k=1}^{N} \beta_k (2k-1)]\frac{\partial f}{\partial x}\biggr|_i&=\frac{1}{dh} \sum_{k=1}^{N} \beta_k (f_{i+(k-1/2)}-f_{i-(k-1/2)})\\
+    &+\frac{1}{dh}\sum_{k=1}^{N} \sum_{l=2}^N \beta_k \frac{(k-\frac{1}{2} dh)^{2l-1}}{(2l-1)!}\frac{\partial^{(2l-1)}f}{\partial
+    x^{(2l-1)}}\biggr|_i+{\mathcal{O}}(dh)^{2N}
 \end{split}}
 
 For the case N=1 we get the FD operator from the previous section with length 2N=2. The Taylor series expansion will be aborted after the first  term (${\mathcal{O}}(dh)^{2}$). This operator is called {\bf{2nd order FD-operator}} which denotes the abortion error of the Taylor series and not the order of the desired approximated derivation. To understand equation \ER{op_acc:2} in more detail the coefficients for a {\bf{4th order FD-operator}} are calculated. The 4th order FD operator has the length 2N = 4, so N=2. By calculating the sums in \ER{op_acc:2} we get:
 
 \EQ{op_acc:3}{\begin{split}
-	(\beta_1+3 \beta_2) \frac{\partial f}{\partial x}\biggr|_i&=\frac{1}{dh}(\beta_1(f_{i-1/2}-f_{i+1/2})+\beta_2(f_{i-3/2}-f_{i+3/2}))\\
-	&+\frac{dh^3}{dh}\biggl[\beta_1\frac{1}{8 \cdot 3!}+\beta_2\frac{27}{8 \cdot 3!}\biggr]\frac{\partial^3 f}{\partial x^3}\biggr|_i
+    (\beta_1+3 \beta_2) \frac{\partial f}{\partial x}\biggr|_i&=\frac{1}{dh}(\beta_1(f_{i-1/2}-f_{i+1/2})+\beta_2(f_{i-3/2}-f_{i+3/2}))\\
+    &+\frac{dh^3}{dh}\biggl[\beta_1\frac{1}{8 \cdot 3!}+\beta_2\frac{27}{8 \cdot 3!}\biggr]\frac{\partial^3 f}{\partial x^3}\biggr|_i
 \end{split}}
 
 The weights $\beta_k$ are calculated in the following way:\\ 
@@ -291,21 +291,21 @@ The weighting coefficients $\beta_k$ can be calculated by inverting the followin
 \EQ{op_acc:6}{
 \left(
 \begin{array}{ll}
-	1 & 3 \\
-	1 & 27 \\
+    1 & 3 \\
+    1 & 27 \\
 \end{array}
 \right)\cdot \hspace{0.2 cm}
 \left(
 \begin{array}{l}
-	\beta_1 \\
-	\beta_2 \\
+    \beta_1 \\
+    \beta_2 \\
 \end{array}
 \right)
 =
 \left(
 \begin{array}{l}
-	1 \\
-	0 \\
+    1 \\
+    0 \\
 \end{array}
 \right) \notag
 }
@@ -313,8 +313,8 @@ The weighting coefficients $\beta_k$ can be calculated by inverting the followin
 The resulting coefficients are $\beta_1=9/8$ and $\beta_2=-1/24$, so the forward and backward 4th order FD operators look like:
 
 \EQ{op_acc:7}{\begin{split}
-	\frac{\partial f}{\partial x}\biggr|_{i+1/2}&=\frac{1}{dh}[\beta_1 (f_{i+1}-f_i)+\beta_2 (f_{i+2}-f_{i-1})] \hspace{1 cm} \text{forward operator}\\
-	\frac{\partial f}{\partial x}\biggr|_{i-1/2}&=\frac{1}{dh}[\beta_1 (f_{i}-f_{i-1})+\beta_2 (f_{i+1}-f_{i-2})] \hspace{1 cm} \text{backward operator}\\
+    \frac{\partial f}{\partial x}\biggr|_{i+1/2}&=\frac{1}{dh}[\beta_1 (f_{i+1}-f_i)+\beta_2 (f_{i+2}-f_{i-1})] \hspace{1 cm} \text{forward operator}\\
+    \frac{\partial f}{\partial x}\biggr|_{i-1/2}&=\frac{1}{dh}[\beta_1 (f_{i}-f_{i-1})+\beta_2 (f_{i+1}-f_{i-2})] \hspace{1 cm} \text{backward operator}\\
 \end{split}}
 
 The coefficients $\beta_i$ in the FD operator are called {\bf{Taylor coefficients}}. The accuracy of higher order FD operators can be improved significantly simply by slightly changes in the FD coefficients \cite{holberg:87}. These numerically optimized coefficients are called {\bf{Holberg coefficients}}. An accuracy comparison between Taylor and Holberg coefficients can be found in section \ref{comp_taylor_holberg}.
@@ -456,9 +456,9 @@ The Dirichlet boundary condition specifies the values a solution needs to take o
 The Dirichlet boundary condition could take the form
 
 \EQ{FD:5}{\begin{split}
-	v_i(0)&=v_i(NX)=0 \\
-	p_{ij}(0)&=p_{ij}(NX)=0
-	\end{split}}
+    v_i(0)&=v_i(NX)=0 \\
+    p_{ij}(0)&=p_{ij}(NX)=0
+    \end{split}}
 
 The Dirichlet boundary conditions have the disadvantage that it is not possible to model an infinite full space, because the wavefield is reflected at the boundaries of the model grid.
 
@@ -664,9 +664,9 @@ where VARNAME denotes the name of the global variable in which the value is save
 
 \begin{verbatim}
 "Domain Decomposition" : "comment",
-			"NPROCX" : "2",
-			"NPROCY" : "2",
-			"NPROCZ" : "2",
+            "NPROCX" : "2",
+            "NPROCY" : "2",
+            "NPROCZ" : "2",
 \end{verbatim}
 
 with
@@ -692,12 +692,12 @@ At the top of the numerical mesh the PEs apply a free surface boundary condition
 \subsubsection{Discretization}
 \begin{verbatim}
 "3-D Grid" : "comment",
-			"NX" : "100",
-			"NY" : "100",
-			"NZ" : "100",
-			"DX" : "54.0",
-			"DY" : "54.0",
-			"DZ" : "54.0",
+            "NX" : "100",
+            "NY" : "100",
+            "NZ" : "100",
+            "DX" : "54.0",
+            "DY" : "54.0",
+            "DZ" : "54.0",
 \end{verbatim}
 
 with
@@ -727,9 +727,9 @@ where $\frac{v_{s,min}}{2 f_c}$ is the smallest wavelength propagating through t
 
 \begin{verbatim}
 "FD order" : "comment",
-			"FDORDER" : "8",
-			"FDORDER_TIME" : "2",
-			"FDCOEFF" : "2",
+            "FDORDER" : "8",
+            "FDORDER_TIME" : "2",
+            "FDCOEFF" : "2",
 \end{verbatim}
 
 The order of the used spatial FD operator is defined by the option FDORDER. The possible values are 2, 4, 6, 8, 10, 12. 
@@ -739,8 +739,8 @@ The variable FDORDER\_TIME represents the used temporal FD order. FDORDER\_TIME=
 \subsubsection{Time stepping}
 \begin{verbatim}
 "Time Stepping" : "comment",
-			"TIME" : "5.0",
-			"DT" : "6.6e-3",
+            "TIME" : "5.0",
+            "DT" : "6.6e-3",
 \end{verbatim}
 
 with
@@ -756,24 +756,24 @@ The program checks these criteria for the entire model, outputs a warning messag
 \subsubsection{Sources}
 \label{Sources}
 \begin{verbatim}
-			"SOURCE_SHAPE" : "1",
-			"source shape values: ricker=1;fumue=2;from_SIGNAL_FILE=3;SIN**3=4" : "comment",
-			"SIGNAL_FILE" : "signal_mseis.tz",
+            "SOURCE_SHAPE" : "1",
+            "source shape values: ricker=1;fumue=2;from_SIGNAL_FILE=3;SIN**3=4" : "comment",
+            "SIGNAL_FILE" : "signal_mseis.tz",
 
-			"SOURCE_TYPE" : "1",
-			"source_type values (point_source):" : "comment",
-			"explosive=1;force_in_x=2;in_y=3;in_z=4;custom=5;double_couple=6" : "comment",
-			"SOURCE_ALPHA, SOURCE_BETA" : "0.0 , 0.0",
-			"AMON, STR, DIP, RAKE" : "1.0e2 , 45.0 , 90.0 , 45.0",
-			"SRCREC" : "1",
-			"srcrec values :  read from SOURCE_FILE=1, PLANE_WAVE=2 (internal)" : "comment"
-			
-			"SOURCE_FILE" : "./sources/sources.dat", 
-			"RUN_MULTIPLE_SHOTS" : "0", 
-			
-			"PLANE_WAVE_DEPTH" : "2106.0",
-			"PLANE_WAVE_ANGLE" : "0.0",
-			"TS" : "0.2",
+            "SOURCE_TYPE" : "1",
+            "source_type values (point_source):" : "comment",
+            "explosive=1;force_in_x=2;in_y=3;in_z=4;custom=5;double_couple=6" : "comment",
+            "SOURCE_ALPHA, SOURCE_BETA" : "0.0 , 0.0",
+            "AMON, STR, DIP, RAKE" : "1.0e2 , 45.0 , 90.0 , 45.0",
+            "SRCREC" : "1",
+            "srcrec values :  read from SOURCE_FILE=1, PLANE_WAVE=2 (internal)" : "comment"
+            
+            "SOURCE_FILE" : "./sources/sources.dat", 
+            "RUN_MULTIPLE_SHOTS" : "0", 
+            
+            "PLANE_WAVE_DEPTH" : "2106.0",
+            "PLANE_WAVE_ANGLE" : "0.0",
+            "TS" : "0.2",
 \end{verbatim}
 
 with
@@ -896,7 +896,7 @@ When using the earthquake double couple source (SOURCE\_TYPE=6), the orientation
 
 The locations of multiple sources must be defined in an external ASCII file (SOURCE\_FILE) that has the following format:
 \begin{verbatim}
- % 	XSRC		YSRC		ZSRC		TD		FC		AMP  
+ %  XSRC        YSRC        ZSRC        TD      FC      AMP  
 \end{verbatim}
 
 More than one source position may be specified for example to simulate acoustic emission. In the following lines, you can define certain parameters for each source point:
@@ -908,7 +908,7 @@ Please note that SOFI3D considers real physical units as input and output. AMP s
 The  SOURCE\_FILE =  \lstinline{./sources/source.dat} that defines an explosive source  at $x_s=2592.0\;$ m, $y_s=2106.0\;$ m (depth) and $z_s=2592.0\;$ m  with no time delay,
 a center frequency of 5 Hz  and an maximum amplitude of 1.0 reads, for example
 \begin{verbatim}
-	2592.0        2106.0        2592.0        0.0           5.0           1.0
+    2592.0        2106.0        2592.0        0.0           5.0           1.0
 \end{verbatim}
 
 If the option RUN\_MULTIPLE\_SHOTS=0 in the parameter file all the shot points defined in the SOURCE\_FILE are used in one simulation. Setting RUN\_MULTIPLE\_SHOTS=1 will start model runs 
@@ -920,9 +920,9 @@ Instead of a single source or multiple sources specified in the SOURCE\_FILE, yo
 \label{gen_of_mod}
 \begin{verbatim}
 "Model" : "comment",
-			"READMOD" : "0",
-			"MFILE" : "model/test",
-			"WRITE_MODELFILES" : "0",
+            "READMOD" : "0",
+            "MFILE" : "model/test",
+            "WRITE_MODELFILES" : "0",
 
 \end{verbatim}
 
@@ -980,10 +980,10 @@ Due to the fact that the variable MFILE is also used to write the model - expand
 \subsubsection{Q-approximation}
 \begin{verbatim}
 "Q-approximation" : "comment",
-			"L" : "0",
-			"FL1" : "5.0", 
-			"FREF" : "5.0",
-			"TAU" : "0.00001",
+            "L" : "0",
+            "FL1" : "5.0", 
+            "FREF" : "5.0",
+            "TAU" : "0.00001",
 \end{verbatim}
 
 with
@@ -1006,15 +1006,15 @@ Please note, that due to dispersive media properties the viscoelastic velocity m
 
 \begin{verbatim}
 "Boundary Conditions" : "comment",
-			"FREE_SURF" : "1", 
-			"ABS_TYPE" : "2",
-			"FW" : "30.0",
-			"DAMPING" : "8.0",
-			"FPML" : "5.0",
-			"VPPML" : "3500.0",
-			"NPOWER" : "2.0",
-			"K_MAX_CPML" : "10.0",
-			"BOUNDARY" : "0",
+            "FREE_SURF" : "1", 
+            "ABS_TYPE" : "2",
+            "FW" : "30.0",
+            "DAMPING" : "8.0",
+            "FPML" : "5.0",
+            "VPPML" : "3500.0",
+            "NPOWER" : "2.0",
+            "K_MAX_CPML" : "10.0",
+            "BOUNDARY" : "0",
 \end{verbatim}
 
 with
@@ -1041,16 +1041,16 @@ For the optimal realization of the CPML boundary condition you have to specify t
 \subsubsection{Wavefield snapshots}
 \begin{verbatim}
 "Snapshots" : "comment",
-			"SNAP" : "4",
-			"TSNAP1" : "6.6e-3",
-			"TSNAP2" : "4.8",
-			"TSNAPINC" : "0.2",
-			"IDX" : "1",
-			"IDY" : "1",
-			"IDZ" : "1",
-			"SNAP_FORMAT" : "3",
-			"SNAP_FILE" : "./snap/test",
-			"SNAP_PLANE" : "1",
+            "SNAP" : "4",
+            "TSNAP1" : "6.6e-3",
+            "TSNAP2" : "4.8",
+            "TSNAPINC" : "0.2",
+            "IDX" : "1",
+            "IDY" : "1",
+            "IDZ" : "1",
+            "SNAP_FORMAT" : "3",
+            "SNAP_FILE" : "./snap/test",
+            "SNAP_PLANE" : "1",
 \end{verbatim}
 
 with
@@ -1074,13 +1074,13 @@ If SNAP$>0$, wavefield information (particle velocities, pressure, or curl and d
 \label{Receivers}
 \begin{verbatim}
 "Receiver" : "comment",
-			"SEISMO" : "4",
-			"READREC" : "0",
-			"REC_FILE" : "./receiver/receiver.dat",
-			"REFRECX, REFRECY, REFRECZ" : "0.0 , 0.0 , 0.0",
-			"XREC1,YREC1, ZREC1" : "54.0 , 2106.0, 2592.0",
-			"XREC2,YREC2, ZREC2" : "5400.0 , 2106.0, 2592.0",
-			"NGEOPH" : "1",
+            "SEISMO" : "4",
+            "READREC" : "0",
+            "REC_FILE" : "./receiver/receiver.dat",
+            "REFRECX, REFRECY, REFRECZ" : "0.0 , 0.0 , 0.0",
+            "XREC1,YREC1, ZREC1" : "54.0 , 2106.0, 2592.0",
+            "XREC2,YREC2, ZREC2" : "5400.0 , 2106.0, 2592.0",
+            "NGEOPH" : "1",
 \end{verbatim}
 
 with 
@@ -1133,11 +1133,11 @@ In our example, we specify 100 receiver location. Due to the small size of the m
 \begin{verbatim}
 "Receiver array" : "comment",
 
-			"REC_ARRAY" : "0",
-			"REC_ARRAY_DEPTH" : "1350.0",
-			"REC_ARRAY_DIST" : "640.0", 
-			"DRX" : "2",
-			"DRZ" : "2",
+            "REC_ARRAY" : "0",
+            "REC_ARRAY_DEPTH" : "1350.0",
+            "REC_ARRAY_DIST" : "640.0", 
+            "DRX" : "2",
+            "DRZ" : "2",
 \end{verbatim}
 
 A horizontal 2-D array of receivers is simulated if REC\_ARRAY$>$0. This option specifies the number of receiver planes horizontal to the x-z-plane (surface of the model). The first plane is located in depth REC\_ARRAY\_DEPTH meter. The second plane in REC\_ARRAY\_DEPTH + REC\_ARRAY\_DIST, the last in REC\_ARRAY\_DEPTH + (REC\_ARRAY-1) $\times$ REC\_ARRAY\_DIST. The distance between receivers within each plane is DRX and DRZ grid points (DRX*DX and DRZ*DZ meters).
@@ -1146,9 +1146,9 @@ A horizontal 2-D array of receivers is simulated if REC\_ARRAY$>$0. This option 
 \label{seismograms}
 \begin{verbatim}
 "Seismograms" : "comment",
-			"NDT, NDTSHIFT" : "1, 0",
-			"SEIS_FORMAT" : "1",
-			"SEIS_FILE" : "./su/test",
+            "NDT, NDTSHIFT" : "1, 0",
+            "SEIS_FORMAT" : "1",
+            "SEIS_FILE" : "./su/test",
 \end{verbatim}
 
 with
@@ -1185,10 +1185,10 @@ Each PE internally stores seismograms which are recorded in his portion of the g
 \subsubsection{Monitoring the simulation}
 \begin{verbatim}
 "Monitoring the simulation" : "comment",
-			"LOG_FILE" : "log/test.log",
-			"LOG" : "1",
-			"OUT_SOURCE_WAVELET" : "0",
-			"OUT_TIMESTEP_INFO" : "10",
+            "LOG_FILE" : "log/test.log",
+            "LOG" : "1",
+            "OUT_SOURCE_WAVELET" : "0",
+            "OUT_TIMESTEP_INFO" : "10",
 
 \end{verbatim}
 
@@ -1208,9 +1208,9 @@ By using the switch OUT\_SOURCE\_WAVELET you can decide to output the used sourc
 \subsubsection{Checkpointing}
 \begin{verbatim}
 "Checkpoints" : "comment",
-			"CHECKPTREAD" : "0",
-			"CHECKPTWRITE" : "0",
-			"CHECKPT_FILE" : "tmp/checkpoint_sofi3D",
+            "CHECKPTREAD" : "0",
+            "CHECKPTWRITE" : "0",
+            "CHECKPT_FILE" : "tmp/checkpoint_sofi3D",
 \end{verbatim}
 
 with 
@@ -1230,8 +1230,8 @@ If you choose to create the model ``on the fly'', the distribution of the materi
 
 As you can see from lines
 \begin{verbatim}
-	sprintf(modfile,"%s.mod",MFILE);
-	writemod(modfile,rho,3);
+    sprintf(modfile,"%s.mod",MFILE);
+    writemod(modfile,rho,3);
 \end{verbatim}
 the density model is written to file to be displayed as described in Chapter \ref{gen_of_mod}. As a base name for the model file, the variable MFILE from the input file is used that actually specifies the external velocity and density files. Note, that the thickness of the first layer \textit{h} is set to 10000 m (10km) which is larger than the vertical extension (NY*DH=5400 m). This way, we effectively created a homogeneous model while demonstrating a two layer case. Simple decrease the variable \textit{h} to 2700 and a real two layer model is created. Generally, you only have to modify the material property definitions in the upper part of the model file and code some if statements to construct simple structures such as planes, cubes, tubes, etc.
 
@@ -1595,13 +1595,13 @@ cout << "Cutting wavefield time step ... " << k << endl;
     for(l=1;l<=NZ;l+=IDZ){
       for (i=1;i<=NX;i+=IDX){
         for (j=1;j<=NY;j+=IDY){
-	
-	  input.read((char*)&vp,sizeof(float));
-	
-	  if(l==CUTPOINT){
-	    output.write((char*)&vp,sizeof(float));
-	  }
-	  
+    
+      input.read((char*)&vp,sizeof(float));
+    
+      if(l==CUTPOINT){
+        output.write((char*)&vp,sizeof(float));
+      }
+      
         }
      }
     
