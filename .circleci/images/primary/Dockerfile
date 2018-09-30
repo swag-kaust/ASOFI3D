@@ -24,6 +24,7 @@ RUN apt-get -qq update > /dev/null && \
                                   cmake \
                                   libopenmpi-dev \
                                   wget \
+                                  git \
                                   > /dev/null && \
     rm -rf /var/lib/apt/lists/*
 
@@ -38,7 +39,7 @@ RUN MINICONDA_URL=https://repo.continuum.io/miniconda && \
     # Enable conda for all users.
     ln -s /opt/miniconda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
     conda activate base && \
-    conda update --quet conda && \
+    conda update --quiet conda && \
     conda create --yes --quiet --name envpy27 python=2.7 numpy && \
     conda activate envpy27 && \
     conda install --yes --quiet --channel swag-kaust madagascar
