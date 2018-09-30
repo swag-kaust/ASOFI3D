@@ -19,9 +19,9 @@ MODEL_SRC_BENCH = benchmod.c
 # Compiler (LAM: CC=hcc, CRAY T3E: CC=cc, SHARCNet: mpicc)
 
 # On Linux cluster running LAM
-# CC=hcc
-# LFLAGS=-lm -lmpi
-# CFLAGS=-g -Wall -O4
+# CC = hcc
+# LDLIBS = -lm -lmpi
+# CFLAGS = -g -Wall -O4
 
 # On CRAY T3E
 CC=cc
@@ -29,52 +29,52 @@ CC=cc
 # On Linux Cluster using OpenMPI
 #CC=mpicc
 #-ta=tesla:managed -acc -Minfo=accel
-#CC=mpicc -ta=multicore -acc -Minfo=accel
-#LFLAGS=-lm
-#CFLAGS=-Wall -O3
+#CC = mpicc -ta=multicore -acc -Minfo=accel
+#LDLIBS = -lm
+#CFLAGS = -Wall -O3
 
 # On InstitutsCluster2 using intelMPI AND ITAC (no optimization)
 #CC = mpicc
-#LFLAGS = -tcollect
+#LDLIBS = -tcollect
 #CFLAGS = -tcollect -trace
 
 # On InstitutsCluster2 using Open MPI and scalasca (no optimization)
 #CC = skin mpicc
-#LFLAGS =
+#LDLIBS =
 #CFLAGS =-O3
 
 #On InstitutsCluster2 using Open MPI and DDT (no optimization)
 #CC = mpicc
-#LFLAGS = -g
+#LDLIBS = -g
 #CFLAGS = -g -O0 -i_dynamic
 
 
 # On JUROPA cluster
 #CC=mpicc
-#LFLAGS=-lm
+#LDLIBS=-lm
 #CFLAGS=-O3 -ipo
 
 
 # On HLRN system
 #CC=mpcc
-#LFLAGS=-lm
+#LDLIBS=-lm
 
 # ON Linux cluster ALTIX.RZ.UNI-KIEL:DE
 #CC=icc
 #CFLAGS=-mp -O3 -ip0q
-#LFLAGS=-lmpi -lm
+#LDLIBS=-lmpi -lm
 
 # ON Linux cluster ALTIX.HRZ.TU-FREIBERG.DE
 #CC=icc
 #CFLAGS=-mp -O3 -ip0
-#LFLAGS=-lmpi -lm -i-static
+#LDLIBS=-lmpi -lm -i-static
 
 
 # after this line, no further editing should be necessary
 # --------------------------------------------------------
 
 .c.o:
-	$(CC) -c  $(CFLAGS) $<
+	$(CC) -c $(CFLAGS) $<
 
 
 SEISMERGE_SCR = seismerge.c
@@ -240,25 +240,25 @@ PARTMODEL_OBJ = $(PARTMODEL_SCR:%.c=%.o)
 SEISMERGE_OBJ = $(SEISMERGE_SCR:%.c=%.o)
 
 sofi3D:		$(SOFI3D_OBJ)
-	$(CC) $(SOFI3D_OBJ) -o ../bin/sofi3D $(LFLAGS)
+	$(CC) $(SOFI3D_OBJ) -o ../bin/sofi3D $(LDLIBS)
 
 seismerge:	$(SEISMERGE_OBJ)
-	$(CC) $(SEISMERGE_OBJ) -o ../bin/seismerge $(LFLAGS)
+	$(CC) $(SEISMERGE_OBJ) -o ../bin/seismerge $(LDLIBS)
 
 snapmerge:	$(SNAPMERGE_OBJ)
-	$(CC) $(SNAPMERGE_OBJ) -o ../bin/snapmerge $(LFLAGS)
+	$(CC) $(SNAPMERGE_OBJ) -o ../bin/snapmerge $(LDLIBS)
 
 part_model:	$(PARTMODEL_OBJ)
-	$(CC) $(PARTMODEL_OBJ) -o ../bin/partmodel $(LFLAGS)
+	$(CC) $(PARTMODEL_OBJ) -o ../bin/partmodel $(LDLIBS)
 
 #sofi3D_rsg: $(SOFI3D_OBJ_RSG)
-#	$(CC) $(SOFI3D_OBJ_RSG) -o ../bin/sofi3D_rsg $(LFLAGS)
+#	$(CC) $(SOFI3D_OBJ_RSG) -o ../bin/sofi3D_rsg $(LDLIBS)
 
 sofi3D_bench: $(SOFI3D_OBJ_BENCH)
-	$(CC)  $(SOFI3D_OBJ_BENCH) -o ../bin/sofi3D_bench $(LFLAGS)
+	$(CC)  $(SOFI3D_OBJ_BENCH) -o ../bin/sofi3D_bench $(LDLIBS)
 
 sofi3D_acoustic: $(SOFI3D_OBJ_ACOUSTIC)
-	$(CC) $(SOFI3D_OBJ_ACOUSTIC) -o ../bin/sofi3D_acoustic $(LFLAGS)
+	$(CC) $(SOFI3D_OBJ_ACOUSTIC) -o ../bin/sofi3D_acoustic $(LDLIBS)
 
 clean:
 	find . -name "*.o" -exec rm {} \;
