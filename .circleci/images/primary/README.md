@@ -16,14 +16,16 @@ cache data. In such cases, flag `--no-cache` can be used:
 
 After successful build, the image must be tagged (or versioned)
 
-	docker tag swagkaust/swagimage:YYYY-MM.BN
+	docker tag <image-id> swagkaust/swagimage:YYYY-MM.BN
 
-where YYYY is year, MM month with leading zero, BN the build number.
+where <image-id> is ID of the built image, which is provided in the output of
+the `docker build` command (in the last line), `YYYY` is current year,
+`MM` the current month with leading zero, `BN` the build number.
 For example, the very first build in August 2018 was 2018-08.01.
 
 It is a common practice to also put a tag `latest` on the most recent image:
 
-    docker tag swagkaust/swagimage:latest 
+    docker tag <image-id> swagkaust/swagimage:latest 
 
 
 ## Upload Docker image to the cloud
