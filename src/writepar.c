@@ -83,7 +83,7 @@ void writepar(FILE *fp, int ns){
 
 	switch (SOURCE_SHAPE){
 	case 1 :
-		fprintf(fp," Ricker\n");
+		fprintf(fp," Ricker derivative\n");
 		break;
 	case 2 :
 		fprintf(fp," Fuchs-Mueller\n");
@@ -93,6 +93,9 @@ void writepar(FILE *fp, int ns){
 		break;
 	case 4 :
 		fprintf(fp," sinus raised to the power of 3.0 \n");
+		break;
+	case 5 :
+		fprintf(fp," True Ricker \n");
 		break;
 	
 	default :
