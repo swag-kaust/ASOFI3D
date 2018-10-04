@@ -10,6 +10,7 @@
 double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
 		Velocity *v,
 		Tensor3d *s,
+		OrthoPar *op,
 		float ***  pi, float ***  u,
 		float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
 		float ***  C66ipjp, float ***  C44jpkp, float ***  C55ipkp,
@@ -19,16 +20,18 @@ double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz
 		float *** psi_vxx, float *** psi_vyx, float *** psi_vzx, float *** psi_vxy, float *** psi_vyy, float *** psi_vzy, float *** psi_vxz, float *** psi_vyz, float *** psi_vzz){
 
 
-        float ***vx = v->x;
-        float ***vy = v->y;
-        float ***vz = v->z;
+	float ***vx = v->x;
+	float ***vy = v->y;
+	float ***vz = v->z;
 
-        float ***sxx = s->xx;
-        float ***syy = s->yy;
-        float ***szz = s->zz;
-        float ***sxy = s->xy;
-        float ***syz = s->yz;
-        float ***sxz = s->xz;
+	float ***sxx = s->xx;
+	float ***syy = s->yy;
+	float ***szz = s->zz;
+	float ***sxy = s->xy;
+	float ***syz = s->yz;
+	float ***sxz = s->xz;
+
+	Strain_ijk e;
 
 	extern float DT, DX, DY, DZ;
 	extern int MYID, LOG, FDCOEFF, FDORDER;
@@ -45,8 +48,6 @@ double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz
 	float c11,c12,c13,c22,c23,c33,c66ipjp,c44jpkp,c55ipkp;
 	float b1=1.0, b2=0.0;
 
-	//float dthalbe;
-	//dthalbe = DT/2.0;
 
 	if (LOG)
 		if ((MYID==0) && ((nt+(OUTNTIMESTEPINFO-1))%OUTNTIMESTEPINFO)==0) time1=MPI_Wtime();
@@ -158,39 +159,17 @@ double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz
 						psi_vyz[j][i][h1] = b_z_half[h1] * psi_vyz[j][i][h1] + a_z_half[h1] * vyz;
 						vyz = vyz / K_z_half[h1] + psi_vyz[j][i][h1];
 						psi_vzz[j][i][h1] = b_z[h1] * psi_vzz[j][i][h1] + a_z[h1] * vzz;
-						vzz = vzz / K_z[h1] + psi_vzz[j][i][h1];}
+						vzz = vzz / K_z[h1] + psi_vzz[j][i][h1];
+					}
 
+					e.xx = vxx;
+					e.yy = vyy;
+					e.zz = vzz;
+					e.xy = vxy + vyx;
+					e.yz = vyz + vzy;
+					e.xz = vxz + vzx;
 
-
-
-					c66ipjp=C66ipjp[j][i][k]*DT;
-					c44jpkp=C44jpkp[j][i][k]*DT;
-					c55ipkp=C55ipkp[j][i][k]*DT;
-					//g=pi[j][i][k];
-					//f=2.0*u[j][i][k];
-
-					c11=C11[j][i][k];
-					c12=C12[j][i][k];
-					c13=C13[j][i][k];
-					c22=C22[j][i][k];
-					c23=C23[j][i][k];
-					c33=C33[j][i][k];
-
-					vxyyx=vxy+vyx;
-					vyzzy=vyz+vzy;
-					vxzzx=vxz+vzx;
-					/*vxxyyzz=vxx+vyy+vzz;
-					vyyzz=vyy+vzz;
-					vxxzz=vxx+vzz;
-					vxxyy=vxx+vyy;*/
-
-					sxy[j][i][k]+=(c66ipjp*vxyyx);
-					syz[j][i][k]+=(c44jpkp*vyzzy);
-					sxz[j][i][k]+=(c55ipkp*vxzzx);
-					sxx[j][i][k]+=DT*((c11*vxx)+(c12*vyy)+(c13*vzz));
-                    syy[j][i][k]+=DT*((c12*vxx)+(c22*vyy)+(c23*vzz));
-                    szz[j][i][k]+=DT*((c13*vxx)+(c23*vyy)+(c33*vzz));
-
+					update_s_ijk_2nd_order(op, &e, i, j, k, s);
 				}
 			}
 		}
@@ -270,42 +249,17 @@ double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz
 						psi_vyz[j][i][h1] = b_z_half[h1] * psi_vyz[j][i][h1] + a_z_half[h1] * vyz;
 						vyz = vyz / K_z_half[h1] + psi_vyz[j][i][h1];
 						psi_vzz[j][i][h1] = b_z[h1] * psi_vzz[j][i][h1] + a_z[h1] * vzz;
-						vzz = vzz / K_z[h1] + psi_vzz[j][i][h1];}
+						vzz = vzz / K_z[h1] + psi_vzz[j][i][h1];
+					}
 
+					e.xx = vxx;
+					e.yy = vyy;
+					e.zz = vzz;
+					e.xy = vxy + vyx;
+					e.yz = vyz + vzy;
+					e.xz = vxz + vzx;
 
-
-
-					c66ipjp=C66ipjp[j][i][k]*DT;
-					c44jpkp=C44jpkp[j][i][k]*DT;
-					c55ipkp=C55ipkp[j][i][k]*DT;
-					//g=pi[j][i][k];
-					//f=2.0*u[j][i][k];
-
-
-					c11=C11[j][i][k];
-					c12=C12[j][i][k];
-					c13=C13[j][i][k];
-					c22=C22[j][i][k];
-					c23=C23[j][i][k];
-					c33=C33[j][i][k];
-
-
-					vxyyx=vxy+vyx;
-					vyzzy=vyz+vzy;
-					vxzzx=vxz+vzx;
-					/*vxxyyzz=vxx+vyy+vzz;
-					vyyzz=vyy+vzz;
-					vxxzz=vxx+vzz;
-					vxxyy=vxx+vyy;*/
-
-					sxy[j][i][k]+=(c66ipjp*vxyyx);
-					syz[j][i][k]+=(c44jpkp*vyzzy);
-					sxz[j][i][k]+=(c55ipkp*vxzzx);
-					sxx[j][i][k]+=DT*((c11*vxx)+(c12*vyy)+(c13*vzz));
-                    syy[j][i][k]+=DT*((c12*vxx)+(c22*vyy)+(c23*vzz));
-                    szz[j][i][k]+=DT*((c13*vxx)+(c23*vyy)+(c33*vzz));
-
-
+					update_s_ijk_2nd_order(op, &e, i, j, k, s);
 				}
 			}
 		}
@@ -363,38 +317,14 @@ double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz
 						psi_vzz[j][i][h1] = b_z[h1] * psi_vzz[j][i][h1] + a_z[h1] * vzz;
 						vzz = vzz / K_z[h1] + psi_vzz[j][i][h1];}
 
+					e.xx = vxx;
+					e.yy = vyy;
+					e.zz = vzz;
+					e.xy = vxy + vyx;
+					e.yz = vyz + vzy;
+					e.xz = vxz + vzx;
 
-					c66ipjp=C66ipjp[j][i][k]*DT;
-					c44jpkp=C44jpkp[j][i][k]*DT;
-					c55ipkp=C55ipkp[j][i][k]*DT;
-					//g=pi[j][i][k];
-					//f=2.0*u[j][i][k];
-
-					c11=C11[j][i][k];
-					c12=C12[j][i][k];
-					c13=C13[j][i][k];
-					c22=C22[j][i][k];
-					c23=C23[j][i][k];
-					c33=C33[j][i][k];
-
-
-					vxyyx=vxy+vyx;
-					vyzzy=vyz+vzy;
-					vxzzx=vxz+vzx;
-					/*vxxyyzz=vxx+vyy+vzz;
-					vyyzz=vyy+vzz;
-					vxxzz=vxx+vzz;
-					vxxyy=vxx+vyy;*/
-
-					sxy[j][i][k]+=(c66ipjp*vxyyx);
-					syz[j][i][k]+=(c44jpkp*vyzzy);
-					sxz[j][i][k]+=(c55ipkp*vxzzx);
-					sxx[j][i][k]+=DT*((c11*vxx)+(c12*vyy)+(c13*vzz));
-                    syy[j][i][k]+=DT*((c12*vxx)+(c22*vyy)+(c23*vzz));
-                    szz[j][i][k]+=DT*((c13*vxx)+(c23*vyy)+(c33*vzz));
-
-
-				}
+					update_s_ijk_2nd_order(op, &e, i, j, k, s);				}
 			}
 		}
 	}
@@ -454,38 +384,14 @@ double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz
 						psi_vzz[j][i][h1] = b_z[h1] * psi_vzz[j][i][h1] + a_z[h1] * vzz;
 						vzz = vzz / K_z[h1] + psi_vzz[j][i][h1];}
 
+					e.xx = vxx;
+					e.yy = vyy;
+					e.zz = vzz;
+					e.xy = vxy + vyx;
+					e.yz = vyz + vzy;
+					e.xz = vxz + vzx;
 
-					c66ipjp=C66ipjp[j][i][k]*DT;
-					c44jpkp=C44jpkp[j][i][k]*DT;
-					c55ipkp=C55ipkp[j][i][k]*DT;
-					//g=pi[j][i][k];
-					//f=2.0*u[j][i][k];
-
-					c11=C11[j][i][k];
-					c12=C12[j][i][k];
-					c13=C13[j][i][k];
-					c22=C22[j][i][k];
-					c23=C23[j][i][k];
-					c33=C33[j][i][k];
-
-					vxyyx=vxy+vyx;
-					vyzzy=vyz+vzy;
-					vxzzx=vxz+vzx;
-					/*vxxyyzz=vxx+vyy+vzz;
-					vyyzz=vyy+vzz;
-					vxxzz=vxx+vzz;
-					vxxyy=vxx+vyy;*/
-
-					sxy[j][i][k]+=(c66ipjp*vxyyx);
-					syz[j][i][k]+=(c44jpkp*vyzzy);
-					sxz[j][i][k]+=(c55ipkp*vxzzx);
-
-					sxx[j][i][k]+=DT*((c11*vxx)+(c12*vyy)+(c13*vzz));
-                    syy[j][i][k]+=DT*((c12*vxx)+(c22*vyy)+(c23*vzz));
-                    szz[j][i][k]+=DT*((c13*vxx)+(c23*vyy)+(c33*vzz));
-
-
-				}
+					update_s_ijk_2nd_order(op, &e, i, j, k, s);				}
 			}
 		}
 	}
@@ -523,87 +429,14 @@ double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz
 					psi_vzz[j][i][k] = b_z[k] * psi_vzz[j][i][k] + a_z[k] * vzz;
 					vzz = vzz / K_z[k] + psi_vzz[j][i][k];
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////// REDUNDANCY STARTS HERE ////////////////////////////////////////////////
+					e.xx = vxx;
+					e.yy = vyy;
+					e.zz = vzz;
+					e.xy = vxy + vyx;
+					e.yz = vyz + vzy;
+					e.xz = vxz + vzx;
 
-
-					c66ipjp=C66ipjp[j][i][k]*DT;
-					c44jpkp=C44jpkp[j][i][k]*DT;
-					c55ipkp=C55ipkp[j][i][k]*DT;
-					//g=pi[j][i][k];
-					//f=2.0*u[j][i][k];
-
-                    /* can be used for debugging
-					c11=pi[j][i][k];
-					c12=u[j][i][k];
-					c13=u[j][i][k];
-					c22=pi[j][i][k];
-					c23=u[j][i][k];
-					c33=pi[j][i][k];
-					*/
-
-
-					c11=C11[j][i][k];
-					c12=C12[j][i][k];
-					c13=C13[j][i][k];
-					c22=C22[j][i][k];
-					c23=C23[j][i][k];
-					c33=C33[j][i][k];
-
-
-					vxyyx=vxy+vyx;
-					vyzzy=vyz+vzy;
-					vxzzx=vxz+vzx;
-					/*vxxyyzz=vxx+vyy+vzz;
-					vyyzz=vyy+vzz;
-					vxxzz=vxx+vzz;
-					vxxyy=vxx+vyy;*/
-//////////////////////////////////////////////////////////////////////////////////////////////
-// updating stress
-/*
-c66ipjp - replace
-C66ipjp - replace from uipjp - 3D array of shifted parameters
-g = pi[i][j][k]= lambda + 2mu
-f = 2*u[i][j][k] =2* mu
-
-C66ipjp[i][j][k] = mu shifted-smeared to the point i+1/2, j+1/2, k analogous notation is also included
-
-in every for loop (POS case) we seem to have this part of the code s**=f(c**,v**),
-maybe we should declare this as a function,
-maybe right here, maybe even inside this file...
-
-*/
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-// here we make Cij's from lambda and mu
-
-
-					//sxy[j][i][k]+=(fipjp*vxyyx);
-					sxy[j][i][k]+=(c66ipjp*vxyyx);
-					//syz[j][i][k]+=(c44jpkp*vyzzy);
-					syz[j][i][k]+=(c44jpkp*vyzzy);
-					//sxz[j][i][k]+=(c55ipkp*vxzzx);
-					sxz[j][i][k]+=(c55ipkp*vxzzx);
-
-					//ORIGINALS
-					//sxx[j][i][k]+=DT*((g*vxxyyzz)-(f*vyyzz));
-					//syy[j][i][k]+=DT*((g*vxxyyzz)-(f*vxxzz));
-					//szz[j][i][k]+=DT*((g*vxxyyzz)-(f*vxxyy));
-
-                    //JW modified
-					//sxx[j][i][k]+=DT*((g*vxx+(g-2*f)*vyy+(g-f)*vzz));
-                    //syy[j][i][k]+=DT*(((g-f)*vxx+g*vyy+(g-f)*vzz));
-                    //szz[j][i][k]+=DT*(((g-f)*vxx+(g-f)*vyy+g*vzz));
-
-                    //VK - ortho modification - ask JW to check
-                    sxx[j][i][k]+=DT*((c11*vxx)+(c12*vyy)+(c13*vzz));
-                    syy[j][i][k]+=DT*((c12*vxx)+(c22*vyy)+(c23*vzz));
-                    szz[j][i][k]+=DT*((c13*vxx)+(c23*vyy)+(c33*vzz));
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////REDUNDANCY ENDS HERE
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-				}
+					update_s_ijk_2nd_order(op, &e, i, j, k, s);				}
 			}
 		}
 	}
@@ -643,38 +476,14 @@ maybe right here, maybe even inside this file...
 					psi_vzz[j][i][h1] = b_z[h1] * psi_vzz[j][i][h1] + a_z[h1] * vzz;
 					vzz = vzz / K_z[h1] + psi_vzz[j][i][h1];
 
+					e.xx = vxx;
+					e.yy = vyy;
+					e.zz = vzz;
+					e.xy = vxy + vyx;
+					e.yz = vyz + vzy;
+					e.xz = vxz + vzx;
 
-
-
-
-					c66ipjp=C66ipjp[j][i][k]*DT;
-					c44jpkp=C44jpkp[j][i][k]*DT;
-					c55ipkp=C55ipkp[j][i][k]*DT;
-					//g=pi[j][i][k];
-					//f=2.0*u[j][i][k];
-
-					c11=C11[j][i][k];
-					c12=C12[j][i][k];
-					c13=C13[j][i][k];
-					c22=C22[j][i][k];
-					c23=C23[j][i][k];
-					c33=C33[j][i][k];
-
-					vxyyx=vxy+vyx;
-					vyzzy=vyz+vzy;
-					vxzzx=vxz+vzx;
-					/*vxxyyzz=vxx+vyy+vzz;
-					vyyzz=vyy+vzz;
-					vxxzz=vxx+vzz;
-					vxxyy=vxx+vyy;*/
-
-					sxy[j][i][k]+=(c66ipjp*vxyyx);
-					syz[j][i][k]+=(c44jpkp*vyzzy);
-					sxz[j][i][k]+=(c55ipkp*vxzzx);
-					sxx[j][i][k]+=DT*((c11*vxx)+(c12*vyy)+(c13*vzz));
-                    syy[j][i][k]+=DT*((c12*vxx)+(c22*vyy)+(c23*vzz));
-                    szz[j][i][k]+=DT*((c13*vxx)+(c23*vyy)+(c33*vzz));
-
+					update_s_ijk_2nd_order(op, &e, i, j, k, s);
 				}
 			}
 		}
@@ -688,5 +497,4 @@ maybe right here, maybe even inside this file...
 			fprintf(FP," Real time for CPML stress tensor update: \t %4.2f s.\n",time);
 		}
 	return time;
-
 }

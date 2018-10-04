@@ -317,9 +317,9 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, in
                         VelocityDerivativesTensor *dv_4,
 						OrthoPar *op);
 
-void vel_deriv_space(Velocity *v, int i, int j, int k, Strain_ijk *e);
+void compute_vel_deriv_2nd_order(Velocity *v, int i, int j, int k, Strain_ijk *e);
 
-void update_s_ijk(OrthoPar *op, Strain_ijk *e, int i, int j, int k, Tensor3d *s);
+void update_s_ijk_2nd_order(OrthoPar *op, Strain_ijk *e, int i, int j, int k, Tensor3d *s);
 
 /*double update_s_PML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
  float *** vx, float *** vy, float *** vz, float *** sxx, float *** syy, float *** szz, float *** sxy,
@@ -341,7 +341,7 @@ double update_s_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int n
 		float *** psi_vxx, float *** psi_vyx, float *** psi_vzx, float *** psi_vxy, float *** psi_vyy, float *** psi_vzy, float *** psi_vxz, float *** psi_vyz, float *** psi_vzz);
 
 double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt, Velocity *v,
-		Tensor3d *s, float ***  pi, float ***  u,
+		Tensor3d *s, OrthoPar *op, float ***  pi, float ***  u,
 		float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
 		float ***  C66ipjp, float ***  C44jpkp, float ***  C55ipkp,
 		float * K_x, float * a_x, float * b_x, float * K_x_half, float * a_x_half, float * b_x_half,

@@ -1041,7 +1041,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                             &dv, &dv_2, &dv_3, &dv_4, &op);
                     if (ABS_TYPE == 1)
                         update_s_CPML_elastic(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v,
-                                &s, pi, u,
+                                &s, &op, pi, u,
                                 C11, C12, C13, C22, C23, C33,
                                 C66ipjp, C44jpkp, C55ipkp, K_x, a_x, b_x, K_x_half, a_x_half,
                                 b_x_half, K_y, a_y, b_y, K_y_half, a_y_half, b_y_half, K_z, a_z, b_z, K_z_half, a_z_half, b_z_half,
