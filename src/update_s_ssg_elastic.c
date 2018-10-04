@@ -206,43 +206,10 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
                         sxy[j][i][k]+=(c66ipjp*vxyyx_T2);
                         syz[j][i][k]+=(c44jpkp*vyzzy_T2);
                         sxz[j][i][k]+=(c55ipkp*vxzzx_T2);
-                        //sxx[j][i][k]+=garb1; //DT*((g*vxxyyzz_T2)-(f*vyyzz_T2));
-                        //syy[j][i][k]+=garb2; //DT*((g*vxxyyzz_T2)-(f*vxxzz_T2));
-                        //szz[j][i][k]+=garb3; //DT*((g*vxxyyzz_T2)-(f*vxxyy_T2));
-//((i\10)==0) && ((j\10)==0) && ((k\10)==0)
+                        
                         sxx[j][i][k]+=DT*((c11*vxx)+(c12*vyy)+(c13*vzz));
                         syy[j][i][k]+=DT*((c12*vxx)+(c22*vyy)+(c23*vzz));
                         szz[j][i][k]+=DT*((c13*vxx)+(c23*vyy)+(c33*vzz));
-/*
-                        tsxx = DT*((g*vxxyyzz_T2)-(f*vyyzz_T2));
-                        tsyy = DT*((g*vxxyyzz_T2)-(f*vxxzz_T2));
-                        tszz = DT*((g*vxxyyzz_T2)-(f*vxxyy_T2));
-*/
-                        //k1 = (tsxx-garb1)/(sqrt(tsxx*tsxx+garb1*garb1));
-                        //k2 = (tsyy-garb2)/(sqrt(tsyy*tsyy+garb2*garb2));
-                        //k3 = (tszz-garb3)/(sqrt(tszz*tszz+garb3*garb3));
-/*
-                        if(abs(k1)>0.01 || abs(k2)>0.01 || abs(k3)>0.01)
-                        {
-                            fprintf(FP,"=====================IAMHERE====================================\n");
-                            fprintf(FP,"i = %d \t j = %d \t k = %d\n",i,j,k);
-                            fprintf(FP,"k1 = %f\t k2 = %f\t k3 = %f\n",k1,k2,k3);
-                            fprintf(FP,"tsxx = %e garb1 = %e\n",tsxx,garb1);
-                            fprintf(FP,"tsyy = %e garb2 = %e\n",tsyy,garb2);
-                            fprintf(FP,"tszz = %e garb3 = %e\n",tszz,garb3);
-                            fprintf(FP,"c11 = %e \t c12  = %e \t c13 = %e \t c22 = %e \t c23 = %e \t c33 = %e\n",c11,c12,c13,c22,c23,c33);
-                            fprintf(FP,"g = %e \t f = %e\n",g,f);
-                            //c11 = 2.450000e+10, c12  = 8.500001e+09, c13 = 8.500001e+09, c22 = 2.450000e+10, c23 = 8.500001e+09, c33 = 2.450000e+10
-                        }
-*/
-                        /*
-                                                        sxx[j][i][k]+=DT*((c11*vxx)+(c12*vyy)+(c13*vzz));
-                                                        syy[j][i][k]+=DT*((c12*vxx)+(c22*vyy)+(c23*vzz));
-                                                        szz[j][i][k]+=DT*((c13*vxx)+(c23*vyy)+(c33*vzz));
-                        */
-
-
-
                     }
                 }
             }
