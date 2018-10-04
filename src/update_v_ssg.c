@@ -93,8 +93,8 @@ double update_v(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
     float *svx_j_i_3,*svy_j_i_3,*svz_j_i_3;
     float *svx_j_i_4,*svy_j_i_4,*svz_j_i_4;
 
-
-	if (LOG)
+    if (LOG)
+        time1=MPI_Wtime();
 		if ((MYID==0) && ((nt+(OUTNTIMESTEPINFO-1))%OUTNTIMESTEPINFO)==0) time1=MPI_Wtime();
 
     switch (FDORDER_TIME) {
@@ -1579,12 +1579,10 @@ double update_v(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
         }
     }
     
-    
-    
     if (LOG)
+        time2=MPI_Wtime();
+        time=time2-time1;
         if ((MYID==0) && ((nt+(OUTNTIMESTEPINFO-1))%OUTNTIMESTEPINFO)==0) {
-            time2=MPI_Wtime();
-            time=time2-time1;
             fprintf(FP," Real time for particle velocity update: \t %4.2f s.\n",time);
         }
     return time;
