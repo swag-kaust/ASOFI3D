@@ -285,7 +285,6 @@ void surface_acoustic(int ndepth,  float *** pi, float *** sxx, Velocity *v);
 void timing(double * time_v_update,  double * time_s_update, double * time_s_exchange, double * time_v_exchange,
 		double * time_timestep, int ishot);
 
-
 double update_s(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
                 Velocity *v,
                 Tensor3d *s,
@@ -315,7 +314,12 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, in
                         VelocityDerivativesTensor *dv,
                         VelocityDerivativesTensor *dv_2,
                         VelocityDerivativesTensor *dv_3,
-                        VelocityDerivativesTensor *dv_4);
+                        VelocityDerivativesTensor *dv_4,
+						OrthoPar *op);
+
+void vel_deriv_space(Velocity *v, int i, int j, int k, Strain_ijk *e);
+
+void update_s_ijk(OrthoPar *op, Strain_ijk *e, int i, int j, int k, Tensor3d *s);
 
 /*double update_s_PML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
  float *** vx, float *** vy, float *** vz, float *** sxx, float *** syy, float *** szz, float *** sxy,

@@ -20,10 +20,12 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
                         VelocityDerivativesTensor *dv,
                         VelocityDerivativesTensor *dv_2,
                         VelocityDerivativesTensor *dv_3,
-                        VelocityDerivativesTensor *dv_4)
+                        VelocityDerivativesTensor *dv_4,
+                        OrthoPar *op)
 {
 
 
+    extern int NX, NY, NZ;
     extern float DT, DX, DY, DZ;
     extern int MYID, FDORDER, FDORDER_TIME, LOG, FDCOEFF;
     extern FILE *FP;
@@ -90,7 +92,9 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
     float *vxyyx_j_i_2,*vyzzy_j_i_2,*vxzzx_j_i_2,*vxxyyzz_j_i_2,*vyyzz_j_i_2,*vxxzz_j_i_2,*vxxyy_j_i_2;
     float *vxyyx_j_i_3,*vyzzy_j_i_3,*vxzzx_j_i_3,*vxxyyzz_j_i_3,*vyyzz_j_i_3,*vxxzz_j_i_3,*vxxyy_j_i_3;
     float *vxyyx_j_i_4,*vyzzy_j_i_4,*vxzzx_j_i_4,*vxxyyzz_j_i_4,*vyyzz_j_i_4,*vxxzz_j_i_4,*vxxyy_j_i_4;
-
+    
+    // `e` is a strain tensor at point (i, j, k).
+    Strain_ijk e;
 
 
     if (LOG)
@@ -129,50 +133,8 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
                     for (k=nz1; k<=nz2; k++)
                     {
 
-                        /* spatial derivatives of the components of the velocities
-                         are computed */
-
-                        vxx = (vx[j][i][k]-vx[j][i-1][k])/DX;
-                        vxy = (vx[j+1][i][k]-vx[j][i][k])/DY;
-                        vxz = (vx[j][i][k+1]-vx[j][i][k])/DZ;
-                        vyx = (vy[j][i+1][k]-vy[j][i][k])/DX;
-                        vyy = (vy[j][i][k]-vy[j-1][i][k])/DY;
-                        vyz = (vy[j][i][k+1]-vy[j][i][k])/DZ;
-                        vzx = (vz[j][i+1][k]-vz[j][i][k])/DX;
-                        vzy = (vz[j+1][i][k]-vz[j][i][k])/DY;
-                        vzz = (vz[j][i][k]-vz[j][i][k-1])/DZ;
-
-
-                        c66ipjp=C66ipjp[j][i][k]*DT;
-                        c44jpkp=C44jpkp[j][i][k]*DT;
-                        c55ipkp=C55ipkp[j][i][k]*DT;
-                        //g=pi[j][i][k];
-                        //f=2.0*u[j][i][k];
-
-                        c11=C11[j][i][k];
-                        c12=C12[j][i][k];
-                        c13=C13[j][i][k];
-                        c22=C22[j][i][k];
-                        c23=C23[j][i][k];
-                        c33=C33[j][i][k];
-
-                        vxyyx_T2=vxy+vyx;
-                        vyzzy_T2=vyz+vzy;
-                        vxzzx_T2=vxz+vzx;
-                        //vxxyyzz_T2=vxx+vyy+vzz;
-                        //vyyzz_T2=vyy+vzz;
-                        //vxxzz_T2=vxx+vzz;
-                        //vxxyy_T2=vxx+vyy;
-
-                        sxy[j][i][k]+=(c66ipjp*vxyyx_T2);
-                        syz[j][i][k]+=(c44jpkp*vyzzy_T2);
-                        sxz[j][i][k]+=(c55ipkp*vxzzx_T2);
-
-                        sxx[j][i][k]+=DT*((c11*vxx)+(c12*vyy)+(c13*vzz));
-                        syy[j][i][k]+=DT*((c12*vxx)+(c22*vyy)+(c23*vzz));
-                        szz[j][i][k]+=DT*((c13*vxx)+(c23*vyy)+(c33*vzz));
-
-
+                        vel_deriv_space(v, i, j, k, &e);
+                        update_s_ijk(op, &e, i, j, k, s);
                     }
                 }
             }
@@ -2527,4 +2489,38 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,  i
 
 }
 
+void vel_deriv_space(Velocity *v, int i, int j, int k, Strain_ijk *e)
+{
+    extern float DX, DY, DZ;
 
+    e->xx = (v->x[j][i][k] - v->x[j][i - 1][k]) / DX;
+    e->xy = (v->x[j + 1][i][k] - v->x[j][i][k]) / DY + (v->y[j][i + 1][k] - v->y[j][i][k]) / DX;
+    e->xz = (v->x[j][i][k + 1] - v->x[j][i][k]) / DZ + (v->z[j][i + 1][k] - v->z[j][i][k]) / DX;
+    e->yy = (v->y[j][i][k] - v->y[j - 1][i][k]) / DY;
+    e->yz = (v->y[j][i][k + 1] - v->y[j][i][k]) / DZ + (v->z[j + 1][i][k] - v->z[j][i][k]) / DY;
+    e->zz = (v->z[j][i][k] - v->z[j][i][k - 1]) / DZ;
+}
+
+void update_s_ijk(OrthoPar *op, Strain_ijk *e, int i, int j, int k, Tensor3d *s)
+{
+    float c66ipjp = op->C66ipjp[j][i][k];
+    float c44jpkp = op->C44jpkp[j][i][k];
+    float c55ipkp = op->C55ipkp[j][i][k];
+    //g=pi[j][i][k];
+    //f=2.0*u[j][i][k];
+
+    float c11 = op->C11[j][i][k];
+    float c12 = op->C12[j][i][k];
+    float c13 = op->C13[j][i][k];
+    float c22 = op->C22[j][i][k];
+    float c23 = op->C23[j][i][k];
+    float c33 = op->C33[j][i][k];
+
+    s->xy[j][i][k] += (c66ipjp * e->xy);
+    s->yz[j][i][k] += (c44jpkp * e->yz);
+    s->xz[j][i][k] += (c55ipkp * e->xz);
+
+    s->xx[j][i][k] += ((c11 * e->xx) + (c12 * e->yy) + (c13 * e->zz));
+    s->yy[j][i][k] += ((c12 * e->xx) + (c22 * e->yy) + (c23 * e->zz));
+    s->zz[j][i][k] += ((c13 * e->xx) + (c23 * e->yy) + (c33 * e->zz));
+}

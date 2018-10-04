@@ -83,6 +83,8 @@ int main(int argc, char **argv)
     // Staggered parameters.
     float ***C66ipjp, ***C44jpkp, ***C55ipkp, ***tausipjp = NULL, ***tausjpkp = NULL, ***tausipkp = NULL, ***rjp, ***rkp, ***rip;
 
+    OrthoPar op;
+
     // Global sources positions, local sources positions.
     float **srcpos = NULL, **srcpos_loc = NULL, **srcpos1 = NULL;
     // Amplitudes of the signals.
@@ -788,9 +790,19 @@ int main(int argc, char **argv)
         // {
         //if (RSF) madinput(RSFDEN,rho);
 
-
-
-
+        op.C11 = C11;
+        op.C22 = C22;
+        op.C33 = C33;
+        op.C12 = C12;
+        op.C13 = C13;
+        op.C23 = C23;
+        op.C44 = C44;
+        op.C55 = C55;
+        op.C66 = C66;
+        op.rho = rho;
+        op.C66ipjp = C66ipjp;
+        op.C44jpkp = C44jpkp;
+        op.C55ipkp = C55ipkp;
 
         for (ishot = 1; ishot <= nshots; ishot++)
         {
@@ -1026,7 +1038,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                     time_s_update[nt] = update_s_elastic(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v,
                             &s, &r,
                             pi, u, C11, C12, C13, C22, C23, C33, C66ipjp, C44jpkp, C55ipkp, taus, tausipjp, tausjpkp, tausipkp, taup, eta,
-                            &dv, &dv_2, &dv_3, &dv_4);
+                            &dv, &dv_2, &dv_3, &dv_4, &op);
                     if (ABS_TYPE == 1)
                         update_s_CPML_elastic(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v,
                                 &s, pi, u,

@@ -35,6 +35,17 @@ typedef struct {
     float ***xxyy;
 } VelocityDerivativesTensor;
 
+/* Velocity derivatives.
+ */
+typedef struct {
+    float xx;
+    float xy;
+    float xz;
+    float yy;
+    float yz;
+    float zz;
+} Strain_ijk;
+
 /* Derivatives of the stress with respect to the velocity components.
  * For example, x-component of this structure is the derivative
  * with respect to the x-component of the velocity.
@@ -44,6 +55,27 @@ typedef struct {
     float ***y;
     float ***z;
 } StressDerivativesWrtVelocity;
+
+/* Anisotropic material parameters.
+ * Elastic constants and density.
+ * Cij are anisotropic elastic coefficients in Voigt notation.
+ */
+typedef struct {
+    float ***C11;
+    float ***C22;
+    float ***C33;
+    float ***C44;
+    float ***C55;
+    float ***C66;
+    float ***C12;
+    float ***C13;
+    float ***C23;
+    float ***rho;
+    // Next three fields are parameters on the half-integer grid (p stands for + 1/2).
+    float ***C66ipjp;
+    float ***C44jpkp;
+    float ***C55ipkp;
+} OrthoPar;
 
 /* ****************************************************************************
    Allocation and deallocation operations.
