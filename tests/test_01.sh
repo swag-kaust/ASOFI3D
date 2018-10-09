@@ -6,6 +6,7 @@
 
 MODEL="src/hh_elastic.c"
 TEST_PATH="tests/fixtures/test_01"
+TEST_ID="TEST_01"
 
 # Setup function prepares environment for the test (creates directories).
 setup
@@ -29,14 +30,14 @@ fi
 cd ..
 
 # Run code.
-echo "TEST_01: Running solver. Output is captured to tmp/ASOFI3D.log"
+echo "${TEST_ID}: Running solver. Output is captured to tmp/ASOFI3D.log"
 ./run_ASOFI3D.sh 16 tmp/ > tmp/ASOFI3D.log &
 task_id=$!
 animate_progress $task_id "TEST_01: Running solver"
 
 code=$?
 if [ "$code" -ne "0" ]; then
-    echo TEST_01: FAIL Running ASOFI3D failed > /dev/stderr
+    echo ${TEST_ID}: FAIL Running ASOFI3D failed > /dev/stderr
     exit 1
 fi
 
@@ -60,5 +61,4 @@ fi
 
 # Teardown
 cp ${MODEL}.bak ${MODEL}
-
-echo "TEST_01: PASS"
+echo "${TEST_ID}: PASS"
