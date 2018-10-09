@@ -27,11 +27,11 @@ MODEL_SRC_BENCH = benchmod.c
 CC=cc
 
 # On Linux Cluster using OpenMPI
-#CC=mpicc
+CC=mpicc
 #-ta=tesla:managed -acc -Minfo=accel
 #CC = mpicc -ta=multicore -acc -Minfo=accel
-#LDLIBS = -lm
-#CFLAGS = -Wall -O3
+LDLIBS = -lm
+CFLAGS = -Wall -O3
 
 # On InstitutsCluster2 using intelMPI AND ITAC (no optimization)
 #CC = mpicc
