@@ -48,7 +48,7 @@ float **wavelet(float **srcpos_loc, int nsrc)
             {
                 case 1: /* Ricker derivative (like SOFI)*/
                     tau = PI * (t - 1.5 * ts - tshift) / (ts);
-                    amp = (((1.0 - 2.0 * tau * tau) * exp(-tau * tau)));
+                    amp = -(((1.0 - 2.0 * tau * tau) * exp(-tau * tau)));
                     /**/
                     break;
                 case 2: /* fumue */
