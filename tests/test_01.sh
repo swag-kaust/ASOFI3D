@@ -59,7 +59,8 @@ sfsegyread tape=${TEST_PATH}/su/test_vx.sgy \
 
 # Read the files.
 # Compare with the old output.
-tests/compare_datasets.py tmp/su/test_vx.rsf ${TEST_PATH}/su/test_vx.rsf
+tests/compare_datasets.py tmp/su/test_vx.rsf ${TEST_PATH}/su/test_vx.rsf \
+                          --rtol=1e-12 --atol=1e-14
 result=$?
 if [ "$result" -ne "0" ]; then
     echo "TEST_01: FAIL Velocity x-component seismograms differ" > /dev/stderr
