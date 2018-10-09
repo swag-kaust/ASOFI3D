@@ -31,7 +31,7 @@ cd src
 make sofi3D > /dev/null
 if [ "$?" -ne "0" ]; then
     cd ..
-    echo TEST_01: FAIL > /dev/stderr
+    echo ${TEST_ID}: FAIL > /dev/stderr
     exit 1
 fi
 cd ..
@@ -40,7 +40,7 @@ cd ..
 echo "${TEST_ID}: Running solver. Output is captured to tmp/ASOFI3D.log"
 ./run_ASOFI3D.sh 16 tmp/ > tmp/ASOFI3D.log &
 task_id=$!
-animate_progress $task_id "TEST_01: Running solver"
+animate_progress $task_id "${TEST_ID}: Running solver"
 
 code=$?
 if [ "$code" -ne "0" ]; then
@@ -63,7 +63,7 @@ tests/compare_datasets.py tmp/su/test_vx.rsf ${TEST_PATH}/su/test_vx.rsf \
                           --rtol=1e-12 --atol=1e-14
 result=$?
 if [ "$result" -ne "0" ]; then
-    echo "TEST_01: FAIL Velocity x-component seismograms differ" > /dev/stderr
+    echo "${TEST_ID}: FAIL Velocity x-component seismograms differ" > /dev/stderr
     exit 1
 fi
 
