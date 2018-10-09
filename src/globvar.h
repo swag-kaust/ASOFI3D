@@ -35,7 +35,10 @@ char  MFILE[STRING_SIZE]="", REC_FILE[STRING_SIZE]="", LOG_FILE[STRING_SIZE]="",
 char  SEIS_FILE[STRING_SIZE]="";
 char  FILEINP[STRING_SIZE]; /* input file name (appears in SEG-Y header) */
 FILE  *FP=NULL;
-int   LITTLEBIG=0, ASCIIEBCDIC=0, IEEEIBM=0; /* computer charcteristics */
+
+// Default for personal computers: Little Endian, ASCII, IEEE, which are
+// encoded with "zero" values in the next line.
+int   LITTLEBIG=0, ASCIIEBCDIC=0, IEEEIBM=0;
 int   SOFI3DVERS; /* version of SOFI3D 33: current 3D isotropic elastic (SSG), version of SOFI3D 32: current 3D isotropic acoustic (SSG) */
 
 /* Mpi-variables */
