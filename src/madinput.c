@@ -30,7 +30,7 @@ void madinput(char header[], float *** DEN ){
 
     // -------------  header file Reading ---------------------
     extern float DX, DY, DZ;//, OX, OY, OZ;
-    extern int NX, L, NY, NZ, NXG, NYG, NZG, POS[4], MYID;
+    extern int NX, NY, NZ, NXG, NYG, NZG, POS[4], MYID;
     extern FILE *FP;
     fprintf(FP,"\n\n\n--------------------------------------------------------- \n");
     fprintf(FP," \n \n *********** Madagascar Input Start *************** \n \n");
@@ -40,9 +40,6 @@ void madinput(char header[], float *** DEN ){
     // local variables
     int i, ii, j, jj, k, kk;
 
-    int Nx, Nz, Ny;
-    float Dx, Dz, Dy;
-    float Ox, Oy,Oz;
     float tempRho=0.0;
 
     // -------------  header file Reading ---------------------
@@ -78,42 +75,42 @@ void madinput(char header[], float *** DEN ){
 	    }
 	    else if (strcmp(pch,"n1")==0)       {
 		pch = strtok (NULL, " = ");
-		Nz=atoi(pch);
+		NZ=atoi(pch);
 	    }
 	    else if (strcmp(pch,"n2")==0)       {
 		pch = strtok (NULL, " = ");
-		Nx=atoi(pch);
+		NX=atoi(pch);
 	    }
 	    else if (strcmp(pch,"n3")==0)       {
 		pch = strtok (NULL, " = ");
-		Ny=atoi(pch);
+		NY=atoi(pch);
 	    }
 	    else if (strcmp(pch,"d1")==0)       {
 		pch = strtok (NULL, " = ");
-		Dz=atof(pch);
+		DZ=atof(pch);
 	    }
 
 	    else if (strcmp(pch,"d2")==0)       {
 		pch = strtok (NULL, " = ");
-		Dx=atof(pch);
+		DX=atof(pch);
 	    }
 
 	    else if (strcmp(pch,"d3")==0)       {
 		pch = strtok (NULL, " = ");
-		Dy=atof(pch);
+		DY=atof(pch);
 	    }
 	    else if (strcmp(pch,"o1")==0)       {
 		pch = strtok (NULL, " = ");
-		Oz=atof(pch);
+		// Oz=atof(pch);
 	    }
 	    else if (strcmp(pch,"o2")==0)       {
 		pch = strtok (NULL, " = ");
-		Ox=atof(pch);
+		// Ox=atof(pch);
 	    }
 
 	    else if (strcmp(pch,"o3")==0)       {
 		pch = strtok (NULL, " = ");
-		Oy=atof(pch);
+		// Oy=atof(pch);
 	    }
 
 	}

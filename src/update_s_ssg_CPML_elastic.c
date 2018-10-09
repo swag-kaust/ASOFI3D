@@ -24,16 +24,9 @@ double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz
 	float ***vy = v->y;
 	float ***vz = v->z;
 
-	float ***sxx = s->xx;
-	float ***syy = s->yy;
-	float ***szz = s->zz;
-	float ***sxy = s->xy;
-	float ***syz = s->yz;
-	float ***sxz = s->xz;
-
 	Strain_ijk e;
 
-	extern float DT, DX, DY, DZ;
+	extern float DX, DY, DZ;
 	extern int MYID, LOG, FDCOEFF, FDORDER;
 	extern FILE *FP;
 	extern int FREE_SURF;
@@ -44,8 +37,6 @@ double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz
 	int i, j, k, h1;
 	double time=0.0, time1=0.0, time2=0.0;
 	float vxx=0.0,vxy=0.0,vxz=0.0,vyx=0.0,vyy=0.0,vyz=0.0,vzx=0.0,vzy=0.0,vzz=0.0;
-	float vxyyx,vyzzy,vxzzx; //vxxyyzz,vyyzz,vxxzz,vxxyy;
-	float c11,c12,c13,c22,c23,c33,c66ipjp,c44jpkp,c55ipkp;
 	float b1=1.0, b2=0.0;
 
 

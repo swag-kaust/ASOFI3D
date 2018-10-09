@@ -6,12 +6,20 @@
 
 MODEL="src/hh_elastic.c"
 TEST_PATH="tests/fixtures/test_01"
+TEST_ID="TEST_01"
 
 # Setup function prepares environment for the test (creates directories).
 setup
 
 # Preserve old model.
-mv $MODEL ${MODEL}.bak
+mv $MODEL ${MODEL}.bak.${TEST_ID}
+
+on_exit() {
+    mv ${MODEL}.bak.${TEST_ID} $MODEL
+}
+
+# Execute function 'on_exit' when this script exits to avoid resource leak.
+trap on_exit EXIT
 
 # Copy test model.
 cp "${TEST_PATH}/src/hh_elastic.c"       src/
@@ -23,20 +31,20 @@ cd src
 make sofi3D > /dev/null
 if [ "$?" -ne "0" ]; then
     cd ..
-    echo TEST_01: FAIL > /dev/stderr
+    echo ${TEST_ID}: FAIL > /dev/stderr
     exit 1
 fi
 cd ..
 
 # Run code.
-echo "TEST_01: Running solver. Output is captured to tmp/ASOFI3D.log"
+echo "${TEST_ID}: Running solver. Output is captured to tmp/ASOFI3D.log"
 ./run_ASOFI3D.sh 16 tmp/ > tmp/ASOFI3D.log &
 task_id=$!
-animate_progress $task_id "TEST_01: Running solver"
+animate_progress $task_id "${TEST_ID}: Running solver"
 
 code=$?
 if [ "$code" -ne "0" ]; then
-    echo TEST_01: FAIL Running ASOFI3D failed > /dev/stderr
+    echo ${TEST_ID}: FAIL Running ASOFI3D failed > /dev/stderr
     exit 1
 fi
 
@@ -51,14 +59,12 @@ sfsegyread tape=${TEST_PATH}/su/test_vx.sgy \
 
 # Read the files.
 # Compare with the old output.
-tests/compare_datasets.py tmp/su/test_vx.rsf ${TEST_PATH}/su/test_vx.rsf
+tests/compare_datasets.py tmp/su/test_vx.rsf ${TEST_PATH}/su/test_vx.rsf \
+                          --rtol=1e-12 --atol=1e-14
 result=$?
 if [ "$result" -ne "0" ]; then
-    echo "TEST_01: FAIL Velocity x-component seismograms differ" > /dev/stderr
+    echo "${TEST_ID}: FAIL Velocity x-component seismograms differ" > /dev/stderr
     exit 1
 fi
 
-# Teardown
-cp ${MODEL}.bak ${MODEL}
-
-echo "TEST_01: PASS"
+echo "${TEST_ID}: PASS"

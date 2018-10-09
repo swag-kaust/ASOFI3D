@@ -68,7 +68,6 @@ int main(int argc, char **argv){
 	int * recswitch=NULL;
 
 	MPI_Request *req_send, *req_rec, *sreq_send, *sreq_rec;
-	MPI_Status  *send_statuses, *rec_statuses;
 
 	float memdyn, memmodel, memseismograms, membuffer, memtotal;
 	float fac1, fac2;
@@ -257,8 +256,6 @@ int main(int argc, char **argv){
 	req_rec=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
 	sreq_send=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
 	sreq_rec=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
-	send_statuses=(MPI_Status *)malloc(REQUEST_COUNT*sizeof(MPI_Status));
-	rec_statuses=(MPI_Status *)malloc(REQUEST_COUNT*sizeof(MPI_Status));
 
 
 	/* allocation for timing arrays used for performance analysis */

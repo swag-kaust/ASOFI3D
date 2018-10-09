@@ -1298,7 +1298,8 @@ int DDN_wsegybinh(FILE * outstream, int lbendian, int ieeeibm, int meterfeet, in
 	   n+=fwrite(&sintnull,1,2,outstream); /* binary gain recovered:  1=yes, 2=no */
 	   n+=fwrite(&sintnull,1,2,outstream); /* amplitude recovery method:  1=none */
 	if (meterfeet==1) h=2; /* feet */ 
-	else h=1; if (doswap) swap2(&h); /* meter (SOFI3D assumes that SI units are used) */
+	else h=1; /* meter (SOFI3D assumes that SI units are used) */
+        if (doswap) swap2(&h);
 	 n+=fwrite(&h,1,2,outstream);
 	   n+=fwrite(&sintnull,1,2,outstream); /* impulse signal polarity pressure */
 	   /* not defined: increase in pressure or downward movement gives positive number on tape */

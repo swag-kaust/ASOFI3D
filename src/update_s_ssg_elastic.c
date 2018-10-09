@@ -11,7 +11,6 @@
 
 double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt, Velocity *v, Tensor3d *s, Tensor3d *r, float ***pi, float ***u, float ***C11, float ***C12, float ***C13, float ***C22, float ***C23, float ***C33, float ***C66ipjp, float ***C44jpkp, float ***C55ipkp, float ***taus, float ***tausipjp, float ***tausjpkp, float ***tausipkp, float ***taup, float *eta, VelocityDerivativesTensor *dv, VelocityDerivativesTensor *dv_2, VelocityDerivativesTensor *dv_3, VelocityDerivativesTensor *dv_4, OrthoPar *op)
 {
-    extern int NX, NY, NZ;
     extern float DT, DX, DY, DZ;
     extern int MYID, FDORDER, FDORDER_TIME, LOG, FDCOEFF;
     extern FILE *FP;
@@ -64,10 +63,11 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, in
     double time = 0.0, time1 = 0.0, time2 = 0.0;
     float vxx, vxy, vxz, vyx, vyy, vyz, vzx, vzy, vzz;
     float g, f;
-    float c11, c12, c13, c22, c23, c33, c66ipjp, c44jpkp, c55ipkp;
+    float c66ipjp, c44jpkp, c55ipkp;
     float vdiag;
     float b1, b2, b3, b4, b5, b6;
-    float vxyyx_T2, vyzzy_T2, vxzzx_T2; //vxxyyzz_T2,vyyzz_T2,vxxzz_T2,vxxyy_T2; /* for FDORDER_TIME=2 */
+    // float vxyyx_T2, vyzzy_T2, vxzzx_T2;
+    // vxxyyzz_T2,vyyzz_T2,vxxzz_T2,vxxyy_T2; /* for FDORDER_TIME=2 */
     float c1, c2, c3, c4;               /* Coefficients for Adam Bashforth */
 
     float **vxyyx_j, **vyzzy_j, **vxzzx_j, **vxxyyzz_j, **vyyzz_j, **vxxzz_j, **vxxyy_j;
@@ -2360,3 +2360,4 @@ inline void update_s_ijk_2nd_order(OrthoPar *op, Strain_ijk *e, int i, int j, in
     s->yy[j][i][k] += DT * ((c12 * e->xx) + (c22 * e->yy) + (c23 * e->zz));
     s->zz[j][i][k] += DT * ((c13 * e->xx) + (c23 * e->yy) + (c33 * e->zz));
 }
+
