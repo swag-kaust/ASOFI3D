@@ -315,7 +315,7 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, in
                         VelocityDerivativesTensor *dv_2,
                         VelocityDerivativesTensor *dv_3,
                         VelocityDerivativesTensor *dv_4,
-						OrthoPar *op);
+                        OrthoPar *op);
 
 void compute_vel_deriv_2nd_order(Velocity *v, int i, int j, int k, Strain_ijk *e);
 
