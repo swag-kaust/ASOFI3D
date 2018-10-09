@@ -75,7 +75,7 @@ float **wavelet(float **srcpos_loc, int nsrc)
                     amp = (((1.0 - 2.0 * tau * tau) * exp(-tau * tau)));
                     break;
                 default:
-                    err("Which source-wavelet ? ");
+                    err("Which source-wavelet? ");
                     break;
             }
 
@@ -84,7 +84,6 @@ float **wavelet(float **srcpos_loc, int nsrc)
     }
 
     // central numeric derivative of the Ricker wavelet to match SOFI3D.
-
     if (SOURCE_SHAPE == 1)
     {
         for (k = 1; k <= nsrc; k++)
@@ -93,13 +92,13 @@ float **wavelet(float **srcpos_loc, int nsrc)
             {
                 if (nt == 1)
                 {
-                    amp = signals[k][nt + 1] / 2.0;
+                    amp = signals[k][nt + 1] / (2.0 * DT);
                 }
                 if ((nt > 1) && (nt < NT))
                 {
                     amp_1 = amp;
-                    amp = (signals[k][nt + 1] - signals[k][nt - 1]) / 2.0;
-                    signals[k][nt - 1] = amp;
+                    amp = (signals[k][nt+1] - signals[k][nt - 1]) / (2.0 * DT);
+                    signals[k][nt - 1] = amp_1;
                 }
                 if (nt == NT)
                 {
