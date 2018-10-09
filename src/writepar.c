@@ -358,8 +358,11 @@ void writepar(FILE *fp, int ns){
 			else if (SEIS_FORMAT[4]==1) fprintf(fp," \t coordinate unit: feet \n");
 			break;
 		case 2 :
-			if (!SEIS_FORMAT[1]) fprintf(fp," Seismograms are written in ASCII. \n");
-			else if (!SEIS_FORMAT[1]==1) fprintf(fp," Seismograms are written in EBCDIC. \n");
+                        // SEIS_FORMAT is textual.
+			if (SEIS_FORMAT[1] == 0) fprintf(fp," Seismograms are written in ASCII. \n");
+			else if (SEIS_FORMAT[1]==1) fprintf(fp," Seismograms are written in EBCDIC. \n");
+                        else err("When SEIS_FORMAT==textual, only ASCII or EBCDIC are allowed.");
+
 			if (!SEIS_FORMAT[4]) fprintf(fp," \t coordinate unit: meter \n");
 			else if (SEIS_FORMAT[4]==1) fprintf(fp," \t coordinate unit: feet \n");			
 			break;

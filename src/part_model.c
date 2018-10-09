@@ -100,9 +100,10 @@ printf("\n Reading receiver positions from file: \n\t%s\n",REC_FILE);
 fpr=fopen(REC_FILE,"r");
 if (fpr==NULL) err(" Receiver file could not be opened !");
   ntr=0;
-  while ((c=fgetc(fpr)) != EOF)
+  while ((c=fgetc(fpr)) != EOF) {
         if (c=='\n') ++(ntr);
-	rewind(fpr);
+  }
+  rewind(fpr);
         
 	recpos=fmatrix(1,3,1,ntr);
 	  for (itr=1;itr<=ntr;itr++){

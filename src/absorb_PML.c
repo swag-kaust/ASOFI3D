@@ -77,10 +77,14 @@ void absorb_PML(float *** absorb_coeffx, float *** absorb_coeffy, float *** abso
 	if ((!BOUNDARY) && (POS[1]==0)){
 		zb=1; yb=1; ye=NY; ze=NZ;
 		for (i=1;i<=ifw;i++){
-			if (POS[3]==0) zb=i; zb=1;
-			if (POS[3]==NPROCZ-1) ze=NZ-i+1; ze=NZ;
-			if ((POS[2]==0) && (!(FREE_SURF))) yb=i; yb=1;
-			if (POS[2]==NPROCY-1) ye=NY-i+1; ye=NY;
+			if (POS[3]==0) zb=i;
+                        zb=1;
+			if (POS[3]==NPROCZ-1) ze=NZ-i+1;
+                        ze=NZ;
+			if ((POS[2]==0) && (!(FREE_SURF))) yb=i;
+                        yb=1;
+			if (POS[2]==NPROCY-1) ye=NY-i+1;
+                        ye=NY;
 			for (k=zb;k<=ze;k++)
 				for (j=yb;j<=ye;j++)
 					absorb_coeffx[j][i][k]=coeff[i];
@@ -91,10 +95,14 @@ void absorb_PML(float *** absorb_coeffx, float *** absorb_coeffy, float *** abso
 		zb=1; yb=1; ye=NY; ze=NZ;
 		for (i=1;i<=ifw;i++){
 			ii=NX-i+1;
-			if (POS[3]==0) zb=i; zb=1;
-			if (POS[3]==NPROCZ-1) ze=NZ-i+1; ze=NZ;
-			if ((POS[2]==0) && (!(FREE_SURF))) yb=i; yb=1;
-			if (POS[2]==NPROCY-1) ye=NY-i+1; ye=NY;
+			if (POS[3]==0) zb=i;
+                        zb=1;
+			if (POS[3]==NPROCZ-1) ze=NZ-i+1;
+                        ze=NZ;
+			if ((POS[2]==0) && (!(FREE_SURF))) yb=i;
+                        yb=1;
+			if (POS[2]==NPROCY-1) ye=NY-i+1;
+                        ye=NY;
 			for (k=zb;k<=ze;k++)
 				for (j=yb;j<=ye;j++)
 					absorb_coeffx[j][ii][k]=coeff[i];
@@ -106,10 +114,14 @@ void absorb_PML(float *** absorb_coeffx, float *** absorb_coeffy, float *** abso
 	if ((!BOUNDARY) && (POS[3]==0)){
 		xb=1; yb=1; ye=NY; xe=NX;
 		for (k=1;k<=ifw;k++){
-			if (POS[1]==0) xb=k; xb=1;
-			if (POS[1]==NPROCX-1) xe=NX-k+1; xe=NX;
-			if ((POS[2]==0) && (!(FREE_SURF))) yb=k; yb=1;
-			if (POS[2]==NPROCY-1) ye=NY-k+1; ye=NY;
+			if (POS[1]==0) xb=k;
+                        xb=1;
+			if (POS[1]==NPROCX-1) xe=NX-k+1;
+                        xe=NX;
+			if ((POS[2]==0) && (!(FREE_SURF))) yb=k;
+                        yb=1;
+			if (POS[2]==NPROCY-1) ye=NY-k+1;
+                        ye=NY;
 			for (i=xb;i<=xe;i++)
 				for (j=yb;j<=ye;j++)
 					absorb_coeffz[j][i][k]=coeff[k];
@@ -121,10 +133,14 @@ void absorb_PML(float *** absorb_coeffx, float *** absorb_coeffy, float *** abso
 		xb=1; yb=1; ye=NY; xe=NX;
 		for (k=1;k<=ifw;k++){
 			kk=NZ-k+1;
-			if (POS[1]==0) xb=k; xb=1;
-			if (POS[1]==NPROCX-1) xe=NX-k+1; xe=NX;
-			if ((POS[2]==0) && (!(FREE_SURF))) yb=k; yb=1;
-			if (POS[2]==NPROCY-1) ye=NY-k+1; ye=NY;
+			if (POS[1]==0) xb=k;
+                        xb=1;
+			if (POS[1]==NPROCX-1) xe=NX-k+1;
+                        xe=NX;
+			if ((POS[2]==0) && (!(FREE_SURF))) yb=k;
+                        yb=1;
+			if (POS[2]==NPROCY-1) ye=NY-k+1;
+                        ye=NY;
 			for (i=xb;i<=xe;i++)
 				for (j=yb;j<=ye;j++)
 					absorb_coeffz[j][i][kk]=coeff[k];
@@ -136,10 +152,14 @@ void absorb_PML(float *** absorb_coeffx, float *** absorb_coeffy, float *** abso
 	if ((POS[2]==0) && (!(FREE_SURF))){
 		xb=1; zb=1; ze=NZ; xe=NX;
 		for (j=1;j<=ifw;j++){
-			if ((!BOUNDARY) && (POS[1]==0)) xb=j; xb=1;
-			if ((!BOUNDARY) && (POS[1]==NPROCX-1)) xe=NX-j+1; xe=NX;
-			if ((!BOUNDARY) && (POS[3]==0)) zb=j; zb=1;
-			if ((!BOUNDARY) && (POS[3]==NPROCZ-1)) ze=NZ-j+1; ze=NZ;
+			if ((!BOUNDARY) && (POS[1]==0)) xb=j;
+                        xb=1;
+			if ((!BOUNDARY) && (POS[1]==NPROCX-1)) xe=NX-j+1;
+                        xe=NX;
+			if ((!BOUNDARY) && (POS[3]==0)) zb=j;
+                        zb=1;
+			if ((!BOUNDARY) && (POS[3]==NPROCZ-1)) ze=NZ-j+1;
+                        ze=NZ;
 			for (i=xb;i<=xe;i++)
 				for (k=zb;k<=ze;k++)
 					absorb_coeffy[j][i][k]=coeff[j];
@@ -150,10 +170,14 @@ void absorb_PML(float *** absorb_coeffx, float *** absorb_coeffy, float *** abso
 		xb=1; zb=1; ze=NZ; xe=NX;
 		for (j=1;j<=ifw;j++){
 			jj=NY-j+1;
-			if ((!BOUNDARY) && (POS[1]==0)) xb=j; xb=1;
-			if ((!BOUNDARY) && (POS[1]==NPROCX-1)) xe=NX-j+1; xe=NX;
-			if ((!BOUNDARY) && (POS[3]==0)) zb=j; zb=1;
-		   if ((!BOUNDARY) && (POS[3]==NPROCZ-1)) ze=NZ-j+1; ze=NZ;
+			if ((!BOUNDARY) && (POS[1]==0)) xb=j;
+                        xb=1;
+			if ((!BOUNDARY) && (POS[1]==NPROCX-1)) xe=NX-j+1;
+                        xe=NX;
+			if ((!BOUNDARY) && (POS[3]==0)) zb=j;
+                        zb=1;
+		   if ((!BOUNDARY) && (POS[3]==NPROCZ-1)) ze=NZ-j+1;
+                   ze=NZ;
 			for (i=xb;i<=xe;i++)
 				for (k=zb;k<=ze;k++)
 					absorb_coeffy[jj][i][k]=coeff[j];

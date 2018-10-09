@@ -10,7 +10,6 @@ void psource(int nt, Tensor3d *s, float **srcpos_loc, float **signals, int nsrc,
 {
     extern float DX, DY, DZ;
     extern float DT;
-    extern int NT;
 
     int i, j, k, l;
     float amp = 0.0;

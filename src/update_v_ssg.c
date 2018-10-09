@@ -1579,12 +1579,13 @@ double update_v(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
         }
     }
     
-    if (LOG)
+    if (LOG) {
         time2=MPI_Wtime();
         time=time2-time1;
         if ((MYID==0) && ((nt+(OUTNTIMESTEPINFO-1))%OUTNTIMESTEPINFO)==0) {
             fprintf(FP," Real time for particle velocity update: \t %4.2f s.\n",time);
         }
+    }
+
     return time;
-    
 }
