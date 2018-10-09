@@ -12,7 +12,14 @@ TEST_ID="TEST_01"
 setup
 
 # Preserve old model.
-mv $MODEL ${MODEL}.bak
+mv $MODEL ${MODEL}.bak.${TEST_ID}
+
+on_exit() {
+    mv ${MODEL}.bak.${TEST_ID} $MODEL
+}
+
+# Execute function 'on_exit' when this script exits to avoid resource leak.
+trap on_exit EXIT
 
 # Copy test model.
 cp "${TEST_PATH}/src/hh_elastic.c"       src/
@@ -59,6 +66,4 @@ if [ "$result" -ne "0" ]; then
     exit 1
 fi
 
-# Teardown
-cp ${MODEL}.bak ${MODEL}
 echo "${TEST_ID}: PASS"
