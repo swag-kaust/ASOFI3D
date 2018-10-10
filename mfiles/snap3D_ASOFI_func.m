@@ -1,52 +1,55 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---script for the visualization of snapshots gained from the ASOFI simulation
 %---most parameters are as specified in ASOFI parameter-file, e.g. sofi3D.json
-%---Please note : y dentotes the vertical axis!!
+%---Please note : y denotes the vertical axis!!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %close all; 
 clearvars; clc;
+
+% User-defined parameters.
+% Directory name with the simulation input and output, relative to this script.
+par_dir = '../par';
+% % Path to configuration file, relative to par_dir.
+config_file='./in_and_out/sofi3D.json';
+
 for phi2=0:15:90
-    snap3D_ASOFI_fun(phi2);
+    snap3D_ASOFI_fun(phi2, par_dir);
 end
+ 
+function snap3D_ASOFI_fun(phi2, par_dir)
 
-function snap3D_ASOFI_fun(phi2)
-
-%% read from json to aaaaa
-json_text = fileread('../par_gamma_1_pert/in_and_out/sofi3D.json');
-i = find(json_text=='{');
-j = find(json_text=='}');
-b = json_text(i:j);
-aaaaa = jsondecode(b);
+%% Read from json to opts.
+opts = read_asofi3D_json([par_dir, '/', config_file])
 
 %% merge snapshots if they were not merged before
 
-a = pwd;
-cd ../par_gamma_1_pert/
-snap_name_full = [aaaaa.SNAP_FILE,'.bin.div'];
+oldpwd = pwd;
+cd(par_dir)
+snap_name_full = [opts.SNAP_FILE,'.bin.div'];
 dir_Full = dir(snap_name_full);
-dir_000 = dir([aaaaa.SNAP_FILE,'.bin.div.0.0.0']);
+dir_000 = dir([opts.SNAP_FILE,'.bin.div.0.0.0']);
 
 if ~exist(snap_name_full,'file')
-    system('../bin/snapmerge_WS ./in_and_out/sofi3D.json');
+    system('../bin/snapmerge ./in_and_out/sofi3D.json');
 elseif dir_Full.datenum < dir_000.datenum
-    system('../bin/snapmerge_WS ./in_and_out/sofi3D.json');
+    system('../bin/snapmerge ./in_and_out/sofi3D.json');
 end
 
-cd(a)
+cd(oldpwd)
 
 %% prepare colormap
 createSRGBcolormap;
 
 %% read parameters from json
-nx = str2num(aaaaa.NX);
-ny = str2num(aaaaa.NY);
-nz = str2num(aaaaa.NZ);
+nx = str2num(opts.NX);
+ny = str2num(opts.NY);
+nz = str2num(opts.NZ);
 
-outx = str2num(aaaaa.IDX);
-outy = str2num(aaaaa.IDY);
-outz = str2num(aaaaa.IDZ);
+outx = str2num(opts.IDX);
+outy = str2num(opts.IDY);
+outz = str2num(opts.IDZ);
 
-dh = str2num(aaaaa.DX); 
+dh = str2num(opts.DX); 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---input, output files
@@ -703,7 +706,7 @@ if image_switch==2
 end
 disp(['  ']);
 disp(['Script ended...']);
-end
+%end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---End of Script
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
