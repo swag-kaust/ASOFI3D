@@ -64,5 +64,5 @@ popd > /dev/null || exit 1
 
 echo "$sep"
 echo "Done."
-script="./ASOFI3D/mfiles/snap3D_allplanes.m"
+script="./ASOFI3D/mfiles/snap3D_ASOFI.m"
 printf "Run MATLAB script %s to see the wavefield.\n" "$script"
