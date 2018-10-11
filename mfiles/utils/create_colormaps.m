@@ -9,5 +9,6 @@ a = fillmissing(a,'linear',1);
 close all;
 imagesc(a);
 dlmwrite('srgb.map',a);
+dlmwrite('seismic.map',a);
 
 

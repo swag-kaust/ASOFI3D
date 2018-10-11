@@ -1,43 +1,62 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---script for the visualization of snapshots gained from the ASOFI simulation
 %---most parameters are as specified in ASOFI parameter-file, e.g. sofi3D.json
-%---Please note : y dentotes the vertical axis!!
+%---Please note : y denotes the vertical axis!!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-close all; clearvars; clc;
+%close all; 
+clearvars; clc;
 
-%% read from json to aaaaa
-json_text = fileread('../par/in_and_out/sofi3D.json');
-i = find(json_text=='{');
-j = find(json_text=='}');
-b = json_text(i:j);
-aaaaa = jsondecode(b);
+addpath('./utils');
+
+% User-defined parameters.
+% Directory name with the simulation input and output, relative to this script.
+plot_opts.par_folder = '../par';
+% % Path to configuration file, relative to par_folder.
+plot_opts.config_file='./in_and_out/sofi3D.json';
+
+for phi2=0:15:90
+    plot_opts.phi2 = phi2;
+    snap3D_ASOFI_fun(plot_opts);
+end
+ 
+function snap3D_ASOFI_fun(plot_opts)
+phi2 = plot_opts.phi2;
+par_folder = plot_opts.par_folder;
+config_file = plot_opts.config_file;
+
+
+%% Read from json to opts.
+opts = read_asofi3D_json([par_folder, '/', config_file]);
 
 %% merge snapshots if they were not merged before
 
-a = pwd;
-cd ../par/
-dir_Full = dir([aaaaa.SNAP_FILE,'.bin.div']);
-dir_000 = dir([aaaaa.SNAP_FILE,'.bin.div.0.0.0']);
+oldpwd = pwd;
+cd(par_folder)
+snap_name_full = [opts.SNAP_FILE,'.bin.div'];
+dir_Full = dir(snap_name_full);
+dir_000 = dir([opts.SNAP_FILE,'.bin.div.0.0.0']);
 
-if dir_Full.datenum < dir_000.datenum
-    system('../bin/snapmerge_WS ./in_and_out/sofi3D.json');
+if ~exist(snap_name_full,'file')
+    system('../bin/snapmerge ./in_and_out/sofi3D.json');
+elseif dir_Full.datenum < dir_000.datenum
+    system('../bin/snapmerge ./in_and_out/sofi3D.json');
 end
 
-cd(a)
+cd(oldpwd)
 
 %% prepare colormap
-createSRGBcolormap;
+create_colormaps;
 
 %% read parameters from json
-nx = str2num(aaaaa.NX);
-ny = str2num(aaaaa.NY);
-nz = str2num(aaaaa.NZ);
+nx = str2num(opts.NX);
+ny = str2num(opts.NY);
+nz = str2num(opts.NZ);
 
-outx = str2num(aaaaa.IDX);
-outy = str2num(aaaaa.IDY);
-outz = str2num(aaaaa.IDZ);
+outx = str2num(opts.IDX);
+outy = str2num(opts.IDY);
+outz = str2num(opts.IDZ);
 
-dh = str2num(aaaaa.DX); 
+dh = str2num(opts.DX); 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---input, output files
@@ -47,26 +66,28 @@ dh = str2num(aaaaa.DX);
 num_switch=2;
 
 % Input file1 (snapshot file1)
-file_inp1='../par/snap/test.bin.div';
+file_inp1 = [par_folder,'/snap/test.bin.div'];
 % Input file2 (snapshot file2)
-file_inp2='../par/snap/test.bin.curl';
+file_inp2 = [par_folder,'/snap/test.bin.curl'];
 % Model file (for single display or contour plot ontop of snapshot)
-file_mod='../par/model/test.SOFI3D.pi';
+file_mod = [par_folder,'/model/test.SOFI3D.rho'];
 
 % Output file
 % switch for saving snapshots to picture file 1=yes (jpg) 2= yes (png) other=no
-filesave=0;
+filesave=1;
 % base name of picture file output, will be expanded by extension jpg/png
-file_out='../par/snap/pic_test';
+file_out='~/Dropbox/presentations/SEG_2018_ORTHO/par_gamma_1_pert_';
+
+
 
 % title strings for each sub-figure
-title_inp1='P-wave field (div)';
+title_inp1='\nabla \cdot u';
 title_inp2='S-wave field (curl)';
 title_mod='Density model';
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%---varity of switches
+%---variety of switches
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % switch for contour of model overlaying the model or snapshot file
 % 1=yes other=no
@@ -91,7 +112,7 @@ xslice=nx/2; % for yz plane in grid points
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % time increment for snapshots:
-TSNAP1=0.61;
+TSNAP1=0.8;
 TSNAPINC=0.2;
 % firts and last snapshot that is considered for displayin
 firstframe=1;
@@ -102,7 +123,7 @@ lastframe=3;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 phi1=0; % a horizontal plane (x-z plane) is rotated by phi1 with respect to the rotpoint
-phi2=90; % a horizontal plane (x-z plane) is rotated by phi2 with respect to the rotpoint
+%phi2=90; % a horizontal plane (x-z plane) is rotated by phi2 with respect to the rotpoint
 % rotaxis and rotpoint refers to the rotation of the 2D-slices within the 3D volume
 % direction rotation axes [0,1,0] rotation of plane around vertical axis
 % [1,0,0] rotation of plane around x-axis
@@ -113,15 +134,16 @@ rotaxis=[0,1,0];
 rotpoint=[0 0 0];
 % defines angles of perspective for the 3-D view
 % i.e. it rotates the plot to favorable perspective
-viewpoint=[0,10,0];
+viewpoint=[1,4,1];
 
+file_out = [file_out, num2str(phi2)];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---axis limits for 2D and 3D visualization
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % colorbar boundaries for cropping the snapshot value range
 % only used if type_switch=2
-auto_scaling=2; % 1= automatic determination of boundaries, 2= constant values caxis_value , 3= no scaling
+auto_scaling=1; % 1= automatic determination of boundaries, 2= constant values caxis_value , 3= no scaling
 caxis_value_1=5e-11;
 caxis_value_2=caxis_value_1; % only used if num_switch=2
 
@@ -264,7 +286,7 @@ if image_switch==1
     % determination of screen size
     scrsz = get(0,'ScreenSize');
     % determination size of window for plotting
-    set(h1,'Position',[1 scrsz(4)*2/3 scrsz(3)*1/4 scrsz(4)*2/3]);
+    %set(h1,'Position',[1 scrsz(4)*2/3 scrsz(3)*1/4 scrsz(4)*2/3]);
     
     %creating subfigure handles if 2 snapshots are displayed simultaneously
     if num_switch==2
@@ -515,6 +537,9 @@ if image_switch==2
         file1_data=fread(fid,(nx*ny*nz),'float');
         file1_data=reshape(file1_data,ny,nx,nz);
         file1_data=permute(file1_data,[3,2,1]);
+        
+        D = merge_snapshots(par_folder);
+        file1_data = D(:,:,:,i);
         % creating a grid
         [X,Z,Y]=meshgrid(x,z,y);
         
@@ -551,23 +576,23 @@ if image_switch==2
         % determination of screen size
         scrsz = get(0,'ScreenSize');
         % determination size of window for plotting
-        set(h1,'Position',[1 scrsz(4)*2/3 scrsz(3)*1/4 scrsz(4)*2/3]);
-        
+        %set(h1,'Position',[1 scrsz(4)*2/3 scrsz(3)*1/4 scrsz(4)*2/3]);
+        axis equal
         % strict vertical slice, no rotation applied
 %                 h = slice(Y,X,Z,file1_data,[],yslice*dh*outy-1,[]); 
         % rotated vertical slice
         % !!! note that taking sclices from a homogeneous model is - for some
         % reason not working, please use 2-D visualization instead !!!
         h = slice(X,Z,Y,file1_data,xd,zd,yd);
-        set(h,'FaceColor','interp','EdgeColor','none','DiffuseStrength',.8);
+        set(h,'FaceColor','interp','EdgeColor','none','DiffuseStrength',.8,'FaceAlpha',0.5);
         
         hold on
         % strict horizontal, no rotation applied
         %         h2 = slice(Y,X,Z,file1_data,[],[],zslice*dh*outz); % this is strict vertical, no rotation applied
         % rotated horizontal slice
         h2 = slice(X,Z,Y,file1_data,xd2,zd2,yd2);
-        set(h2,'FaceColor','interp','EdgeColor','none','DiffuseStrength',.8);
-        
+        set(h2,'FaceColor','interp','EdgeColor','none','DiffuseStrength',.8,'FaceAlpha',0.5);
+        axis equal
         % vertical slice at model boundary
         %         h3 = slice(X,Z,Y,file1_data,10,[],[]);
         %         set(h3,'FaceColor','interp','EdgeColor','none','DiffuseStrength',.8);
@@ -595,7 +620,7 @@ if image_switch==2
         hold off
         
         % formating figure
-        daspect([1,1,1]);
+        %daspect([1,1,1]);
         axis tight
         box on
         
@@ -606,10 +631,10 @@ if image_switch==2
         % lightangle(-45,45);
         
         set(gcf,'Renderer','zbuffer');
-        colorbar
+        %colorbar
         xlabel('x in m');
-        ylabel('z in m');
-        zlabel('Depth y in m');
+        ylabel('y in m');
+        zlabel('Depth z in m');
         
         % adding title string to plot
         if type_switch==2
@@ -650,7 +675,7 @@ if image_switch==2
             % limiting the colorbar to specified range
             switch auto_scaling
                 case 1
-                    caxis([-file1max/10 file1max/10]);
+                    caxis([-file1max/5 file1max/5]);
                 case 2
                     caxis([-caxis_value_1 caxis_value_1]);
                 otherwise
@@ -691,6 +716,5 @@ if image_switch==2
 end
 disp(['  ']);
 disp(['Script ended...']);
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%---End of Script
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+end
+
