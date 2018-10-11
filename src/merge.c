@@ -98,7 +98,7 @@ void merge(int nsnap, int type){
 
 	fprintf(FP," Copying...");
 
-	for (n=0;n<=nsnap; n++)
+	for (n=0;n<nsnap; n++)
    	for (kp=0;kp<=NPROCZ-1; kp++)
       	for (k=1;k<=NZ;k+=IDZ)
    	for (ip=0;ip<=NPROCX-1; ip++)

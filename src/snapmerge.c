@@ -45,8 +45,10 @@ NX = NXG/NPROCX;
 NY = NYG/NPROCY;
 NZ = NZG/NPROCZ;
 
-nsnap=1+iround((TSNAP2-TSNAP1)/TSNAPINC);
+nsnap=1+floor((TSNAP2-TSNAP1)/TSNAPINC);
 fprintf(FP,"nsnap = %d\n", nsnap);
+printf("Number of snapshots to be saved: nsnap = %d\n", nsnap);
+
 /*printf("NX = %i, NY = %d, NZ = %d",NX,NY,NZ);*/
 FP=stdout;
 
