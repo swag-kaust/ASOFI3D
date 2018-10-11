@@ -8,23 +8,28 @@ clearvars; clc;
 
 % User-defined parameters.
 % Directory name with the simulation input and output, relative to this script.
-par_dir = '../par';
-% % Path to configuration file, relative to par_dir.
-config_file='./in_and_out/sofi3D.json';
+plot_opts.par_folder = '../par';
+% % Path to configuration file, relative to par_folder.
+plot_opts.config_file='./in_and_out/sofi3D.json';
 
 for phi2=0:15:90
-    snap3D_ASOFI_fun(phi2, par_dir);
+    plot_opts.phi2 = phi2;
+    snap3D_ASOFI_fun(plot_opts);
 end
  
-function snap3D_ASOFI_fun(phi2, par_dir)
+function snap3D_ASOFI_fun(plot_opts)
+phi2 = plot_opts.phi2;
+par_folder = plot_opts.par_folder;
+config_file = plot_opts.config_file;
+
 
 %% Read from json to opts.
-opts = read_asofi3D_json([par_dir, '/', config_file])
+opts = read_asofi3D_json([par_folder, '/', config_file]);
 
 %% merge snapshots if they were not merged before
 
 oldpwd = pwd;
-cd(par_dir)
+cd(par_folder)
 snap_name_full = [opts.SNAP_FILE,'.bin.div'];
 dir_Full = dir(snap_name_full);
 dir_000 = dir([opts.SNAP_FILE,'.bin.div.0.0.0']);
@@ -59,17 +64,19 @@ dh = str2num(opts.DX);
 num_switch=2;
 
 % Input file1 (snapshot file1)
-file_inp1='../par_gamma_1_pert/snap/test.bin.div';
+file_inp1 = [par_folder,'/snap/test.bin.div'];
 % Input file2 (snapshot file2)
-file_inp2='../par_gamma_1_pert/snap/test.bin.curl';
+file_inp2 = [par_folder,'/snap/test.bin.curl'];
 % Model file (for single display or contour plot ontop of snapshot)
-file_mod='../par_gamma_1_pert/model/test.SOFI3D.rho';
+file_mod = [par_folder,'/model/test.SOFI3D.rho'];
 
 % Output file
 % switch for saving snapshots to picture file 1=yes (jpg) 2= yes (png) other=no
 filesave=1;
 % base name of picture file output, will be expanded by extension jpg/png
 file_out='~/Dropbox/presentations/SEG_2018_ORTHO/par_gamma_1_pert_';
+
+
 
 % title strings for each sub-figure
 title_inp1='\nabla \cdot u';
@@ -78,7 +85,7 @@ title_mod='Density model';
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%---varity of switches
+%---variety of switches
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % switch for contour of model overlaying the model or snapshot file
 % 1=yes other=no
@@ -107,7 +114,7 @@ TSNAP1=0.8;
 TSNAPINC=0.2;
 % firts and last snapshot that is considered for displayin
 firstframe=1;
-lastframe=1;
+lastframe=3;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---3D definitions: defines two rotating planes (xz, yz plane)
@@ -530,6 +537,9 @@ if image_switch==2
         file1_data=fread(fid,(nx*ny*nz),'float');
         file1_data=reshape(file1_data,ny,nx,nz);
         file1_data=permute(file1_data,[3,2,1]);
+        
+        D = merge_snapshots(par_folder);
+        file1_data = D(:,:,:,i);
         % creating a grid
         [X,Z,Y]=meshgrid(x,z,y);
         
@@ -665,7 +675,7 @@ if image_switch==2
             % limiting the colorbar to specified range
             switch auto_scaling
                 case 1
-                    caxis([-file1max/10 file1max/10]);
+                    caxis([-file1max/5 file1max/5]);
                 case 2
                     caxis([-caxis_value_1 caxis_value_1]);
                 otherwise
@@ -706,7 +716,5 @@ if image_switch==2
 end
 disp(['  ']);
 disp(['Script ended...']);
-%end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%---End of Script
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+end
+

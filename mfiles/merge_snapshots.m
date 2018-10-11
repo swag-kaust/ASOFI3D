@@ -1,9 +1,10 @@
-%% merges snapshots
+%% merges snapshots otput has Z X Y order of axis
 function D = merge_snapshots(par_folder)
 
 %%
 % clear all
-% par_folder = '../par_gamma_1_pert/';
+% par_folder = '../par/';
+par_folder = [par_folder, '/'];
 jV = read_asofi3D_json([par_folder, 'in_and_out/sofi3D.json']);
 
 snap_name = [par_folder, jV.SNAP_FILE,'.bin.div'];
@@ -24,6 +25,7 @@ IDZ = str2num(jV.IDZ);
 nlx = (nx/NPROCX)/IDX;
 nly = (ny/NPROCY)/IDY;
 nlz = (nz/NPROCZ)/IDZ;
+nsnap = 1+floor((str2num(jV.TSNAP2)-str2num(jV.TSNAP1))/str2num(jV.TSNAPINC));
 
 %%
 for i = 1:NPROCX
@@ -32,7 +34,8 @@ for i = 1:NPROCX
         for k = 1:NPROCZ
             fid=fopen([snap_name,'.',num2str(i-1),'.',num2str(j-1),'.',num2str(k-1)]);
             A = fread(fid,'float');
-            A = reshape(A,[nlx,nly,nlz]);
+            A = reshape(A,[nly,nlx,nlz,nsnap]);
+            A = permute(A,[2,1,3,4]);
             if exist('B','var')
                 B = cat(3,B,A);
             else
@@ -54,5 +57,9 @@ for i = 1:NPROCX
     end
     clear C
 end
-        
-        
+    
+% finally we swap to have Z X Y axis order
+D = permute(D,[3, 1, 2, 4]);
+
+end
+
