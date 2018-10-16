@@ -49,3 +49,21 @@ animate_progress () {
         printf "%s\n" "${message}"
     fi
 }
+
+convert_segy_to_rsf () {
+    # Convert SEG-Y format to RSF format.
+    # USAGE: convert_segy_to_rsf path/filename.sgy
+    #
+    # Examples:
+    #     $ convert_segy_to_rsf tmp/p.sgy
+    # will produce RSF file tmp/p.rsf.
+
+    file_sgy="$1"
+    dir=$(dirname "$file_sgy")
+    filename_base=$(basename -s .sgy "${file_sgy}")
+
+    file_rsf="${dir}/${filename_base}.rsf"
+    file_rsf_tfile="${dir}/${filename_base}.tfile.rsf"
+
+    sfsegyread tape="$file_sgy" tfile="$file_rsf_tfile" > "$file_rsf"
+}
