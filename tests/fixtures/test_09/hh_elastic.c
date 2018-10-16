@@ -232,7 +232,7 @@ void model_elastic(float ***rho, float ***pi, float ***u, float ***C11, float **
                         C_66 =  4.3e9;
                         Rho = 2000;
 
-                        // ISO PARAMETERS FROM SAVA
+                        // // ISO PARAMETERS FROM SAVA
                         // C_11 = 8.0e9;
                         // C_12 = 2.67e9;
                         // C_13 = 2.67e9;

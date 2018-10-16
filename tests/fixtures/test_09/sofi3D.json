@@ -12,12 +12,12 @@
 "Domain Decomposition" : "comment",
 			"NPROCX" : "2",
 			"NPROCY" : "2",
-			"NPROCZ" : "5",
+			"NPROCZ" : "4",
 
 "3-D Grid" : "comment",
 
-			"NX" : "1000",
-			"NY" : "1000",
+			"NX" : "500",
+			"NY" : "500",
 			"NZ" : "1000",
 
 			"DX" : "10.0",
@@ -115,7 +115,7 @@
 "Receiver" : "comment",
 			"SEISMO" : "2",
 			"READREC" : "1",
-			"REC_FILE" : "./receiver/receiver_aniso.dat",
+			"REC_FILE" : "./receiver/receiver.dat",
 			"REFRECX, REFRECY, REFRECZ" : "0.0 , 0.0 , 0.0",
 			"XREC1,YREC1, ZREC1" : "10.0 , 20.0, 500.0",
 			"XREC2,YREC2, ZREC2" : "1000.0 , 20.0, 500.0",
@@ -131,7 +131,7 @@
 
 "Seismograms" : "comment",
 			"NDT, NDTSHIFT" : "1, 0",
-			"SEIS_FORMAT" : "1",
+			"SEIS_FORMAT" : "5",
 			"SEIS_FILE" : "./su/test",
 
 "Monitoring the simulation" : "comment",
