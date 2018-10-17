@@ -49,13 +49,8 @@ if [ "$code" -ne "0" ]; then
 fi
 
 # Convert seismograms in SEG-Y format to the Madagascar RSF format.
-sfsegyread tape=tmp/su/test_vx.sgy \
-    tfile=tmp/su/test_vx_trace.rsf \
-    > tmp/su/test_vx.rsf
-
-sfsegyread tape=${TEST_PATH}/su/test_vx.sgy \
-    tfile=${TEST_PATH}/su/test_vx_trace.rsf \
-    > ${TEST_PATH}/su/test_vx.rsf
+convert_segy_to_rsf tmp/su/test_vx.sgy
+convert_segy_to_rsf ${TEST_PATH}/su/test_vx.sgy
 
 # Read the files.
 # Compare with the old output.

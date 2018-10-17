@@ -45,12 +45,8 @@ fi
 cd ..
 
 # Convert seismograms in SEG-Y format to the Madagascar RSF format.
-sfsegyread tape=tmp/su/test-readmod=-1_vx.sgy \
-    tfile=tmp/su/test-readmod=-1_vx.sgy.tfile \
-    > tmp/su/test-readmod=-1_vx.rsf
-sfsegyread tape=tmp/su/test-readmod=1_vx.sgy \
-    tfile=tmp/su/test-readmod=1_vx.sgy.tfile \
-    > tmp/su/test-readmod=1_vx.rsf
+convert_segy_to_rsf tmp/su/test-readmod=-1_vx.sgy
+convert_segy_to_rsf tmp/su/test-readmod=1_vx.sgy
 
 # Read the files.
 # Compare with the recorded output.
