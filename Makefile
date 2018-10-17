@@ -14,7 +14,7 @@ clean :
 test :
 	tests/check_test_env.sh
 	tests/test_01.sh
-	# tests/test_02.sh
+	if [ -z "${CI}" ]; then tests/test_02.sh; fi
 	tests/test_03.sh
 	tests/test_04.sh
 	tests/test_05.sh
