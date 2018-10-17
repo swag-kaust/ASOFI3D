@@ -21,3 +21,5 @@ test :
 	tests/test_06.sh
 	tests/test_07.sh
 	tests/test_08.sh
+	tests/test_09.sh
+	tests/test_10.sh
