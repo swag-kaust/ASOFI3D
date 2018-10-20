@@ -12,9 +12,17 @@ TEST_ID="TEST_09"
 setup
 
 # Preserve old model.
-mv $MODEL ${MODEL}.bak
+mv $MODEL ${MODEL}.bak.${TEST_ID}
 
-# Copy test model.
+on_exit() {
+    # Clean up function to be called at the end of the test.
+    mv ${MODEL}.bak.${TEST_ID} $MODEL
+}
+
+# Execute function 'on_exit' when this script exits.
+trap on_exit INT TERM EXIT
+
+# Copy input to the directory where the test is executed.
 cp "${TEST_PATH}/hh_elastic.c"     src/hh_elastic.c
 cp "${TEST_PATH}/sofi3D.json"      tmp/in_and_out/sofi3D.json
 cp "${TEST_PATH}/source.dat"       tmp/sources/
@@ -22,7 +30,7 @@ cp "${TEST_PATH}/receiver.dat"     tmp/receiver/
 
 # Compile code.
 cd src
-make sofi3D > /dev/null
+make sofi3D > ../tmp/make.log
 if [ "$?" -ne "0" ]; then
     cd ..
     echo "${TEST_ID}: FAIL" > /dev/stderr
@@ -45,26 +53,17 @@ if [ "$code" -ne "0" ]; then
 fi
 
 # Convert seismograms in SEG-Y format to the Madagascar RSF format.
-sfsegyread tape=tmp/su/test_p.sgy.shot1 \
-    tfile=tmp/su/test_p_trace.rsf.shot1 \
-    > tmp/su/test_p.rsf.shot1
-sfsegyread tape=tmp/su/test_p.sgy.shot2 \
-    tfile=tmp/su/test_p_trace.rsf.shot2 \
-    > tmp/su/test_p.rsf.shot2
+convert_segy_to_rsf tmp/su/test_p.sgy
+convert_segy_to_rsf ${TEST_PATH}/su/ref_p.sgy
 
 # Read the files.
 # Compare with the recorded output.
-tests/compare_datasets.py \
-    tmp/su/trace1.rsf tmp/su/trace2.rsf \
-    --rtol=1e-10 --atol=1e-12
+tests/compare_datasets.py tmp/su/test_p.rsf ${TEST_PATH}/su/ref_p.rsf \
+    --rtol=1e-10 --atol=1e-10
 result=$?
 if [ "$result" -ne "0" ]; then
-    echo "${TEST_ID}: Traces differ" > /dev/stderr
+    echo "${TEST_ID}: Seismograms (pressure) differ" > /dev/stderr
     exit 1
 fi
-
-# Teardown.
-# Restore default model.
-git checkout -- ${MODEL}
 
 echo "${TEST_ID}: PASS"

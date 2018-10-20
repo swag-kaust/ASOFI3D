@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 # Regression test 10.
-# Check option readmod=1.
+# Check option readmod=1 (reading model from binary files).
+# The test is organized as follows:
+# 1. Run simulation in which model is generated on-the-fly and write the model
+#    on disk.
+# 2. Run simulation in which model is read from files written in the previous
+#    step.
+# 3. Compare that the seismograms are close to each other.
 . tests/functions.sh
 
 TEST_PATH="tests/fixtures/test_10"
@@ -15,8 +21,9 @@ cp -R ${TEST_PATH}/* tmp
 cd tmp > /dev/null
 
 # Run code.
-echo "${TEST_ID}: Running solver. Output is captured to tmp/ASOFI3D.log"
-mpirun -n 16 ../bin/sofi3D "in_and_out/sofi3D-readmod=-1.json" > "ASOFI3D-readmod=-1.log" &
+logfile="ASOFI3D-readmod=-1.log"
+echo "${TEST_ID}: Running solver. Output is captured to tmp/$logfile"
+mpirun -n 16 ../bin/sofi3D "in_and_out/sofi3D-readmod=-1.json" > "$logfile" &
 task_id=$!
 animate_progress $task_id "${TEST_ID}: Running solver"
 
@@ -29,8 +36,9 @@ if [ "$code" -ne "0" ]; then
 fi
 
 # Run code.
-echo "${TEST_ID}: Running solver. Output is captured to tmp/ASOFI3D.log"
-mpirun -n 16 ../bin/sofi3D "in_and_out/sofi3D-readmod=1.json" > "ASOFI3D-readmod=1.log" &
+logfile="ASOFI3D-readmod=1.log"
+echo "${TEST_ID}: Running solver. Output is captured to tmp/$logfile"
+mpirun -n 16 ../bin/sofi3D "in_and_out/sofi3D-readmod=1.json" > "$logfile" &
 task_id=$!
 animate_progress $task_id "${TEST_ID}: Running solver"
 
@@ -45,12 +53,8 @@ fi
 cd ..
 
 # Convert seismograms in SEG-Y format to the Madagascar RSF format.
-sfsegyread tape=tmp/su/test-readmod=-1_vx.sgy \
-    tfile=tmp/su/test-readmod=-1_vx.sgy.tfile \
-    > tmp/su/test-readmod=-1_vx.rsf
-sfsegyread tape=tmp/su/test-readmod=1_vx.sgy \
-    tfile=tmp/su/test-readmod=1_vx.sgy.tfile \
-    > tmp/su/test-readmod=1_vx.rsf
+convert_segy_to_rsf tmp/su/test-readmod=-1_vx.sgy
+convert_segy_to_rsf tmp/su/test-readmod=1_vx.sgy
 
 # Read the files.
 # Compare with the recorded output.

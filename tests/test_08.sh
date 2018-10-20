@@ -69,17 +69,12 @@ if [ "$code" -ne "0" ]; then
 fi
 
 # Convert seismograms in SEG-Y format to the Madagascar RSF format.
-sfsegyread tape=tmp/su/force_in_x_vy.sgy \
-    tfile=tmp/su/force_in_x_vy.sgy.trace \
-    > tmp/su/force_in_x_vy.rsf
-sfsegyread tape=tmp/su/force_in_y_vx.sgy \
-    tfile=tmp/su/force_in_y_vx.sgy.trace \
-    > tmp/su/force_in_y_vx.rsf
+convert_segy_to_rsf tmp/su/force_in_x_vy.sgy
+convert_segy_to_rsf tmp/su/force_in_y_vx.sgy
 
 # Read the files.
 # Compare with the recorded output.
-tests/compare_datasets.py \
-    tmp/su/force_in_x_vy.rsf tmp/su/force_in_y_vx.rsf \
+tests/compare_datasets.py tmp/su/force_in_x_vy.rsf tmp/su/force_in_y_vx.rsf \
     --rtol=1e-15 --atol=1e-15
 result=$?
 if [ "$result" -ne "0" ]; then
