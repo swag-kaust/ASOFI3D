@@ -59,10 +59,10 @@ convert_segy_to_rsf ${TEST_PATH}/su/ref_p.sgy
 # Read the files.
 # Compare with the recorded output.
 tests/compare_datasets.py tmp/su/test_p.rsf ${TEST_PATH}/su/ref_p.rsf \
-    --rtol=1e-10 --atol=1e-12
+    --rtol=1e-10 --atol=1e-10
 result=$?
 if [ "$result" -ne "0" ]; then
-    echo "${TEST_ID}: Traces differ" > /dev/stderr
+    echo "${TEST_ID}: Seismograms (pressure) differ" > /dev/stderr
     exit 1
 fi
 
