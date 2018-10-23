@@ -13,7 +13,23 @@ setup() {
     mkdir tmp/su
 }
 
+<<<<<<< 3a0f06818eec83b71f4aafaaa0fc05ee0e654458
 animate_progress() {
+=======
+compile_code () {
+    # Compile code.
+    cd src
+    make sofi3D > ../tmp/make.log
+    if [ "$?" -ne "0" ]; then
+        cd ..
+        echo "${TEST_ID}: FAIL" > /dev/stderr
+        exit 1
+    fi
+    cd ..
+}
+
+animate_progress () {
+>>>>>>> TST: Add function that encapsulates code compilation
     # Animate long-running tasks visually for usability.
     # USAGE: animate_progress task_id message
     # where
