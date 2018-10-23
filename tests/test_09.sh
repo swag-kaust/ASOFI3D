@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Regression test 10.
+# Regression test 09.
 # Check option readmod=1 (reading model from binary files).
 # The test is organized as follows:
 # 1. Run simulation in which model is generated on-the-fly and write the model
@@ -9,8 +9,8 @@
 # 3. Compare that the seismograms are close to each other.
 . tests/functions.sh
 
-TEST_PATH="tests/fixtures/test_10"
-TEST_ID="TEST_10"
+TEST_PATH="tests/fixtures/test_09"
+TEST_ID="TEST_09"
 
 # Setup function prepares environment for the test (creates directories).
 setup
