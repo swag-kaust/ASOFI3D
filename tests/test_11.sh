@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-# Regression test 09.
+# Regression test 11.
 # Check that the seismograms are comparable with the seismograms
 # obtained using SAVA code (https://github.com/daniel-koehn/SAVA).
+# Model is one-layer orthorhombic.
 . tests/functions.sh
 
 MODEL="src/hh_elastic.c"
-TEST_PATH="tests/fixtures/test_09"
-TEST_ID="TEST_09"
+TEST_PATH="tests/fixtures/test_11"
+TEST_ID="TEST_11"
 
 # Setup function prepares environment for the test (creates directories).
 setup
