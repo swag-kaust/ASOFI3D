@@ -195,8 +195,9 @@ SNAPMERGE_OBJ = $(SNAPMERGE_SCR:%.c=%.o)
 PARTMODEL_OBJ = $(PARTMODEL_SCR:%.c=%.o)
 SEISMERGE_OBJ = $(SEISMERGE_SCR:%.c=%.o)
 
-.PHONY: sofi3D
-sofi3D: ../bin/sofi3D
+# Target `sofi3D` is defined only for user convenience and has empty recipe.
+.PHONY : sofi3D
+sofi3D: ../bin/sofi3D ;
 
 ../bin/sofi3D: $(SOFI3D_OBJ)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $^ $(LDLIBS) -o $@
