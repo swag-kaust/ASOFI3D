@@ -195,9 +195,21 @@ SNAPMERGE_OBJ = $(SNAPMERGE_SCR:%.c=%.o)
 PARTMODEL_OBJ = $(PARTMODEL_SCR:%.c=%.o)
 SEISMERGE_OBJ = $(SEISMERGE_SCR:%.c=%.o)
 
+.PHONY: all
+all: clean sofi3D seismerge snapmerge part_model sofi3D_acoustic 
+
+.PHONY: clean
+clean:
+	find . -name "*.o"   -exec rm {} \;
+	find . -name "*.bck" -exec rm {} \;
+	find . -name "core"  -exec rm {} \;
+
 # Target `sofi3D` is defined only for user convenience and has empty recipe.
 .PHONY : sofi3D
 sofi3D: ../bin/sofi3D ;
+
+# Using built-in variable LINK.c defined as
+# LINK.c = $(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
 
 ../bin/sofi3D: $(SOFI3D_OBJ)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $^ $(LDLIBS) -o $@
