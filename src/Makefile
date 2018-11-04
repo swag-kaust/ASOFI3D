@@ -26,12 +26,7 @@ ifeq "$(filter clean, $(MAKECMDGOALS))" ""
 	-include config-manual.mk
 endif
 
-
-# after this line, no further editing should be necessary
-# --------------------------------------------------------
-
-.c.o:
-	$(CC) -c $(CFLAGS) $<
+SILENT ?= @
 
 
 SEISMERGE_SCR = seismerge.c
@@ -222,9 +217,19 @@ clean:
 	find . -name "*.bck" -exec rm {} \;
 	find . -name "core"  -exec rm {} \;
 
+clobber: clean
+	$(RM) config-auto.mk
+
 all: clean sofi3D sofi3D_acoustic snapmerge seismerge part_model
 
 config-auto.mk: configure
 	@./$< > $@
-	@echo "*** Configuration file"
+	@echo "*** Configuration file: begin"
 	@cat $@
+	@echo "*** Configuration file: end"
+
+
+.SUFFIXES: .c .o
+.c.o:
+	$(SILENT)$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	@echo Making $@
