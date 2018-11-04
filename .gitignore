@@ -1,6 +1,6 @@
 # Created by https://www.gitignore.io/api/c,c++,latex,kate,linux,osx,kdevelop4,fortran,windows,vim,svn,matlab,emacs,eclipse,cmake,premake-gmake
 
-# specific files fpr GPIAG_Software
+# specific files for GPIAG_Software
 
 sofi3D
 snapmerge
@@ -383,3 +383,7 @@ tests/fixtures/test_01/su/test_vx.rsf
 tests/fixtures/test_01/su/test_vx.rsf@
 # Don't ignore source and receiver files used for test fixtures.
 !tests/fixtures/**/*.dat
+
+
+### Build artifacts ###
+src/config-auto.mk
