@@ -20,8 +20,9 @@ MODEL_SRC_BENCH = benchmod.c
 # -----------------------------------------------------------------------------
 # Configure stage
 
-# Do not detect code prerequisites while executing command `make clean`.
-ifeq "$(filter clean, $(MAKECMDGOALS))" ""
+# Do not detect code prerequisites while executing commands
+# `make clean` or `make clobber`.
+ifeq "$(filter clean clobber, $(MAKECMDGOALS))" ""
 	-include config-auto.mk
 	-include config-manual.mk
 endif
