@@ -192,25 +192,25 @@ PARTMODEL_OBJ = $(PARTMODEL_SCR:%.c=%.o)
 SEISMERGE_OBJ = $(SEISMERGE_SCR:%.c=%.o)
 
 sofi3D:		$(SOFI3D_OBJ)
-	$(CC) $(SOFI3D_OBJ) -o ../bin/sofi3D $(LDLIBS)
+	$(CC) $(CFLAGS) $(SOFI3D_OBJ) -o ../bin/sofi3D $(LDLIBS)
 
 seismerge:	$(SEISMERGE_OBJ)
-	$(CC) $(SEISMERGE_OBJ) -o ../bin/seismerge $(LDLIBS)
+	$(CC) $(CFLAGS) $(SEISMERGE_OBJ) -o ../bin/seismerge $(LDLIBS)
 
 snapmerge:	$(SNAPMERGE_OBJ)
-	$(CC) $(SNAPMERGE_OBJ) -o ../bin/snapmerge $(LDLIBS)
+	$(CC) $(CFLAGS) $(SNAPMERGE_OBJ) -o ../bin/snapmerge $(LDLIBS)
 
 part_model:	$(PARTMODEL_OBJ)
-	$(CC) $(PARTMODEL_OBJ) -o ../bin/partmodel $(LDLIBS)
+	$(CC) $(CFLAGS) $(PARTMODEL_OBJ) -o ../bin/partmodel $(LDLIBS)
 
 #sofi3D_rsg: $(SOFI3D_OBJ_RSG)
 #	$(CC) $(SOFI3D_OBJ_RSG) -o ../bin/sofi3D_rsg $(LDLIBS)
 
 sofi3D_bench: $(SOFI3D_OBJ_BENCH)
-	$(CC)  $(SOFI3D_OBJ_BENCH) -o ../bin/sofi3D_bench $(LDLIBS)
+	$(CC) $(CFLAGS) $(SOFI3D_OBJ_BENCH) -o ../bin/sofi3D_bench $(LDLIBS)
 
 sofi3D_acoustic: $(SOFI3D_OBJ_ACOUSTIC)
-	$(CC) $(SOFI3D_OBJ_ACOUSTIC) -o ../bin/sofi3D_acoustic $(LDLIBS)
+	$(CC) $(CFLAGS) $(SOFI3D_OBJ_ACOUSTIC) -o ../bin/sofi3D_acoustic $(LDLIBS)
 
 clean:
 	find . -name "*.o"   -exec rm {} \;
