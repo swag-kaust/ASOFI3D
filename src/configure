@@ -115,7 +115,7 @@ elif [ "$C_COMPILER" = craycc ]; then
     # -h pl   File path to program library (compiler database)
     # -h bounds Check for array boundaries
     append cflags_common -h msglevel_3
-    append cflags_opt -h wp -h pl=./craycc_pl
+    # append cflags_opt -h wp -h pl=$HOME/.craycc_pl
     append cflags_debug -h bounds
 fi
 
