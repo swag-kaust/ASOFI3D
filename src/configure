@@ -1,0 +1,150 @@
+#!/bin/sh
+_TEST_MPI="$(cat <<EOF
+#include <mpi.h>
+int main(int argc, char *argv[])
+{
+    MPI_Init(&argc, &argv);
+    MPI_Finalize();
+}
+EOF
+)"
+echo "$_TEST_MPI" > testmpi.c
+
+try_execute () {
+    # Test if program $1 exists and than execute it with the following args.
+    command -V "$1" > /dev/null 2>&1 && "$@"
+    return $?
+}
+
+append () {
+    # Prepend to variable $1 all consequent arguments.
+    var=$1
+    shift
+    eval "$var=\"\$$var $*\""
+}
+
+trim_whitespace () {
+   # Remove whitespace from the front and back end of the string $1.
+   var="$1"
+   junk=${var##*[! ]}    # match whitespace in the back end of $var
+   var=${var%"$junk"}    # trim the match
+   junk=${var%%[! ]*}    # match whitespace in the front end of $var
+   var=${var#"$junk"}    # trim the match
+   echo "$var"
+}
+
+err() {
+    # Print error message to stderr.
+    echo "ERROR: $@" >&2
+}
+
+cleanup () {
+    # Remove temporary file.
+    rm testmpi.c
+}
+
+trap cleanup INT TERM EXIT
+
+#------------------------------------------------------------------------------
+# Determine correct MPI wrapper for the C compiler.
+
+# Check if CC is already defined, then assume that the user knows better.
+if [ -n "$CC" ] && try_execute "$CC" -c testmpi.c; then
+    CC="$CC"
+# Check if cc is an MPI compiler itself, which is the case, e. g., on Cray. 
+elif try_execute cc -c testmpi.c; then
+    CC=cc
+# Check for Intel MPI wrapper for Intel C compiler (mpiicc).
+elif try_execute mpiicc -c testmpi.c; then
+    CC=mpiicc
+# Check for mpicc wrapper: it is available in several MPI libraries.
+elif try_execute mpicc -c testmpi.c; then
+    CC=mpicc
+fi
+
+if [ -z "$CC" ]; then
+    echo >&2 "ERROR: could not find MPI wrapper for the C compiler."
+    exit 1
+fi
+
+
+#------------------------------------------------------------------------------
+# Determine underlying C compiler.
+if $CC -v 2>&1 | grep -q ^icc; then
+    C_COMPILER=icc
+elif $CC -v 2>&1 | grep -q ^gcc; then
+    C_COMPILER=gcc
+elif $CC -v 2>&1 | grep -q craycc; then
+    C_COMPILER=craycc
+else
+    echo 2>&1 'WARNING: unknown C compiler.'
+    exit 1
+fi
+
+unset cflags_common cflags_opt cflags_debug
+
+# Determine flags for C compiler (CFLAGS).
+# cflags_common    Flags that are used for any type of build.
+# cflags_opt       Flags that are used for performance optimized build.
+# cflags_debug     Flags that are used for debug build.
+if [ "$C_COMPILER" = icc ]; then
+    # icc options:
+    # -O2           Optimize performance
+    # -ipo          Execute Inter-Procedural Optimizations
+    # -funroll-loops    Unroll loops for performance
+    # -check=stack  Check for array boundaries
+    # -g            Embed debugging information into the executables
+    append cflags_common -Wall -Wextra -pedantic -std=c11
+    append cflags_opt -O2 -ipo -funroll-loops
+    append cflags_debug -O0 -check=stack -g
+elif [ "$C_COMPILER" = gcc ]; then
+    # gcc options:
+    # -Wall    Show all warnings
+    # -Wextra  Show even more warnings
+    # -pedantic Show even more warnings!
+    # -std=c11  Compile with accordance with C 2011 standard
+    # -fbounds-check    Check for array boundaries
+    # -g                Embed debugging information into the final executable
+    append cflags_common -Wall -Wextra -pedantic -std=c11
+    append cflags_opt -O3 -flto -ftree-vectorize -funroll-loops
+    append cflags_debug -O0 -fbounds-check -g
+elif [ "$C_COMPILER" = craycc ]; then
+    # craycc options are:
+    # -m 0    Show errors, warnings, cautions, notes, and comments
+    # -h wp   Whole program mode for link-time optimizations
+    # -h pl   File path to program library (compiler database)
+    # -h bounds Check for array boundaries
+    append cflags_common -h msglevel_3
+    # append cflags_opt -h wp -h pl=$HOME/.craycc_pl
+    append cflags_debug -h bounds
+fi
+
+if [ -n "$DEBUG" ]; then
+    CFLAGS="${cflags_common:-} ${cflags_debug:-}"
+else
+    CFLAGS="${cflags_common:-} ${cflags_opt:-}"
+fi
+
+# Determine libraries that must be linked into the executables.
+if [ "$C_COMPILER" = icc ]; then
+    append LDLIBS -lm
+elif [ "$C_COMPILER" = gcc ]; then
+    append LDLIBS -lm
+elif [ "$C_COMPILER" = craycc ]; then
+    append LDLIBS 
+fi
+
+# Finally, show the detected configuration.
+CC="$(trim_whitespace "$CC")"
+CFLAGS="$(trim_whitespace "$CFLAGS")"
+LDLIBS="$(trim_whitespace "$LDLIBS")"
+
+echo "# Automatic configuration file for ASOFI3D"
+echo "# Do not modify! This file was created automatically."
+echo "# Detected C compiler: $C_COMPILER"
+echo "# CC: MPI wrapper over C compiler"
+echo "# CFLAGS: flags for C compiler"
+echo "# LDLIBS: libraries that must be linked into the executables"
+echo "CC = $CC"
+echo "CFLAGS = $CFLAGS"
+echo "LDLIBS = $LDLIBS"
