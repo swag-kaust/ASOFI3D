@@ -219,7 +219,8 @@ clean:
 	find . -name "core"  -exec rm {} \;
 
 clobber: clean
-	$(RM) config-auto.mk
+	-$(RM) config-auto.mk
+	-$(RM) -r craycc_pl
 
 all: clean sofi3D sofi3D_acoustic snapmerge seismerge part_model
 
