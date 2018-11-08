@@ -1,16 +1,28 @@
-/*------------------------------------------------------------------------
- *   write local model to file              
- *
- *  ----------------------------------------------------------------------*/
-
 #include "fd.h"
 
 
+/*
+ * Write local part of the model quantity `q` to the file `modfile`.
+ * 'Local part' means 'belonging to the current MPI process'.
+ *
+ * Parameters
+ * ----------
+ * modfile :
+ *     Prefix of the name of the model file, e.g., 'model/test_'.
+ * q :
+ *     Quantity being written to file (density, stiffness elements, etc.).
+ * format :
+ *     File format.
+ *
+ * See also
+ * --------
+ * writedsk    To see possible file formats.
+ *
+ */
 
 
-	/* extern variables */
-	/*extern int MYID;*/
 void writemod(char modfile[STRING_SIZE], float ***q, int format){
+	// External (global) variables.
 	extern int NX, NY, NZ, POS[4], IDX, IDY, IDZ;
 
 
