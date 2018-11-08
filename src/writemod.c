@@ -6,11 +6,11 @@
 #include "fd.h"
 
 
-void writemod(char modfile[STRING_SIZE], float *** rho, int format){
 
 
 	/* extern variables */
 	/*extern int MYID;*/
+void writemod(char modfile[STRING_SIZE], float ***q, int format){
 	extern int NX, NY, NZ, POS[4], IDX, IDY, IDZ;
 
 
@@ -25,7 +25,7 @@ void writemod(char modfile[STRING_SIZE], float *** rho, int format){
 	for (k=1;k<=NZ;k+=IDZ)
 	for (i=1;i<=NX;i+=IDX)
 	for (j=1;j<=NY;j+=IDY)
-		writedsk(fpmod,rho[j][i][k],format);
+		writedsk(fpmod, q[j][i][k],format);
 				
 	fclose(fpmod);
 
