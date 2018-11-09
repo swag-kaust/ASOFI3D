@@ -125,6 +125,17 @@ else
     CFLAGS="${cflags_common:-} ${cflags_opt:-}"
 fi
 
+# Determine C PreProcessor (CPP) flags.
+if [ "$C_COMPILER" = icc ]; then
+    append CPPFLAGS
+elif [ "$C_COMPILER" = gcc ]; then
+    # #define _XOPEN_SOURCE 500 enables some additional functions
+    # that are not in C11 standard (such as gethostname).
+    append CPPFLAGS -D_XOPEN_SOURCE=500
+elif [ "$C_COMPILER" = craycc ]; then
+    append CPPFLAGS
+fi
+
 # Determine libraries that must be linked into the executables.
 if [ "$C_COMPILER" = icc ]; then
     append LDLIBS -lm
@@ -147,4 +158,5 @@ echo "# CFLAGS: flags for C compiler"
 echo "# LDLIBS: libraries that must be linked into the executables"
 echo "CC = $CC"
 echo "CFLAGS = $CFLAGS"
+echo "CPPFLAGS = $CPPFLAGS"
 echo "LDLIBS = $LDLIBS"
