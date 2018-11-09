@@ -144,6 +144,8 @@ void merge(int nsnap, int type);
 
 void mergemod(char modfile[STRING_SIZE], int format);
 
+void merge_source_field(char modfile[STRING_SIZE], int format);
+
 void model_visco(float  ***  rho, float ***  pi, float ***  u,
 		float ***  taus, float ***  taup, float *  eta);
 
@@ -426,6 +428,9 @@ void writedsk(FILE *fp_out, float amp, int format);
 void writemod(char modfile[STRING_SIZE], float *** rho, int format);
 
 void writepar(FILE *fp, int ns);
+
+void write_source_field(char source_field_file[STRING_SIZE],
+        float ***s, int format);
 
 void zero_acoustic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
 		float *** sxx);

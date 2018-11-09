@@ -116,6 +116,8 @@ SOFI3D_SRC = \
 		$(MODEL_SRC_E) \
 		$(MODEL_SRC_V) \
 		$(SOFI3D_UTIL) \
+		merge_source_field.c \
+		write_source_field.c \
 		madinput.c \
 		mad_elastic.c
 
