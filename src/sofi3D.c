@@ -129,8 +129,10 @@ int main(int argc, char **argv)
     FILE *fpsrc = NULL;
 
     // Initialize MPI environment.
-    // NP is initialized to the number of process (or PE - processing element).
+    // NP is initialized to the total number of processes.
     // MYID is initialized to the index of the process (from 0 to NP-1).
+    extern int NP;
+    extern int MYID;
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &NP);
     MPI_Comm_rank(MPI_COMM_WORLD, &MYID);
