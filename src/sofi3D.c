@@ -672,6 +672,9 @@ int main(int argc, char **argv)
                 break;
         }
 
+        // Source term field distributed in the computational domain.
+        float ***source_field = f3tensor(0, NY + 1, 0, NX + 1, 0, NZ + 1);
+
         /* create model grids check the function readmod*/
         fprintf(FP, "\n ------------------ MODEL CREATION AND OUTPUT-(aniso READMOD=1 needs to be implemented still)---\n");
         if (READMOD == 1)
@@ -1188,6 +1191,8 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                     /* eqsource is a implementation of moment tensor points sources. */
                     eqsource(nt, &s, srcpos_loc, signals, nsrc_loc, stype_loc,
                             amon, str, dip, rake);
+
+                    source_random(nt, &s, srcpos_loc, signals, nsrc_loc, stype_loc, source_field);
                 }
 
                 /* stress free surface ? */
