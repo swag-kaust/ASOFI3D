@@ -24,8 +24,8 @@
 
 #define mymin(x,y) ((x<y) ? x:y)
 #define mymax(x,y) ((y<x) ? x:y)
-inline int myisign(int x){ if (x>0) return 1; else if (x<0) return -1; else return 0;}
-inline float myfsign(float x){ if (x>0.0) return 1; else if (x<0.0) return -1; else return 0;}
+static inline int myisign(int x){ if (x>0) return 1; else if (x<0) return -1; else return 0;}
+static inline float myfsign(float x){ if (x>0.0) return 1; else if (x<0.0) return -1; else return 0;}
 
 
 	float * m2ft(float * iovec, int len);
