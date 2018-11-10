@@ -9,6 +9,15 @@
  * See, e.g.,
  * http://sepwww.stanford.edu/sep/prof/pvi/conj/paper_html/node9.html
  * for details.
+ *
+ * Parameters
+ * ----------
+ * nt :
+ *     Time step number (starting with 1).
+ * s :
+ *     Stress tensor on the local grid.
+ * source_field :
+ *     Source field on the local grid.
  */
 void source_random(int nt, Tensor3d *s, float ***source_field)
 {
@@ -27,11 +36,10 @@ void source_random(int nt, Tensor3d *s, float ***source_field)
     float ***syy = s->yy;
     float ***szz = s->zz;
 
-    /* adding source wavelet to stress components 
-	   (explosive source) at source points */
-
+    // If user specifies SOURCE_TYPE = 7 in the parameter file,
+    // then generate random source value at the each point of the local grid
+    // at the initial time step.
     srand((unsigned int) time(NULL));
-    // for (l = 1; l <= nsrc; l++) {
     if (SOURCE_TYPE == SOURCE_TYPE_RANDOM) {
         if (nt == 1) {
             for (int k = 1; k <= NZ; k += IDZ) {
@@ -50,6 +58,7 @@ void source_random(int nt, Tensor3d *s, float ***source_field)
                     }
                 }
             }
+
             // Write source data for the current time step to file.
             // STRING_SIZE is #define
             char source_field_file[STRING_SIZE];
@@ -59,5 +68,4 @@ void source_random(int nt, Tensor3d *s, float ***source_field)
             if (MYID == 0) merge_source_field(source_field_file, 3);
         }
     }
-    // }
 }
