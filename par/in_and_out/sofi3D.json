@@ -57,6 +57,7 @@
 
 "Model" : "comment",
 			"READMOD" : "-1",
+            "READMOD values: use default parameters=0; read from MFILE=1; use parameters from this file=-1" : "comment",
 			"MFILE" : "model/test",
 			"WRITE_MODELFILES" : "2",
             "VPV1"   : "3000.0",
