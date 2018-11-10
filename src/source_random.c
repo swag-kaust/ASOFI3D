@@ -10,7 +10,7 @@
  * http://sepwww.stanford.edu/sep/prof/pvi/conj/paper_html/node9.html
  * for details.
  */
-void source_random(int nt, Tensor3d *s, int nsrc, int *stype, float ***source_field)
+void source_random(int nt, Tensor3d *s, float ***source_field)
 {
     extern int NX, NY, NZ;
     extern int IDX, IDY, IDZ;
