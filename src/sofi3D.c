@@ -1192,7 +1192,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                     eqsource(nt, &s, srcpos_loc, signals, nsrc_loc, stype_loc,
                             amon, str, dip, rake);
 
-                    source_random(nt, &s, srcpos_loc, signals, nsrc_loc, stype_loc, source_field);
+                    source_random(nt, &s, nsrc_loc, stype_loc, source_field);
                 }
 
                 /* stress free surface ? */

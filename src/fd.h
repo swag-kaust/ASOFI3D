@@ -265,7 +265,7 @@ void snap_rsg(FILE *fp, int nt, int nsnap, int format, int type,
 void snapmerge(int nsnap);
 
 void source_random(int nt, Tensor3d *s,
-        float **srcpos_loc, float **signals, int nsrc, int *stype,
+        int nsrc, int *stype,
         float ***source_field);
 
 float **sources(FILE * fpsrc, int *nsrc, int * stype);
