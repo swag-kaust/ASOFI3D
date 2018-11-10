@@ -17,10 +17,14 @@ try_execute () {
 }
 
 append () {
-    # Prepend to variable $1 all consequent arguments.
+    # Append to variable $1 all consequent arguments.
     var=$1
     shift
-    eval "$var=\"\$$var $*\""
+    if [ -n "$var" ]; then
+        eval "$var=\"\$$var $*\""
+    else
+        eval "$var=\"$*\""
+    fi
 }
 
 trim_whitespace () {
