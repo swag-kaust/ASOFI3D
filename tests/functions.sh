@@ -13,9 +13,6 @@ setup() {
     mkdir tmp/su
 }
 
-<<<<<<< 3a0f06818eec83b71f4aafaaa0fc05ee0e654458
-animate_progress() {
-=======
 compile_code () {
     # Compile code.
     cd src
@@ -42,7 +39,6 @@ compile_code () {
 }
 
 animate_progress () {
->>>>>>> TST: Add function that encapsulates code compilation
     # Animate long-running tasks visually for usability.
     # USAGE: animate_progress task_id message
     # where
