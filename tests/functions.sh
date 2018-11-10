@@ -1,6 +1,6 @@
 # Functions related to testing.
 
-setup () {
+setup() {
     # Setup environment for the execution of a test.
     rm -rf tmp/
     mkdir tmp
@@ -13,7 +13,7 @@ setup () {
     mkdir tmp/su
 }
 
-animate_progress () {
+animate_progress() {
     # Animate long-running tasks visually for usability.
     # USAGE: animate_progress task_id message
     # where
@@ -50,7 +50,7 @@ animate_progress () {
     fi
 }
 
-convert_segy_to_rsf () {
+convert_segy_to_rsf() {
     # Convert SEG-Y format to RSF format.
     # USAGE: convert_segy_to_rsf path/filename.sgy
     #
