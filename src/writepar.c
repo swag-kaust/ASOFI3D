@@ -129,6 +129,9 @@ void writepar(FILE *fp, int ns){
 		fprintf(fp," Rake angle of slip vector (RAKE): %f\n", RAKE);
 		
 		break;
+    case 7 :
+		fprintf(fp," Random source field\n");
+		break;
 	default :
 		fprintf(fp," WARNING: Default type of source ('%d') not available -> changed to explosive! ", SOURCE_TYPE);
 		SOURCE_TYPE=1;
