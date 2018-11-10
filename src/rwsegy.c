@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <string.h>
+#include <strings.h>
 
 #ifndef STRING_SIZE
 #define STRING_SIZE 74

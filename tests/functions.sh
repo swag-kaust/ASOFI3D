@@ -13,7 +13,36 @@ setup() {
     mkdir tmp/su
 }
 
+<<<<<<< 3a0f06818eec83b71f4aafaaa0fc05ee0e654458
 animate_progress() {
+=======
+compile_code () {
+    # Compile code.
+    cd src
+
+    # First invoke `make` in question mode to check if
+    # `sofi3D` target is up to date.
+    make sofi3D --question
+
+    if [ $? -eq 0 ]
+    then
+        echo "Executable 'sofi3D' is up do date."
+    else
+        echo "Recompiling 'sofi3D'. See tmp/make.log for details"
+        make sofi3D > ../tmp/make.log
+
+        if [ "$?" -ne 0 ]; then
+            cd ..
+            echo "${TEST_ID}: FAIL" > /dev/stderr
+            exit 1
+        fi
+    fi
+
+    cd ..
+}
+
+animate_progress () {
+>>>>>>> TST: Add function that encapsulates code compilation
     # Animate long-running tasks visually for usability.
     # USAGE: animate_progress task_id message
     # where

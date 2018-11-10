@@ -22,8 +22,8 @@ filename_su=${filename}.su.new
 filename_sgy=${filename}.sgy
 
 # Convert from the old Seismic Unix format to the new one.
-#suoldtonew < "$filename_su_old" > "${filename_su}"
-cp "$filename_su_old" "${filename_su}"
+suoldtonew < "$filename_su_old" > "${filename_su}"
+
 if [ $? -ne 0 ]; then
     fatal "Conversion from old Seismic Unix format to the new one failed"
 fi

@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# Regression test 10.
+# Regression test 11.
 # Check that the seismograms are comparable with the seismograms
 # obtained using SAVA code (https://github.com/daniel-koehn/SAVA).
-# Model is one-layer isotropic with free surface boundary conditions.
+# Model is one-layer orthorhombic.
 . tests/functions.sh
 
 MODEL="src/hh_elastic.c"
-TEST_PATH="tests/fixtures/test_10"
-TEST_ID="TEST_10"
+TEST_PATH="tests/fixtures/test_11"
+TEST_ID="TEST_11"
 
 # Setup function prepares environment for the test (creates directories).
 setup
@@ -29,7 +29,15 @@ cp "${TEST_PATH}/sofi3D.json"      tmp/in_and_out/sofi3D.json
 cp "${TEST_PATH}/source.dat"       tmp/sources/
 cp "${TEST_PATH}/receiver.dat"     tmp/receiver/
 
-compile_code
+# Compile code.
+cd src
+make sofi3D > ../tmp/make.log
+if [ "$?" -ne "0" ]; then
+    cd ..
+    echo "${TEST_ID}: FAIL" > /dev/stderr
+    exit 1
+fi
+cd ..
 
 # Run code.
 echo "${TEST_ID}: Running solver. Output is captured to tmp/ASOFI3D.log"
@@ -52,7 +60,7 @@ convert_segy_to_rsf ${TEST_PATH}/su/ref_p.sgy
 # Read the files.
 # Compare with the recorded output.
 tests/compare_datasets.py tmp/su/test_p.rsf ${TEST_PATH}/su/ref_p.rsf \
-    --rtol=1e-10 --atol=5e-11
+    --rtol=1e-10 --atol=1e-10
 result=$?
 if [ "$result" -ne "0" ]; then
     echo "${TEST_ID}: Seismograms (pressure) differ" > /dev/stderr
