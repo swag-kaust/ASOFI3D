@@ -309,17 +309,12 @@ double update_s(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
 double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
                         Velocity *v,
                         Tensor3d *s,
-                        Tensor3d *r,
-                        float ***  pi, float ***  u,
-                        float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
-                        float ***  uipjp, float ***  ujpkp, float ***  uipkp,
-                        float  ***  taus, float  ***  tausipjp, float  ***  tausjpkp, float  ***  tausipkp,
-                        float  ***  taup, float *  eta,
+                        float ***pi, float ***u,
+                        OrthoPar *op,
                         VelocityDerivativesTensor *dv,
                         VelocityDerivativesTensor *dv_2,
                         VelocityDerivativesTensor *dv_3,
-                        VelocityDerivativesTensor *dv_4,
-                        OrthoPar *op);
+                        VelocityDerivativesTensor *dv_4);
 
 void compute_vel_deriv_2nd_order(Velocity *v, int i, int j, int k, Strain_ijk *e);
 
