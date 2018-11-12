@@ -9,7 +9,15 @@
 #include "data_structures.h"
 #include "fd.h"
 
-double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt, Velocity *v, Tensor3d *s, Tensor3d *r, float ***pi, float ***u, float ***C11, float ***C12, float ***C13, float ***C22, float ***C23, float ***C33, float ***C66ipjp, float ***C44jpkp, float ***C55ipkp, float ***taus, float ***tausipjp, float ***tausjpkp, float ***tausipkp, float ***taup, float *eta, VelocityDerivativesTensor *dv, VelocityDerivativesTensor *dv_2, VelocityDerivativesTensor *dv_3, VelocityDerivativesTensor *dv_4, OrthoPar *op)
+double update_s_elastic(
+		int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
+		Velocity *v, Tensor3d *s,
+		float ***pi, float ***u,
+		OrthoPar *op,
+		VelocityDerivativesTensor *dv,
+		VelocityDerivativesTensor *dv_2,
+		VelocityDerivativesTensor *dv_3,
+		VelocityDerivativesTensor *dv_4)
 {
     extern float DT, DX, DY, DZ;
     extern int MYID, FDORDER, FDORDER_TIME, LOG, FDCOEFF;
@@ -673,9 +681,9 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, in
                                 vzy = (vz[j + 1][i][k] - vz[j][i][k]) / DY;
                                 vzz = (vz[j][i][k] - vz[j][i][k - 1]) / DZ;
 
-                                c66ipjp = C66ipjp[j][i][k] * DT;
-                                c44jpkp = C44jpkp[j][i][k] * DT;
-                                c55ipkp = C55ipkp[j][i][k] * DT;
+                                c66ipjp = op->C66ipjp[j][i][k] * DT;
+                                c44jpkp = op->C44jpkp[j][i][k] * DT;
+                                c55ipkp = op->C55ipkp[j][i][k] * DT;
                                 g = pi[j][i][k];
                                 f = 2.0 * u[j][i][k];
 
@@ -773,9 +781,9 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, in
                                 vzy = (b1 * (vz[j + 1][i][k] - vz[j][i][k]) + b2 * (vz[j + 2][i][k] - vz[j - 1][i][k])) / DY;
                                 vzz = (b1 * (vz[j][i][k] - vz[j][i][k - 1]) + b2 * (vz[j][i][k + 1] - vz[j][i][k - 2])) / DZ;
 
-                                c66ipjp = C66ipjp[j][i][k] * DT;
-                                c44jpkp = C44jpkp[j][i][k] * DT;
-                                c55ipkp = C55ipkp[j][i][k] * DT;
+                                c66ipjp = op->C66ipjp[j][i][k] * DT;
+                                c44jpkp = op->C44jpkp[j][i][k] * DT;
+                                c55ipkp = op->C55ipkp[j][i][k] * DT;
                                 g = pi[j][i][k];
                                 f = 2.0 * u[j][i][k];
 
@@ -910,9 +918,9 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, in
                                        b3 * (vz[j][i][k + 2] - vz[j][i][k - 3])) /
                                       DZ;
 
-                                c66ipjp = C66ipjp[j][i][k] * DT;
-                                c44jpkp = C44jpkp[j][i][k] * DT;
-                                c55ipkp = C55ipkp[j][i][k] * DT;
+                                c66ipjp = op->C66ipjp[j][i][k] * DT;
+                                c44jpkp = op->C44jpkp[j][i][k] * DT;
+                                c55ipkp = op->C55ipkp[j][i][k] * DT;
                                 g = pi[j][i][k];
                                 f = 2.0 * u[j][i][k];
 
@@ -1059,9 +1067,9 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, in
                                       DZ;
 
                                 /* updating components of the stress tensor, partially */
-                                c66ipjp = C66ipjp[j][i][k] * DT;
-                                c44jpkp = C44jpkp[j][i][k] * DT;
-                                c55ipkp = C55ipkp[j][i][k] * DT;
+                                c66ipjp = op->C66ipjp[j][i][k] * DT;
+                                c44jpkp = op->C44jpkp[j][i][k] * DT;
+                                c55ipkp = op->C55ipkp[j][i][k] * DT;
                                 g = pi[j][i][k];
                                 f = 2.0 * u[j][i][k];
 
@@ -1218,9 +1226,9 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, in
                                        b5 * (vz[j][i][k + 4] - vz[j][i][k - 5])) /
                                       DZ;
 
-                                c66ipjp = C66ipjp[j][i][k] * DT;
-                                c44jpkp = C44jpkp[j][i][k] * DT;
-                                c55ipkp = C55ipkp[j][i][k] * DT;
+                                c66ipjp = op->C66ipjp[j][i][k] * DT;
+                                c44jpkp = op->C44jpkp[j][i][k] * DT;
+                                c55ipkp = op->C55ipkp[j][i][k] * DT;
                                 g = pi[j][i][k];
                                 f = 2.0 * u[j][i][k];
 
@@ -1391,9 +1399,9 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, in
                                        b6 * (vz[j][i][k + 5] - vz[j][i][k - 6])) /
                                       DZ;
 
-                                c66ipjp = C66ipjp[j][i][k] * DT;
-                                c44jpkp = C44jpkp[j][i][k] * DT;
-                                c55ipkp = C55ipkp[j][i][k] * DT;
+                                c66ipjp = op->C66ipjp[j][i][k] * DT;
+                                c44jpkp = op->C44jpkp[j][i][k] * DT;
+                                c55ipkp = op->C55ipkp[j][i][k] * DT;
                                 g = pi[j][i][k];
                                 f = 2.0 * u[j][i][k];
 
@@ -1506,9 +1514,9 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, in
                                 vzy = (vz[j + 1][i][k] - vz[j][i][k]) / DY;
                                 vzz = (vz[j][i][k] - vz[j][i][k - 1]) / DZ;
 
-                                c66ipjp = C66ipjp[j][i][k] * DT;
-                                c44jpkp = C44jpkp[j][i][k] * DT;
-                                c55ipkp = C55ipkp[j][i][k] * DT;
+                                c66ipjp = op->C66ipjp[j][i][k] * DT;
+                                c44jpkp = op->C44jpkp[j][i][k] * DT;
+                                c55ipkp = op->C55ipkp[j][i][k] * DT;
                                 g = pi[j][i][k];
                                 f = 2.0 * u[j][i][k];
 
@@ -1618,9 +1626,9 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, in
                                 vzy = (b1 * (vz[j + 1][i][k] - vz[j][i][k]) + b2 * (vz[j + 2][i][k] - vz[j - 1][i][k])) / DY;
                                 vzz = (b1 * (vz[j][i][k] - vz[j][i][k - 1]) + b2 * (vz[j][i][k + 1] - vz[j][i][k - 2])) / DZ;
 
-                                c66ipjp = C66ipjp[j][i][k] * DT;
-                                c44jpkp = C44jpkp[j][i][k] * DT;
-                                c55ipkp = C55ipkp[j][i][k] * DT;
+                                c66ipjp = op->C66ipjp[j][i][k] * DT;
+                                c44jpkp = op->C44jpkp[j][i][k] * DT;
+                                c55ipkp = op->C55ipkp[j][i][k] * DT;
                                 g = pi[j][i][k];
                                 f = 2.0 * u[j][i][k];
 
@@ -1767,9 +1775,9 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, in
                                        b3 * (vz[j][i][k + 2] - vz[j][i][k - 3])) /
                                       DZ;
 
-                                c66ipjp = C66ipjp[j][i][k] * DT;
-                                c44jpkp = C44jpkp[j][i][k] * DT;
-                                c55ipkp = C55ipkp[j][i][k] * DT;
+                                c66ipjp = op->C66ipjp[j][i][k] * DT;
+                                c44jpkp = op->C44jpkp[j][i][k] * DT;
+                                c55ipkp = op->C55ipkp[j][i][k] * DT;
                                 g = pi[j][i][k];
                                 f = 2.0 * u[j][i][k];
 
@@ -1928,9 +1936,9 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, in
                                       DZ;
 
                                 /* updating components of the stress tensor, partially */
-                                c66ipjp = C66ipjp[j][i][k] * DT;
-                                c44jpkp = C44jpkp[j][i][k] * DT;
-                                c55ipkp = C55ipkp[j][i][k] * DT;
+                                c66ipjp = op->C66ipjp[j][i][k] * DT;
+                                c44jpkp = op->C44jpkp[j][i][k] * DT;
+                                c55ipkp = op->C55ipkp[j][i][k] * DT;
                                 g = pi[j][i][k];
                                 f = 2.0 * u[j][i][k];
 
@@ -2099,9 +2107,9 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, in
                                        b5 * (vz[j][i][k + 4] - vz[j][i][k - 5])) /
                                       DZ;
 
-                                c66ipjp = C66ipjp[j][i][k] * DT;
-                                c44jpkp = C44jpkp[j][i][k] * DT;
-                                c55ipkp = C55ipkp[j][i][k] * DT;
+                                c66ipjp = op->C66ipjp[j][i][k] * DT;
+                                c44jpkp = op->C44jpkp[j][i][k] * DT;
+                                c55ipkp = op->C55ipkp[j][i][k] * DT;
                                 g = pi[j][i][k];
                                 f = 2.0 * u[j][i][k];
 
@@ -2284,9 +2292,9 @@ double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, in
                                        b6 * (vz[j][i][k + 5] - vz[j][i][k - 6])) /
                                       DZ;
 
-                                c66ipjp = C66ipjp[j][i][k] * DT;
-                                c44jpkp = C44jpkp[j][i][k] * DT;
-                                c55ipkp = C55ipkp[j][i][k] * DT;
+                                c66ipjp = op->C66ipjp[j][i][k] * DT;
+                                c44jpkp = op->C44jpkp[j][i][k] * DT;
+                                c55ipkp = op->C55ipkp[j][i][k] * DT;
                                 g = pi[j][i][k];
                                 f = 2.0 * u[j][i][k];
 

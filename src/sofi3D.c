@@ -1041,9 +1041,9 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 else
                 {
                     time_s_update[nt] = update_s_elastic(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v,
-                            &s, &r,
-                            pi, u, C11, C12, C13, C22, C23, C33, C66ipjp, C44jpkp, C55ipkp, taus, tausipjp, tausjpkp, tausipkp, taup, eta,
-                            &dv, &dv_2, &dv_3, &dv_4, &op);
+                            &s,
+                            pi, u, &op,
+                            &dv, &dv_2, &dv_3, &dv_4);
                     if (ABS_TYPE == 1)
                         update_s_CPML_elastic(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v,
                                 &s, &op, pi, u,
