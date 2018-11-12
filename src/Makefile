@@ -232,16 +232,9 @@ sofi3D_bench: $(SOFI3D_OBJ_BENCH)
 sofi3D_acoustic: $(SOFI3D_OBJ_ACOUSTIC)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $^ $(LDLIBS) -o ../bin/sofi3D_acoustic
 
-clean:
-	find . -name "*.o"   -exec rm {} \;
-	find . -name "*.bck" -exec rm {} \;
-	find . -name "core"  -exec rm {} \;
-
 clobber: clean
 	-$(RM) config-auto.mk
 	-$(RM) -r craycc_pl
-
-all: clean sofi3D sofi3D_acoustic snapmerge seismerge part_model
 
 config-auto.mk: configure
 	@./$< > $@
