@@ -5,7 +5,7 @@
 
 #include "fd.h"
 
-void exchange_par(void){
+void exchange_par(void) {
 	/* declaration of extern variables */
 
 	extern float DX, DY, DZ, TIME, DT, *FL, TS, TAU, FREF, PLANE_WAVE_DEPTH, PLANE_WAVE_ANGLE;
@@ -13,8 +13,14 @@ void exchange_par(void){
 	extern float SOURCE_ALPHA, SOURCE_BETA, VPPML;
 	extern float AMON, STR, DIP, RAKE;
 	extern float REC_ARRAY_DEPTH, REC_ARRAY_DIST;
-	extern float TSNAP1, TSNAP2, TSNAPINC, FW, REFREC[4], DAMPING, FPML, NPOWER, K_MAX_CPML;
+	extern float TSNAP1, TSNAP2, TSNAPINC, REFREC[4], DAMPING, FPML, NPOWER, K_MAX_CPML;
 	extern int SEISMO, NDT, NDTSHIFT, NGEOPH, SEIS_FORMAT[6], FREE_SURF, READMOD, READREC;
+
+	/*
+	 * "Boundary conditions"
+	 */
+	extern int FW;
+
 	extern int BOUNDARY, REC_ARRAY, LOG, IDX, IDY, IDZ, ABS_TYPE, WRITE_MODELFILES;
 	extern int   NX, NY, NZ, SOURCE_SHAPE, SOURCE_TYPE, SNAP, SNAP_FORMAT, SNAP_PLANE, OUTNTIMESTEPINFO, OUTSOURCEWAVELET;
 	extern int DRX, DRZ, L, SRCREC, FDORDER,FDORDER_TIME;
