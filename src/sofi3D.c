@@ -698,7 +698,7 @@ int main(int argc, char **argv)
         // Madagascar
 
         if (RSF) madinput(RSFDEN,rho);
-        //mad_elastic(rho, pi, u, C11, C12, C13, C22, C23, C33, C44, C55, C66, taus, taup, eta);
+        //mad_elastic(rho, pi, u, C11, C12, C13, C22, C23, C33, C44, C55, C66);
 
         if (RUN_MULTIPLE_SHOTS)
             nshots = nsrc;
@@ -969,7 +969,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 /* update of particle velocities */
                 time_v_update[nt] = update_v(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt,
                         &v, &s,
-                        rho, rjp, rkp, rip, srcpos_loc, signals, nsrc_loc, absorb_coeff, stype_loc,
+                        rjp, rkp, rip, srcpos_loc, signals, nsrc_loc, absorb_coeff, stype_loc,
                         &ds_dv, &ds_dv_2, &ds_dv_3, &ds_dv_4);
 
                 if (ABS_TYPE == 1)
@@ -1046,9 +1046,8 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                             &dv, &dv_2, &dv_3, &dv_4);
                     if (ABS_TYPE == 1)
                         update_s_CPML_elastic(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v,
-                                &s, &op, pi, u,
-                                C11, C12, C13, C22, C23, C33,
-                                C66ipjp, C44jpkp, C55ipkp, K_x, a_x, b_x, K_x_half, a_x_half,
+                                &s, &op,
+                                K_x, a_x, b_x, K_x_half, a_x_half,
                                 b_x_half, K_y, a_y, b_y, K_y_half, a_y_half, b_y_half, K_z, a_z, b_z, K_z_half, a_z_half, b_z_half,
                                 psi_vxx, psi_vyx, psi_vzx, psi_vxy, psi_vyy, psi_vzy, psi_vxz, psi_vyz, psi_vzz);
                 }

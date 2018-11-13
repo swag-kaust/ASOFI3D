@@ -36,7 +36,7 @@
  */
 double update_v(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 		int nt, Velocity *v,
-		Tensor3d *s, float  ***  rho,  float  *** rjp, float  *** rkp, float  *** rip,
+		Tensor3d *s, float  *** rjp, float  *** rkp, float  *** rip,
 		float **  srcpos_loc, float ** signals, int nsrc, float *** absorb_coeff, int * stype,
         StressDerivativesWrtVelocity *ds_dv,
         StressDerivativesWrtVelocity *ds_dv_2,

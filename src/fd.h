@@ -156,8 +156,7 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
 
 void mad_elastic(float  ***  rho, float ***  pi, float ***  u,
 			float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
-			float *** C44, float *** C55, float *** C66,
-			float ***  taus, float ***  taup, float *  eta);
+			float *** C44, float *** C55, float *** C66);
 
 void model_acoustic(float  ***  rho, float ***  pi);
 
@@ -340,9 +339,7 @@ double update_s_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int n
 		float *** psi_vxx, float *** psi_vyx, float *** psi_vzx, float *** psi_vxy, float *** psi_vyy, float *** psi_vzy, float *** psi_vxz, float *** psi_vyz, float *** psi_vzz);
 
 double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt, Velocity *v,
-		Tensor3d *s, OrthoPar *op, float ***  pi, float ***  u,
-		float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
-		float ***  C66ipjp, float ***  C44jpkp, float ***  C55ipkp,
+		Tensor3d *s, OrthoPar *op,
 		float * K_x, float * a_x, float * b_x, float * K_x_half, float * a_x_half, float * b_x_half,
 		float * K_y, float * a_y, float * b_y, float * K_y_half, float * a_y_half, float * b_y_half,
 		float * K_z, float * a_z, float * b_z, float * K_z_half, float * a_z_half, float * b_z_half,
@@ -367,7 +364,7 @@ void update_s_rsg(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
 double update_v(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 		int nt, Velocity *v,
 		Tensor3d *s,
-        float  ***  rho,  float  *** rjp, float  *** rkp, float  *** rip,
+        float  *** rjp, float  *** rkp, float  *** rip,
         float **  srcpos_loc, float ** signals, int nsrc, float ***absorb_coeff, int * stype,
         StressDerivativesWrtVelocity *ds_dv,
         StressDerivativesWrtVelocity *ds_dv_2,
