@@ -132,7 +132,7 @@
 "Seismograms" : "comment",
 			"NDT, NDTSHIFT" : "1, 0",
 			"SEIS_FORMAT" : "5",
-			"SEIS_FILE" : "./su/test-readmod=-1",
+			"SEIS_FILE" : "./su/test",
 
 "Monitoring the simulation" : "comment",
 			"LOG_FILE" : "log/test.log",
