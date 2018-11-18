@@ -1010,36 +1010,68 @@ Please note, that due to dispersive media properties the viscoelastic velocity m
 
 \begin{verbatim}
 "Boundary Conditions" : "comment",
-            "FREE_SURF" : "1", 
-            "ABS_TYPE" : "2",
-            "FW" : "30.0",
-            "DAMPING" : "8.0",
-            "FPML" : "5.0",
-            "VPPML" : "3500.0",
-            "NPOWER" : "2.0",
-            "K_MAX_CPML" : "10.0",
-            "BOUNDARY" : "0",
+    "FREE_SURF"  : "1",
+    "ABS_TYPE"   : "2",
+    "FW"         : "30.0",
+    "DAMPING"    : "8.0",
+    "FPML"       : "5.0",
+    "VPPML"      : "3500.0",
+    "NPOWER"     : "2.0",
+    "K_MAX_CPML" : "10.0",
+    "BOUNDARY"   : "0",
 \end{verbatim}
-
-with
-
-FREE\_SURF : free surface (yes=1)\\
-ABS\_TYPE : type of boundary condition (PML=1/ABS=2)\\
-FW : width of boundary frame (in grid points) (No$<$=0)\\
-DAMPING : parameter for absorbing boundary (exponential damping), percentage of amplitude decay at outer edge\\
-FPML : parameter for PML, Dominant frequency (in Hz)\\
-VPPML : p wave velocity near the grid boundary (in m/s)\\
-NPOWER :  power to compute d0 profile, i.e. exponent used in CMPL frame update, the larger the more damping \\
-K\_MAX\_CPML :  Coefficient used for the CMPL frame update \\
-BOUNDARY : apply periodic boundary condition at edges (no=0;
-left/right/front/back/top/bottom=1) \\
+where\\
+\option{FREE\_SURF}: free surface (no=1; yes=1)\\
+\option{ABS\_TYPE}: type of boundary condition (Convolutional Perfectly Matched Layer (CPML)=11; exponential damping=2)\\
+\option{FW}: width of the absorbing boundary frame (in grid points) (the frame is absent when \option{FW$\leq$0})\\
+\option{DAMPING}: percentage of amplitude decay at the outer edge, applied when (\option{ABS\_TYPE=2})\\
+\option{FPML}: dominant frequency (in Hz), applied for CPML (when \option{ABS\_TYPE=1})\\
+\option{VPPML}: $p$-wave velocity near the boundary (in m/s), applied for CPML (when \option{ABS\_TYPE=1})\\
+\option{NPOWER}:  exponent used for CMPL (when \option{ABS\_TYPE=1}), the larger \option{NPOWER} the more damping \\
+\option{K\_MAX\_CPML}:  coefficient applied for CPML (when \option{ABS\_TYPE=1}) \\
+\option{BOUNDARY}: apply periodic boundary condition at edges (no=0;
+left/right/front/back/top/bottom=1)
 %A : thickness of the layer between aquisition geometry and PML \\
 
-The boundary conditions are applied on each side face and the bottom face of the model grid. A plane stress free surface is applied at the top of the global grid if FREE\_SURF $\neq$ 0 using the imaging method proposed by Levander \cite{levander:88}. If FREE\_SURF = 0 the boundary conditions are also applied at the top face of the model grid. Note that the absorbing frames are always located INSIDE the model space, i.e. parts of the model structure are covered by the absorbing frame, in which no physically meaningful wavefield propagates. You should therefore consider the frame width when you design the model structure and the acquisition geometry (shot and receivers should certainly be placed outside).
+The boundary conditions are applied on each side face and the bottom face of
+the model grid. If \option{FREE\_SURF=1}, then a plane stress free surface is
+applied at the top of the global grid  using the imaging method proposed by
+Levander~\cite{levander:88}, otherwise the specified boundary condition is also
+applied at the top face of the model grid. Note that the absorbing frame is
+always located INSIDE the model space, i.\ e., parts of the model structure are
+covered by the absorbing frame, in which no physically meaningful wave
+propagates. You should therefore consider the frame width when you design the
+model structure and the acquisition geometry (shot and receivers should
+certainly be placed outside).
 
-Two different boundary conditions are available: an unsplit convolutional perfectly matched layer (cPML) boundary condition (in the elastic case) and split perfectly matched layer (PML) boundary condition (in the acoustic case), respectively, and a conventional exponential wavefield damping condition (ABS) (see section \ref{bound_cond} and section \ref{comp_EXP_PML}). The PML implementation is based on the following papers \cite{collino:01}, \cite{komatitsch:07} and \cite{martin:09}. It should be much more effective than the ABS condition. If ABS\_TYPE=1 (PML) a width of the absorbing frame of FW=10-20 grid points should be sufficient. In the case of ABS\_TYPE=2 (ABS) exponential wavefield damping according to \cite{cerjan:85} is applied. For this case, you should increase the width of the frame to 30-50 grid points. DAMPING specifies attenuation in percent at the edges of the numerical grid, i.e. amplitudes are multiplied by a factor of 1-DAMPING at the outer edges. A good choice for DAMPING is 8.0 per cent. For larger values, reflections at the onset of the absorbing frame might occur. In order to avoid such an impedance contrast between the model domain and the absorbing boundary layer, you may as well increase FW and decrease DAMPING.
+Two different absorbing boundary conditions are available: an unsplit
+convolutional perfectly matched layer (CPML) boundary condition (in the elastic
+case) and split perfectly matched layer (PML) boundary condition (in the
+acoustic case), respectively, and a conventional exponential wavefield damping
+condition (ABS) (see Sections~\ref{bound_cond} and~\ref{comp_EXP_PML}).
 
-For the optimal realization of the CPML boundary condition you have to specify the dominant signal frequency FMPL occurring during the wave simulation. This is usually the center source frequency FC specified in the source file. VPPML should be approximately the P-wave velocity near the model boundaries. For the definition of the option VPPML, have a look at $V_p$ in equation \ER{FD:6:1}. If the wave incident angle is not perpendicular to CPML frame, K\_MAX\_CPML can be increased in order to stabilize the CPML update, otherwise instabilities might occure.
+If \option{ABS\_TYPE=1}, the PML implementation is based on the papers
+\cite{collino:01,komatitsch:07,martin:09}. It should be
+much more effective than the ABS condition. A width of the absorbing frame
+\option{FW} of 10--20 grid points should be sufficient. For the optimal
+realization of the CPML boundary condition you have to specify the dominant
+signal frequency \option{FMPL} occurring during the wave simulation. This is
+usually the center source frequency \option{FC} specified in the source file.
+\option{VPPML} should be approximately the $p$-wave velocity near the model
+boundaries. For the definition of the option \option{VPPML}, have a look at
+$V_p$ in equation \ER{FD:6:1}. If the wave incident angle is not perpendicular
+to CPML frame, \option{K\_MAX\_CPML} can be increased in order to stabilize the
+CPML update, otherwise instabilities might occur.
+
+If \option{ABS\_TYPE=2}, then exponential wavefield damping is applied on the
+boundaries according to~\cite{cerjan:85}. For this case, the width of the frame
+(\option{FW}) should be at least 30--50 grid points. \option{DAMPING} specifies
+attenuation in percent at the edges of the numerical grid, i.\e., amplitudes
+are multiplied by a factor of 1-DAMPING at the outer edges. A good choice for
+\option{DAMPING} is 8 \%. For larger values, reflections at the onset of the
+absorbing frame might occur. In order to avoid such an impedance contrast
+between the model domain and the absorbing boundary frame, you may as well
+increase \option{FW} and decrease \option{DAMPING}.
 
 It is sometimes useful to apply periodic boundary conditions (see
 Section~\ref{bound_cond}). If \texttt{BOUNDARY=1}, no absorbing boundaries are
