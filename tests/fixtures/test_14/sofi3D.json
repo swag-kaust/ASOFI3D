@@ -98,7 +98,7 @@
 			"VPPML" : "1500.0",
 			"NPOWER" : "4.0",
 			"K_MAX_CPML" : "1.0",
-			"BOUNDARY" : "0",
+			"BOUNDARY" : "1",
 
 "Snapshots" : "comment",
 			"SNAP" : "2",
