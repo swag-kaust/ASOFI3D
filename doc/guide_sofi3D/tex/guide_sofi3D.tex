@@ -1027,7 +1027,8 @@ FPML : parameter for PML, Dominant frequency (in Hz)\\
 VPPML : p wave velocity near the grid boundary (in m/s)\\
 NPOWER :  power to compute d0 profile, i.e. exponent used in CMPL frame update, the larger the more damping \\
 K\_MAX\_CPML :  Coefficient used for the CMPL frame update \\
-BOUNDARY : apply periodic boundary condition at edges. Periodic boundary (no=0,left/right/ front/back=1) \\
+BOUNDARY : apply periodic boundary condition at edges (no=0;
+left/right/front/back/top/bottom=1) \\
 %A : thickness of the layer between aquisition geometry and PML \\
 
 The boundary conditions are applied on each side face and the bottom face of the model grid. A plane stress free surface is applied at the top of the global grid if FREE\_SURF $\neq$ 0 using the imaging method proposed by Levander \cite{levander:88}. If FREE\_SURF = 0 the boundary conditions are also applied at the top face of the model grid. Note that the absorbing frames are always located INSIDE the model space, i.e. parts of the model structure are covered by the absorbing frame, in which no physically meaningful wavefield propagates. You should therefore consider the frame width when you design the model structure and the acquisition geometry (shot and receivers should certainly be placed outside).
@@ -1036,7 +1037,12 @@ Two different boundary conditions are available: an unsplit convolutional perfec
 
 For the optimal realization of the CPML boundary condition you have to specify the dominant signal frequency FMPL occurring during the wave simulation. This is usually the center source frequency FC specified in the source file. VPPML should be approximately the P-wave velocity near the model boundaries. For the definition of the option VPPML, have a look at $V_p$ in equation \ER{FD:6:1}. If the wave incident angle is not perpendicular to CPML frame, K\_MAX\_CPML can be increased in order to stabilize the CPML update, otherwise instabilities might occure.
 
- In some cases, it is usefull to apply periodic boundary conditions (see section \ref{bound_cond}). IF BOUNDARY=1 no absorbing boundaries are installed at the left/right and front/back sides of the grid. Instead, wavefield information is copied from left to right and vice versa, as well as from front to back and vice versa. The effect is, for example, that a wave which leaves the model at the left side enters the model again at the right side.
+It is sometimes useful to apply periodic boundary conditions (see
+Section~\ref{bound_cond}). If \texttt{BOUNDARY=1}, no absorbing boundaries are
+installed at the left/right, front/back, and top/bottom sides of the grid.
+Instead, wavefield information is copied from left to right and vice versa,
+etc. The effect is that a wave which, for example, leaves the model at the left
+side, enters the model again at the right side.
 
 \subsubsection{Wavefield snapshots}
 \begin{verbatim}
