@@ -31,7 +31,7 @@
 			"fdcoeff values: Taylor=1, Holberg=2" : "comment",
 
 "Time Stepping" : "comment",
-			"TIME" : "0.003",
+			"TIME" : "0.2001",
 			"DT" : "1e-3",
 
 "Source" : "comment",
@@ -102,8 +102,8 @@
 
 "Snapshots" : "comment",
 			"SNAP" : "2",
-			"TSNAP1" : "0.002",
-			"TSNAP2" : "0.003",
+			"TSNAP1" : "0.1999",
+			"TSNAP2" : "0.2001",
 			"TSNAPINC" : "0.002",
 			"IDX" : "1",
 			"IDY" : "1",
