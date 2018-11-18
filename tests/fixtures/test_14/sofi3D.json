@@ -91,9 +91,9 @@
 
 "Boundary Conditions" : "comment",
 			"FREE_SURF" : "0",
-			"ABS_TYPE" : "1",
+			"ABS_TYPE" : "2",
 			"FW" : "20.0",
-			"DAMPING" : "8.0",
+			"DAMPING" : "0.0",
 			"FPML" : "5.0",
 			"VPPML" : "1500.0",
 			"NPOWER" : "4.0",
