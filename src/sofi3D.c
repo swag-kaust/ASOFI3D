@@ -682,7 +682,7 @@ int main(int argc, char **argv)
         else
         {
             if (L == 0) {
-                model_elastic(rho, pi, u, C11, C12, C13, C22, C23, C33, C44, C55, C66, taus, taup, eta); /* elastic modeling, L is specified in input file*/
+                model_elastic(rho, pi, u, C11, C12, C13, C22, C23, C33, C44, C55, C66); /* elastic modeling, L is specified in input file*/
             }
             else
             {
