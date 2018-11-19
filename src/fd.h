@@ -377,11 +377,13 @@ float *** vy2, float *** vz2, float *** sxx2, float *** syy2, float *** szz2, fl
 float *** vx3, float *** vy3, float *** vz3, float *** sxx3, float *** syy3, float *** szz3, float *** sxy3, float *** syz3,
 float *** sxz3,float  ***  rho, float **  srcpos_loc, float ** signals, int nsrc, float *** absorb_coeffx, float *** absorb_coeffy, float *** absorb_coeffz, int * stype);*/
 
-double update_v_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
+double update_v_CPML(
+        int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 		int nt, Velocity *v,
 		Tensor3d *s,
-                float  ***  rho,  float  *** rjp, float  *** rkp, float  *** rip,
-		float **  srcpos_loc, float ** signals, int nsrc, float *** absorb_coeff, int * stype,
+        // float  ***rho,
+        float  *** rjp, float  *** rkp, float  *** rip,
+		// float **  srcpos_loc, float ** signals, int nsrc, float *** absorb_coeff, int * stype,
 		float * K_x, float * a_x, float * b_x, float * K_x_half, float * a_x_half, float * b_x_half,
 		float * K_y, float * a_y, float * b_y, float * K_y_half, float * a_y_half, float * b_y_half,
 		float * K_z, float * a_z, float * b_z, float * K_z_half, float * a_z_half, float * b_z_half,

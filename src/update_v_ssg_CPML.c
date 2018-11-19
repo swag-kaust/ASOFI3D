@@ -1,6 +1,12 @@
 #include "fd.h"
 #include "data_structures.h"
 
+#ifdef __GNUC__
+    #define ATTR_UNUSED __attribute__((unused))
+#else
+    #define ATTR_UNUSED
+#endif
+
 
 /**
  * Correct particle velocity using CPML boundary condition.
@@ -20,10 +26,6 @@
  *     Stress tensor.
  * rho, rjp, rkp, rip :
  *     Density and its shifts on the staggered grid.
- * srcpos_loc, signals, nsrc, stype :
- *     Source parameters. NOT USED.
- * absorb_coeff :
- *     Absorption coefficient ?. NOT USED.
  * K_x, a_x, b_x, K_x_half, a_x_half, b_x_half :
  *     Parameters of the Perfectly Matched Layer (PML) along x-axis.
  * K_y, a_y, b_y, K_y_half, a_y_half, b_y_half :
@@ -42,11 +44,11 @@
  * Geophysics, Vol. 72, No. 5
  * https://doi.org/10.1190/1.2757586
  */
-double update_v_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
+double update_v_CPML(
+        int nx1, int nx2, int ny1, int ny2, int nz1 ATTR_UNUSED, int nz2,
 		int nt, Velocity *v,
 		Tensor3d *s,
-		float  ***  rho,  float  *** rjp, float  *** rkp, float  *** rip,
-		float **  srcpos_loc, float ** signals, int nsrc, float *** absorb_coeff, int * stype,
+        float  *** rjp, float  *** rkp, float  *** rip,
 		float * K_x, float * a_x, float * b_x, float * K_x_half, float * a_x_half, float * b_x_half,
 		float * K_y, float * a_y, float * b_y, float * K_y_half, float * a_y_half, float * b_y_half,
 		float * K_z, float * a_z, float * b_z, float * K_z_half, float * a_z_half, float * b_z_half,
