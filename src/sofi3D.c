@@ -975,7 +975,12 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 if (ABS_TYPE == 1)
                 {
                     update_v_CPML(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v,
-                            &s, rho, rjp, rkp, rip, srcpos_loc, signals, nsrc_loc, absorb_coeff, stype_loc, K_x, a_x, b_x, K_x_half, a_x_half, b_x_half, K_y, a_y, b_y, K_y_half, a_y_half, b_y_half, K_z, a_z, b_z, K_z_half, a_z_half, b_z_half, psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y, psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z);
+                            &s,
+                            rjp, rkp, rip,
+                            K_x, a_x, b_x, K_x_half, a_x_half, b_x_half,
+                            K_y, a_y, b_y, K_y_half, a_y_half, b_y_half,
+                            K_z, a_z, b_z, K_z_half, a_z_half, b_z_half,
+                            psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y, psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z);
                 };
 
                 // Shift spatial derivatives of the stress one time step back.
