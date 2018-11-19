@@ -101,7 +101,7 @@ void exchange_s_rsg(float *** sxx, float *** syy, float *** szz,
 double exchange_s(int nt, Tensor3d *s,
         float *** bufferlef_to_rig, float *** bufferrig_to_lef,
         float *** buffertop_to_bot, float *** bufferbot_to_top,
-        float *** bufferfro_to_bac, float *** bufferbac_to_fro, MPI_Request * req_send, MPI_Request * req_rec);
+        float *** bufferfro_to_bac, float *** bufferbac_to_fro);
 
 double exchange_s_acoustic(int nt, float *** sxx,
 		float *** bufferlef_to_rig, float *** bufferrig_to_lef,
@@ -116,7 +116,7 @@ void exchange_v_rsg(int nt, float *** vx, float *** vy, float *** vz,
 double exchange_v(int nt, Velocity *v,
 		float *** bufferlef_to_rig, float *** bufferrig_to_lef,
 		float *** buffertop_to_bot, float *** bufferbot_to_top,
-		float *** bufferfro_to_bac, float *** bufferbac_to_fro, MPI_Request * req_send, MPI_Request * req_rec);
+		float *** bufferfro_to_bac, float *** bufferbac_to_fro);
 
 void read_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 		Velocity *v,

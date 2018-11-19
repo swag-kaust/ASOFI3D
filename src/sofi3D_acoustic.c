@@ -593,7 +593,7 @@ int main(int argc, char **argv){
 
 				/* exchange values of particle velocities at grid boundaries between PEs */
 				time_v_exchange[nt]=exchange_v(nt, &v, bufferlef_to_rig, bufferrig_to_lef, buffertop_to_bot, bufferbot_to_top,
-						bufferfro_to_bac, bufferbac_to_fro, req_send, req_rec);
+						bufferfro_to_bac, bufferbac_to_fro);
 
 
 				/* update of components of stress tensor */
