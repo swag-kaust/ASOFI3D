@@ -1,11 +1,27 @@
-/* ----------------------------------------------------------------------
- * some utility-routines from numerical recipes , see NUMERICAL RECIPES IN C, Press et al., 1990, pp 942
- * ----------------------------------------------------------------------*/
-
-#define NR_END 1
-#define FREE_ARG char *
+/**
+ * Utility routines.
+ *
+ * Functions here of two types:
+ * - functions that allocatate/deallocatate
+ *   ubiquitous scientific computing data structures (such as vectors, matrices,
+ *   and tensors)
+ * - functions that dump error messages
+ *
+ * These functions are borrowed from the book [1].
+ *
+ * References
+ * ----------
+ * [1] Teukolsky, S.A., Flannery, B.P., Press, W.H. and Vetterling, W.T.
+ * Numerical recipes in C, 2nd edition.
+ */
 
 #include "fd.h"
+
+// The need for using NR_END is described on pages 940--941 of [1].
+#define NR_END 1
+// The need for casting to `char *` in `free` is due to the very old
+// code (First edition of [1] was published before C1989 standard).
+#define FREE_ARG char *
 
 #ifdef __GNUC__
 #define ATTR_UNUSED __attribute__((unused))
