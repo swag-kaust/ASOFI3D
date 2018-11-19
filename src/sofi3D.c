@@ -1256,28 +1256,28 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                     case 1: /* particle velocities only */
                         catseis(sectionvx, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 1);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 1);
                         catseis(sectionvy, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 2);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 2);
                         catseis(sectionvz, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 3);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 3);
 
                         break;
                     case 2: /* pressure only */
                         catseis(sectionp, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 4);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 4);
 
                         break;
                     case 3: /* curl and div only */
                         catseis(sectiondiv, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 5);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 5);
                         catseis(sectioncurl, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 6);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 6);
 
                         break;
                     case 4: /* everything */
@@ -1285,22 +1285,22 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                           fprintf(stdout,"Message from PE %d\n",MYID);*/
                         catseis(sectionvx, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 1);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 1);
                         catseis(sectionvy, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 2);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 2);
                         catseis(sectionvz, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 3);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 3);
                         catseis(sectionp, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 4);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 4);
                         catseis(sectiondiv, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 5);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 5);
                         catseis(sectioncurl, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 6);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 6);
 
                         break;
                     default:
