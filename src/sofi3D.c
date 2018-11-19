@@ -733,7 +733,7 @@ int main(int argc, char **argv)
         matcopy(rho, pi, u, C11, C12, C13, C22, C23, C33, C44, C55, C66, taus, taup);
 
         /* spatial averaging of material parameters, i.e. Tau for S-waves, shear modulus, and density */
-        av_mat(rho, pi, u, C44, C55, C66, taus, taup, C66ipjp, C44jpkp, C55ipkp, tausipjp, tausjpkp, tausipkp, rjp, rkp, rip);
+        av_mat(rho, C44, C55, C66, taus, C66ipjp, C44jpkp, C55ipkp, tausipjp, tausjpkp, tausipkp, rjp, rkp, rip);
 
         MPI_Barrier(MPI_COMM_WORLD);
 
