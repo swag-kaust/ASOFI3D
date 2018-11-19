@@ -52,9 +52,9 @@ void CPML_coeff(float * K_x, float * alpha_prime_x, float * a_x, float * b_x,
 
 void CPML_ini_elastic(int * xb, int * yb, int * zb);
 
-void av_mat(float *** rho, float *** pi, float *** u,
+void av_mat(float *** rho,
         float *** C44, float *** C55, float *** C66,
-		float *** taus, float *** taup,
+		float *** taus,
 		float  *** uipjp, float *** ukpkp, float *** uipkp, float *** tausipjp,
 		float  *** tausjpkp, float  *** tausipkp, float  *** rjp, float  *** rkp, float  *** rip );
 
