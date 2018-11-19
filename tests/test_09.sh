@@ -18,6 +18,8 @@ setup
 # Copy test model.
 cp -R ${TEST_PATH}/* tmp
 
+compile_code
+
 cd tmp > /dev/null
 
 # Run code.
