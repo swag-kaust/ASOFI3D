@@ -5,11 +5,11 @@
 
 #include "fd.h"
 
-void av_mat(float *** rho, float *** pi, float *** u,
+void av_mat(float *** rho, 
         float *** C44, float *** C55, float *** C66,
-		float *** taus, float *** taup,
+		float *** taus,
 		float  *** C66ipjp, float *** C44jpkp, float *** C55ipkp, float *** tausipjp,
-		float  *** tausjpkp, float  *** tausipkp, float  *** rjp, float  *** rkp, float  *** rip ){
+		float  *** tausjpkp, float  *** tausipkp, float  *** rjp, float  *** rkp, float  *** rip ) {
 
 
 	extern int NX, NY, NZ, MYID, L;
