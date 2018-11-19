@@ -118,8 +118,6 @@ int main(int argc, char **argv)
     // Memory variables.
     float ***psi_sxx_x = NULL, ***psi_syy_y = NULL, ***psi_szz_z = NULL, ***psi_sxy_y = NULL, ***psi_sxy_x = NULL, ***psi_sxz_x = NULL, ***psi_sxz_z = NULL, ***psi_syz_y = NULL, ***psi_syz_z = NULL, ***psi_vxx = NULL, ***psi_vyy = NULL, ***psi_vzz = NULL, ***psi_vxy = NULL, ***psi_vxz = NULL, ***psi_vyx = NULL, ***psi_vyz = NULL, ***psi_vzx = NULL, ***psi_vzy = NULL;
 
-    MPI_Request *req_send, *req_rec, *sreq_send, *sreq_rec;
-
     float memdyn, memmodel, memseismograms, membuffer, memcpml = 0.0, memtotal;
     float amon = 0.0, str = 0.0, dip = 0.0, rake = 0.0;
     float fac1, fac2;
@@ -370,10 +368,11 @@ int main(int argc, char **argv)
     MPI_Buffer_attach(buff_addr, buffsize);
 
     /* allocation for request and status arrays */
-    req_send = (MPI_Request *)malloc(REQUEST_COUNT * sizeof(MPI_Request));
-    req_rec = (MPI_Request *)malloc(REQUEST_COUNT * sizeof(MPI_Request));
-    sreq_send = (MPI_Request *)malloc(REQUEST_COUNT * sizeof(MPI_Request));
-    sreq_rec = (MPI_Request *)malloc(REQUEST_COUNT * sizeof(MPI_Request));
+    // MPI_Request *req_send, *req_rec, *sreq_send, *sreq_rec;
+    // req_send = (MPI_Request *)malloc(REQUEST_COUNT * sizeof(MPI_Request));
+    // req_rec = (MPI_Request *)malloc(REQUEST_COUNT * sizeof(MPI_Request));
+    // sreq_send = (MPI_Request *)malloc(REQUEST_COUNT * sizeof(MPI_Request));
+    // sreq_rec = (MPI_Request *)malloc(REQUEST_COUNT * sizeof(MPI_Request));
 
     /* allocation for timing arrays used for performance analysis */
     time_v_update = dvector(1, NT);
