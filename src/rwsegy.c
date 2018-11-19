@@ -858,7 +858,9 @@ int DDN_rbindata(FILE * instream, int inlen, float * outdata, int outlen, int fi
 	if (instream==NULL) return 0;
 	if (outdata==NULL) if ((outdata=(float *)malloc(4*outlen))==NULL) return 0;
 	if ((indata=(float *)malloc(4*inlen))==NULL) {free(outdata); outdata=NULL; return 0;}
-	if (fread(indata, 4, inlen, instream)!=inlen){free(outdata); outdata=NULL; free(indata); return 0;}
+	if (fread(indata, 4, inlen, instream) != (size_t) inlen) {
+        free(outdata); outdata=NULL; free(indata); return 0;
+    }
 	float2native(indata, inlen, lbendian, ieeeibm, meterfeet);
 	if (!step) {
 		fprintf(curerr,"Warning [rdata]: reading every 0th sample 0 times?! -> reading all samples once.");
