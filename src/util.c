@@ -67,24 +67,38 @@ double maximum(float **a, int nx, int ny){
 }
 
 
+float *vector(int nl, int nh) {
+    /**
+     * Allocate a vector of floats with subscript range nl..nh.
+     * 
+     * Vector elements are initialized to zero.
+     * Note, that the caller is obliged to access vector elements as
+     * v[nl], ..., v[nh] (note that the number of elements is `nh-nl+1`),
+     * otherwise a memory access violation will occur.
+     * nl : lowest index
+     * nh : highest index
+     */
+    float *v;
+    int i;
 
-
-float *vector(int nl, int nh){
-	/* allocate a float vector with subscript range v[nl..nh] and initializing
-		   this vector, eg. vector[nl..nh]=0.0 */
-	float *v;
-	int i;
-
-	v=(float *)malloc((size_t) ((nh-nl+1+NR_END)*sizeof(float)));
-	if (!v) err("allocation failure in function vector()");
-	for (i=0;i<(nh-nl+1+NR_END);i++) v[i]=0.0;
-	return v-nl+NR_END;
+    v=(float *)malloc((size_t) ((nh-nl+1+NR_END)*sizeof(float)));
+    if (!v) err("allocation failure in function vector()");
+    for (i=0;i<(nh-nl+1+NR_END);i++) v[i]=0.0;
+    return v-nl+NR_END;
 }
 
 
-int *ivector(int nl, int nh){
-	/* allocate an int vector with subscript range v[nl..nh] and initializing
-		   this vector, eg. ivector[nl..nh]=0 */
+int *ivector(int nl, int nh) {
+    /**
+     * Allocate a vector of ints with subscript range nl..nh.
+     * 
+     * Vector elements are initialized to zero.
+     * Note, that the caller is obliged to access vector elements as
+     * v[nl], ..., v[nh] (note that the number of elements is `nh-nl+1`),
+     * otherwise a memory access violation will occur.
+     * nl : lowest index
+     * nh : highest index
+     */
 	int *v;
 	int i;
 
@@ -94,9 +108,18 @@ int *ivector(int nl, int nh){
 	return v-nl+NR_END;
 }
 
-unsigned short int *usvector(int nl, int nh){
-	/* allocate an short int vector with subscript range v[nl..nh] and initializing
-		   this vector, eg. ivector[nl..nh]=0 */
+
+unsigned short int *usvector(int nl, int nh) {
+    /**
+     * Allocate a vector of unsigned ints with subscript range nl..nh.
+     * 
+     * Vector elements are initialized to zero.
+     * Note, that the caller is obliged to access vector elements as
+     * v[nl], ..., v[nh] (note that the number of elements is `nh-nl+1`),
+     * otherwise a memory access violation will occur.
+     * nl : lowest index
+     * nh : highest index
+     */
 	unsigned short int *v;
 	int i;
 
@@ -108,7 +131,16 @@ unsigned short int *usvector(int nl, int nh){
 
 
 unsigned char *cvector(int nl, int nh){
-	/* allocate an unsigned char vector with subscript range v[nl..nh] */
+    /**
+     * Allocate a vector of chars with subscript range nl..nh.
+     * 
+     * Vector elements are initialized to zero.
+     * Note, that the caller is obliged to access vector elements as
+     * v[nl], ..., v[nh] (note that the number of elements is `nh-nl+1`),
+     * otherwise a memory access violation will occur.
+     * nl : lowest index
+     * nh : highest index
+     */
 	unsigned char *v;
 
 	v=(unsigned char *)malloc((size_t) ((nh-nl+1+NR_END)*sizeof(unsigned char)));
@@ -118,8 +150,16 @@ unsigned char *cvector(int nl, int nh){
 
 
 unsigned long *lvector(int nl, int nh){
-	/* allocate an unsigned long vector with subscript range v[nl..nh] and
-		  initializing this vector, eg. vector[nl..nh]=0.0 */
+    /**
+     * Allocate a vector of unsigned longs with subscript range nl..nh.
+     * 
+     * Vector elements are initialized to zero.
+     * Note, that the caller is obliged to access vector elements as
+     * v[nl], ..., v[nh] (note that the number of elements is `nh-nl+1`),
+     * otherwise a memory access violation will occur.
+     * nl : lowest index
+     * nh : highest index
+     */
 	unsigned long *v;
 	int i;
 
@@ -130,9 +170,16 @@ unsigned long *lvector(int nl, int nh){
 }
 
 double *dvector(int nl, int nh){
-	/* allocate a double vector with subscript range v[nl..nh] and initializing
-		   this vector, eg. vector[nl..nh]=0.0 */
-
+    /**
+     * Allocate a vector of unsigned longs with subscript range nl..nh.
+     * 
+     * Vector elements are initialized to zero.
+     * Note, that the caller is obliged to access vector elements as
+     * v[nl], ..., v[nh] (note that the number of elements is `nh-nl+1`),
+     * otherwise a memory access violation will occur.
+     * nl : lowest index
+     * nh : highest index
+     */
 	double *v;
 	int i;
 
