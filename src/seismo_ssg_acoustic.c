@@ -6,10 +6,23 @@
 #include "fd.h"
 #include "data_structures.h"
 
-void seismo_acoustic(int lsamp, int ntr, int **recpos, float **sectionvx, float **sectionvy, 
-float **sectionvz, float **sectiondiv, float **sectioncurl, float **sectionp, 
-Velocity *v, float ***sxx, float ***pi){ 
-		
+// Macro ATTR_UNUSED allows to tell a compiler to stop complaining
+// about an unused variable.
+// Currently, only implemented for gcc compiler (which defines __GNUC__ macro
+// internally).
+#ifdef __GNUC__
+    #define ATTR_UNUSED __attribute__((unused))
+#else
+    #define ATTR_UNUSED
+#endif
+
+void seismo_acoustic(int lsamp, int ntr, int **recpos,
+        float **sectionvx, float **sectionvy, float **sectionvz,
+        float **sectiondiv,
+        float **sectioncurl ATTR_UNUSED,
+        float **sectionp, 
+        Velocity *v, float ***sxx, float ***pi) {
+
 	extern int SEISMO;	
 	int  itr, ins, nxrec, nyrec, nzrec, i, j, k;
 	float  dh24x, dh24y, dh24z; 
@@ -17,12 +30,12 @@ Velocity *v, float ***sxx, float ***pi){
 	/*float amp, vzy, vxz, vyz, vzx, vxy, vyx;*/
 	extern float DX, DY, DZ;
 
-        float ***vx = v->x;
-        float ***vy = v->y;
-        float ***vz = v->z;
+    float ***vx = v->x;
+    float ***vy = v->y;
+    float ***vz = v->z;
 
 
-        ins=lsamp; /* changed from "ins=lsamp/NDT;" (neccessary after correction of the buggy ns in sofi3D.c) */
+    ins=lsamp; /* changed from "ins=lsamp/NDT;" (neccessary after correction of the buggy ns in sofi3D.c) */
 	dh24x=1.0/DX;
 	dh24y=1.0/DY;
 	dh24z=1.0/DZ;

@@ -9,7 +9,7 @@
 double exchange_v(int nt, Velocity *v,
 		float *** bufferlef_to_rig, float *** bufferrig_to_lef,
 		float *** buffertop_to_bot, float *** bufferbot_to_top,
-		float *** bufferfro_to_bac, float *** bufferbac_to_fro, MPI_Request * req_send, MPI_Request * req_rec){
+		float *** bufferfro_to_bac, float *** bufferbac_to_fro) {
 
 
 	extern int NX, NY, NZ, POS[4], NPROCX, NPROCY, NPROCZ, BOUNDARY, MYID, FDORDER, LOG, INDEX[7];
