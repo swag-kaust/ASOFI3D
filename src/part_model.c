@@ -2,12 +2,13 @@
  *   loop over snapshotfiles which have to be merged.                                   
 
  *  ----------------------------------------------------------------------*/
+#include <stdlib.h>
 
 #include "fd.h"
 #include "globvar.h"      /* definition of global variables  */
 
 
-int main(int argc, char **argv){
+int main(int argc, char **argv) {
 
 int i, j, k, ntr=0, itr, nsrc, l, c, ishot, imin, imax, kmin, kmax;
 /*int h, safe, aperz, aperx, ks, is, nspap;*/
@@ -25,6 +26,9 @@ char cline[256];
 char *fileinp="";
 FILE *fvpmod, *frhomod,*fvpmpart, *frhompart, * fpsrc, *fpr, *fshift;
 
+if (argc != 2) {
+    exit(1);    
+}
 
 fileinp = argv[1];
 printf(" ***********************************************************\n");

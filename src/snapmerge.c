@@ -2,18 +2,13 @@
  *   loop over snapshotfiles which have to be merged.                                   
  *
  *  ----------------------------------------------------------------------*/
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "fd.h"
 #include "globvar.h"      /* definition of global variables  */
 
-
-int main(int argc, char **argv){
-
-int nsnap;
-char *fileinp="";
-//FILE *FP;
-
-fileinp = argv[1];
+void _usage() {
 printf(" ***********************************************************\n");
 printf(" This is program SNAPMERGE. \n");
 printf(" Merge of snapshot files from the parallel  \n 3-D Viscoelastic Finite Difference Modelling      \n");
@@ -24,8 +19,20 @@ printf(" Institute of Technology, Karlsruhe, Germany         \n");
 printf(" http://www.gpi.kit.edu \n");
 printf(" ***********************************************************\n");
 printf("\n");
-//printf(" Syntax if excecuted from ./par directory: ../bin/snapmerge in_and_out/sofi3D.inp \n");
 printf(" Syntax example if excecuted from ./par directory: ../bin/snapmerge in_and_out/sofi3D.json \n");
+}
+
+int main(int argc, char **argv) {
+int nsnap;
+char *fileinp="";
+//FILE *FP;
+
+
+_usage();
+if (argc != 2) {
+    exit(1);
+}
+fileinp = argv[1];
 printf(" Input file for the snapmerge process from command line : %s \n",fileinp);
 
 if ((FP=fopen(fileinp,"r"))==NULL) err(" Opening input file failed.");
