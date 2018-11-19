@@ -67,8 +67,6 @@ int main(int argc, char **argv){
 	float ** seismo_fulldata=NULL;
 	int * recswitch=NULL;
 
-	MPI_Request *req_send, *req_rec, *sreq_send, *sreq_rec;
-
 	float memdyn, memmodel, memseismograms, membuffer, memtotal;
 	float fac1, fac2;
 	char *buff_addr, ext[10];
@@ -252,10 +250,11 @@ int main(int argc, char **argv){
 
 
 	/* allocation for request and status arrays */
-	req_send=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
-	req_rec=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
-	sreq_send=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
-	sreq_rec=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
+	// MPI_Request *req_send, *req_rec, *sreq_send, *sreq_rec;
+	// req_send=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
+	// req_rec=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
+	// sreq_send=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
+	// sreq_rec=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
 
 
 	/* allocation for timing arrays used for performance analysis */
@@ -610,7 +609,7 @@ int main(int argc, char **argv){
 
 				/* exchange values of stress at boundaries between PEs */
 				time_s_exchange[nt]=exchange_s_acoustic(nt,sxx,sbufferlef_to_rig, sbufferrig_to_lef,
-						sbuffertop_to_bot, sbufferbot_to_top, sbufferfro_to_bac, sbufferbac_to_fro, sreq_send, sreq_rec);
+						sbuffertop_to_bot, sbufferbot_to_top, sbufferfro_to_bac, sbufferbac_to_fro);
 
 			}
 
@@ -628,7 +627,7 @@ int main(int argc, char **argv){
 
 				/* exchange values of particle velocities at grid boundaries between PEs */
 				time_v_exchange[nt]=exchange_v(nt, &v, bufferlef_to_rig, bufferrig_to_lef, buffertop_to_bot, bufferbot_to_top,
-						bufferfro_to_bac, bufferbac_to_fro, req_send, req_rec);
+						bufferfro_to_bac, bufferbac_to_fro);
 
 				/* update of components of stress tensor */
 
@@ -638,7 +637,7 @@ int main(int argc, char **argv){
 
 				/* exchange values of stress at boundaries between PEs */
 				time_s_exchange[nt]=exchange_s_acoustic(nt,sxx,sbufferlef_to_rig, sbufferrig_to_lef,
-						sbuffertop_to_bot, sbufferbot_to_top, sbufferfro_to_bac, sbufferbac_to_fro, sreq_send, sreq_rec);
+						sbuffertop_to_bot, sbufferbot_to_top, sbufferfro_to_bac, sbufferbac_to_fro);
 
 			}
 
@@ -663,7 +662,7 @@ int main(int argc, char **argv){
 
 			/* save snapshot in file */
 			if ((SNAP) && (nt==lsnap) && (nt<=TSNAP2/DT)){
-				snap_acoustic(FP,nt,++nsnap,SNAP_FORMAT,SNAP, &v, sxx,pi,IDX,IDY,IDZ,1,1,1,NX,NY,NZ);
+				snap_acoustic(FP,nt,++nsnap,SNAP_FORMAT,SNAP, &v, sxx, IDX,IDY,IDZ,1,1,1,NX,NY,NZ);
 				lsnap=lsnap+iround(TSNAPINC/DT);
 			}
 
@@ -693,40 +692,40 @@ int main(int argc, char **argv){
 			switch (SEISMO){
 			case 1 : /* particle velocities only */
 				catseis(sectionvx, seismo_fulldata, recswitch, ntr_glob,ns);
-				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos,recpos_loc,ntr_glob,srcpos,ishot,ns,1);
+				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos, ntr_glob,srcpos,ishot,ns,1);
 				catseis(sectionvy, seismo_fulldata, recswitch, ntr_glob,ns);
-				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos,recpos_loc,ntr_glob,srcpos,ishot,ns,2);
+				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos, ntr_glob,srcpos,ishot,ns,2);
 				catseis(sectionvz, seismo_fulldata, recswitch, ntr_glob,ns);
-				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos,recpos_loc,ntr_glob,srcpos,ishot,ns,3);
+				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos, ntr_glob,srcpos,ishot,ns,3);
 
 				break;
 			case 2 : /* pressure only */
 				catseis(sectionp, seismo_fulldata, recswitch, ntr_glob,ns);
-				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos,recpos_loc,ntr_glob,srcpos,ishot,ns,4);
+				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos, ntr_glob,srcpos,ishot,ns,4);
 
 				break;
 			case 3 : /* curl and div only */
 				catseis(sectiondiv, seismo_fulldata, recswitch, ntr_glob,ns);
-				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos,recpos_loc,ntr_glob,srcpos,ishot,ns,5);
+				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos, ntr_glob,srcpos,ishot,ns,5);
 				catseis(sectioncurl, seismo_fulldata, recswitch, ntr_glob,ns);
-				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos,recpos_loc,ntr_glob,srcpos,ishot,ns,6);
+				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos, ntr_glob,srcpos,ishot,ns,6);
 
 				break;
 			case 4 : /* everything */
 				/*fprintf(FP," start merging, ntr= %d : \n",ntr_glob);
 						fprintf(stdout,"Message from PE %d\n",MYID);*/
 				catseis(sectionvx, seismo_fulldata, recswitch, ntr_glob,ns);
-				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos,recpos_loc,ntr_glob,srcpos,ishot,ns,1);
+				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos, ntr_glob,srcpos,ishot,ns,1);
 				catseis(sectionvy, seismo_fulldata, recswitch, ntr_glob,ns);
-				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos,recpos_loc,ntr_glob,srcpos,ishot,ns,2);
+				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos, ntr_glob,srcpos,ishot,ns,2);
 				catseis(sectionvz, seismo_fulldata, recswitch, ntr_glob,ns);
-				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos,recpos_loc,ntr_glob,srcpos,ishot,ns,3);
+				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos, ntr_glob,srcpos,ishot,ns,3);
 				catseis(sectionp, seismo_fulldata, recswitch, ntr_glob,ns);
-				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos,recpos_loc,ntr_glob,srcpos,ishot,ns,4);
+				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos, ntr_glob,srcpos,ishot,ns,4);
 				catseis(sectiondiv, seismo_fulldata, recswitch, ntr_glob,ns);
-				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos,recpos_loc,ntr_glob,srcpos,ishot,ns,5);
+				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos, ntr_glob,srcpos,ishot,ns,5);
 				catseis(sectioncurl, seismo_fulldata, recswitch, ntr_glob,ns);
-				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos,recpos_loc,ntr_glob,srcpos,ishot,ns,6);
+				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos, ntr_glob,srcpos,ishot,ns,6);
 
 				break;
 			default :	break;

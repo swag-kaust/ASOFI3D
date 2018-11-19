@@ -106,7 +106,7 @@ double exchange_s(int nt, Tensor3d *s,
 double exchange_s_acoustic(int nt, float *** sxx,
 		float *** bufferlef_to_rig, float *** bufferrig_to_lef,
 		float *** buffertop_to_bot, float *** bufferbot_to_top,
-		float *** bufferfro_to_bac, float *** bufferbac_to_fro, MPI_Request * req_send, MPI_Request * req_rec);
+		float *** bufferfro_to_bac, float *** bufferbac_to_fro);
 
 void exchange_v_rsg(int nt, float *** vx, float *** vy, float *** vz,
 		float *** bufferlef_to_rig, float *** bufferrig_to_lef,
@@ -218,7 +218,7 @@ void saveseis(FILE *fp, float **sectionvx, float **sectionvy,float **sectionvz,
 		int  **recpos, int  **recpos_loc, int ntr, float ** srcpos, int nsrc,int ns);
 
 void saveseis_glob(FILE *fp, float **sectiondata,
-		int  **recpos, int  **recpos_loc, int ntr, float ** srcpos, int nsrc,int ns, int sectiondatatype);
+		int  **recpos, int ntr, float ** srcpos, int nsrc,int ns, int sectiondatatype);
 
 void save_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
         Velocity *v,
@@ -244,7 +244,7 @@ void seismo_rsg(int lsamp, int ntr, int **recpos, float **sectionvx, float **sec
 		float ***sxx, float ***syy, float ***szz, float ***pi, float ***u);
 
 void snap_acoustic(FILE *fp, int nt, int nsnap, int format, int type,
-		Velocity *v, float ***sxx, float ***pi,
+		Velocity *v, float ***sxx,
 		int idx, int idy, int idz, int nx1, int ny1, int nz1, int nx2,
 		int ny2, int nz2);
 

@@ -8,9 +8,9 @@
 
 
 void snap_acoustic(FILE *fp, int nt, int nsnap, int format, int type, 
-Velocity *v, float ***sxx, float ***pi,
+Velocity *v, float ***sxx,
 int idx, int idy, int idz, int nx1, int ny1, int nz1, int nx2, 
-int ny2, int nz2){
+int ny2, int nz2) {
 
 	/* 
 	different data formats of output available:

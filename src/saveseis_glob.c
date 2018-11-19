@@ -5,7 +5,8 @@
 
 #include "fd.h"
 
-void saveseis_glob(FILE *fp, float **sectiondata, int  **recpos, int  **recpos_loc, int ntr, float ** srcpos, int ishot,int ns, int sectiondatatype){
+void saveseis_glob(FILE *fp, float **sectiondata, int **recpos, int ntr,
+        float ** srcpos, int ishot, int ns, int sectiondatatype){
 
 	extern int SEIS_FORMAT[6], RUN_MULTIPLE_SHOTS;
 	extern char  SEIS_FILE[STRING_SIZE];
