@@ -7,7 +7,14 @@
 #include "fd.h"
 #include "data_structures.h"
 
-double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
+#ifdef __GNUC__
+#define ATTR_UNUSED __attribute__((unused))
+#else
+#define ATTR_UNUSED
+#endif
+
+double update_s_CPML_elastic(
+		int nx1, int nx2, int ny1, int ny2, int nz1 ATTR_UNUSED, int nz2, int nt,
 		Velocity *v,
 		Tensor3d *s,
 		OrthoPar *op,
