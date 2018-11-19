@@ -7,6 +7,12 @@
 
 #include "fd.h"
 
+#ifdef __GNUC__
+#define ATTR_UNUSED __attribute__((unused))
+#else
+#define ATTR_UNUSED
+#endif
+
 void err2(char errformat[],char errfilename[]){
 	char outtxt[STRING_SIZE];
 	sprintf(outtxt,errformat,errfilename);
@@ -371,60 +377,75 @@ float ****f4tensor(int nrl, int nrh, int ncl, int nch,int ndl, int ndh, int nvl,
 	return t;
 }
 
-void free_vector(float *v, int nl, int nh){
+void free_vector(float *v, int nl, int nh ATTR_UNUSED){
 	/* free a float vector allocated with vector() */
 	free((FREE_ARG) (v+nl-NR_END));
 }
 
-void free_ivector(int *v, int nl, int nh){
+void free_ivector(int *v, int nl, int nh ATTR_UNUSED){
 	/* free a int vector allocated with vector() */
 	free((FREE_ARG) (v+nl-NR_END));
 }
 
-void free_cvector(char *v, int nl, int nh){
+void free_cvector(char *v, int nl, int nh ATTR_UNUSED){
 	/* free a char vector allocated with vector() */
 	free((FREE_ARG) (v+nl-NR_END));
 }
 
-void free_dvector(double *v, int nl, int nh){
+void free_dvector(double *v, int nl, int nh ATTR_UNUSED){
 	/* free a char vector allocated with vector() */
 	free((FREE_ARG) (v+nl-NR_END));
 }
 
-void free_matrix(float **m, int nrl, int nrh, int ncl, int nch){
+void free_matrix(float **m, int nrl,
+        int nrh ATTR_UNUSED,
+        int ncl, int nch ATTR_UNUSED) {
 	/* free a float matrix allocated by matrix() */
 	free((FREE_ARG) (m[nrl]+ncl-NR_END));
 	free((FREE_ARG) (m+nrl-NR_END));
 }
 
-void free_imatrix(int **m, int nrl, int nrh, int ncl, int nch){
+void free_imatrix(int **m,
+        int nrl, int nrh ATTR_UNUSED,
+        int ncl, int nch ATTR_UNUSED) {
 	/* free a integer matrix allocated by imatrix() */
 	free((FREE_ARG) (m[nrl]+ncl-NR_END));
 	free((FREE_ARG) (m+nrl-NR_END));
 }
 
-void free_usmatrix(unsigned short int **m, int nrl, int nrh, int ncl, int nch){
+void free_usmatrix(unsigned short int **m,
+        int nrl, int nrh ATTR_UNUSED,
+        int ncl, int nch ATTR_UNUSED) {
 	/* free a integer matrix allocated by imatrix() */
 	free((FREE_ARG) (m[nrl]+ncl-NR_END));
 	free((FREE_ARG) (m+nrl-NR_END));
 }
 
-void free_f3tensor(float ***t, int nrl, int nrh, int ncl, int nch, int ndl, int ndh){
+void free_f3tensor(float ***t,
+        int nrl, int nrh ATTR_UNUSED,
+        int ncl, int nch ATTR_UNUSED,
+        int ndl, int ndh ATTR_UNUSED) {
 	/* free a float matrix allocated by f3tensor() */
 	free((FREE_ARG) (t[nrl][ncl]+ndl-NR_END));
 	free((FREE_ARG) (t[nrl]+ncl-NR_END));
 	free((FREE_ARG) (t+nrl-NR_END));
 }
 
-void free_i3tensor(int ***t, int nrl, int nrh, int ncl, int nch, int ndl, int ndh){
+void free_i3tensor(int ***t,
+        int nrl, int nrh ATTR_UNUSED,
+        int ncl, int nch ATTR_UNUSED,
+        int ndl, int ndh ATTR_UNUSED) {
 	/* free a float matrix allocated by i3tensor() */
 	free((FREE_ARG) (t[nrl][ncl]+ndl-NR_END));
 	free((FREE_ARG) (t[nrl]+ncl-NR_END));
 	free((FREE_ARG) (t+nrl-NR_END));
 }
 
-void free_f4tensor(float ****t, int nrl, int nrh, int ncl, int nch, int ndl, int
-ndh, int nvl,int nvh){
+void free_f4tensor(float ****t,
+        int nrl, int nrh ATTR_UNUSED,
+        int ncl, int nch ATTR_UNUSED,
+        int ndl, int ndh ATTR_UNUSED,
+        int nvl, int nvh ATTR_UNUSED) {
 	/* free a float matrix allocated by f4tensor() */
 	free((FREE_ARG) (t[nrl][ncl][ndl]+nvl-NR_END));
 	free((FREE_ARG) (t[nrl][ncl]+ndl-NR_END));
