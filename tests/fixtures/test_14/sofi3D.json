@@ -31,7 +31,7 @@
 			"fdcoeff values: Taylor=1, Holberg=2" : "comment",
 
 "Time Stepping" : "comment",
-			"TIME" : "0.003",
+			"TIME" : "0.2001",
 			"DT" : "1e-3",
 
 "Source" : "comment",
@@ -91,19 +91,19 @@
 
 "Boundary Conditions" : "comment",
 			"FREE_SURF" : "0",
-			"ABS_TYPE" : "1",
+			"ABS_TYPE" : "2",
 			"FW" : "20.0",
-			"DAMPING" : "8.0",
+			"DAMPING" : "0.0",
 			"FPML" : "5.0",
 			"VPPML" : "1500.0",
 			"NPOWER" : "4.0",
 			"K_MAX_CPML" : "1.0",
-			"BOUNDARY" : "0",
+			"BOUNDARY" : "1",
 
 "Snapshots" : "comment",
 			"SNAP" : "2",
-			"TSNAP1" : "0.002",
-			"TSNAP2" : "0.003",
+			"TSNAP1" : "0.1999",
+			"TSNAP2" : "0.2001",
 			"TSNAPINC" : "0.002",
 			"IDX" : "1",
 			"IDY" : "1",
@@ -132,7 +132,7 @@
 "Seismograms" : "comment",
 			"NDT, NDTSHIFT" : "1, 0",
 			"SEIS_FORMAT" : "5",
-			"SEIS_FILE" : "./su/test-readmod=-1",
+			"SEIS_FILE" : "./su/test",
 
 "Monitoring the simulation" : "comment",
 			"LOG_FILE" : "log/test.log",
