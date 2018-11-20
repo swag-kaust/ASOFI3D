@@ -14,7 +14,7 @@ setup
 mv $MODEL ${MODEL}.bak
 
 # Copy test model.
-cp "${TEST_PATH}/model/fullspace.c"             src/hh_elastic.c
+cp "${TEST_PATH}/hh_elastic.c"                  src/
 cp "${TEST_PATH}/in_and_out/fullspace.json"     tmp/in_and_out/sofi3D.json
 cp "${TEST_PATH}/sources/fullspace_sources.dat" tmp/sources/
 
