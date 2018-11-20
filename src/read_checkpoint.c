@@ -4,6 +4,8 @@
 #include "fd.h"
 #include "data_structures.h"
 
+static void read_value(float *dst, FILE *fp);
+
 void read_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Velocity *v,
                      Tensor3d *s,
 		     Tensor3d *r,
@@ -49,35 +51,35 @@ void read_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Veloc
 		err("CHECKPTFILE can't be opened !");
 	}
 
-
 	for (j=ny1; j<=ny2; j++) {
 		for (i=nx1; i<=nx2; i++) {
 			for (k=nz1; k<=nz2; k++) {
+				read_value(&vx[j][i][k], fp);
+				read_value(&vy[j][i][k], fp);
+				read_value(&vz[j][i][k], fp);
 
-				fread(&vx[j][i][k],sizeof(float),1,fp);
-				fread(&vy[j][i][k],sizeof(float),1,fp);
-				fread(&vz[j][i][k],sizeof(float),1,fp);
-				fread(&sxx[j][i][k],sizeof(float),1,fp);
-				fread(&syy[j][i][k],sizeof(float),1,fp);
-				fread(&szz[j][i][k],sizeof(float),1,fp);
-				fread(&sxy[j][i][k],sizeof(float),1,fp);
-				fread(&syz[j][i][k],sizeof(float),1,fp);
-				fread(&sxz[j][i][k],sizeof(float),1,fp);
+				read_value(&sxx[j][i][k], fp);
+				read_value(&syy[j][i][k], fp);
+				read_value(&szz[j][i][k], fp);
+				read_value(&sxy[j][i][k], fp);
+				read_value(&syz[j][i][k], fp);
+				read_value(&sxz[j][i][k], fp);
 			}
 		}
 	}
 
 	
+    // Viscoelastic data.
 	if (L) {
 		for (j=1; j<=NY; j++) {
 			for (i=1; i<=NX; i++) {
 				for (k=1; k<=NZ; k++) {
-					fread(&rxx[j][i][k],sizeof(float),1,fp);
-					fread(&ryy[j][i][k],sizeof(float),1,fp);
-					fread(&rzz[j][i][k],sizeof(float),1,fp);
-					fread(&rxy[j][i][k],sizeof(float),1,fp);
-					fread(&ryz[j][i][k],sizeof(float),1,fp);
-					fread(&rxz[j][i][k],sizeof(float),1,fp);
+					read_value(&rxx[j][i][k], fp);
+					read_value(&ryy[j][i][k], fp);
+					read_value(&rzz[j][i][k], fp);
+					read_value(&rxy[j][i][k], fp);
+					read_value(&ryz[j][i][k], fp);
+					read_value(&rxz[j][i][k], fp);
 				}
 			}
 		}
@@ -86,17 +88,17 @@ void read_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Veloc
 	
 	
 	if (ABS_TYPE == 1) {
-
 		if (POS[1]==0) {
 			for (j=1; j<=NY; j++) {
 				for (i=1; i<=FW; i++) {
 					for (k=1; k<=NZ; k++) {
-						fread(&psi_sxx_x[j][i][k],sizeof(float),1,fp);
-						fread(&psi_sxy_x[j][i][k],sizeof(float),1,fp);
-						fread(&psi_sxz_x[j][i][k],sizeof(float),1,fp);
-						fread(&psi_vxx[j][i][k],sizeof(float),1,fp);
-						fread(&psi_vyx[j][i][k],sizeof(float),1,fp);
-						fread(&psi_vzx[j][i][k],sizeof(float),1,fp);
+						read_value(&psi_sxx_x[j][i][k], fp);
+						read_value(&psi_sxy_x[j][i][k], fp);
+						read_value(&psi_sxz_x[j][i][k], fp);
+
+						read_value(&psi_vxx[j][i][k], fp);
+						read_value(&psi_vyx[j][i][k], fp);
+						read_value(&psi_vzx[j][i][k], fp);
 					}
 				}
 			}
@@ -106,12 +108,13 @@ void read_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Veloc
 			for (j=1; j<=NY; j++) {
 				for (i=FW+1; i<=2*FW; i++) {
 					for (k=1; k<=NZ; k++) {
-						fread(&psi_sxx_x[j][i][k],sizeof(float),1,fp);
-						fread(&psi_sxy_x[j][i][k],sizeof(float),1,fp);
-						fread(&psi_sxz_x[j][i][k],sizeof(float),1,fp);
-						fread(&psi_vxx[j][i][k],sizeof(float),1,fp);
-						fread(&psi_vyx[j][i][k],sizeof(float),1,fp);
-						fread(&psi_vzx[j][i][k],sizeof(float),1,fp);
+						read_value(&psi_sxx_x[j][i][k], fp);
+						read_value(&psi_sxy_x[j][i][k], fp);
+						read_value(&psi_sxz_x[j][i][k], fp);
+
+						read_value(&psi_vxx[j][i][k], fp);
+						read_value(&psi_vyx[j][i][k], fp);
+						read_value(&psi_vzx[j][i][k], fp);
 					}
 				}
 			}
@@ -121,12 +124,13 @@ void read_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Veloc
 			for (j=1; j<=FW; j++) {
 				for (i=1; i<=NX; i++) {
 					for (k=1; k<=NZ; k++) {
-						fread(&psi_sxy_y[j][i][k],sizeof(float),1,fp);
-						fread(&psi_syy_y[j][i][k],sizeof(float),1,fp);
-						fread(&psi_syz_y[j][i][k],sizeof(float),1,fp);
-						fread(&psi_vxy[j][i][k],sizeof(float),1,fp);
-						fread(&psi_vyy[j][i][k],sizeof(float),1,fp);
-						fread(&psi_vzy[j][i][k],sizeof(float),1,fp);
+						read_value(&psi_sxy_y[j][i][k], fp);
+						read_value(&psi_syy_y[j][i][k], fp);
+						read_value(&psi_syz_y[j][i][k], fp);
+
+						read_value(&psi_vxy[j][i][k], fp);
+						read_value(&psi_vyy[j][i][k], fp);
+						read_value(&psi_vzy[j][i][k], fp);
 					}
 				}
 			}
@@ -135,12 +139,13 @@ void read_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Veloc
 			for (j=FW+1; j<=2*FW; j++) {
 				for (i=1; i<=NX; i++) {
 					for (k=1; k<=NZ; k++) {
-						fread(&psi_sxy_y[j][i][k],sizeof(float),1,fp);
-						fread(&psi_syy_y[j][i][k],sizeof(float),1,fp);
-						fread(&psi_syz_y[j][i][k],sizeof(float),1,fp);
-						fread(&psi_vxy[j][i][k],sizeof(float),1,fp);
-						fread(&psi_vyy[j][i][k],sizeof(float),1,fp);
-						fread(&psi_vzy[j][i][k],sizeof(float),1,fp);
+						read_value(&psi_sxy_y[j][i][k], fp);
+						read_value(&psi_syy_y[j][i][k], fp);
+						read_value(&psi_syz_y[j][i][k], fp);
+
+						read_value(&psi_vxy[j][i][k], fp);
+						read_value(&psi_vyy[j][i][k], fp);
+						read_value(&psi_vzy[j][i][k], fp);
 					}
 				}
 			}
@@ -150,12 +155,13 @@ void read_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Veloc
 			for (j=1; j<=NY; j++) {
 				for (i=1; i<=NX; i++) {
 					for (k=1; k<=FW; k++) {
-						fread(&psi_sxz_z[j][i][k],sizeof(float),1,fp);
-						fread(&psi_syz_z[j][i][k],sizeof(float),1,fp);
-						fread(&psi_szz_z[j][i][k],sizeof(float),1,fp);
-						fread(&psi_vxz[j][i][k],sizeof(float),1,fp);
-						fread(&psi_vyz[j][i][k],sizeof(float),1,fp);
-						fread(&psi_vzz[j][i][k],sizeof(float),1,fp);
+						read_value(&psi_sxz_z[j][i][k], fp);
+						read_value(&psi_syz_z[j][i][k], fp);
+						read_value(&psi_szz_z[j][i][k], fp);
+
+						read_value(&psi_vxz[j][i][k], fp);
+						read_value(&psi_vyz[j][i][k], fp);
+						read_value(&psi_vzz[j][i][k], fp);
 					}
 				}
 			}
@@ -164,19 +170,36 @@ void read_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, Veloc
 			for (j=1; j<=NY; j++) {
 				for (i=1; i<=NX; i++) {
 					for (k=FW+1; k<=2*FW; k++) {
-						fread(&psi_sxz_z[j][i][k],sizeof(float),1,fp);
-						fread(&psi_syz_z[j][i][k],sizeof(float),1,fp);
-						fread(&psi_szz_z[j][i][k],sizeof(float),1,fp);
-						fread(&psi_vxz[j][i][k],sizeof(float),1,fp);
-						fread(&psi_vyz[j][i][k],sizeof(float),1,fp);
-						fread(&psi_vzz[j][i][k],sizeof(float),1,fp);
+						read_value(&psi_sxz_z[j][i][k], fp);
+						read_value(&psi_syz_z[j][i][k], fp);
+						read_value(&psi_szz_z[j][i][k], fp);
+
+						read_value(&psi_vxz[j][i][k], fp);
+						read_value(&psi_vyz[j][i][k], fp);
+						read_value(&psi_vzz[j][i][k], fp);
 					}
 				}
 			}
 		}
-
-	}
+	} // end if (ABS_TYPE == 1)
 
 	fclose(fp);
+}
 
+/**
+ * Read a float value from file fp and write it into dst.
+ */
+static void read_value(float *dst, FILE *fp)
+{
+    extern char CHECKPTFILE[STRING_SIZE];
+
+    size_t nelems = fread(dst, sizeof(float), 1, fp);
+
+    if (nelems != 1) {
+        char msg[STRING_SIZE];
+        sprintf(msg,
+                "Error occurred while reading from a checkpoint file '%s'",
+                CHECKPTFILE);
+        err(msg);
+    }
 }
