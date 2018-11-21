@@ -495,7 +495,7 @@ void add_object_tolist(char string_name[STRING_SIZE],char string_value[STRING_SI
 
 
 /* utility functions (defined in file util.c)*/
-void err(char error_text[]);
+void err(char *format, ...);
 void err2(char errformat[],char errfilename[]);
 void warning(char warn_text[]);
 

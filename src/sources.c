@@ -16,7 +16,7 @@ float **sources(FILE * fpsrc, int *nsrc, int * stype){
 	float **srcpos;
 	int l;
 	float xsrc, ysrc, zsrc, tshift, fc=0.0;
-	char cline[256];
+	char cline[STRING_SIZE];
 
 	if (MYID==0){
 		fprintf(FP,"\n **Message from function source (written by PE %d):\n",MYID);
@@ -24,8 +24,11 @@ float **sources(FILE * fpsrc, int *nsrc, int * stype){
 		srcpos=fmatrix(1,6,1,*nsrc);
 		/* stype=(int *)malloc(*nsrc*sizeof(int)); */
 
-		for (l=1;l<=*nsrc;l++){
-			fgets(cline,255,fpsrc);
+		for (l = 1; l <= *nsrc; l++) {
+			if (fgets(cline, STRING_SIZE-1, fpsrc) == NULL) {
+				err("[%s] Error reading line %d from source file '%s'",
+					__func__, l);
+			};
 			switch(sscanf(cline,"%f%f%f%f%f%f%i",&xsrc, &ysrc, &zsrc, &tshift, &srcpos[5][l], &srcpos[6][l], &stype[l])){
 			case 0: xsrc=0.0;
 			case 1: zsrc=0.0;
