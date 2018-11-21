@@ -1,3 +1,5 @@
+#ifndef GLOBVAR_H
+#define GLOBVAR_H
 /*------------------------------------------------------------------------
  *   globvar.h - global variables used in SOFI3D
  *
@@ -57,3 +59,4 @@ float VPV1, VSV1, EPSX1, EPSY1, DELX1, DELY1, DELXY1;
 float GAMX1, GAMY1, RHO1, DH1;
 float VPV2, VSV2, EPSX2, EPSY2, DELX2, DELY2, DELXY2;
 float GAMX2, GAMY2, RHO2, DH2;
+#endif /* ifndef GLOBVAR_H */

@@ -858,7 +858,9 @@ int DDN_rbindata(FILE * instream, int inlen, float * outdata, int outlen, int fi
 	if (instream==NULL) return 0;
 	if (outdata==NULL) if ((outdata=(float *)malloc(4*outlen))==NULL) return 0;
 	if ((indata=(float *)malloc(4*inlen))==NULL) {free(outdata); outdata=NULL; return 0;}
-	if (fread(indata, 4, inlen, instream)!=inlen){free(outdata); outdata=NULL; free(indata); return 0;}
+	if (fread(indata, 4, inlen, instream) != (size_t) inlen) {
+        free(outdata); outdata=NULL; free(indata); return 0;
+    }
 	float2native(indata, inlen, lbendian, ieeeibm, meterfeet);
 	if (!step) {
 		fprintf(curerr,"Warning [rdata]: reading every 0th sample 0 times?! -> reading all samples once.");
@@ -966,7 +968,8 @@ int DDN_rtxtdata(FILE * instream, int inlen, float * outdata, int outlen, int fi
 			return 0;
 		}
 	} else  {
-		fscanf(curerr,"Error [wtxtdata]: cannot read data in non-native format. \n");
+		fprintf(curerr,
+				"Error [wtxtdata]: cannot read data in non-native format. \n");
 		free(indata);
 		*readdata=0;
 		return 0;
@@ -1049,7 +1052,7 @@ int DDN_wtxtdata(FILE * outstream, int outlen, float * indata, int inlen, int fi
 	if (ASCIIEBCDIC==asciiebcdic) {
 		m=fprintf(outstream,dataformat,outdata[0]);
 		for (n=1;n<outlen;n++) m+=fprintf(outstream,formatstring,outdata[n]);
-		m+=fprintf(outstream,dataendmark);
+		m+=fprintf(outstream, "%s", dataendmark);
 	} else if ((ASCIIEBCDIC==0)||(asciiebcdic==1)){
 		l=sprintf(tmpoutstring,dataformat,outdata[0]);
 		m=fwrite(a2ev(tmpoutstring,l),1,l,outstream);
@@ -1057,7 +1060,7 @@ int DDN_wtxtdata(FILE * outstream, int outlen, float * indata, int inlen, int fi
 			l=sprintf(tmpoutstring,dataformat,outdata[n]);
 			m+=fwrite(a2ev(tmpoutstring,l),1,l,outstream);
 		}
-		l=sprintf(tmpoutstring,dataendmark);
+		l=sprintf(tmpoutstring, "%s", dataendmark);
 		m+=fwrite(a2ev(tmpoutstring,l),1,l,outstream);
 	} else if ((ASCIIEBCDIC==1)||(asciiebcdic==0)){ /* It would be very surprising if this works! */
 		l=sprintf(tmpoutstring,dataformat,outdata[0]);
@@ -1066,7 +1069,7 @@ int DDN_wtxtdata(FILE * outstream, int outlen, float * indata, int inlen, int fi
 			l=sprintf(tmpoutstring,dataformat,outdata[n]);
 			m+=fwrite(e2av(tmpoutstring,l),1,l,outstream);
 		}
-		l=sprintf(tmpoutstring,dataendmark);
+		l = sprintf(tmpoutstring, "%s", dataendmark);
 		m+=fwrite(e2av(tmpoutstring,l),1,l,outstream);
 	} else  {
 		fprintf(curerr,"Error [wtxtdata]: unknown character-set?!\n");

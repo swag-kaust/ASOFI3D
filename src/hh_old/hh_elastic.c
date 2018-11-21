@@ -11,7 +11,7 @@
 
 #include "fd.h"
 
-void model_elastic(float ***rho, float ***pi, float ***u, float ***C11, float ***C12, float ***C13, float ***C22, float ***C23, float ***C33, float ***C44, float ***C55, float ***C66, float ***taus, float ***taup, float *eta)
+void model_elastic(float ***rho, float ***pi, float ***u, float ***C11, float ***C12, float ***C13, float ***C22, float ***C23, float ***C33, float ***C44, float ***C55, float ***C66)
 {
     /*--------------------------------------------------------------------------*/
     /* extern variables */

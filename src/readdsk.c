@@ -16,6 +16,7 @@ format=3  :  BINARY (IEEE)
 float readdsk(FILE *fp_in, int format){
 	float amp;
 
+    size_t nelems;
 
 
 	switch(format){
@@ -23,11 +24,18 @@ float readdsk(FILE *fp_in, int format){
                         err(" Sorry, SU-format for snapshots not implemented yet. \n");
                         break;
 		case 2 :  /*ASCII*/
-                        fscanf(fp_in,"%e\n", &amp); 
+                        if (fscanf(fp_in,"%e\n", &amp) != 1) {
+                            err("[readdsk] Could not read an amplitude "
+                                "from a file in ASCII format\n");
+                        } 
                         break;
 		case 3 :   /* BINARY */
 
-			fread(&amp, sizeof(float), 1, fp_in);
+			nelems = fread(&amp, sizeof(float), 1, fp_in);
+            if (nelems != 1) {
+                            err("[readdsk] Could not read an amplitude "
+                                "from a file in binary format\n");
+            }
               		break;
 	                
 		default :

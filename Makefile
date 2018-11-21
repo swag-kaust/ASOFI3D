@@ -18,7 +18,7 @@ clobber :
 test :
 	tests/check_test_env.sh
 	tests/test_01.sh
-	if [ -z "${CI}" ]; then tests/test_02.sh; fi
+	if [ -n "${SLOW_TESTS}" ]; then tests/test_02.sh; fi
 	tests/test_03.sh
 	tests/test_04.sh
 	tests/test_05.sh
@@ -27,3 +27,14 @@ test :
 	tests/test_08.sh
 	tests/test_09.sh
 	tests/test_10.sh
+
+# Developer-level target, to check that one single translation unit
+# compiles without any warnings from a compiler.
+# Variable $(@F) contains the basename of the target %.o,
+# so that the user could call, for example,
+#     make src/snapmerge.o
+# or
+#     make snapmerge.o
+# with the same result.
+%.o:
+	$(MAKE) --directory=src $(@F)

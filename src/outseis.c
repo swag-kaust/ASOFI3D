@@ -16,7 +16,7 @@ void  outseis(FILE *fp, FILE *fpdata, float **section,
 	/* declaration of extern variables */
 	extern int NDT,NDTSHIFT, SOFI3DVERS;
 	extern float  DX, DY, DZ, TIME, DT, REFREC[4];
-	extern char * FILEINP[STRING_SIZE];
+	extern char FILEINP[STRING_SIZE];
 
 	extern int ASCIIEBCDIC,LITTLEBIG,IEEEIBM;
 

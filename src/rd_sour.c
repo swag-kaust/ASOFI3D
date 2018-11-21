@@ -18,7 +18,14 @@ float *rd_sour(int *nts,FILE* fp_source){
          if (c=='\n') ++(*nts);
         rewind(fp_source);
 	psource=vector(1,NT);
-	for (i=1;i<=*nts;i++) fscanf(fp_source,"%e",&psource[i]);
+    size_t ret;
+	for (i=1;i<=*nts;i++) {
+        ret = fscanf(fp_source,"%e",&psource[i]);
+        if (ret != 1) {
+            fclose(fp_source);
+            err("Error occurred while reading a signal file");
+        }
+    }
 	fclose(fp_source);
 	return psource;
 }

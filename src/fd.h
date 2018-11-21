@@ -52,9 +52,9 @@ void CPML_coeff(float * K_x, float * alpha_prime_x, float * a_x, float * b_x,
 
 void CPML_ini_elastic(int * xb, int * yb, int * zb);
 
-void av_mat(float *** rho, float *** pi, float *** u,
+void av_mat(float *** rho,
         float *** C44, float *** C55, float *** C66,
-		float *** taus, float *** taup,
+		float *** taus,
 		float  *** uipjp, float *** ukpkp, float *** uipkp, float *** tausipjp,
 		float  *** tausjpkp, float  *** tausipkp, float  *** rjp, float  *** rkp, float  *** rip );
 
@@ -101,12 +101,12 @@ void exchange_s_rsg(float *** sxx, float *** syy, float *** szz,
 double exchange_s(int nt, Tensor3d *s,
         float *** bufferlef_to_rig, float *** bufferrig_to_lef,
         float *** buffertop_to_bot, float *** bufferbot_to_top,
-        float *** bufferfro_to_bac, float *** bufferbac_to_fro, MPI_Request * req_send, MPI_Request * req_rec);
+        float *** bufferfro_to_bac, float *** bufferbac_to_fro);
 
 double exchange_s_acoustic(int nt, float *** sxx,
 		float *** bufferlef_to_rig, float *** bufferrig_to_lef,
 		float *** buffertop_to_bot, float *** bufferbot_to_top,
-		float *** bufferfro_to_bac, float *** bufferbac_to_fro, MPI_Request * req_send, MPI_Request * req_rec);
+		float *** bufferfro_to_bac, float *** bufferbac_to_fro);
 
 void exchange_v_rsg(int nt, float *** vx, float *** vy, float *** vz,
 		float *** bufferlef_to_rig, float *** bufferrig_to_lef,
@@ -116,7 +116,7 @@ void exchange_v_rsg(int nt, float *** vx, float *** vy, float *** vz,
 double exchange_v(int nt, Velocity *v,
 		float *** bufferlef_to_rig, float *** bufferrig_to_lef,
 		float *** buffertop_to_bot, float *** bufferbot_to_top,
-		float *** bufferfro_to_bac, float *** bufferbac_to_fro, MPI_Request * req_send, MPI_Request * req_rec);
+		float *** bufferfro_to_bac, float *** bufferbac_to_fro);
 
 void read_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 		Velocity *v,
@@ -151,13 +151,11 @@ void model_visco(float  ***  rho, float ***  pi, float ***  u,
 
 void model_elastic(float  ***  rho, float ***  pi, float ***  u,
         float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
-        float *** C44, float *** C55, float *** C66,
-		float ***  taus, float ***  taup, float *  eta);
+        float *** C44, float *** C55, float *** C66);
 
 void mad_elastic(float  ***  rho, float ***  pi, float ***  u,
 			float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
-			float *** C44, float *** C55, float *** C66,
-			float ***  taus, float ***  taup, float *  eta);
+			float *** C44, float *** C55, float *** C66);
 
 void model_acoustic(float  ***  rho, float ***  pi);
 
@@ -220,7 +218,7 @@ void saveseis(FILE *fp, float **sectionvx, float **sectionvy,float **sectionvz,
 		int  **recpos, int  **recpos_loc, int ntr, float ** srcpos, int nsrc,int ns);
 
 void saveseis_glob(FILE *fp, float **sectiondata,
-		int  **recpos, int  **recpos_loc, int ntr, float ** srcpos, int nsrc,int ns, int sectiondatatype);
+		int  **recpos, int ntr, float ** srcpos, int nsrc,int ns, int sectiondatatype);
 
 void save_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
         Velocity *v,
@@ -246,7 +244,7 @@ void seismo_rsg(int lsamp, int ntr, int **recpos, float **sectionvx, float **sec
 		float ***sxx, float ***syy, float ***szz, float ***pi, float ***u);
 
 void snap_acoustic(FILE *fp, int nt, int nsnap, int format, int type,
-		Velocity *v, float ***sxx, float ***pi,
+		Velocity *v, float ***sxx,
 		int idx, int idy, int idz, int nx1, int ny1, int nz1, int nx2,
 		int ny2, int nz2);
 
@@ -309,17 +307,12 @@ double update_s(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
 double update_s_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
                         Velocity *v,
                         Tensor3d *s,
-                        Tensor3d *r,
-                        float ***  pi, float ***  u,
-                        float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
-                        float ***  uipjp, float ***  ujpkp, float ***  uipkp,
-                        float  ***  taus, float  ***  tausipjp, float  ***  tausjpkp, float  ***  tausipkp,
-                        float  ***  taup, float *  eta,
+                        float ***pi, float ***u,
+                        OrthoPar *op,
                         VelocityDerivativesTensor *dv,
                         VelocityDerivativesTensor *dv_2,
                         VelocityDerivativesTensor *dv_3,
-                        VelocityDerivativesTensor *dv_4,
-                        OrthoPar *op);
+                        VelocityDerivativesTensor *dv_4);
 
 void compute_vel_deriv_2nd_order(Velocity *v, int i, int j, int k, Strain_ijk *e);
 
@@ -345,9 +338,7 @@ double update_s_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int n
 		float *** psi_vxx, float *** psi_vyx, float *** psi_vzx, float *** psi_vxy, float *** psi_vyy, float *** psi_vzy, float *** psi_vxz, float *** psi_vyz, float *** psi_vzz);
 
 double update_s_CPML_elastic(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt, Velocity *v,
-		Tensor3d *s, OrthoPar *op, float ***  pi, float ***  u,
-		float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
-		float ***  C66ipjp, float ***  C44jpkp, float ***  C55ipkp,
+		Tensor3d *s, OrthoPar *op,
 		float * K_x, float * a_x, float * b_x, float * K_x_half, float * a_x_half, float * b_x_half,
 		float * K_y, float * a_y, float * b_y, float * K_y_half, float * a_y_half, float * b_y_half,
 		float * K_z, float * a_z, float * b_z, float * K_z_half, float * a_z_half, float * b_z_half,
@@ -372,7 +363,7 @@ void update_s_rsg(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,
 double update_v(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 		int nt, Velocity *v,
 		Tensor3d *s,
-        float  ***  rho,  float  *** rjp, float  *** rkp, float  *** rip,
+        float  *** rjp, float  *** rkp, float  *** rip,
         float **  srcpos_loc, float ** signals, int nsrc, float ***absorb_coeff, int * stype,
         StressDerivativesWrtVelocity *ds_dv,
         StressDerivativesWrtVelocity *ds_dv_2,
@@ -386,11 +377,13 @@ float *** vy2, float *** vz2, float *** sxx2, float *** syy2, float *** szz2, fl
 float *** vx3, float *** vy3, float *** vz3, float *** sxx3, float *** syy3, float *** szz3, float *** sxy3, float *** syz3,
 float *** sxz3,float  ***  rho, float **  srcpos_loc, float ** signals, int nsrc, float *** absorb_coeffx, float *** absorb_coeffy, float *** absorb_coeffz, int * stype);*/
 
-double update_v_CPML(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
+double update_v_CPML(
+        int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
 		int nt, Velocity *v,
 		Tensor3d *s,
-                float  ***  rho,  float  *** rjp, float  *** rkp, float  *** rip,
-		float **  srcpos_loc, float ** signals, int nsrc, float *** absorb_coeff, int * stype,
+        // float  ***rho,
+        float  *** rjp, float  *** rkp, float  *** rip,
+		// float **  srcpos_loc, float ** signals, int nsrc, float *** absorb_coeff, int * stype,
 		float * K_x, float * a_x, float * b_x, float * K_x_half, float * a_x_half, float * b_x_half,
 		float * K_y, float * a_y, float * b_y, float * K_y_half, float * a_y_half, float * b_y_half,
 		float * K_z, float * a_z, float * b_z, float * K_z_half, float * a_z_half, float * b_z_half,
@@ -502,7 +495,7 @@ void add_object_tolist(char string_name[STRING_SIZE],char string_value[STRING_SI
 
 
 /* utility functions (defined in file util.c)*/
-void err(char error_text[]);
+void err(char *format, ...);
 void err2(char errformat[],char errfilename[]);
 void warning(char warn_text[]);
 

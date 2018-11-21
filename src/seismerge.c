@@ -9,6 +9,8 @@
 #include <stddef.h>
 #include <string.h>
 
+#include "fd.h"
+
 int main(int argc, char **argv){
 
 	char basename[256], *outname, *inname;
@@ -46,9 +48,13 @@ int main(int argc, char **argv){
 	sprintf(inname, "%s%s%d", basename,".",n);
 	if((infiles=fopen(inname,"r+"))!=NULL){
 		fseek(infiles,3220,SEEK_SET);
-		fread(&nsamp,2,1,infiles);
+		if (fread(&nsamp, 2, 1, infiles) != 1) {
+			err("Error reading file '%s'", inname);
+		}
 		fseek(infiles,3714,SEEK_SET);
-		fread(&msamp,2,1,infiles);
+		if (fread(&msamp, 2, 1, infiles) != 1) {
+			err("Error reading file '%s'", inname);
+		};
 		if (nsamp!=msamp)
 			fprintf(stdout,"Warning: Number of samples in SEG-Y header and 1st trace header differ?!\n");
 		if (nsamp!=0) { /* -> ns from SEG-Y header */
@@ -72,7 +78,9 @@ int main(int argc, char **argv){
 			fseek(infiles,3716,SEEK_SET);
 			while (ftell(infiles)<l-(msamp*4+238)){
 				fseek(infiles,msamp*4+238,SEEK_CUR);
-				fread(&msamp,2,1,infiles);
+				if (fread(&msamp, 2, 1, infiles) != 1) {
+					err("Error reading file '%s'", inname);
+				};
 				msamp=((msamp>>8)&0xff)|((msamp&0xff)<<8);
 				ntraces++;
 			}
@@ -94,9 +102,13 @@ int main(int argc, char **argv){
 		sprintf(inname, "%s%s%d", basename,".",n);
 		if((infiles=fopen(inname,"r+"))!=NULL){
 			fseek(infiles,3220,SEEK_SET);
-			fread(&nsamp,2,1,infiles);
+			if (fread(&nsamp,2,1,infiles) != 1) {
+				err("Error reading file '%s'", inname);
+			};
 			fseek(infiles,3714,SEEK_SET);
-			fread(&msamp,2,1,infiles);
+			if (fread(&msamp, 2, 1, infiles) != 1) {
+				err("Error reading file '%s'", inname);
+			};
 			if (nsamp!=msamp)
 				fprintf(stdout,"Warning: Number of samples in SEG-Y header and 1st trace header differ?!\n");
 			if (nsamp!=0) { /* -> ns from SEG-Y header */
@@ -118,7 +130,9 @@ int main(int argc, char **argv){
 				fseek(infiles,3716,SEEK_SET);
 				while (ftell(infiles)<l-(msamp*4+238)){
 					fseek(infiles,msamp*4+238,SEEK_CUR);
-					fread(&msamp,2,1,infiles);
+					if (fread(&msamp,2,1,infiles) != 1) {
+						err("Error reading file '%s'", inname);
+					}
 					msamp=((msamp>>8)&0xff)|((msamp&0xff)<<8);
 					mtraces++;
 				}
@@ -143,7 +157,9 @@ int main(int argc, char **argv){
 		n=((l>>24)&0xff)|((l&0xff)<<24)|((l>>8)&0xff00)|((l&0xff00)<<8);
 		fwrite(&n,4,1,outfile);
 		fseek(outfile,106,SEEK_CUR);	
-		fread(&msamp,2,1,outfile);
+		if (fread(&msamp,2,1,outfile) != 1) {
+			err("Error reading file '%s'", outfile);
+		};
 		msamp=((msamp>>8)&0xff)|((msamp&0xff)<<8);
 		fseek(outfile,msamp*4+128,SEEK_CUR);
 	}
