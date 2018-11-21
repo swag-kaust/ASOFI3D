@@ -14,6 +14,7 @@
  * [1] Teukolsky, S.A., Flannery, B.P., Press, W.H. and Vetterling, W.T.
  * Numerical recipes in C, 2nd edition.
  */
+#include <stdarg.h>
 
 #include "fd.h"
 
@@ -35,16 +36,34 @@ void err2(char errformat[],char errfilename[]){
 	err(outtxt);
 }
 
-void err(char err_text[]){
+/**
+ *  Print an error message to stderr and abort execution.
+ *
+ *  format :
+ *      Format string conforming to the `printf` rules.
+ *  ... :
+ *      Variable arguments to be substituted into the `format` string.
+ */
+void err(char *format, ...) {
 	extern int MYID;
 
-	fprintf(stderr,"Message from PE %d\n",MYID);
-	fprintf(stderr,"R U N - T I M E  E R R O R: \n");
-	fprintf(stderr,"%s\n",err_text);
-	fprintf(stderr,"...now exiting to system.\n");
+    // The list of VAs behind '...' in the function signature.
+    va_list arg_list;
+
+    // Initialize arg_list to point to arguments after `format`.
+    va_start(arg_list, format);
+
+    // Render message `msg` using `format` and variable arguments.
+    char msg[2*STRING_SIZE];
+    sprintf(msg, format, arg_list);
+    va_end(arg_list);
+
+	fprintf(stderr, "Message from PE %d\n", MYID);
+	fprintf(stderr, "R U N - T I M E  E R R O R:\n");
+	fprintf(stderr, "%s\n", msg);
+	fprintf(stderr, "...now exiting to system.\n");
 	
 	MPI_Abort(MPI_COMM_WORLD, 1);
-	/*exit(1);*/
 }
 
 void warning(char warn_text[]){
