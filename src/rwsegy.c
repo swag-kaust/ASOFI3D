@@ -968,7 +968,8 @@ int DDN_rtxtdata(FILE * instream, int inlen, float * outdata, int outlen, int fi
 			return 0;
 		}
 	} else  {
-		fscanf(curerr,"Error [wtxtdata]: cannot read data in non-native format. \n");
+		fprintf(curerr,
+				"Error [wtxtdata]: cannot read data in non-native format. \n");
 		free(indata);
 		*readdata=0;
 		return 0;
