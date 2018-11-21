@@ -1051,7 +1051,7 @@ int DDN_wtxtdata(FILE * outstream, int outlen, float * indata, int inlen, int fi
 	if (ASCIIEBCDIC==asciiebcdic) {
 		m=fprintf(outstream,dataformat,outdata[0]);
 		for (n=1;n<outlen;n++) m+=fprintf(outstream,formatstring,outdata[n]);
-		m+=fprintf(outstream,dataendmark);
+		m+=fprintf(outstream, "%s", dataendmark);
 	} else if ((ASCIIEBCDIC==0)||(asciiebcdic==1)){
 		l=sprintf(tmpoutstring,dataformat,outdata[0]);
 		m=fwrite(a2ev(tmpoutstring,l),1,l,outstream);
@@ -1059,7 +1059,7 @@ int DDN_wtxtdata(FILE * outstream, int outlen, float * indata, int inlen, int fi
 			l=sprintf(tmpoutstring,dataformat,outdata[n]);
 			m+=fwrite(a2ev(tmpoutstring,l),1,l,outstream);
 		}
-		l=sprintf(tmpoutstring,dataendmark);
+		l=sprintf(tmpoutstring, "%s", dataendmark);
 		m+=fwrite(a2ev(tmpoutstring,l),1,l,outstream);
 	} else if ((ASCIIEBCDIC==1)||(asciiebcdic==0)){ /* It would be very surprising if this works! */
 		l=sprintf(tmpoutstring,dataformat,outdata[0]);
@@ -1068,7 +1068,7 @@ int DDN_wtxtdata(FILE * outstream, int outlen, float * indata, int inlen, int fi
 			l=sprintf(tmpoutstring,dataformat,outdata[n]);
 			m+=fwrite(e2av(tmpoutstring,l),1,l,outstream);
 		}
-		l=sprintf(tmpoutstring,dataendmark);
+		l = sprintf(tmpoutstring, "%s", dataendmark);
 		m+=fwrite(e2av(tmpoutstring,l),1,l,outstream);
 	} else  {
 		fprintf(curerr,"Error [wtxtdata]: unknown character-set?!\n");
