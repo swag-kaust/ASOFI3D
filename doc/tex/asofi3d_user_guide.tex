@@ -1265,10 +1265,15 @@ On most supercomputers with a queuing system the run time of job is limited. Som
 
 \subsection{''On the fly'' definition of material parameters}
 \label{model_def_func}
-If you choose to create the model ``on the fly'', the distribution of the material parameters P-wave velocity $v_p$, S-wave velocity $v-s$ and density $\rho$ for the simple block model has to be defined in the function hh.c that can be found in the src folder. While ``programming'' the model, please note the orientation of the coordinate system (see Chapter \ref{coord_system} for more information). An example C-file ( \lstinline{hh_elastic.c}) for the generation of an elastic model is given in the following:
+If you choose to create the model ``on the fly'', the distribution of the
+material parameters P-wave velocity $v_p$, S-wave velocity $v-s$ and density
+$\rho$ for the simple block model has to be defined in the function hh.c that
+can be found in the src folder. While ``programming'' the model, please note
+the orientation of the coordinate system (see Chapter \ref{coord_system} for
+more information). An example C-file ( \lstinline{model_elastic.c}) for the
+generation of an elastic model is given in the following:
 
-\input{hh_elastic.c}
-
+\input{model_elastic.c}
 
 As you can see from lines
 \begin{verbatim}
