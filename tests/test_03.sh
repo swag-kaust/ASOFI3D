@@ -4,7 +4,7 @@
 # while the medium is isotropic.
 . tests/functions.sh
 
-MODEL="src/hh_elastic.c"
+MODEL="src/model_elastic.c"
 TEST_PATH="tests/fixtures/test_03"
 
 # Setup function prepares environment for the test (creates directories).
@@ -14,10 +14,10 @@ setup
 mv $MODEL ${MODEL}.bak
 
 # Copy test model.
-cp "${TEST_PATH}/hh_elastic.c"     src/hh_elastic.c
-cp "${TEST_PATH}/sofi3D.json"      tmp/in_and_out/sofi3D.json
-cp "${TEST_PATH}/source.dat"       tmp/sources/
-cp "${TEST_PATH}/receiver.dat"     tmp/receiver/
+cp "${TEST_PATH}/model_elastic.c"    src/
+cp "${TEST_PATH}/sofi3D.json"        tmp/in_and_out/
+cp "${TEST_PATH}/source.dat"         tmp/sources/
+cp "${TEST_PATH}/receiver.dat"       tmp/receiver/
 
 # Compile code.
 cd src

@@ -5,7 +5,7 @@
 # Model is one-layer isotropic with free surface boundary conditions.
 . tests/functions.sh
 
-MODEL="src/hh_elastic.c"
+MODEL="src/model_elastic.c"
 TEST_PATH="tests/fixtures/test_10"
 TEST_ID="TEST_10"
 
@@ -24,10 +24,10 @@ on_exit() {
 trap on_exit INT TERM EXIT
 
 # Copy input to the directory where the test is executed.
-cp "${TEST_PATH}/hh_elastic.c"     src/hh_elastic.c
-cp "${TEST_PATH}/sofi3D.json"      tmp/in_and_out/sofi3D.json
-cp "${TEST_PATH}/source.dat"       tmp/sources/
-cp "${TEST_PATH}/receiver.dat"     tmp/receiver/
+cp "${TEST_PATH}/model_elastic.c"    src/
+cp "${TEST_PATH}/sofi3D.json"        tmp/in_and_out/
+cp "${TEST_PATH}/source.dat"         tmp/sources/
+cp "${TEST_PATH}/receiver.dat"       tmp/receiver/
 
 compile_code
 
