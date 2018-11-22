@@ -4,6 +4,7 @@
  *   globvar.h - global variables used in SOFI3D
  *
  *  ----------------------------------------------------------------------*/
+#include "constants.h"
 
 /* definition of global variables used in the finite difference programs*/
 /* For the names of the global variables
