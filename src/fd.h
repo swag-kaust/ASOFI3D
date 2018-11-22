@@ -2,7 +2,8 @@
  *  fd.h - include file for sofi3D
  *
  *  ---------------------------------------------------------------------*/
-
+#ifndef FD_H
+#define FD_H
 
 /* files to include */
 #include <stdio.h>
@@ -516,3 +517,5 @@ void free_f3tensor(float ***t, int nrl, int nrh, int ncl, int nch, int ndl,
 
 double *dvector(int nl, int nh);
 void free_dvector(double *v, int nl, int nh);
+
+#endif
