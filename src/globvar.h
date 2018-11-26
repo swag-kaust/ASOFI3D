@@ -49,6 +49,7 @@ int   SOFI3DVERS; /* version of SOFI3D 33: current 3D isotropic elastic (SSG), v
 // MPI variables
 int   NP, NPSP, NPROC, NPROCX, NPROCY, NPROCZ, MYID, IENDX, IENDY, IENDZ;
 int   POS[4], INDEX[7];
+int TAG1 = 1, TAG2 = 2, TAG3 = 3, TAG4 = 4, TAG5 = 5, TAG6 = 6;
 
 float FC=0.0,AMP=1.0, REFSRC[3]={0.0, 0.0, 0.0}, SRC_DT, SRCTSHIFT=0.0;
 int SRC_MF=0, SIGNAL_FORMAT[6]={0, 0, 0, 0, 0, 0};
