@@ -271,6 +271,11 @@ Session.vim
 # Vim database for C code (functions, variables, etc. and their locations).
 tags
 
+# Project-specific settings.
+.exrc
+.[n?]vimrc
+_[n?]vimrc
+
 
 ### SVN ###
 .svn/
