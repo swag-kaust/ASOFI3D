@@ -3,18 +3,18 @@
  *
  *   depending on model dimension in vertical direction and local variable "h"
  *   this function can generate a
- *   	-> homogeneneous full space
- *   	-> layer over half space
- * 		-> spherical perturbation in the middle of the model 
+ *      -> homogeneneous full space
+ *      -> layer over half space
+ *      -> spherical perturbation in the middle of the model 
  * 
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
 
 void model_elastic(float ***rho, float ***pi, float ***u,
-		float ***C11, float ***C12, float ***C13,
-		float ***C22, float ***C23, float ***C33,
-		float ***C44, float ***C55, float ***C66)
+        float ***C11, float ***C12, float ***C13,
+        float ***C22, float ***C23, float ***C33,
+        float ***C44, float ***C55, float ***C66)
 {
     /*--------------------------------------------------------------------------*/
     /* extern variables */
@@ -28,10 +28,10 @@ void model_elastic(float ***rho, float ***pi, float ***u,
     /* local variables */
     float muv, piv;
     float Vpv, Vsv, Rho, Poi;
-    float 	C_11, C_22, C_33,
-    		C_44, C_55, C_66,
-        	C_12, C_13, C_23;
-	float eps_1, eps_2, delta_1, delta_2, delta_3, gamma_1, gamma_2;
+    float   C_11, C_22, C_33,
+            C_44, C_55, C_66,
+            C_12, C_13, C_23;
+    float eps_1, eps_2, delta_1, delta_2, delta_3, gamma_1, gamma_2;
     float ***vpv = NULL, ***vsv = NULL, ***epsx = NULL, ***epsy = NULL, ***gamx = NULL;
     float ***delx = NULL, ***dely = NULL, ***delxy = NULL, ***gamy = NULL;
     float y;
@@ -178,7 +178,7 @@ void model_elastic(float ***rho, float ***pi, float ***u,
                     piv = Vpv * Vpv * Rho;
 
                     /* only the PE which belongs to the current global gridpoint
-					 * is saving model parameters in his local arrays */
+                     * is saving model parameters in his local arrays */
 
                     if ((POS[1] == ((i - 1) / NX)) &&
                         (POS[2] == ((j - 1) / NY)) &&
@@ -192,17 +192,17 @@ void model_elastic(float ***rho, float ***pi, float ***u,
                         u[jj][ii][kk] = muv;
                         pi[jj][ii][kk] = piv;
                         /*VTI
-						  C11[jj][ii][kk] = (1+2*Epsx)*Rho*Vpv*Vpv;
-						  C22[jj][ii][kk] = C11[jj][ii][kk];
-						  C33[jj][ii][kk] = Rho*Vpv*Vpv;
-						  C66[jj][ii][kk] = Rho*Vsv*Vsv;
-						  C12[jj][ii][kk] = C11[jj][ii][kk] - 2*C66[jj][ii][kk];
-						  C13[jj][ii][kk]=Rho*sqrt((Vpv*Vpv-Vsv*Vsv)*((1+2*Delx)*Vpv*Vpv-Vsv*Vsv))-Rho*Vsv*Vsv;
-						  C23[jj][ii][kk]=C13[jj][ii][kk];
-						  C44[jj][ii][kk]=Rho*Vsv*Vsv/(1+2*Gamx);
-						  C55[jj][ii][kk]=Rho*Vsv*Vsv/(1+2*Gamx);
-						  rho[jj][ii][kk]=Rho;                        
-						 */
+                          C11[jj][ii][kk] = (1+2*Epsx)*Rho*Vpv*Vpv;
+                          C22[jj][ii][kk] = C11[jj][ii][kk];
+                          C33[jj][ii][kk] = Rho*Vpv*Vpv;
+                          C66[jj][ii][kk] = Rho*Vsv*Vsv;
+                          C12[jj][ii][kk] = C11[jj][ii][kk] - 2*C66[jj][ii][kk];
+                          C13[jj][ii][kk]=Rho*sqrt((Vpv*Vpv-Vsv*Vsv)*((1+2*Delx)*Vpv*Vpv-Vsv*Vsv))-Rho*Vsv*Vsv;
+                          C23[jj][ii][kk]=C13[jj][ii][kk];
+                          C44[jj][ii][kk]=Rho*Vsv*Vsv/(1+2*Gamx);
+                          C55[jj][ii][kk]=Rho*Vsv*Vsv/(1+2*Gamx);
+                          rho[jj][ii][kk]=Rho;                        
+                         */
 
                         // Humane notation - third axis is vertical
                         C_33 = Rho * Vpv * Vpv;
@@ -210,20 +210,20 @@ void model_elastic(float ***rho, float ***pi, float ***u,
                         C_66 = (1 + 2 * gamma_1) * C_55;
                         C_11 = (1 + 2 * eps_2) * C_33;
                         C_44 = C_66 / (1 + 2 * gamma_2);
-						C_22 = (1 + 2 * eps_1) * C_33;
+                        C_22 = (1 + 2 * eps_1) * C_33;
                         C_13 = -C_55 + sqrt(2 * delta_2 * C_33 * (C_33 - C_55) + (C_33 - C_55) * (C_33 - C_55));
-						C_12 = -C_66 + sqrt(2 * delta_3 * C_11 * (C_11 - C_66) + (C_11 - C_66) * (C_11 - C_66));
-						C_23 = -C_44 + sqrt(2 * delta_1 * C_33 * (C_33 - C_44) + (C_33 - C_44) * (C_33 - C_44));
-						
+                        C_12 = -C_66 + sqrt(2 * delta_3 * C_11 * (C_11 - C_66) + (C_11 - C_66) * (C_11 - C_66));
+                        C_23 = -C_44 + sqrt(2 * delta_1 * C_33 * (C_33 - C_44) + (C_33 - C_44) * (C_33 - C_44));
+                        
                         // We need to convert here from humane notation
                         // to ASOFI3D notation, where 2nd axis is vertical
                         // instead of the 3rd axis.
-						// Conversion is done in the following way:
+                        // Conversion is done in the following way:
                         // C33 <-> C22
                         // C55 <-> C66
                         // C12 <-> C13
 
-						C11[jj][ii][kk] = C_11;
+                        C11[jj][ii][kk] = C_11;
                         C33[jj][ii][kk] = C_22;
                         C22[jj][ii][kk] = C_33;
 

@@ -10,7 +10,7 @@
 # We consider isotropic half-space (two-layer) medium.
 . tests/functions.sh
 
-MODEL="src/hh_elastic.c"
+MODEL="src/model_elastic.c"
 TEST_PATH="tests/fixtures/test_07"
 TEST_ID="TEST_07"
 
@@ -21,10 +21,10 @@ setup
 mv $MODEL ${MODEL}.bak
 
 # Copy test model.
-cp "${TEST_PATH}/hh_elastic.c"                src/hh_elastic.c
-cp "${TEST_PATH}/sofi3D_force_in_x.json"      tmp/in_and_out/sofi3D.json
-cp "${TEST_PATH}/source_force_in_x.dat"       tmp/sources/
-cp "${TEST_PATH}/receiver_force_in_x.dat"     tmp/receiver/
+cp "${TEST_PATH}/model_elastic.c"            src/model_elastic.c
+cp "${TEST_PATH}/sofi3D_force_in_x.json"     tmp/in_and_out/sofi3D.json
+cp "${TEST_PATH}/source_force_in_x.dat"      tmp/sources/
+cp "${TEST_PATH}/receiver_force_in_x.dat"    tmp/receiver/
 
 # Compile code.
 cd src

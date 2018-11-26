@@ -1,6 +1,6 @@
 %creates a sofi3D source file for code-benchmarking
 %instead of a real application scenario, mulitple sources are placed
-%withing the model domain such as the wavefront excited by each sources
+%within the model domain such as the wavefront excited by each sources
 %reaches the neighboring wavenfront at TIME/2
 clear all;
 close all;

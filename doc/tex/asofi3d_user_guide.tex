@@ -1066,7 +1066,7 @@ CPML update, otherwise instabilities might occur.
 If \option{ABS\_TYPE=2}, then exponential wavefield damping is applied on the
 boundaries according to~\cite{cerjan:85}. For this case, the width of the frame
 (\option{FW}) should be at least 30--50 grid points. \option{DAMPING} specifies
-attenuation in percent at the edges of the numerical grid, i.\e., amplitudes
+attenuation in percent at the edges of the numerical grid, i.\ e., amplitudes
 are multiplied by a factor of 1-DAMPING at the outer edges. A good choice for
 \option{DAMPING} is 8 \%. For larger values, reflections at the onset of the
 absorbing frame might occur. In order to avoid such an impedance contrast
@@ -1265,10 +1265,15 @@ On most supercomputers with a queuing system the run time of job is limited. Som
 
 \subsection{''On the fly'' definition of material parameters}
 \label{model_def_func}
-If you choose to create the model ``on the fly'', the distribution of the material parameters P-wave velocity $v_p$, S-wave velocity $v-s$ and density $\rho$ for the simple block model has to be defined in the function hh.c that can be found in the src folder. While ``programming'' the model, please note the orientation of the coordinate system (see Chapter \ref{coord_system} for more information). An example C-file ( \lstinline{hh_elastic.c}) for the generation of an elastic model is given in the following:
+If you choose to create the model ``on the fly'', the distribution of the
+material parameters P-wave velocity $v_p$, S-wave velocity $v-s$ and density
+$\rho$ for the simple block model has to be defined in the function hh.c that
+can be found in the src folder. While ``programming'' the model, please note
+the orientation of the coordinate system (see Chapter \ref{coord_system} for
+more information). An example C-file ( \lstinline{model_elastic.c}) for the
+generation of an elastic model is given in the following:
 
-\input{hh_elastic.c}
-
+\input{model_elastic.c}
 
 As you can see from lines
 \begin{verbatim}
@@ -1286,13 +1291,13 @@ The source codes are located in the directory src. To compile SOFI3D the name of
 # edit here
 
 # source code for model generation (viscoelastic)
-MODEL_SRC_V = hh_visco.c
+MODEL_SRC_V = model_visco.c
 
 # source code for model generation (elastic)
-MODEL_SRC_E = hh_elastic.c
+MODEL_SRC_E = model_elastic.c
 
 # source code for model generation (acoustic)
-MODEL_SRC_A = hh_acoustic.c
+MODEL_SRC_A = model_acoustic.c
 
 # source code for benchmark model
 MODEL_SRC_BENCH = benchmod.c

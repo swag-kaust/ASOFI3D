@@ -2,7 +2,7 @@
 #      JSON PARAMETER FILE FOR SOFI3D
 #-----------------------------------------------------------------
 # description: json input file for scale-up benchmark
-# description/name of the model: homogeneous full space (hh_elastic.c)
+# description/name of the model: homogeneous full space (model_elastic.c)
 # 
 
 {

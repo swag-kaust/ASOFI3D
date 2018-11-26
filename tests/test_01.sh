@@ -4,7 +4,7 @@
 # of the ASOFI3D code.
 . tests/functions.sh
 
-MODEL="src/hh_elastic.c"
+MODEL="src/model_elastic.c"
 TEST_PATH="tests/fixtures/test_01"
 TEST_ID="TEST_01"
 
@@ -22,9 +22,9 @@ on_exit() {
 trap on_exit EXIT
 
 # Copy test model.
-cp "${TEST_PATH}/src/hh_elastic.c"       src/
-cp "${TEST_PATH}/in_and_out/sofi3D.json" tmp/in_and_out
-cp "${TEST_PATH}/sources/source.dat"     tmp/sources/
+cp "${TEST_PATH}/src/model_elastic.c"       src/
+cp "${TEST_PATH}/in_and_out/sofi3D.json"    tmp/in_and_out
+cp "${TEST_PATH}/sources/source.dat"        tmp/sources/
 
 # Compile code.
 cd src

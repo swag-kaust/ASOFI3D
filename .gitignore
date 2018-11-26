@@ -9,6 +9,7 @@ seismerge
 sofi3D_acoustic
 
 guide_sofi3D.pdf
+asofi3d_user_guide.pdf
 
 *.jpg
 *.jpeg
@@ -43,16 +44,13 @@ LOG_FILE.*
 
 *.backup
 
+# Compilation database for clang-based tools.
+compile_commands.json
+
 ### IDE and text editors files ###
 # CodeBlocks
 src/*.cbp
 src/*.layout
-
-# Vim plugin YouCompleteMe for C/C++ code autocompletion.
-.ycm_extra_conf.py
-
-# Vim database for C code (functions, variables, etc. and their locations).
-tags
 
 ### C ###
 # Object files
@@ -266,6 +264,17 @@ $RECYCLE.BIN/
 Session.vim
 .netrwhist
 *~
+
+# Vim plugin YouCompleteMe for C/C++ code autocompletion.
+.ycm_extra_conf.py
+
+# Vim database for C code (functions, variables, etc. and their locations).
+tags
+
+# Project-specific settings.
+.exrc
+.[n?]vimrc
+_[n?]vimrc
 
 
 ### SVN ###

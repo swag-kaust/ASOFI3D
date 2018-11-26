@@ -5,13 +5,13 @@
 # modules for KAUST
 
 # source code for model generation (viscoelastic)
-MODEL_SRC_V = hh_visco.c
+MODEL_SRC_V = model_visco.c
 
 # source code for model generation (elastic)
-MODEL_SRC_E = hh_elastic.c
+MODEL_SRC_E = model_elastic.c
 
 # source code for model generation (acoustic)
-MODEL_SRC_A = hh_acoustic.c
+MODEL_SRC_A = model_acoustic.c
 
 # source code for benchmark model
 MODEL_SRC_BENCH = benchmod.c

@@ -4,7 +4,7 @@
 # from the benchmark `fullspace`.
 . tests/functions.sh
 
-MODEL="src/hh_elastic.c"
+MODEL="src/model_elastic.c"
 TEST_PATH="tests/fixtures/test_02"
 
 # Setup function prepares environment for the test (creates directories).
@@ -14,9 +14,9 @@ setup
 mv $MODEL ${MODEL}.bak
 
 # Copy test model.
-cp "${TEST_PATH}/hh_elastic.c"                  src/
-cp "${TEST_PATH}/in_and_out/fullspace.json"     tmp/in_and_out/sofi3D.json
-cp "${TEST_PATH}/sources/fullspace_sources.dat" tmp/sources/
+cp "${TEST_PATH}/model_elastic.c"                  src/
+cp "${TEST_PATH}/in_and_out/fullspace.json"        tmp/in_and_out/sofi3D.json
+cp "${TEST_PATH}/sources/fullspace_sources.dat"    tmp/sources/
 
 # Compile code.
 cd src
