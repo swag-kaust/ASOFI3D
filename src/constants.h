@@ -6,8 +6,6 @@
 //#define STRING_SIZE 74 //previous value, sometimes not enough to handle longer file names
 #define STRING_SIZE 256
 #define REQUEST_COUNT 6
-#define NPROCX_MAX 100
-#define NPROCY_MAX 100
-#define NPROCZ_MAX 100
 
+enum NPROC_ENUM { NPROCX_MAX = 100, NPROCY_MAX = 100, NPROCZ_MAX = 100 };
 #endif
