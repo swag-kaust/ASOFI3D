@@ -53,6 +53,8 @@ void readmod_acoustic(float  ***  rho, float ***  pi, int ishot){
 	vpbuffer=(float *)malloc(N*4);
 	if (vpbuffer==NULL) err(" allocation failure vpbuffer!");
 
+    size_t N_actual;
+
 	for (k=1;k<=NZG;k++){
 		if (MYID==0) {
 			time2=MPI_Wtime();
@@ -60,8 +62,15 @@ void readmod_acoustic(float  ***  rho, float ***  pi, int ishot){
 			fprintf(FP," real time : %4.2f s.\n",time2-time1);
 			time1=time2;
 
-			fread(vpbuffer,4,N,fp_vp);
-			fread(rhobuffer,4,N,fp_rho);
+			N_actual = fread(vpbuffer, 4, N, fp_vp);
+            if (N_actual != (size_t) N) {
+                warning("Possible error while reading model for 'Vp'");
+            }
+
+			N_actual = fread(rhobuffer, 4, N, fp_rho);
+            if (N_actual != (size_t) N) {
+                warning("Possible error while reading model for 'Vp'");
+            }
 
 		}
 

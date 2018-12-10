@@ -1,7 +1,12 @@
+#ifndef GLOBVAR_H
+#define GLOBVAR_H
 /*------------------------------------------------------------------------
  *   globvar.h - global variables used in SOFI3D
  *
  *  ----------------------------------------------------------------------*/
+#include <stdio.h>
+
+#include "constants.h"
 
 /* definition of global variables used in the finite difference programs*/
 /* For the names of the global variables
@@ -41,15 +46,14 @@ FILE  *FP=NULL;
 int   LITTLEBIG=0, ASCIIEBCDIC=0, IEEEIBM=0;
 int   SOFI3DVERS; /* version of SOFI3D 33: current 3D isotropic elastic (SSG), version of SOFI3D 32: current 3D isotropic acoustic (SSG) */
 
-/* Mpi-variables */
+// MPI variables
 int   NP, NPSP, NPROC, NPROCX, NPROCY, NPROCZ, MYID, IENDX, IENDY, IENDZ;
 int   POS[4], INDEX[7];
-const int TAG1=1,TAG2=2, TAG3=3, TAG4=4, TAG5=5,TAG6=6;
-
+int TAG1 = 1, TAG2 = 2, TAG3 = 3, TAG4 = 4, TAG5 = 5, TAG6 = 6;
 
 float FC=0.0,AMP=1.0, REFSRC[3]={0.0, 0.0, 0.0}, SRC_DT, SRCTSHIFT=0.0;
-int SRC_MF=0, SIGNAL_FORMAT[6]={0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-int SRCOUT_PAR[6]={0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, FSRC=1, JSRC=2147483647, LSRC=0;
+int SRC_MF=0, SIGNAL_FORMAT[6]={0, 0, 0, 0, 0, 0};
+int SRCOUT_PAR[6]={0, 0, 0, 0, 0, 0}, FSRC=1, JSRC=2147483647, LSRC=0;
 char SRCOUT_FILE[STRING_SIZE]="";
 
 // Model parameters for model generation.
@@ -57,3 +61,4 @@ float VPV1, VSV1, EPSX1, EPSY1, DELX1, DELY1, DELXY1;
 float GAMX1, GAMY1, RHO1, DH1;
 float VPV2, VSV2, EPSX2, EPSY2, DELX2, DELY2, DELXY2;
 float GAMX2, GAMY2, RHO2, DH2;
+#endif /* ifndef GLOBVAR_H */

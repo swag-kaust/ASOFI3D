@@ -3,18 +3,18 @@
  *
  *   ------------------------------------------------------------- */
 
-    #include "fd.h"
+#include "fd.h"
 
-    void model_elastic(float  ***  rho, float ***  pi, float ***  u,
-    float *** C11, float *** C12, float *** C13, float *** C22, float *** C23, float *** C33,
-    float *** C44, float *** C55, float *** C66,
-    float ***  taus, float ***  taup, float *  eta){
+void model_elastic(float  ***rho, float ***pi, float ***u,
+        float ***C11, float ***C12, float ***C13,
+        float ***C22, float ***C23, float ***C33,
+        float ***C44, float ***C55, float ***C66) {
 
 	/*--------------------------------------------------------------------------*/
 	/* extern variables */
-	extern float DT, *FL, TAU;
+	extern float *FL, TAU;
 	extern int NX, NY, NZ, NXG, NYG, NZG, POS[4], L, MYID;
-	extern char  MFILE[STRING_SIZE];
+	extern char MFILE[STRING_SIZE];
 
 	/* local variables */
 	float muv, piv, ws;
@@ -94,6 +94,18 @@
 						    rho[jj][ii][kk]=Rho;
 						    pi[jj][ii][kk]=piv;
 
+                            // This block is just to silence compiler's
+                            // 'unused parameter' errors.
+                            C11[jj][ii][kk] = 0.0;
+                            C12[jj][ii][kk] = 0.0;
+                            C13[jj][ii][kk] = 0.0;
+                            C22[jj][ii][kk] = 0.0;
+                            C23[jj][ii][kk] = 0.0;
+                            C33[jj][ii][kk] = 0.0;
+                            C44[jj][ii][kk] = 0.0;
+                            C55[jj][ii][kk] = 0.0;
+                            C66[jj][ii][kk] = 0.0;
+
 						    if (writeallmodels) {
 							    pwavemod[jj][ii][kk]=Vp;
 							    swavemod[jj][ii][kk]=Vs;
@@ -110,7 +122,7 @@
 		    pts=vector(1,L);
 		    for (l=1;l<=L;l++) {
 			    pts[l]=1.0/(2.0*PI*FL[l]);
-			    eta[l]=DT/pts[l];
+			    //eta[l]=DT/pts[l];
 		    }
 		    ws=2.0*PI*FL[1];
 
@@ -168,20 +180,20 @@
 
 						    if (TAU==0.0){
 							    /*calculation of taus and taup by read-in q-files*/
-							    taus[jj][ii][kk]=2/Qs;
-							    taup[jj][ii][kk]=2/Qp;
+							    //taus[jj][ii][kk]=2/Qs;
+							    //taup[jj][ii][kk]=2/Qp;
 						    }
 						    else {
 							    /*constant q (damping) case:*/
-							    taus[jj][ii][kk]=TAU;
-							    taup[jj][ii][kk]=TAU;
+							    //taus[jj][ii][kk]=TAU;
+							    //taup[jj][ii][kk]=TAU;
 						    }
 
 						    if (writeallmodels) {
 							    pwavemod[jj][ii][kk]=Vp;
 							    swavemod[jj][ii][kk]=Vs;
-							    qsmod[jj][ii][kk]=2/taus[jj][ii][kk];
-							    qpmod[jj][ii][kk]=2/taup[jj][ii][kk];
+							    //qsmod[jj][ii][kk]=2/taus[jj][ii][kk];
+							    //qpmod[jj][ii][kk]=2/taup[jj][ii][kk];
 						    }
 
 					    }

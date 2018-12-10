@@ -495,9 +495,9 @@ void checkfd(FILE *fp, float *** prho, float *** ppi, float *** pu,
 	if(DY<dhmin){dhmin=DY;}
 	if(DZ<dhmin){dhmin=DZ;}
 
-    /* calculate the courant friedrich lewy number */
+    // Calculate the Courant-Friedrichs-Lewy (CFL) number
     CFL=cmax*DT/dhmax;
-    /* Stability limits for the simulations in terms of Courant-Friedrich-Lewy: Switch Coefficients */
+    // Stability limits for a simulation in terms of CFL: switch coefficients
     switch (FDCOEFF) {
         case 1: /* Taylor */
             CFL_STAB=CFL_STAB_Taylor;
@@ -517,7 +517,7 @@ void checkfd(FILE *fp, float *** prho, float *** ppi, float *** pu,
 	fprintf(fp," where cmax is the maximum phase velocity at infinite frequency,\n");
 	fprintf(fp," In the current simulation cmax is %8.2f m/s .\n",cmax);
 	fprintf(fp," DT is the timestep and DH is the grid size.\n\n");
-    fprintf(fp," In this simulation the maximum Courant-Friedrich-Lewey (CFL) number p is: %f \n",CFL_STAB[FDORDER/2-1][FDORDER_TIME-2]);
+    fprintf(fp," In this simulation the maximum Courant-Friedrichs-Lewy (CFL) number p is: %f \n",CFL_STAB[FDORDER/2-1][FDORDER_TIME-2]);
     fprintf(fp," The CFL-number in this simulation will be p= %f \n",CFL);
 	fprintf(fp," In this simulation the stability limit for timestep DT is %e seconds .\n",CFL_STAB[FDORDER/2-1][FDORDER_TIME-2]*DX/cmax);
 	fprintf(fp," You have specified DT= %e s.\n", DT);

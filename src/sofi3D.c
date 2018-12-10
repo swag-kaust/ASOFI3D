@@ -15,6 +15,7 @@
 #include "data_structures.h"
 //#include "openacc.h"
 
+
 int main(int argc, char **argv)
 {
     // TODO: this needs to be moved to the json - ask Mahesh
@@ -118,8 +119,6 @@ int main(int argc, char **argv)
     // Memory variables.
     float ***psi_sxx_x = NULL, ***psi_syy_y = NULL, ***psi_szz_z = NULL, ***psi_sxy_y = NULL, ***psi_sxy_x = NULL, ***psi_sxz_x = NULL, ***psi_sxz_z = NULL, ***psi_syz_y = NULL, ***psi_syz_z = NULL, ***psi_vxx = NULL, ***psi_vyy = NULL, ***psi_vzz = NULL, ***psi_vxy = NULL, ***psi_vxz = NULL, ***psi_vyx = NULL, ***psi_vyz = NULL, ***psi_vzx = NULL, ***psi_vzy = NULL;
 
-    MPI_Request *req_send, *req_rec, *sreq_send, *sreq_rec;
-
     float memdyn, memmodel, memseismograms, membuffer, memcpml = 0.0, memtotal;
     float amon = 0.0, str = 0.0, dip = 0.0, rake = 0.0;
     float fac1, fac2;
@@ -129,8 +128,10 @@ int main(int argc, char **argv)
     FILE *fpsrc = NULL;
 
     // Initialize MPI environment.
-    // NP is initialized to the number of process (or PE - processing element).
+    // NP is initialized to the total number of processes.
     // MYID is initialized to the index of the process (from 0 to NP-1).
+    extern int NP;
+    extern int MYID;
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &NP);
     MPI_Comm_rank(MPI_COMM_WORLD, &MYID);
@@ -368,10 +369,11 @@ int main(int argc, char **argv)
     MPI_Buffer_attach(buff_addr, buffsize);
 
     /* allocation for request and status arrays */
-    req_send = (MPI_Request *)malloc(REQUEST_COUNT * sizeof(MPI_Request));
-    req_rec = (MPI_Request *)malloc(REQUEST_COUNT * sizeof(MPI_Request));
-    sreq_send = (MPI_Request *)malloc(REQUEST_COUNT * sizeof(MPI_Request));
-    sreq_rec = (MPI_Request *)malloc(REQUEST_COUNT * sizeof(MPI_Request));
+    // MPI_Request *req_send, *req_rec, *sreq_send, *sreq_rec;
+    // req_send = (MPI_Request *)malloc(REQUEST_COUNT * sizeof(MPI_Request));
+    // req_rec = (MPI_Request *)malloc(REQUEST_COUNT * sizeof(MPI_Request));
+    // sreq_send = (MPI_Request *)malloc(REQUEST_COUNT * sizeof(MPI_Request));
+    // sreq_rec = (MPI_Request *)malloc(REQUEST_COUNT * sizeof(MPI_Request));
 
     /* allocation for timing arrays used for performance analysis */
     time_v_update = dvector(1, NT);
@@ -670,6 +672,9 @@ int main(int argc, char **argv)
                 break;
         }
 
+        // Source term field distributed in the computational domain.
+        float ***source_field = f3tensor(0, NY + 1, 0, NX + 1, 0, NZ + 1);
+
         /* create model grids check the function readmod*/
         fprintf(FP, "\n ------------------ MODEL CREATION AND OUTPUT-(aniso READMOD=1 needs to be implemented still)---\n");
         if (READMOD == 1)
@@ -677,7 +682,7 @@ int main(int argc, char **argv)
         else
         {
             if (L == 0) {
-                model_elastic(rho, pi, u, C11, C12, C13, C22, C23, C33, C44, C55, C66, taus, taup, eta); /* elastic modeling, L is specified in input file*/
+                model_elastic(rho, pi, u, C11, C12, C13, C22, C23, C33, C44, C55, C66); /* elastic modeling, L is specified in input file*/
             }
             else
             {
@@ -693,7 +698,7 @@ int main(int argc, char **argv)
         // Madagascar
 
         if (RSF) madinput(RSFDEN,rho);
-        //mad_elastic(rho, pi, u, C11, C12, C13, C22, C23, C33, C44, C55, C66, taus, taup, eta);
+        //mad_elastic(rho, pi, u, C11, C12, C13, C22, C23, C33, C44, C55, C66);
 
         if (RUN_MULTIPLE_SHOTS)
             nshots = nsrc;
@@ -729,7 +734,7 @@ int main(int argc, char **argv)
         matcopy(rho, pi, u, C11, C12, C13, C22, C23, C33, C44, C55, C66, taus, taup);
 
         /* spatial averaging of material parameters, i.e. Tau for S-waves, shear modulus, and density */
-        av_mat(rho, pi, u, C44, C55, C66, taus, taup, C66ipjp, C44jpkp, C55ipkp, tausipjp, tausjpkp, tausipkp, rjp, rkp, rip);
+        av_mat(rho, C44, C55, C66, taus, C66ipjp, C44jpkp, C55ipkp, tausipjp, tausjpkp, tausipkp, rjp, rkp, rip);
 
         MPI_Barrier(MPI_COMM_WORLD);
 
@@ -964,13 +969,18 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 /* update of particle velocities */
                 time_v_update[nt] = update_v(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt,
                         &v, &s,
-                        rho, rjp, rkp, rip, srcpos_loc, signals, nsrc_loc, absorb_coeff, stype_loc,
+                        rjp, rkp, rip, srcpos_loc, signals, nsrc_loc, absorb_coeff, stype_loc,
                         &ds_dv, &ds_dv_2, &ds_dv_3, &ds_dv_4);
 
                 if (ABS_TYPE == 1)
                 {
                     update_v_CPML(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v,
-                            &s, rho, rjp, rkp, rip, srcpos_loc, signals, nsrc_loc, absorb_coeff, stype_loc, K_x, a_x, b_x, K_x_half, a_x_half, b_x_half, K_y, a_y, b_y, K_y_half, a_y_half, b_y_half, K_z, a_z, b_z, K_z_half, a_z_half, b_z_half, psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y, psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z);
+                            &s,
+                            rjp, rkp, rip,
+                            K_x, a_x, b_x, K_x_half, a_x_half, b_x_half,
+                            K_y, a_y, b_y, K_y_half, a_y_half, b_y_half,
+                            K_z, a_z, b_z, K_z_half, a_z_half, b_z_half,
+                            psi_sxx_x, psi_sxy_x, psi_sxz_x, psi_sxy_y, psi_syy_y, psi_syz_y, psi_sxz_z, psi_syz_z, psi_szz_z);
                 };
 
                 // Shift spatial derivatives of the stress one time step back.
@@ -1013,8 +1023,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 time_v_exchange[nt] = exchange_v(
                         nt, &v,
                         bufferlef_to_rig, bufferrig_to_lef, buffertop_to_bot,
-                        bufferbot_to_top, bufferfro_to_bac, bufferbac_to_fro,
-                        req_send, req_rec);
+                        bufferbot_to_top, bufferfro_to_bac, bufferbac_to_fro);
 
                 /* update of components of stress tensor */
 
@@ -1036,14 +1045,13 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 else
                 {
                     time_s_update[nt] = update_s_elastic(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v,
-                            &s, &r,
-                            pi, u, C11, C12, C13, C22, C23, C33, C66ipjp, C44jpkp, C55ipkp, taus, tausipjp, tausjpkp, tausipkp, taup, eta,
-                            &dv, &dv_2, &dv_3, &dv_4, &op);
+                            &s,
+                            pi, u, &op,
+                            &dv, &dv_2, &dv_3, &dv_4);
                     if (ABS_TYPE == 1)
                         update_s_CPML_elastic(xb[0], xb[1], yb[0], yb[1], zb[0], zb[1], nt, &v,
-                                &s, &op, pi, u,
-                                C11, C12, C13, C22, C23, C33,
-                                C66ipjp, C44jpkp, C55ipkp, K_x, a_x, b_x, K_x_half, a_x_half,
+                                &s, &op,
+                                K_x, a_x, b_x, K_x_half, a_x_half,
                                 b_x_half, K_y, a_y, b_y, K_y_half, a_y_half, b_y_half, K_z, a_z, b_z, K_z_half, a_z_half, b_z_half,
                                 psi_vxx, psi_vyx, psi_vzx, psi_vxy, psi_vyy, psi_vzy, psi_vxz, psi_vyz, psi_vzz);
                 }
@@ -1186,6 +1194,8 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                     /* eqsource is a implementation of moment tensor points sources. */
                     eqsource(nt, &s, srcpos_loc, signals, nsrc_loc, stype_loc,
                             amon, str, dip, rake);
+
+                    source_random(nt, &s, source_field);
                 }
 
                 /* stress free surface ? */
@@ -1204,7 +1214,7 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                         nt, &s,
                         sbufferlef_to_rig, sbufferrig_to_lef,
                         sbuffertop_to_bot, sbufferbot_to_top, sbufferfro_to_bac,
-                        sbufferbac_to_fro, sreq_send, sreq_rec);
+                        sbufferbac_to_fro);
 
                 /* store amplitudes at receivers in e.g. sectionvx, sectionvz, sectiondiv, ...*/
                 if ((SEISMO) && (ntr > 0) && (nt == lsamp))
@@ -1251,28 +1261,28 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                     case 1: /* particle velocities only */
                         catseis(sectionvx, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 1);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 1);
                         catseis(sectionvy, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 2);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 2);
                         catseis(sectionvz, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 3);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 3);
 
                         break;
                     case 2: /* pressure only */
                         catseis(sectionp, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 4);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 4);
 
                         break;
                     case 3: /* curl and div only */
                         catseis(sectiondiv, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 5);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 5);
                         catseis(sectioncurl, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 6);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 6);
 
                         break;
                     case 4: /* everything */
@@ -1280,22 +1290,22 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                           fprintf(stdout,"Message from PE %d\n",MYID);*/
                         catseis(sectionvx, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 1);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 1);
                         catseis(sectionvy, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 2);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 2);
                         catseis(sectionvz, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 3);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 3);
                         catseis(sectionp, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 4);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 4);
                         catseis(sectiondiv, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 5);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 5);
                         catseis(sectioncurl, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
-                            saveseis_glob(FP, seismo_fulldata, recpos, recpos_loc, ntr_glob, srcpos, ishot, ns, 6);
+                            saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 6);
 
                         break;
                     default:

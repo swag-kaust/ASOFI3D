@@ -4,7 +4,7 @@
 # of the ASOFI3D code.
 . tests/functions.sh
 
-MODEL="src/hh_elastic.c"
+MODEL="src/model_elastic.c"
 TEST_PATH="tests/fixtures/test_01"
 TEST_ID="TEST_01"
 
@@ -22,9 +22,9 @@ on_exit() {
 trap on_exit EXIT
 
 # Copy test model.
-cp "${TEST_PATH}/src/hh_elastic.c"       src/
-cp "${TEST_PATH}/in_and_out/sofi3D.json" tmp/in_and_out
-cp "${TEST_PATH}/sources/source.dat"     tmp/sources/
+cp "${TEST_PATH}/src/model_elastic.c"       src/
+cp "${TEST_PATH}/in_and_out/sofi3D.json"    tmp/in_and_out
+cp "${TEST_PATH}/sources/source.dat"        tmp/sources/
 
 # Compile code.
 cd src
@@ -49,13 +49,8 @@ if [ "$code" -ne "0" ]; then
 fi
 
 # Convert seismograms in SEG-Y format to the Madagascar RSF format.
-sfsegyread tape=tmp/su/test_vx.sgy \
-    tfile=tmp/su/test_vx_trace.rsf \
-    > tmp/su/test_vx.rsf
-
-sfsegyread tape=${TEST_PATH}/su/test_vx.sgy \
-    tfile=${TEST_PATH}/su/test_vx_trace.rsf \
-    > ${TEST_PATH}/su/test_vx.rsf
+convert_segy_to_rsf tmp/su/test_vx.sgy
+convert_segy_to_rsf ${TEST_PATH}/su/test_vx.sgy
 
 # Read the files.
 # Compare with the old output.

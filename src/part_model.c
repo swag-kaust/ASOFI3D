@@ -2,12 +2,13 @@
  *   loop over snapshotfiles which have to be merged.                                   
 
  *  ----------------------------------------------------------------------*/
+#include <stdlib.h>
 
 #include "fd.h"
 #include "globvar.h"      /* definition of global variables  */
 
 
-int main(int argc, char **argv){
+int main(int argc, char **argv) {
 
 int i, j, k, ntr=0, itr, nsrc, l, c, ishot, imin, imax, kmin, kmax;
 /*int h, safe, aperz, aperx, ks, is, nspap;*/
@@ -25,6 +26,9 @@ char cline[256];
 char *fileinp="";
 FILE *fvpmod, *frhomod,*fvpmpart, *frhompart, * fpsrc, *fpr, *fshift;
 
+if (argc != 2) {
+    exit(1);    
+}
 
 fileinp = argv[1];
 printf(" ***********************************************************\n");
@@ -58,7 +62,12 @@ NZG=NZ;
 /* read source positions */
 /* --------------------- */
 if ((fpsrc=fopen(SOURCE_FILE,"r"))==NULL) err(" Source file could not be opened !");
-fgets(cline,255,fpsrc);
+
+char *pline;
+pline = fgets(cline,255,fpsrc);
+if (pline == NULL) {
+    err("Cannot read the first line from the source file '%s'", SOURCE_FILE);
+}
 if (sscanf(cline,"%d",&nsrc)==0) fprintf(FP,"\n WARNING: Could not determine number of sources parameter sets in input file. Assuming %d.\n",(nsrc=0));
 else printf(" Number of source positions specified in %s : %d \n",SOURCE_FILE,nsrc);
 
@@ -66,12 +75,19 @@ stype=ivector(1,nsrc); /* for unknown reasons, the pointer does not point to mem
 srcpos=fmatrix(1,6,1,nsrc);
 
 for (l=1;l<=nsrc;l++){
-   fgets(cline,255,fpsrc);
-   sscanf(cline,"%f%f%f%f%f%f%i",&xsrc, &zsrc, &ysrc, &tshift, &srcpos[5][l], &srcpos[6][l], &stype[l]);
-       srcpos[1][l]=xsrc;
-       srcpos[2][l]=ysrc;
-       srcpos[3][l]=zsrc;
-       srcpos[4][l]=tshift;
+    pline = fgets(cline,255,fpsrc);
+    if (pline == NULL) {
+        err("Cannot read the information on source %d/%d from the "
+            "source file '%s'", l, nsrc, SOURCE_FILE);
+    }
+
+    sscanf(cline, "%f%f%f%f%f%f%i",
+           &xsrc, &zsrc, &ysrc, &tshift,
+           &srcpos[5][l], &srcpos[6][l], &stype[l]);
+    srcpos[1][l]=xsrc;
+    srcpos[2][l]=ysrc;
+    srcpos[3][l]=zsrc;
+    srcpos[4][l]=tshift;
 }
 fclose(fpsrc);
 
@@ -106,21 +122,23 @@ if (fpr==NULL) err(" Receiver file could not be opened !");
   rewind(fpr);
         
 	recpos=fmatrix(1,3,1,ntr);
-	  for (itr=1;itr<=ntr;itr++){
-	     fscanf(fpr,"%f%f%f\n",&xrec, &zrec, &yrec);
-				recpos[1][itr]=xrec;
-				recpos[2][itr]=yrec;
-				recpos[3][itr]=zrec;
-				
-				/* find maximum values of xrec and zrec */
-				if(xrec > Xr2){Xr2 = xrec;}
-				if(zrec > Zr2){Zr2 = zrec;}
-				
-				/* find minimum values of xrec and zrec */
-				if(xrec < Xr1){Xr1 = xrec;}
-				if(zrec < Zr1){Zr1 = zrec;}
-				
-	  }
+    for (itr = 1; itr <= ntr; itr++) {
+        if (fscanf(fpr, "%f%f%f\n", &xrec, &zrec, &yrec) != 3) {
+            err("Cannot parse receiver's position from line %d of the "
+                "receiver file '%s'", itr, REC_FILE);
+        };
+        recpos[1][itr]=xrec;
+        recpos[2][itr]=yrec;
+        recpos[3][itr]=zrec;
+
+        /* find maximum values of xrec and zrec */
+        if(xrec > Xr2){Xr2 = xrec;}
+        if(zrec > Zr2){Zr2 = zrec;}
+
+        /* find minimum values of xrec and zrec */
+        if(xrec < Xr1){Xr1 = xrec;}
+        if(zrec < Zr1){Zr1 = zrec;}
+    }
 	  
 fclose(fpr);
 		
@@ -208,23 +226,29 @@ sprintf(file_rho_part,"%s_shot%d.rho",MFILE,ishot);
 frhompart=fopen(file_rho_part,"w");
 
 
-	for (k=1;k<=NZ;k++){
-	/*printf("Reading slice %d in z-direction \n",k);*/
-	   for (i=1;i<=NX;i++){
-	      for (j=1;j<=NY;j++){
-	      
-	      fread(&vp,sizeof(float),1,fvpmod);
-	      fread(&rho,sizeof(float),1,frhomod);
-	      
-	      if((i>=imin)&&(i<=imax)&&(k>=kmin)&&(k<=kmax)){
-	        fwrite(&vp, sizeof(float), 1,fvpmpart);
-		fwrite(&rho, sizeof(float), 1,frhompart);
-		
-	      }
-	      
-	      }
-	    }
-	}
+size_t nelems;
+for (k=1;k<=NZ;k++){
+    /*printf("Reading slice %d in z-direction \n",k);*/
+    for (i=1;i<=NX;i++){
+        for (j=1;j<=NY;j++){
+            nelems = fread(&vp, sizeof(float), 1, fvpmod);
+            if (nelems != 1) {
+                err("Could not read model file '%s'", file_vp);
+            }
+
+            nelems = fread(&rho, sizeof(float), 1, frhomod);
+            if (nelems != 1) {
+                err("Could not read model file '%s'", file_rho);
+            }
+
+            if((i>=imin)&&(i<=imax)&&(k>=kmin)&&(k<=kmax)){
+                fwrite(&vp, sizeof(float), 1,fvpmpart);
+                fwrite(&rho, sizeof(float), 1,frhompart);
+            }
+
+        }
+    }
+}
                  
 				
 fclose(fvpmod);

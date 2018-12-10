@@ -1,11 +1,33 @@
-/* ----------------------------------------------------------------------
- * some utility-routines from numerical recipes , see NUMERICAL RECIPES IN C, Press et al., 1990, pp 942
- * ----------------------------------------------------------------------*/
-
-#define NR_END 1
-#define FREE_ARG char *
+/**
+ * Utility routines.
+ *
+ * Functions here of two types:
+ * - functions that allocate/deallocate ubiquitous in scientific computing
+ *   data structures (such as vectors, matrices, and tensors)
+ * - functions that dump error messages
+ *
+ * Most functions here are borrowed from the book [1].
+ *
+ * References
+ * ----------
+ * [1] Teukolsky, S.A., Flannery, B.P., Press, W.H. and Vetterling, W.T.
+ * Numerical recipes in C, 2nd edition.
+ */
+#include <stdarg.h>
 
 #include "fd.h"
+
+// The need for using NR_END is described on pages 940--941 of [1].
+#define NR_END 1
+// The need for casting to `char *` in `free` is due to the very old
+// code (First edition of [1] was published before C1989 standard).
+#define FREE_ARG char *
+
+#ifdef __GNUC__
+#define ATTR_UNUSED __attribute__((unused))
+#else
+#define ATTR_UNUSED
+#endif
 
 void err2(char errformat[],char errfilename[]){
 	char outtxt[STRING_SIZE];
@@ -13,16 +35,34 @@ void err2(char errformat[],char errfilename[]){
 	err(outtxt);
 }
 
-void err(char err_text[]){
+/**
+ *  Print an error message to stderr and abort execution.
+ *
+ *  format :
+ *      Format string conforming to the `printf` rules.
+ *  ... :
+ *      Variable arguments to be substituted into the `format` string.
+ */
+void err(char *format, ...) {
 	extern int MYID;
 
-	fprintf(stderr,"Message from PE %d\n",MYID);
-	fprintf(stderr,"R U N - T I M E  E R R O R: \n");
-	fprintf(stderr,"%s\n",err_text);
-	fprintf(stderr,"...now exiting to system.\n");
+    // The list of VAs behind '...' in the function signature.
+    va_list arg_list;
+
+    // Initialize arg_list to point to arguments after `format`.
+    va_start(arg_list, format);
+
+    // Render message `msg` using `format` and variable arguments.
+    char msg[2*STRING_SIZE];
+    sprintf(msg, format, arg_list);
+    va_end(arg_list);
+
+	fprintf(stderr, "Message from PE %d\n", MYID);
+	fprintf(stderr, "R U N - T I M E  E R R O R:\n");
+	fprintf(stderr, "%s\n", msg);
+	fprintf(stderr, "...now exiting to system.\n");
 	
 	MPI_Abort(MPI_COMM_WORLD, 1);
-	/*exit(1);*/
 }
 
 void warning(char warn_text[]){
@@ -45,24 +85,38 @@ double maximum(float **a, int nx, int ny){
 }
 
 
+float *vector(int nl, int nh) {
+    /**
+     * Allocate a vector of floats with subscript range nl..nh.
+     * 
+     * Vector elements are initialized to zero.
+     * Note, that the caller is obliged to access vector elements as
+     * v[nl], ..., v[nh] (note that the number of elements is `nh-nl+1`),
+     * otherwise a memory access violation will occur.
+     * nl : lowest index
+     * nh : highest index
+     */
+    float *v;
+    int i;
 
-
-float *vector(int nl, int nh){
-	/* allocate a float vector with subscript range v[nl..nh] and initializing
-		   this vector, eg. vector[nl..nh]=0.0 */
-	float *v;
-	int i;
-
-	v=(float *)malloc((size_t) ((nh-nl+1+NR_END)*sizeof(float)));
-	if (!v) err("allocation failure in function vector()");
-	for (i=0;i<(nh-nl+1+NR_END);i++) v[i]=0.0;
-	return v-nl+NR_END;
+    v=(float *)malloc((size_t) ((nh-nl+1+NR_END)*sizeof(float)));
+    if (!v) err("allocation failure in function vector()");
+    for (i=0;i<(nh-nl+1+NR_END);i++) v[i]=0.0;
+    return v-nl+NR_END;
 }
 
 
-int *ivector(int nl, int nh){
-	/* allocate an int vector with subscript range v[nl..nh] and initializing
-		   this vector, eg. ivector[nl..nh]=0 */
+int *ivector(int nl, int nh) {
+    /**
+     * Allocate a vector of ints with subscript range nl..nh.
+     * 
+     * Vector elements are initialized to zero.
+     * Note, that the caller is obliged to access vector elements as
+     * v[nl], ..., v[nh] (note that the number of elements is `nh-nl+1`),
+     * otherwise a memory access violation will occur.
+     * nl : lowest index
+     * nh : highest index
+     */
 	int *v;
 	int i;
 
@@ -72,9 +126,18 @@ int *ivector(int nl, int nh){
 	return v-nl+NR_END;
 }
 
-unsigned short int *usvector(int nl, int nh){
-	/* allocate an short int vector with subscript range v[nl..nh] and initializing
-		   this vector, eg. ivector[nl..nh]=0 */
+
+unsigned short int *usvector(int nl, int nh) {
+    /**
+     * Allocate a vector of unsigned ints with subscript range nl..nh.
+     * 
+     * Vector elements are initialized to zero.
+     * Note, that the caller is obliged to access vector elements as
+     * v[nl], ..., v[nh] (note that the number of elements is `nh-nl+1`),
+     * otherwise a memory access violation will occur.
+     * nl : lowest index
+     * nh : highest index
+     */
 	unsigned short int *v;
 	int i;
 
@@ -86,7 +149,16 @@ unsigned short int *usvector(int nl, int nh){
 
 
 unsigned char *cvector(int nl, int nh){
-	/* allocate an unsigned char vector with subscript range v[nl..nh] */
+    /**
+     * Allocate a vector of chars with subscript range nl..nh.
+     * 
+     * Vector elements are initialized to zero.
+     * Note, that the caller is obliged to access vector elements as
+     * v[nl], ..., v[nh] (note that the number of elements is `nh-nl+1`),
+     * otherwise a memory access violation will occur.
+     * nl : lowest index
+     * nh : highest index
+     */
 	unsigned char *v;
 
 	v=(unsigned char *)malloc((size_t) ((nh-nl+1+NR_END)*sizeof(unsigned char)));
@@ -96,8 +168,16 @@ unsigned char *cvector(int nl, int nh){
 
 
 unsigned long *lvector(int nl, int nh){
-	/* allocate an unsigned long vector with subscript range v[nl..nh] and
-		  initializing this vector, eg. vector[nl..nh]=0.0 */
+    /**
+     * Allocate a vector of unsigned longs with subscript range nl..nh.
+     * 
+     * Vector elements are initialized to zero.
+     * Note, that the caller is obliged to access vector elements as
+     * v[nl], ..., v[nh] (note that the number of elements is `nh-nl+1`),
+     * otherwise a memory access violation will occur.
+     * nl : lowest index
+     * nh : highest index
+     */
 	unsigned long *v;
 	int i;
 
@@ -108,9 +188,16 @@ unsigned long *lvector(int nl, int nh){
 }
 
 double *dvector(int nl, int nh){
-	/* allocate a double vector with subscript range v[nl..nh] and initializing
-		   this vector, eg. vector[nl..nh]=0.0 */
-
+    /**
+     * Allocate a vector of unsigned longs with subscript range nl..nh.
+     * 
+     * Vector elements are initialized to zero.
+     * Note, that the caller is obliged to access vector elements as
+     * v[nl], ..., v[nh] (note that the number of elements is `nh-nl+1`),
+     * otherwise a memory access violation will occur.
+     * nl : lowest index
+     * nh : highest index
+     */
 	double *v;
 	int i;
 
@@ -371,60 +458,75 @@ float ****f4tensor(int nrl, int nrh, int ncl, int nch,int ndl, int ndh, int nvl,
 	return t;
 }
 
-void free_vector(float *v, int nl, int nh){
+void free_vector(float *v, int nl, int nh ATTR_UNUSED){
 	/* free a float vector allocated with vector() */
 	free((FREE_ARG) (v+nl-NR_END));
 }
 
-void free_ivector(int *v, int nl, int nh){
+void free_ivector(int *v, int nl, int nh ATTR_UNUSED){
 	/* free a int vector allocated with vector() */
 	free((FREE_ARG) (v+nl-NR_END));
 }
 
-void free_cvector(char *v, int nl, int nh){
+void free_cvector(char *v, int nl, int nh ATTR_UNUSED){
 	/* free a char vector allocated with vector() */
 	free((FREE_ARG) (v+nl-NR_END));
 }
 
-void free_dvector(double *v, int nl, int nh){
+void free_dvector(double *v, int nl, int nh ATTR_UNUSED){
 	/* free a char vector allocated with vector() */
 	free((FREE_ARG) (v+nl-NR_END));
 }
 
-void free_matrix(float **m, int nrl, int nrh, int ncl, int nch){
+void free_matrix(float **m, int nrl,
+        int nrh ATTR_UNUSED,
+        int ncl, int nch ATTR_UNUSED) {
 	/* free a float matrix allocated by matrix() */
 	free((FREE_ARG) (m[nrl]+ncl-NR_END));
 	free((FREE_ARG) (m+nrl-NR_END));
 }
 
-void free_imatrix(int **m, int nrl, int nrh, int ncl, int nch){
+void free_imatrix(int **m,
+        int nrl, int nrh ATTR_UNUSED,
+        int ncl, int nch ATTR_UNUSED) {
 	/* free a integer matrix allocated by imatrix() */
 	free((FREE_ARG) (m[nrl]+ncl-NR_END));
 	free((FREE_ARG) (m+nrl-NR_END));
 }
 
-void free_usmatrix(unsigned short int **m, int nrl, int nrh, int ncl, int nch){
+void free_usmatrix(unsigned short int **m,
+        int nrl, int nrh ATTR_UNUSED,
+        int ncl, int nch ATTR_UNUSED) {
 	/* free a integer matrix allocated by imatrix() */
 	free((FREE_ARG) (m[nrl]+ncl-NR_END));
 	free((FREE_ARG) (m+nrl-NR_END));
 }
 
-void free_f3tensor(float ***t, int nrl, int nrh, int ncl, int nch, int ndl, int ndh){
+void free_f3tensor(float ***t,
+        int nrl, int nrh ATTR_UNUSED,
+        int ncl, int nch ATTR_UNUSED,
+        int ndl, int ndh ATTR_UNUSED) {
 	/* free a float matrix allocated by f3tensor() */
 	free((FREE_ARG) (t[nrl][ncl]+ndl-NR_END));
 	free((FREE_ARG) (t[nrl]+ncl-NR_END));
 	free((FREE_ARG) (t+nrl-NR_END));
 }
 
-void free_i3tensor(int ***t, int nrl, int nrh, int ncl, int nch, int ndl, int ndh){
+void free_i3tensor(int ***t,
+        int nrl, int nrh ATTR_UNUSED,
+        int ncl, int nch ATTR_UNUSED,
+        int ndl, int ndh ATTR_UNUSED) {
 	/* free a float matrix allocated by i3tensor() */
 	free((FREE_ARG) (t[nrl][ncl]+ndl-NR_END));
 	free((FREE_ARG) (t[nrl]+ncl-NR_END));
 	free((FREE_ARG) (t+nrl-NR_END));
 }
 
-void free_f4tensor(float ****t, int nrl, int nrh, int ncl, int nch, int ndl, int
-ndh, int nvl,int nvh){
+void free_f4tensor(float ****t,
+        int nrl, int nrh ATTR_UNUSED,
+        int ncl, int nch ATTR_UNUSED,
+        int ndl, int ndh ATTR_UNUSED,
+        int nvl, int nvh ATTR_UNUSED) {
 	/* free a float matrix allocated by f4tensor() */
 	free((FREE_ARG) (t[nrl][ncl][ndl]+nvl-NR_END));
 	free((FREE_ARG) (t[nrl][ncl]+ndl-NR_END));
@@ -440,5 +542,3 @@ void reverse(char s[]){
 		s[j] = c;
 	}
 }
-
-

@@ -56,9 +56,22 @@ typedef struct {
     float ***z;
 } StressDerivativesWrtVelocity;
 
-/* Anisotropic material parameters.
+/*
+ * Anisotropic material parameters.
  * Elastic constants and density.
- * Cij are anisotropic elastic coefficients in Voigt notation.
+ * Cij are the elements of 6x6 symmetric matrix. They are related to the 
+ * components of the fourth-order stiffness tensor Cijkl in the following way:
+ * Cijkl -> Cmn,
+ * where
+ * m = i if i = j,
+ * m = 9 - (i + j) if i /= j
+ * and the same relation is held between n and kl indices.
+ * See, for example, the Appendix of
+ *     Cheadle S.P. et al.
+ *     Orthorhombic anistropy: A physical seismic modeling study.
+ *     Geophysics,  vol. 56, 1991.
+ *     https://library.seg.org/doi/pdf/10.1190/1.1442971
+ * for further details.
  */
 typedef struct {
     float ***C11;
@@ -70,8 +83,11 @@ typedef struct {
     float ***C12;
     float ***C13;
     float ***C23;
+
+    // Material density.
     float ***rho;
-    // Next three fields are parameters on the half-integer grid (p stands for + 1/2).
+    // Next three fields are parameters on the half-integer grid
+    // (p stands for "+1/2").
     float ***C66ipjp;
     float ***C44jpkp;
     float ***C55ipkp;

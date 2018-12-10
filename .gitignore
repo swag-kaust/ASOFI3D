@@ -1,6 +1,6 @@
 # Created by https://www.gitignore.io/api/c,c++,latex,kate,linux,osx,kdevelop4,fortran,windows,vim,svn,matlab,emacs,eclipse,cmake,premake-gmake
 
-# specific files fpr GPIAG_Software
+# specific files for GPIAG_Software
 
 sofi3D
 snapmerge
@@ -9,6 +9,7 @@ seismerge
 sofi3D_acoustic
 
 guide_sofi3D.pdf
+asofi3d_user_guide.pdf
 
 *.jpg
 *.jpeg
@@ -43,16 +44,13 @@ LOG_FILE.*
 
 *.backup
 
+# Compilation database for clang-based tools.
+compile_commands.json
+
 ### IDE and text editors files ###
 # CodeBlocks
 src/*.cbp
 src/*.layout
-
-# Vim plugin YouCompleteMe for C/C++ code autocompletion.
-.ycm_extra_conf.py
-
-# Vim database for C code (functions, variables, etc. and their locations).
-tags
 
 ### C ###
 # Object files
@@ -267,6 +265,17 @@ Session.vim
 .netrwhist
 *~
 
+# Vim plugin YouCompleteMe for C/C++ code autocompletion.
+.ycm_extra_conf.py
+
+# Vim database for C code (functions, variables, etc. and their locations).
+tags
+
+# Project-specific settings.
+.exrc
+.[n?]vimrc
+_[n?]vimrc
+
 
 ### SVN ###
 .svn/
@@ -383,3 +392,7 @@ tests/fixtures/test_01/su/test_vx.rsf
 tests/fixtures/test_01/su/test_vx.rsf@
 # Don't ignore source and receiver files used for test fixtures.
 !tests/fixtures/**/*.dat
+
+
+### Build artifacts ###
+src/config-auto.mk

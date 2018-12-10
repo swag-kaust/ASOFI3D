@@ -10,7 +10,7 @@
 double exchange_s(int nt, Tensor3d *s,
 		float *** bufferlef_to_rig, float *** bufferrig_to_lef,
 		float *** buffertop_to_bot, float *** bufferbot_to_top,
-		float *** bufferfro_to_bac, float *** bufferbac_to_fro, MPI_Request * req_send, MPI_Request * req_rec) {
+		float *** bufferfro_to_bac, float *** bufferbac_to_fro) {
 
 	extern int NX, NY, NZ, POS[4], NPROCX, NPROCY, NPROCZ, BOUNDARY, MYID, FDORDER, LOG, INDEX[7];
 	extern const int TAG1,TAG2,TAG3,TAG4,TAG5,TAG6;
@@ -37,7 +37,7 @@ double exchange_s(int nt, Tensor3d *s,
 
 	/* top-bottom -----------------------------------------------------------*/	
 
-	if (POS[2]!=0)	/* no boundary exchange at top of global grid */
+	if (BOUNDARY || (POS[2]!=0))	/* no boundary exchange at top of global grid */
 		for (i=1;i<=NX;i++){
 			for (k=1;k<=NZ;k++){
 
@@ -56,7 +56,7 @@ double exchange_s(int nt, Tensor3d *s,
 		}
 
 
-	if (POS[2]!=NPROCY-1)	/* no boundary exchange at bottom of global grid */
+	if (BOUNDARY || (POS[2]!=NPROCY-1))	/* no boundary exchange at bottom of global grid */
 		for (i=1;i<=NX;i++){
 			for (k=1;k<=NZ;k++){
 
@@ -97,7 +97,7 @@ double exchange_s(int nt, Tensor3d *s,
 	MPI_Sendrecv_replace(&buffertop_to_bot[1][1][1],NX*NZ*nf2,MPI_FLOAT,INDEX[3],TAG5,INDEX[4],TAG5,MPI_COMM_WORLD,&status);	
 	MPI_Sendrecv_replace(&bufferbot_to_top[1][1][1],NX*NZ*nf1,MPI_FLOAT,INDEX[4],TAG6,INDEX[3],TAG6,MPI_COMM_WORLD,&status);
 
-	if (POS[2]!=NPROCY-1)	/* no boundary exchange at bottom of global grid */
+	if (BOUNDARY || (POS[2]!=NPROCY-1))	/* no boundary exchange at bottom of global grid */
 		for (i=1;i<=NX;i++){
 			for (k=1;k<=NZ;k++){
 
@@ -115,7 +115,7 @@ double exchange_s(int nt, Tensor3d *s,
 			}
 		}
 
-	if (POS[2]!=0)	/* no boundary exchange at top of global grid */
+	if (BOUNDARY || (POS[2]!=0))	/* no boundary exchange at top of global grid */
 		for (i=1;i<=NX;i++){
 			for (k=1;k<=NZ;k++){
 

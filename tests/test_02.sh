@@ -4,7 +4,7 @@
 # from the benchmark `fullspace`.
 . tests/functions.sh
 
-MODEL="src/hh_elastic.c"
+MODEL="src/model_elastic.c"
 TEST_PATH="tests/fixtures/test_02"
 
 # Setup function prepares environment for the test (creates directories).
@@ -14,9 +14,9 @@ setup
 mv $MODEL ${MODEL}.bak
 
 # Copy test model.
-cp "${TEST_PATH}/model/fullspace.c"             src/hh_elastic.c
-cp "${TEST_PATH}/in_and_out/fullspace.json"     tmp/in_and_out/sofi3D.json
-cp "${TEST_PATH}/sources/fullspace_sources.dat" tmp/sources/
+cp "${TEST_PATH}/model_elastic.c"                  src/
+cp "${TEST_PATH}/in_and_out/fullspace.json"        tmp/in_and_out/sofi3D.json
+cp "${TEST_PATH}/sources/fullspace_sources.dat"    tmp/sources/
 
 # Compile code.
 cd src
@@ -42,21 +42,11 @@ if [ "$code" -ne "0" ]; then
 fi
 
 # Convert seismograms in SEG-Y format to the Madagascar RSF format.
-sfsegyread < tmp/su/fullspace_vx.sgy \
-    tfile=tmp/su/fullspace_vx_trace.rsf \
-    > tmp/su/fullspace_vx.rsf
+convert_segy_to_rsf tmp/su/fullspace_vx.sgy
+convert_segy_to_rsf ${TEST_PATH}/su/fullspace_vx.sgy
 
-sfsegyread < ${TEST_PATH}/su/fullspace_vx.sgy \
-    tfile=${TEST_PATH}/su/fullspace_vx_trace.rsf \
-    > ${TEST_PATH}/su/fullspace_vx.rsf
-
-sfsegyread < tmp/su/fullspace_p.sgy \
-    tfile=tmp/su/fullspace_p_trace.rsf \
-    > tmp/su/fullspace_p.rsf
-
-sfsegyread < ${TEST_PATH}/su/fullspace_p.sgy \
-    tfile=${TEST_PATH}/su/fullspace_p_trace.rsf \
-    > ${TEST_PATH}/su/fullspace_p.rsf
+convert_segy_to_rsf tmp/su/fullspace_p.sgy
+convert_segy_to_rsf ${TEST_PATH}/su/fullspace_p.sgy
 
 # Read the files.
 # Compare with the recorded output.

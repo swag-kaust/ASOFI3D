@@ -1,6 +1,6 @@
 # Functions related to testing.
 
-setup () {
+setup() {
     # Setup environment for the execution of a test.
     rm -rf tmp/
     mkdir tmp
@@ -11,6 +11,31 @@ setup () {
     mkdir tmp/sources
     mkdir tmp/receiver
     mkdir tmp/su
+}
+
+compile_code () {
+    # Compile code.
+    cd src
+
+    # First invoke `make` in question mode to check if
+    # `sofi3D` target is up to date.
+    make sofi3D --question
+
+    if [ $? -eq 0 ]
+    then
+        echo "Executable 'sofi3D' is up do date."
+    else
+        echo "Recompiling 'sofi3D'. See tmp/make.log for details"
+        make sofi3D > ../tmp/make.log
+
+        if [ "$?" -ne 0 ]; then
+            cd ..
+            echo "${TEST_ID}: FAIL" > /dev/stderr
+            exit 1
+        fi
+    fi
+
+    cd ..
 }
 
 animate_progress () {
@@ -48,4 +73,22 @@ animate_progress () {
         printf "\r"
         printf "%s\n" "${message}"
     fi
+}
+
+convert_segy_to_rsf() {
+    # Convert SEG-Y format to RSF format.
+    # USAGE: convert_segy_to_rsf path/filename.sgy
+    #
+    # Examples:
+    #     $ convert_segy_to_rsf tmp/p.sgy
+    # will produce RSF file tmp/p.rsf.
+
+    file_sgy="$1"
+    dir=$(dirname "$file_sgy")
+    filename_base=$(basename -s .sgy "${file_sgy}")
+
+    file_rsf="${dir}/${filename_base}.rsf"
+    file_rsf_tfile="${dir}/${filename_base}.tfile.rsf"
+
+    sfsegyread tape="$file_sgy" tfile="$file_rsf_tfile" > "$file_rsf"
 }

@@ -5,76 +5,29 @@
 # modules for KAUST
 
 # source code for model generation (viscoelastic)
-MODEL_SRC_V = hh_visco.c
+MODEL_SRC_V = model_visco.c
 
 # source code for model generation (elastic)
-MODEL_SRC_E = hh_elastic.c
+MODEL_SRC_E = model_elastic.c
 
 # source code for model generation (acoustic)
-MODEL_SRC_A = hh_acoustic.c
+MODEL_SRC_A = model_acoustic.c
 
 # source code for benchmark model
 MODEL_SRC_BENCH = benchmod.c
 
-# Compiler (LAM: CC=hcc, CRAY T3E: CC=cc, SHARCNet: mpicc)
 
-# On Linux cluster running LAM
-# CC = hcc
-# LDLIBS = -lm -lmpi
-# CFLAGS = -g -Wall -O4
+# -----------------------------------------------------------------------------
+# Configure stage
 
-# On CRAY T3E
-CC=cc
+# Do not detect code prerequisites while executing commands
+# `make clean` or `make clobber`.
+ifeq "$(filter clean clobber, $(MAKECMDGOALS))" ""
+	-include config-auto.mk
+	-include config-manual.mk
+endif
 
-# On Linux Cluster using OpenMPI
-CC=mpicc
-#-ta=tesla:managed -acc -Minfo=accel
-#CC = mpicc -ta=multicore -acc -Minfo=accel
-LDLIBS = -lm
-CFLAGS = -Wall -O3
-
-# On InstitutsCluster2 using intelMPI AND ITAC (no optimization)
-#CC = mpicc
-#LDLIBS = -tcollect
-#CFLAGS = -tcollect -trace
-
-# On InstitutsCluster2 using Open MPI and scalasca (no optimization)
-#CC = skin mpicc
-#LDLIBS =
-#CFLAGS =-O3
-
-#On InstitutsCluster2 using Open MPI and DDT (no optimization)
-#CC = mpicc
-#LDLIBS = -g
-#CFLAGS = -g -O0 -i_dynamic
-
-
-# On JUROPA cluster
-#CC=mpicc
-#LDLIBS=-lm
-#CFLAGS=-O3 -ipo
-
-
-# On HLRN system
-#CC=mpcc
-#LDLIBS=-lm
-
-# ON Linux cluster ALTIX.RZ.UNI-KIEL:DE
-#CC=icc
-#CFLAGS=-mp -O3 -ip0q
-#LDLIBS=-lmpi -lm
-
-# ON Linux cluster ALTIX.HRZ.TU-FREIBERG.DE
-#CC=icc
-#CFLAGS=-mp -O3 -ip0
-#LDLIBS=-lmpi -lm -i-static
-
-
-# after this line, no further editing should be necessary
-# --------------------------------------------------------
-
-.c.o:
-	$(CC) -c $(CFLAGS) $<
+SILENT ?= @
 
 
 SEISMERGE_SCR = seismerge.c
@@ -160,9 +113,12 @@ SOFI3D_SRC = \
 		exchange_s.c \
 		psource.c \
 		readmod.c \
+		source_random.c \
 		$(MODEL_SRC_E) \
 		$(MODEL_SRC_V) \
 		$(SOFI3D_UTIL) \
+		merge_source_field.c \
+		write_source_field.c \
 		madinput.c \
 		mad_elastic.c
 
@@ -239,32 +195,55 @@ SNAPMERGE_OBJ = $(SNAPMERGE_SCR:%.c=%.o)
 PARTMODEL_OBJ = $(PARTMODEL_SCR:%.c=%.o)
 SEISMERGE_OBJ = $(SEISMERGE_SCR:%.c=%.o)
 
-sofi3D:		$(SOFI3D_OBJ)
-	$(CC) $(SOFI3D_OBJ) -o ../bin/sofi3D $(LDLIBS)
+.PHONY: all
+all: clean sofi3D seismerge snapmerge part_model sofi3D_acoustic 
+
+.PHONY: clean
+clean:
+	find . -name "*.o"   -exec rm {} \;
+	find . -name "*.bck" -exec rm {} \;
+	find . -name "core"  -exec rm {} \;
+
+# Target `sofi3D` is defined only for user convenience and has empty recipe.
+.PHONY : sofi3D
+sofi3D: ../bin/sofi3D ;
+
+# Using built-in variable LINK.c defined as
+# LINK.c = $(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
+
+../bin/sofi3D: $(SOFI3D_OBJ)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $^ $(LDLIBS) -o $@
 
 seismerge:	$(SEISMERGE_OBJ)
-	$(CC) $(SEISMERGE_OBJ) -o ../bin/seismerge $(LDLIBS)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $^ $(LDLIBS) -o ../bin/seismerge
 
 snapmerge:	$(SNAPMERGE_OBJ)
-	$(CC) $(SNAPMERGE_OBJ) -o ../bin/snapmerge $(LDLIBS)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $^ $(LDLIBS) -o ../bin/snapmerge
 
 part_model:	$(PARTMODEL_OBJ)
-	$(CC) $(PARTMODEL_OBJ) -o ../bin/partmodel $(LDLIBS)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $^ $(LDLIBS) -o ../bin/partmodel
 
 #sofi3D_rsg: $(SOFI3D_OBJ_RSG)
 #	$(CC) $(SOFI3D_OBJ_RSG) -o ../bin/sofi3D_rsg $(LDLIBS)
 
 sofi3D_bench: $(SOFI3D_OBJ_BENCH)
-	$(CC)  $(SOFI3D_OBJ_BENCH) -o ../bin/sofi3D_bench $(LDLIBS)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $^ $(LDLIBS) -o ../bin/sofi3D_bench
 
 sofi3D_acoustic: $(SOFI3D_OBJ_ACOUSTIC)
-	$(CC) $(SOFI3D_OBJ_ACOUSTIC) -o ../bin/sofi3D_acoustic $(LDLIBS)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $^ $(LDLIBS) -o ../bin/sofi3D_acoustic
 
-clean:
-	find . -name "*.o" -exec rm {} \;
-	find . -name "*.bck" -exec rm {} \;
-	find . -name "core" -exec rm {} \;
+clobber: clean
+	-$(RM) config-auto.mk
+	-$(RM) -r craycc_pl
 
-all: clean sofi3D sofi3D_acoustic snapmerge seismerge part_model
+config-auto.mk: configure
+	@./$< > $@
+	@echo "*** Configuration file: begin"
+	@cat $@
+	@echo "*** Configuration file: end"
 
 
+.SUFFIXES: .c .o
+.c.o:
+	$(SILENT)$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	@echo Making $@

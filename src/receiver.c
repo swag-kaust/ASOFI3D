@@ -54,7 +54,14 @@ int **receiver(FILE *fp, int *ntr){
 		
 			recpos1=imatrix(1,4,1,*ntr);
 			for (itr=1;itr<=*ntr;itr++){
-				fscanf(fpr,"%f%f%f\n",&xrec, &yrec, &zrec);
+                if (fscanf(fpr,"%f%f%f\n",&xrec, &yrec, &zrec) != 3) {
+                    char msg[STRING_SIZE];
+                    sprintf(msg,
+                            "Could not read a receiver position "
+                            "from line %d of the receiver file %s",
+                            itr, REC_FILE);
+                    err(msg); 
+                }
 				/*note that "y" denotes the vertical coordinate*/
 				recpos1[1][itr]=iround((xrec+REFREC[1])/DX);
 				recpos1[2][itr]=iround((yrec+REFREC[2])/DY);
