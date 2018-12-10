@@ -28,6 +28,7 @@ for phi2=0:15:90
     plot_opts.phi2 = phi2;
     snap3D_asofi3D_func(plot_opts);
 end
+
  
 function snap3D_asofi3D_func(plot_opts)
 phi2 = plot_opts.phi2;
@@ -455,14 +456,6 @@ fid_file1=fopen(file_inp1,'r','ieee-le');
             end
         end
     end
-<<<<<<< 2fa823112bbb76f2a936ff0c431a66fd41c95a42
-
 disp(['  ']);
 disp(['Script ended...']);
 end
-=======
-end
-disp('  ');
-disp('Script ended...');
-end
->>>>>>> MAINT: Fix errors given by MATLAB's linter
