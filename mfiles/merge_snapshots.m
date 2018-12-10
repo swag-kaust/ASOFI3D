@@ -1,5 +1,5 @@
 %% merges snapshots otput has Z X Y order of axis
-function D = merge_snapshots(par_folder)
+function D = merge_snapshots(par_folder, file_ext)
 
 %%
 % clear all
@@ -7,7 +7,7 @@ function D = merge_snapshots(par_folder)
 par_folder = [par_folder, '/'];
 jV = read_asofi3D_json([par_folder, 'in_and_out/sofi3D.json']);
 
-snap_name = [par_folder, jV.SNAP_FILE,'.bin.div'];
+snap_name = [par_folder, jV.SNAP_FILE, file_ext];
 
 nx = str2num(jV.NX);
 ny = str2num(jV.NY);

@@ -13,7 +13,8 @@ addpath('./utils');
 plot_opts.par_folder = '../par';
 % % Path to configuration file, relative to par_folder.
 plot_opts.config_file='./in_and_out/sofi3D.json';
-plot_opts.file_out = [plot_opts.par_folder, '/figures'];
+plot_opts.file_out = [plot_opts.par_folder, '/figures/'];
+plot_opts.file_ext = '.bin.div';
 
 for phi2=0:15:90
     plot_opts.phi2 = phi2;
@@ -62,14 +63,10 @@ dh = str2num(opts.DX);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---input, output files
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Choose number of input files (1 or 2), only for 2D plots
-% For the 3D plot (image_switch=2) only file_inp1 is used by default
-num_switch=2;
 
 % Input file1 (snapshot file1)
 file_inp1 = [par_folder,'/snap/test.bin.div'];
-% Input file2 (snapshot file2)
-file_inp2 = [par_folder,'/snap/test.bin.curl'];
+
 % Model file (for single display or contour plot ontop of snapshot)
 file_mod = [par_folder,'/model/test.SOFI3D.rho'];
 
@@ -83,7 +80,7 @@ file_out=plot_opts.file_out;
 
 % title strings for each sub-figure
 title_inp1='\nabla \cdot u';
-title_inp2='S-wave field (curl)';
+
 title_mod='Density model';
 
 
@@ -98,8 +95,7 @@ numbOFcont=8;
 
 % Choose model or snapshot plot (model-->1; snapshot-->2)
 type_switch=2;
-% Choose 2D slice or 3D surf plot
-image_switch=2; % 1 = 2D; 2 = 3D;
+
 % Choose slice geometry and postion (for 2-D plots)
 slice_switch=1; % horizontal(zx)=1; vertical (yx)=2; vertical (yz)=3;
 % slice definition, where to slice trough the 3-D space
@@ -113,8 +109,8 @@ xslice=nx/2; % for yz plane in grid points
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % time increment for snapshots:
-TSNAP1=0.8;
-TSNAPINC=0.2;
+TSNAP1=str2num(opts.TSNAP1);
+TSNAPINC=str2num(opts.TSNAPINC);
 % firts and last snapshot that is considered for displayin
 firstframe=1;
 lastframe=3;
@@ -146,12 +142,7 @@ file_out = [file_out, num2str(phi2)];
 % only used if type_switch=2
 auto_scaling=1; % 1= automatic determination of boundaries, 2= constant values caxis_value , 3= no scaling
 caxis_value_1=5e-11;
-caxis_value_2=caxis_value_1; % only used if num_switch=2
 
-% use custom axis limits if axisoverwrite==1, otherwise matlab will
-% determine axis limits automatically
-axisoverwrite=0;
-newaxis=[35 65 35 65];
 
 % delay between the display of each snaphot in s
 pause4display=0.2;
@@ -174,13 +165,6 @@ z=zp1:dh*outz:zp2*outz;
 if type_switch==1
     firstframe=1
     lastframe=1;
-    num_switch=1;
-end
-
-% if 3D snaphot visualization is chosen, the number of snapshots for
-% simultaneous display is set to 1
-if image_switch==2
-    num_switch=1;
 end
 
 % load model file ; Format ieee-be for Sun or Workstation, -le for PC
@@ -213,288 +197,11 @@ end
 disp(['Loading snap shot file ' file_inp1]);
 fid_file1=fopen(file_inp1,'r','ieee-le');
 
-if num_switch==2;
-    % open snapshot data of 2nd input file
-    disp(['Loading snap shot file ' file_inp2]);
-    fid_file2=fopen(file_inp2,'r','ieee-le');
-end
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%---2D display of snapshot data (Slices )
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-disp(['   ']);
-
-if image_switch==1
-    % in case of snapshot files use seismic colormap
-    if type_switch==2
-        myMap = colormap(load('./srgb.map'));
-    end
-    % creating variables for snapshot content
-    % file1_data (and file2_data) depending on number of snapshots
-    % displayed simultaneously (switch num_switch)
-    
-    % selected slice of y-x-plane (vertical plane)
-    if(slice_switch==2)
-        % allocate memory for 1st snapshot file
-        file1_data=zeros(ny,nx);
-        if num_switch==2
-            % allocate memory for 2nd snapshot file
-            file2_data=zeros(ny,nx);
-        end
-    end
-    % selected slice of z-x-plane (horizontal plane)
-    if(slice_switch==1)
-        % allocate memory for 1st snapshot file
-        file1_data2=zeros(nz,nx);
-        if num_switch==2
-            % allocate memory for 2nd snapshot file
-            file2_data2=zeros(nz,nx);
-        end
-    end
-    % selected slice of y-z-plane (vertical plane)
-    if(slice_switch==3)
-        % allocate memory for 1st snapshot file
-        file1_data2=zeros(ny,nz);
-        if num_switch==2
-            % allocate memory for 2nd snapshot file
-            file2_data2=zeros(ny,nz);
-        end
-    end
-    
-    % determing imaging vectors (for contour and imagesc) and labels
-    % according to chosen image plane
-    if slice_switch==1
-        image_vect1=x;
-        image_vect2=z;
-        labelstring1='x in m';
-        labelstring2='z in m (horizontal)';
-    end
-    if slice_switch==2
-        image_vect1=x;
-        image_vect2=y;
-        labelstring1='x in m';
-        labelstring2='y in m (vertical)';
-    end
-    if slice_switch==3
-        image_vect1=z;
-        image_vect2=y;
-        labelstring1='z in m';
-        labelstring2='y in m (vertical)';
-    end
-    
-    
-    h1=figure(1);
-    % determination of screen size
-    scrsz = get(0,'ScreenSize');
-    % determination size of window for plotting
-    %set(h1,'Position',[1 scrsz(4)*2/3 scrsz(3)*1/4 scrsz(4)*2/3]);
-    
-    %creating subfigure handles if 2 snapshots are displayed simultaneously
-    if num_switch==2
-        ax1=subplot('Position',[0.05 0.3 0.4 0.4]);
-        ax2=subplot('Position',[0.55 0.3 0.4 0.4]);
-    end
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %---loop over timesteps (2D snapshots)
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    for i=firstframe:1:lastframe;
-        
-        %calculating time of snapshot
-        tsnap=(i-1)*TSNAPINC+TSNAP1;
-        disp(['Loading snapshot no ',int2str(i),' at time=',num2str(tsnap),' s.']);
-     
-        % loading data:
-        
-        if(slice_switch==2) % y-x-plane (vertical)
-            % since the models are stores as a series of yx-slices
-            % we just have to seek/jump to the mid-slice and load the data
-            offset=4*nx*ny*(zslice-1)+4*nx*ny*nz*(i-1);
-            fseek(fid_file1,offset,-1);
-            if num_switch==2
-                fseek(fid_file2,offset,-1);
-            end
-            file1_data(:,:)=fread(fid_file1,[ny,nx],'float');
-            if num_switch==2
-                file2_data(:,:)=fread(fid_file2,[ny,nx],'float');
-            end
-        else
-            % z-x-plane (horizontal) and %y-z-plane (vertical)
-            % to display slices in any other plane besides y-x, we have to load
-            % each single yx slice and extract a single line and put them together
-            
-            for l=1:nz
-                file1_data=fread(fid_file1,[ny,nx],'float');
-                if num_switch==2
-                    file2_data=fread(fid_file2,[ny,nx],'float');
-                end
-                
-                if(slice_switch==1) % z-x plane (horizontal)
-                    file1_data2(l,:)=file1_data(yslice,:);
-                    if num_switch==2
-                        file2_data2(l,:)=file2_data(yslice,:);
-                    end
-                end
-                
-                if(slice_switch==3) % y-z-plane (vertical)
-                    file1_data2(:,l)=file1_data(:,xslice);
-                    if num_switch==2
-                        file2_data2(:,l)=file2_data(:,xslice);
-                    end
-                end
-                
-            end
-            file1_data=file1_data2;
-            clear file1_data2;
-            if num_switch==2
-                file2_data=file2_data2;
-                clear file2_data2;
-            end
-        end
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        %---plotting 2D slices
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        
-        % switch for loading 1 or 2 input files
-        if num_switch==2
-            % now switching to secondary subplot
-            axes(ax2);
-            imagesc(image_vect1,image_vect2,file2_data);
-            % determing maximum amplitude of plot
-            file2max=max(max(abs(file2_data)));
-            % switch whether model contour should be plotted
-            if cont_switch==1
-                hold on
-                contour(image_vect1,image_vect2,mod_data,numbOFcont,'k-','LineWidth',1);
-                hold off
-            end
-            
-            % formatting the 2nd sub-figure
-            colorbar
-            xlabel(labelstring1);
-            ylabel(labelstring2);
-            title(title_inp2);
-            set(gca,'DataAspectRatio',[1 1 1]);
-            set(get(gca,'title'),'FontSize',12,'FontWeight','bold');
-            set(get(gca,'Ylabel'),'FontSize',12,'FontWeight','bold');
-            set(get(gca,'Xlabel'),'FontSize',12,'FontWeight','bold');
-            set(gca,'FontSize',12,'FontWeight','bold');
-            set(gca,'Linewidth',1.0);
-            set(gca,'Box','on');
-            if axisoverwrite==1
-                axis(newaxis);
-            end
-            
-            % limiting the colorbar to specified range
-            switch auto_scaling
-                case 1
-                    caxis([-file2max/10 file2max/10]);
-                case 2
-                    caxis([-caxis_value_2 caxis_value_2])
-                otherwise
-            end
-            
-            % now switching to primary subplot
-            axes(ax1);
-        end
-        
-        % plot 1st input file
-        if type_switch==2
-            % plot snapshot file
-            imagesc(image_vect1,image_vect2,file1_data);
-        end
-        if type_switch==1
-            % plot model file
-            imagesc(image_vect1,image_vect2,mod_data);
-        end
-        colorbar
-        
-        if type_switch==2
-            title(title_inp1);
-        end
-        if type_switch==1
-            title(title_mod);
-        end
-        % determing maximum amplitude of plot
-        file1max=max(max(abs(file1_data)));
-        
-        % switch whether model contour should be plotted
-        if cont_switch==1
-            hold on
-            contour(image_vect1,image_vect2,mod_data,numbOFcont,'k-','LineWidth',1);
-            hold off
-        end
-        
-        % formating the 1st sub-figure
-        xlabel(labelstring1);
-        ylabel(labelstring2);
-        set(gca,'DataAspectRatio',[1 1 1]);
-        set(get(gca,'title'),'FontSize',12,'FontWeight','bold');
-        set(get(gca,'Ylabel'),'FontSize',12,'FontWeight','bold');
-        set(get(gca,'Xlabel'),'FontSize',12,'FontWeight','bold');
-        set(gca,'FontSize',12,'FontWeight','bold');
-        set(gca,'Linewidth',1.0);
-        set(gca,'Box','on');
-        if axisoverwrite==1
-            axis(newaxis);
-        end
-        
-        if type_switch==2 % in case of snapshot:
-            % display maximum amplitude of sub-figures to command window
-            if num_switch==2
-                disp(['  Maximum amplitude of ',title_inp2,'-snapshot: ', num2str(file2max)]);
-            end
-            disp(['  Maximum amplitude of ',title_inp1,'-snapshot: ', num2str(file1max)]);
-            
-            % limiting the colorbar to specified range
-            switch auto_scaling
-                case 1
-                    caxis([-file1max/10 file1max/10]);
-                case 2
-                    caxis([-caxis_value_1 caxis_value_1]);
-                otherwise
-            end
-            
-            % adding text string for timestep of snapshot
-            set(text(7000,7000,['T2= ',sprintf('%2.4f',tsnap), 's']),'FontSize',14,'FontWeight','bold','Color','black');
-        end
-        
-        % delay the display of snapshots by frictions of seconds
-        pause(pause4display);
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        %---Saving the snapshot to file
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        if (filesave~=0)
-            % generating filename string
-            if i<10
-                imagefile=[file_out,'2D_00',int2str(i)];
-            else if i<100
-                    imagefile=[file_out,'2D_0',int2str(i)];
-                else
-                    imagefile=[file_out,'2D_',int2str(i)];
-                end
-            end
-            
-            % output as jpg graphic (or eps) via print command
-            if filesave==1
-                eval(['print -djpeg100  ' [imagefile,'.jpg']]);
-                %             eval(['print -depsc  '[imagefile2,'.eps']]);
-            end
-            
-            % output as png graphic via additional matlab function
-            if filesave==2
-                savefig([imagefile], 'png', '-rgb', '-c0', '-r250');
-            end
-        end
-    end
-end
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---3D display of snapshot data (single snapshot only)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if image_switch==2
+
     
     if type_switch==1
         % loading model data
@@ -539,7 +246,7 @@ if image_switch==2
         file1_data=reshape(file1_data,ny,nx,nz);
         file1_data=permute(file1_data,[3,2,1]);
         
-        D = merge_snapshots(par_folder);
+        D = merge_snapshots(par_folder, plot_opts.file_ext);
         file1_data = D(:,:,:,i);
         % creating a grid
         [X,Z,Y]=meshgrid(x,z,y);
@@ -594,21 +301,7 @@ if image_switch==2
         h2 = slice(X,Z,Y,file1_data,xd2,zd2,yd2);
         set(h2,'FaceColor','interp','EdgeColor','none','DiffuseStrength',.8,'FaceAlpha',0.5);
         axis equal
-        % vertical slice at model boundary
-        %         h3 = slice(X,Z,Y,file1_data,10,[],[]);
-        %         set(h3,'FaceColor','interp','EdgeColor','none','DiffuseStrength',.8);
         
-%         % black outline of the vertical slice
-%         plot3([0 max(max(xd))],[max(max(zd)) max(max(zd))],[0 0],'-black','LineWidth',2);
-%         plot3([max(max(xd)) max(max(xd))],[max(max(zd)) max(max(zd))],[0 max(max(yd))],'-black','LineWidth',2);
-%         plot3([max(max(xd)) 0],[max(max(zd)) max(max(zd))],[max(max(yd)) max(max(yd))],'-black','LineWidth',2);
-%         plot3([0 0],[max(max(zd)) max(max(zd))],[0 max(max(yd))],'-black','LineWidth',2);
-%         
-%         % black outline of the horizontal slice
-%         plot3([0 max(max(xd2))],[max(max(zd2)) max(max(zd2))],[max(max(yd2)) min(min(yd2))],'-black','LineWidth',2);
-%         plot3([max(max(xd2)) max(max(xd2))],[max(max(zd2)) 0],[max(max(yd2)) max(max(yd2))],'-black','LineWidth',2);
-%         plot3([max(max(xd2)) 0],[0 0],[max(max(yd2)) min(min(yd2))],'-black','LineWidth',2);
-%         plot3([0 0],[0 max(max(zd2))],[max(max(yd2)) max(max(yd2))],'-black','LineWidth',2);
         
         if cont_switch==1
             % vertical contour slice
@@ -714,7 +407,7 @@ if image_switch==2
             end
         end
     end
-end
+
 disp(['  ']);
 disp(['Script ended...']);
 end
