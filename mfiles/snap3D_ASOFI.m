@@ -181,7 +181,7 @@ z=zp1:dh*outz:zp2*outz;
 % if model is plotted, than there is only one snapshot
 % loop over # of snapshots will terminate after one iteration
 if type_switch==1
-    firstframe=1
+    firstframe=1;
     lastframe=1;
     num_switch=1;
 end
@@ -224,10 +224,10 @@ if (cont_switch==1) || (type_switch==1)
 end
 
 % open snapshot data of 1st input file
-disp(['Loading snap shot file ' file_inp1]);
+disp(['Loading snapshot file ' file_inp1]);
 fid_file1=fopen(file_inp1,'r','ieee-le');
 
-if num_switch==2;
+if num_switch==2
     % open snapshot data of 2nd input file
     disp(['Loading snap shot file ' file_inp2]);
     fid_file2=fopen(file_inp2,'r','ieee-le');
@@ -236,12 +236,12 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---2D display of snapshot data (Slices )
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-disp(['   ']);
+disp('   ');
 
 if image_switch==1
     % in case of snapshot files use seismic colormap
     if type_switch==2
-        myMap = colormap(load('./srgb.map'));
+        colormap(load('./srgb.map'));
     end
     % creating variables for snapshot content
     % file1_data (and file2_data) depending on number of snapshots
@@ -297,9 +297,9 @@ if image_switch==1
     end
     
     
-    h1=figure(1);
+    figure(1);
     % determination of screen size
-    scrsz = get(0,'ScreenSize');
+    get(0,'ScreenSize');
     % determination size of window for plotting
     %set(h1,'Position',[1 scrsz(4)*2/3 scrsz(3)*1/4 scrsz(4)*2/3]);
     
@@ -311,8 +311,7 @@ if image_switch==1
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %---loop over timesteps (2D snapshots)
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    for i=firstframe:1:lastframe;
-        
+    for i=firstframe:1:lastframe
         %calculating time of snapshot
         tsnap=(i-1)*TSNAPINC+TSNAP1;
         disp(['Loading snapshot no ',int2str(i),' at time=',num2str(tsnap),' s.']);
@@ -483,11 +482,10 @@ if image_switch==1
             % generating filename string
             if i<10
                 imagefile=[file_out,'2D_00',int2str(i)];
-            else if i<100
-                    imagefile=[file_out,'2D_0',int2str(i)];
-                else
-                    imagefile=[file_out,'2D_',int2str(i)];
-                end
+            elseif i<100
+                imagefile=[file_out,'2D_0',int2str(i)];
+            else
+                imagefile=[file_out,'2D_',int2str(i)];
             end
             
             % output as jpg graphic (or eps) via print command
@@ -498,7 +496,7 @@ if image_switch==1
             
             % output as png graphic via additional matlab function
             if filesave==2
-                savefig([imagefile], 'png', '-rgb', '-c0', '-r250');
+                savefig(imagefile, 'png', '-rgb', '-c0', '-r250');
             end
         end
     end
@@ -587,9 +585,9 @@ if image_switch==2
         delete(hslice2);
         
         % display sliced and rotated plane
-        h1=figure(1);
+        figure(1);
         % determination of screen size
-        scrsz = get(0,'ScreenSize');
+        get(0,'ScreenSize');
         % determination size of window for plotting
         %set(h1,'Position',[1 scrsz(4)*2/3 scrsz(3)*1/4 scrsz(4)*2/3]);
         axis equal
@@ -708,11 +706,10 @@ if image_switch==2
                 % generating filename string
                 if i<10
                     imagefile=[file_out,'3D_00',int2str(i)];
-                else if i<100
-                        imagefile=[file_out,'3D_0',int2str(i)];
-                    else
-                        imagefile=[file_out,'3D_',int2str(i)];
-                    end
+                elseif i<100
+                    imagefile=[file_out,'3D_0',int2str(i)];
+                else
+                    imagefile=[file_out,'3D_',int2str(i)];
                 end
                 
                 % output as jpg graphic (or eps) via print command
@@ -723,12 +720,12 @@ if image_switch==2
                 
                 % output as png graphic via additional matlab function
                 if filesave==2
-                    savefig([imagefile], 'png', '-rgb', '-c0', '-r250');
+                    savefig(imagefile, 'png', '-rgb', '-c0', '-r250');
                 end
             end
         end
     end
 end
-disp(['  ']);
-disp(['Script ended...']);
+disp('  ');
+disp('Script ended...');
 end
