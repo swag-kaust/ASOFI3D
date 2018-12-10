@@ -212,15 +212,15 @@ if type_switch==1
 end
 
 % load model file ; Format ieee-be for Sun or Workstation, -le for PC
-if (cont_switch==1) | (type_switch==1)
-    
+if (cont_switch==1) || (type_switch==1)
     % opening file and reading
     disp(['Loading file ' file_mod]);
     [fid_mod, err_msg] = fopen(file_mod, 'r', 'ieee-le');
     if fid_mod == -1
-        disp(['ERROR: Cannot open file ' file_mod]);
+        disp(['Cannot open file ' file_mod]);
         disp(['Reason: ' err_msg]);
-        return
+        disp('Now exiting');
+        return;
     end
     mod_data=fread(fid_mod,'float');
     mod_data=reshape(mod_data,ny,nx,nz);
