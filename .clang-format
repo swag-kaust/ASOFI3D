@@ -1,6 +1,9 @@
 BasedOnStyle: Chromium
+AlignAfterOpenBracket: DontAlign
 AlignTrailingComments: true
 AllowShortIfStatementsOnASingleLine: true
+BinPackArguments: true
+BinPackParameters: true
 # An opening brace is on the same line, except in functions
 # Also known as Kernighan and Ritchie (K&R) style.
 BreakBeforeBraces: Linux
