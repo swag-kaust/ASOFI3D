@@ -27,7 +27,9 @@ for phi2=0:15:90
     plot_opts.phi2 = phi2;
     snap3D_ASOFI_fun(plot_opts);
 end
- 
+
+
+%% Helper function.
 function snap3D_ASOFI_fun(plot_opts)
 phi2 = plot_opts.phi2;
 par_folder = plot_opts.par_folder;
