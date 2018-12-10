@@ -6,6 +6,14 @@
 %close all; 
 clearvars; clc;
 
+MATLAB_MIN_VERSION = 'R2016b';
+
+if verLessThan('matlab', MATLAB_MIN_VERSION)
+    fprintf('ERROR: The minimal supported version of MATLAB is %s.\n', ...
+            MATLAB_MIN_VERSION);
+    return;
+end
+
 addpath('./utils');
 
 % User-defined parameters.
@@ -451,4 +459,3 @@ fid_file1=fopen(file_inp1,'r','ieee-le');
 disp(['  ']);
 disp(['Script ended...']);
 end
-
