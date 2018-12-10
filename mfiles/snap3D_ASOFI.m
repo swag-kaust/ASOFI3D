@@ -58,15 +58,16 @@ cd(oldpwd)
 create_colormaps;
 
 %% read parameters from json
-nx = str2num(opts.NX);
-ny = str2num(opts.NY);
-nz = str2num(opts.NZ);
+nx = str2double(opts.NX);
+ny = str2double(opts.NY);
+nz = str2double(opts.NZ);
 
-outx = str2num(opts.IDX);
-outy = str2num(opts.IDY);
-outz = str2num(opts.IDZ);
+outx = str2double(opts.IDX);
+outy = str2double(opts.IDY);
+outz = str2double(opts.IDZ);
 
-dh = str2num(opts.DX); 
+% TODO: Why we think that DX is the same as DY or DZ?
+dh = str2double(opts.DX);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---input, output files
