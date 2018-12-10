@@ -208,7 +208,7 @@ z=zp1:dh*outz:zp2*outz;
 % if model is plotted, than there is only one snapshot
 % loop over # of snapshots will terminate after one iteration
 if type_switch==1
-    firstframe=1
+    firstframe=1;
     lastframe=1;
 end
 
@@ -244,9 +244,8 @@ if (cont_switch==1) || (type_switch==1)
 end
 
 % open snapshot data of 1st input file
-disp(['Loading snap shot file ' file_inp1]);
+disp(['Loading snapshot file ' file_inp1]);
 fid_file1=fopen(file_inp1,'r','ieee-le');
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---3D display of snapshot data (single snapshot only)
@@ -330,9 +329,9 @@ fid_file1=fopen(file_inp1,'r','ieee-le');
         delete(hslice2);
         
         % display sliced and rotated plane
-        h1=figure(1);
+        figure(1);
         % determination of screen size
-        scrsz = get(0,'ScreenSize');
+        get(0,'ScreenSize');
         % determination size of window for plotting
         %set(h1,'Position',[1 scrsz(4)*2/3 scrsz(3)*1/4 scrsz(4)*2/3]);
         axis equal
@@ -437,11 +436,10 @@ fid_file1=fopen(file_inp1,'r','ieee-le');
                 % generating filename string
                 if i<10
                     imagefile=[file_out,'3D_00',int2str(i)];
-                else if i<100
-                        imagefile=[file_out,'3D_0',int2str(i)];
-                    else
-                        imagefile=[file_out,'3D_',int2str(i)];
-                    end
+                elseif i<100
+                    imagefile=[file_out,'3D_0',int2str(i)];
+                else
+                    imagefile=[file_out,'3D_',int2str(i)];
                 end
                 
                 % output as jpg graphic (or eps) via print command
@@ -452,12 +450,19 @@ fid_file1=fopen(file_inp1,'r','ieee-le');
                 
                 % output as png graphic via additional matlab function
                 if filesave==2
-                    savefig([imagefile], 'png', '-rgb', '-c0', '-r250');
+                    savefig(imagefile, 'png', '-rgb', '-c0', '-r250');
                 end
             end
         end
     end
+<<<<<<< 2fa823112bbb76f2a936ff0c431a66fd41c95a42
 
 disp(['  ']);
 disp(['Script ended...']);
 end
+=======
+end
+disp('  ');
+disp('Script ended...');
+end
+>>>>>>> MAINT: Fix errors given by MATLAB's linter
