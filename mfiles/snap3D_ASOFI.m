@@ -39,9 +39,9 @@ dir_Full = dir(snap_name_full);
 dir_000 = dir([opts.SNAP_FILE,'.bin.div.0.0.0']);
 
 if ~exist(snap_name_full,'file')
-    system('../bin/snapmerge ./in_and_out/sofi3D.json');
+    system(['../bin/snapmerge ' config_file]);
 elseif dir_Full.datenum < dir_000.datenum
-    system('../bin/snapmerge ./in_and_out/sofi3D.json');
+    system(['../bin/snapmerge ' config_file]);
 end
 
 cd(oldpwd)
