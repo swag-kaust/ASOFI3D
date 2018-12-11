@@ -172,7 +172,12 @@ if (cont_switch==1) | (type_switch==1)
     
     % opening file and reading
     disp(['Loading file ' file_mod]);
-    fid_mod=fopen(file_mod,'r','ieee-le');
+    [fid_mod, err_msg] = fopen(file_mod, 'r', 'ieee-le');
+    if fid_mod == -1
+        disp(['ERROR: Cannot open file ' file_mod]);
+        disp(['Reason: ' err_msg]);
+        return
+    end
     mod_data=fread(fid_mod,'float');
     mod_data=reshape(mod_data,ny,nx,nz);
     mod_data=permute(mod_data,[2,3,1]);
