@@ -6,27 +6,27 @@ file_ext = plot_opts.file_ext;
 
 snap_name = fullfile(par_folder, [opts.SNAP_FILE file_ext]);
 
-nx = str2num(jV.NX);
-ny = str2num(jV.NY);
-nz = str2num(jV.NZ);
+nx = opts.NX;
+ny = opts.NY;
+nz = opts.NZ;
 
-NPROCX = str2num(jV.NPROCX);
-NPROCY = str2num(jV.NPROCY);
-NPROCZ = str2num(jV.NPROCZ);
+NPROCX = opts.NPROCX;
+NPROCY = opts.NPROCY;
+NPROCZ = opts.NPROCZ;
 
-IDX = str2num(jV.IDX);
-IDY = str2num(jV.IDY);
-IDZ = str2num(jV.IDZ);
+IDX = opts.IDX;
+IDY = opts.IDY;
+IDZ = opts.IDZ;
 
 
 nlx = (nx/NPROCX)/IDX;
 nly = (ny/NPROCY)/IDY;
 nlz = (nz/NPROCZ)/IDZ;
 
-TSNAP1 = str2num(jV.TSNAP1);
-TSNAP2 = str2num(jV.TSNAP2);
-TIME = str2num(jV.TIME);
-TSNAPINC = str2num(jV.TSNAPINC);
+TSNAP1 = opts.TSNAP1;
+TSNAP2 = opts.TSNAP2;
+TIME = opts.TIME;
+TSNAPINC = opts.TSNAPINC;
 
 if TSNAP2 > TIME
     fprintf(['WARNING: TSNAP2 = %f is larger than TIME = %f. ' ...
@@ -72,4 +72,3 @@ end
 D = permute(D,[3, 1, 2, 4]);
 
 end
-
