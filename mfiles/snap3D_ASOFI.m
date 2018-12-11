@@ -296,7 +296,7 @@ fid_file1=fopen(file_inp1,'r','ieee-le');
         file1_data=reshape(file1_data,ny,nx,nz);
         file1_data=permute(file1_data,[3,2,1]);
         
-        D = merge_snapshots(par_folder, plot_opts.file_ext);
+        D = merge_snapshots(plot_opts, opts);
         file1_data = D(:,:,:,i);
         % creating a grid
         [X,Z,Y]=meshgrid(x,z,y);
