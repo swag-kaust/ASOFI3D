@@ -6,23 +6,23 @@ file_ext = plot_opts.file_ext;
 
 snap_name = fullfile(par_folder, [opts.SNAP_FILE file_ext]);
 
-nx = str2num(jV.NX);
-ny = str2num(jV.NY);
-nz = str2num(jV.NZ);
+nx = opts.NX;
+ny = opts.NY;
+nz = opts.NZ;
 
-NPROCX = str2num(jV.NPROCX);
-NPROCY = str2num(jV.NPROCY);
-NPROCZ = str2num(jV.NPROCZ);
+NPROCX = opts.NPROCX;
+NPROCY = opts.NPROCY;
+NPROCZ = opts.NPROCZ;
 
-IDX = str2num(jV.IDX);
-IDY = str2num(jV.IDY);
-IDZ = str2num(jV.IDZ);
+IDX = opts.IDX;
+IDY = opts.IDY;
+IDZ = opts.IDZ;
 
 
 nlx = (nx/NPROCX)/IDX;
 nly = (ny/NPROCY)/IDY;
 nlz = (nz/NPROCZ)/IDZ;
-nsnap = 1+floor((str2num(jV.TSNAP2)-str2num(jV.TSNAP1))/str2num(jV.TSNAPINC));
+nsnap = 1+floor((opts.TSNAP2-opts.TSNAP1)/opts.TSNAPINC);
 
 %%
 for i = 1:NPROCX

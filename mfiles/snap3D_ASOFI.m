@@ -59,16 +59,16 @@ cd(oldpwd)
 create_colormaps;
 
 %% read parameters from json
-nx = str2double(opts.NX);
-ny = str2double(opts.NY);
-nz = str2double(opts.NZ);
+nx = opts.NX;
+ny = opts.NY;
+nz = opts.NZ;
 
-outx = str2double(opts.IDX);
-outy = str2double(opts.IDY);
-outz = str2double(opts.IDZ);
+outx = opts.IDX;
+outy = opts.IDY;
+outz = opts.IDZ;
 
 % TODO: Why we think that DX is the same as DY or DZ?
-dh = str2double(opts.DX);
+dh = opts.DX;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---input, output files
@@ -124,8 +124,8 @@ xslice=nx/2; % for yz plane in grid points
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % time increment for snapshots:
-TSNAP1=0.8;
-TSNAPINC=0.2;
+TSNAP1=opts.TSNAP1;
+TSNAPINC=opts.TSNAPINC;
 % firts and last snapshot that is considered for displayin
 firstframe=1;
 lastframe=3;
