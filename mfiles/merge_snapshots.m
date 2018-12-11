@@ -1,13 +1,10 @@
-%% merges snapshots otput has Z X Y order of axis
-function D = merge_snapshots(par_folder)
+function D = merge_snapshots(plot_opts, opts)
+%MERGE_SNAPSHOTS  Merge snapshots such that the output has
+%   the order of axes (Z, X, Y).
+par_folder = plot_opts.par_folder;
+file_ext = plot_opts.file_ext;
 
-%%
-% clear all
-% par_folder = '../par/';
-par_folder = [par_folder, '/'];
-jV = read_asofi3D_json([par_folder, 'in_and_out/sofi3D.json']);
-
-snap_name = [par_folder, jV.SNAP_FILE,'.bin.div'];
+snap_name = fullfile(par_folder, [opts.SNAP_FILE file_ext]);
 
 nx = str2num(jV.NX);
 ny = str2num(jV.NY);
