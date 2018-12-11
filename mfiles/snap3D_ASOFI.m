@@ -79,7 +79,7 @@ file_inp1 = [par_folder '/' opts.SNAP_FILE '.bin.div'];
 % Input file2 (snapshot file2)
 file_inp2 = [par_folder '/' opts.SNAP_FILE '.bin.curl'];
 % Model file (for single display or contour plot ontop of snapshot)
-file_mod = [par_folder '/' opts.MFILE '.SOFI3D.rho'];
+file_mod = fullfile(par_folder, [opts.MFILE '.SOFI3D.rho']);
 
 % Output file
 % switch for saving snapshots to picture file 1=yes (jpg) 2= yes (png) other=no
