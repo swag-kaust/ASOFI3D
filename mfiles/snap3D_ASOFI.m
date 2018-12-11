@@ -553,7 +553,7 @@ if image_switch==2
         file1_data=reshape(file1_data,ny,nx,nz);
         file1_data=permute(file1_data,[3,2,1]);
         
-        D = merge_snapshots(par_folder);
+        D = merge_snapshots(plot_opts, opts);
         file1_data = D(:,:,:,i);
         % creating a grid
         [X,Z,Y]=meshgrid(x,z,y);
