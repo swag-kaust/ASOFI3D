@@ -6,30 +6,20 @@ file_ext = plot_opts.file_ext;
 
 snap_name = fullfile(par_folder, [opts.SNAP_FILE file_ext]);
 
-nx = opts.NX;
-ny = opts.NY;
-nz = opts.NZ;
+nlx = (opts.NX / opts.NPROCX) / opts.IDX;
+nly = (opts.NY / opts.NPROCY) / opts.IDY;
+nlz = (opts.NZ / opts.NPROCZ) / opts.IDZ;
 
-NPROCX = opts.NPROCX;
-NPROCY = opts.NPROCY;
-NPROCZ = opts.NPROCZ;
-
-IDX = opts.IDX;
-IDY = opts.IDY;
-IDZ = opts.IDZ;
-
-
-nlx = (nx/NPROCX)/IDX;
-nly = (ny/NPROCY)/IDY;
-nlz = (nz/NPROCZ)/IDZ;
-nsnap = 1+floor((opts.TSNAP2-opts.TSNAP1)/opts.TSNAPINC);
+% The number of snapshots.
+nsnap = 1 + floor((opts.TSNAP2 - opts.TSNAP1) / opts.TSNAPINC);
 
 %%
 for i = 1:NPROCX
     disp(i*100/NPROCX);
     for j = 1:NPROCY
         for k = 1:NPROCZ
-            fid=fopen([snap_name,'.',num2str(i-1),'.',num2str(j-1),'.',num2str(k-1)]);
+            snap_file = [snap_name,'.',num2str(i-1),'.',num2str(j-1),'.',num2str(k-1)];
+            fid=fopen(snap_file);
             A = fread(fid,'float');
             A = reshape(A,[nly,nlx,nlz,nsnap]);
             A = permute(A,[2,1,3,4]);
