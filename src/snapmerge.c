@@ -8,19 +8,21 @@
 #include "fd.h"
 #include "globvar.h"      /* definition of global variables  */
 
+
 void _usage() {
-printf(" ***********************************************************\n");
-printf(" This is program SNAPMERGE. \n");
-printf(" Merge of snapshot files from the parallel  \n 3-D Viscoelastic Finite Difference Modelling      \n");
-printf("                                                            \n");
-printf(" written by  T. Bohlen                          \n");
-printf(" Geophysical Institute, Department of Physics,         \n");
-printf(" Institute of Technology, Karlsruhe, Germany         \n");
-printf(" http://www.gpi.kit.edu \n");
-printf(" ***********************************************************\n");
-printf("\n");
-printf(" Syntax example if excecuted from ./par directory: ../bin/snapmerge in_and_out/asofi3D.json \n");
+    printf("***********************************************************\n");
+    printf("This is program SNAPMERGE. \n");
+    printf("Merge of snapshot files from the parallel \n 3-D Viscoelastic Finite Difference Modelling\n");
+    printf("\n");
+    printf("written by T. Bohlen\n");
+    printf("Geophysical Institute, Department of Physics,\n");
+    printf("Institute of Technology, Karlsruhe, Germany\n");
+    printf("http://www.gpi.kit.edu \n");
+    printf("***********************************************************\n");
+    printf("\n");
+    printf("Syntax example if executed from ./par directory: ../bin/snapmerge in_and_out/asofi3D.json\n");
 }
+
 
 static int snapmerge(int argc, char **argv) {
 int nsnap;
