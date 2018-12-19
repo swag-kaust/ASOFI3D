@@ -21,7 +21,8 @@ addpath('./utils');
 plot_opts.par_folder = '../par';
 % % Path to configuration file, relative to par_folder.
 plot_opts.config_file='./in_and_out/sofi3D.json';
-plot_opts.file_out = [plot_opts.par_folder, '/figures'];
+plot_opts.file_ext = '.bin.div';
+plot_opts.file_out = [plot_opts.par_folder, '/figures/'];
 
 for phi2=0:15:90
     plot_opts.phi2 = phi2;
