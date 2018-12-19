@@ -21,6 +21,7 @@ void _usage() {
     printf("***********************************************************\n");
     printf("\n");
     printf("Syntax example if executed from ./par directory: ../bin/snapmerge in_and_out/asofi3D.json\n");
+    printf("\n");
 }
 
 
@@ -34,12 +35,12 @@ FILE *fp_param;
 
 _usage();
 if (argc != 2) {
-    // !!!!!!!!!!!!!!!!!!!! TODO: Add explanation
+    printf("USAGE:\n");
+    printf("    snapmerge <path-to-parameter-file>\n");
     exit(1);
 }
-fileinp = argv[1];
 
-printf("\n");
+fileinp = argv[1];
 printf("Input file for the snapmerge from command line: %s\n", fileinp);
 
 fp_param=fopen(fileinp, "r");
