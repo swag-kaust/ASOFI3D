@@ -17,7 +17,13 @@ setup() {
 }
 
 error() {
-    echo "${TEST_ID}:" "$@" > /dev/stderr
+    local prefix
+    if [ -n "$TEST_ID" ]; then
+        prefix="[${TEST_ID}]"
+    else
+        prefix="[ERROR]"
+    fi
+    printf "%s %s\n" "$prefix" "$@" > /dev/stderr
     exit 1
 }
 
