@@ -6,7 +6,6 @@
 #include <stdbool.h>
 
 #include "fd.h"
-#include "globvar.h"
 
 
 void readmod(float ***rho, float ***pi, float ***u,
