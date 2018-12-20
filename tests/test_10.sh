@@ -37,7 +37,6 @@ echo "${TEST_ID}: Running solver. Output is captured to tmp/ASOFI3D.log"
 task_id=$!
 animate_progress $task_id "${TEST_ID}: Running solver"
 
-wait $task_id
 code=$?
 
 if [ "$code" -ne "0" ]; then
