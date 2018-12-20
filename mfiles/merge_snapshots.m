@@ -38,10 +38,10 @@ end
 nsnap = 1+floor((TSNAP2 - TSNAP1) / TSNAPINC);
 
 %%
-for i = 1:NPROCX
-    disp(i*100/NPROCX);
-    for j = 1:NPROCY
-        for k = 1:NPROCZ
+for i = 1:opts.NPROCX
+    disp(i*100/opts.NPROCX);
+    for j = 1:opts.NPROCY
+        for k = 1:opts.NPROCZ
             snap_file = [snap_name,'.',num2str(i-1),'.',num2str(j-1),'.',num2str(k-1)];
             fid=fopen(snap_file);
             A = fread(fid,'float');
