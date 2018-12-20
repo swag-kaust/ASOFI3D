@@ -1,6 +1,9 @@
 # Functions related to testing.
 
 setup() {
+    if [ -z "$TEST_ID" ]; then
+        error "TEST_ID variable is not set"
+    fi
     # Setup environment for the execution of a test.
     rm -rf tmp/
     mkdir tmp
