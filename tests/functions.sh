@@ -13,6 +13,11 @@ setup() {
     mkdir tmp/su
 }
 
+error() {
+    echo "${TEST_ID}:" "$@" > /dev/stderr
+    exit 1
+}
+
 compile_code () {
     # Compile code.
     cd src
