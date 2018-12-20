@@ -12,22 +12,22 @@ TEST_ID="TEST_02"
 setup
 
 # Preserve old model.
-mv $MODEL ${MODEL}.bak
+mv $MODEL ${MODEL}.bak.${TEST_ID}
+
+on_exit() {
+    # Clean up function to be called at the end of the test.
+    mv ${MODEL}.bak.${TEST_ID} $MODEL
+}
+
+# Execute function 'on_exit' when this script exits.
+trap on_exit INT TERM EXIT
 
 # Copy test model.
 cp "${TEST_PATH}/model_elastic.c"                  src/
 cp "${TEST_PATH}/in_and_out/fullspace.json"        tmp/in_and_out/sofi3D.json
 cp "${TEST_PATH}/sources/fullspace_sources.dat"    tmp/sources/
 
-# Compile code.
-cd src
-make sofi3D > /dev/null
-if [ "$?" -ne "0" ]; then
-    cd ..
-    echo TEST_02: FAIL > /dev/stderr
-    exit 1
-fi
-cd ..
+compile_code
 
 # Run code.
 echo "TEST_02: Running solver. Output is captured to tmp/ASOFI3D.log"
@@ -64,8 +64,5 @@ result=$?
 if [ "$result" -ne "0" ]; then
     error "Pressure seismograms differ"
 fi
-
-# Teardown
-git checkout -- ${MODEL}
 
 echo "TEST_02: PASS"
