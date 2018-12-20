@@ -244,7 +244,7 @@ disp('   ');
 if image_switch==1
     % in case of snapshot files use seismic colormap
     if type_switch==2
-        colormap(load('./srgb.map'));
+        colormap(load(fullfile('utils', 'colormap', './srgb.map')));
     end
     % creating variables for snapshot content
     % file1_data (and file2_data) depending on number of snapshots
@@ -527,7 +527,7 @@ if image_switch==2
     if type_switch==2
         % loading snapshot data of input1
         fid=fopen(file_inp1,'r','ieee-le');
-        colormap(load('./srgb.map'));
+        colormap(load(fullfile('utils', 'colormap', './srgb.map')));
         
         % adding contour of model to snapshot data
         if cont_switch==1
