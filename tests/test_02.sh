@@ -6,6 +6,7 @@
 
 MODEL="src/model_elastic.c"
 TEST_PATH="tests/fixtures/test_02"
+TEST_ID="TEST_02"
 
 # Setup function prepares environment for the test (creates directories).
 setup
@@ -35,10 +36,8 @@ task_id=$!
 animate_progress $task_id "TEST_02: Running solver"
 
 code=$?
-
 if [ "$code" -ne "0" ]; then
-    echo TEST_02: FAIL Running ASOFI3D failed > /dev/stderr
-    exit 1
+    error "Running ASOFI3D solver failed"
 fi
 
 # Convert seismograms in SEG-Y format to the Madagascar RSF format.
@@ -55,8 +54,7 @@ tests/compare_datasets.py tmp/su/fullspace_vx.rsf \
                           --rtol=1e-8 --atol=1e-10
 result=$?
 if [ "$result" -ne "0" ]; then
-    echo "TEST_02: FAIL Vx seismograms differ" > /dev/stderr
-    exit 1
+    error "Vx seismograms differ"
 fi
 
 tests/compare_datasets.py tmp/su/fullspace_p.rsf \
@@ -64,8 +62,7 @@ tests/compare_datasets.py tmp/su/fullspace_p.rsf \
                           --rtol=1e-1 --atol=1e-5
 result=$?
 if [ "$result" -ne "0" ]; then
-    echo "TEST_02: FAIL Pressure seismograms differ" > /dev/stderr
-    exit 1
+    error "Pressure seismograms differ"
 fi
 
 # Teardown
