@@ -1,10 +1,10 @@
+function [] = snap3D_ASOFI(varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---script for the visualization of snapshots gained from the ASOFI simulation
 %---most parameters are as specified in ASOFI parameter-file, e.g. sofi3D.json
 %---Please note : y denotes the vertical axis!!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%close all; 
-clearvars; clc;
+clc;
 
 MATLAB_MIN_VERSION = 'R2016b';
 
@@ -16,17 +16,25 @@ end
 
 addpath('./utils');
 
+config_file = './in_and_out/asofi3D.json';
+if length(varargin) >= 1
+    config_file = varargin{1};
+    disp(['Parameter `config_file` is set to "' config_file '"']);
+end
+
 % User-defined parameters.
 % Directory name with the simulation input and output, relative to this script.
 plot_opts.par_folder = '../par';
 % % Path to configuration file, relative to par_folder.
-plot_opts.config_file='./in_and_out/asofi3D.json';
+plot_opts.config_file = config_file;
+plot_opts.file_ext = '.bin.div';
 plot_opts.file_out = [plot_opts.par_folder, '/figures/'];
 plot_opts.file_ext = '.bin.div';
 
 for phi2=0:15:90
     plot_opts.phi2 = phi2;
     snap3D_asofi3D_func(plot_opts);
+end
 end
 
  
