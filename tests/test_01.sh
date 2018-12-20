@@ -19,22 +19,14 @@ on_exit() {
 }
 
 # Execute function 'on_exit' when this script exits to avoid resource leak.
-trap on_exit EXIT
+trap on_exit INT TERM EXIT
 
 # Copy test model.
 cp "${TEST_PATH}/src/model_elastic.c"       src/
 cp "${TEST_PATH}/in_and_out/sofi3D.json"    tmp/in_and_out
 cp "${TEST_PATH}/sources/source.dat"        tmp/sources/
 
-# Compile code.
-cd src
-make sofi3D > /dev/null
-if [ "$?" -ne "0" ]; then
-    cd ..
-    echo ${TEST_ID}: FAIL > /dev/stderr
-    exit 1
-fi
-cd ..
+compile_code
 
 # Run code.
 echo "${TEST_ID}: Running solver. Output is captured to tmp/ASOFI3D.log"
