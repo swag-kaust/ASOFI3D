@@ -220,7 +220,7 @@ int main(int argc, char **argv)
 
     /* set some time counters */
     NT = (int)ceil(TIME / DT); /* number of timesteps - replaces: NT=iround(TIME/DT); */
-    TIME = (NT - 1) * DT;      /* TIME set to true time of the last time step */
+    TIME = NT * DT;      /* TIME set to true time of the last time step */
 
     if (NDTSHIFT > NT)
     {
@@ -1227,8 +1227,9 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
 
                 /* save snapshot in file */
                 // fprintf(FP,"SNAP = %d, nt = %d, lsnap = %d, TSNAP2 / DT = %f\n\n", SNAP, nt, lsnap, TSNAP2 / DT);
-                if ((SNAP) && (nt == lsnap) && (nt <= TSNAP2 / DT))
-                {
+                // Add unity in the last condition below to make sure
+                // that a snapshot is recorded at time `TSNAP2`.
+                if ((SNAP) && (nt == lsnap) && (nt <= iround(TSNAP2/DT)+1)) {
                     // fprintf(FP,"irtm = %d !!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n\n", irtm);
                     snap(FP, nt, ++nsnap, SNAP_FORMAT, SNAP, &v, &s, u, pi,
                             IDX, IDY, IDZ, 1, 1, 1, NX, NY, NZ);
