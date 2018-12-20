@@ -29,7 +29,7 @@ cp "${TEST_PATH}/sources/source.dat"        tmp/sources/
 compile_code
 
 # Run code.
-echo "${TEST_ID}: Running solver. Output is captured to tmp/ASOFI3D.log"
+log "Running solver. Output is captured to tmp/ASOFI3D.log"
 ./run_ASOFI3D.sh 16 tmp/ > tmp/ASOFI3D.log &
 task_id=$!
 animate_progress $task_id "${TEST_ID}: Running solver"
@@ -52,4 +52,4 @@ if [ "$result" -ne "0" ]; then
     error "Velocity x-component seismograms differ"
 fi
 
-echo "${TEST_ID}: PASS"
+log "PASS"

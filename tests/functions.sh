@@ -19,11 +19,23 @@ setup() {
 error() {
     local prefix
     if [ -n "$TEST_ID" ]; then
+        prefix="[${TEST_ID}] ERROR: "
+    else
+        prefix="ERROR: "
+    fi
+    printf "%s%s\n" "$prefix" "$@" > /dev/stderr
+    exit 1
+}
+
+log() {
+    # Print a message prefixed by test ID.
+    local prefix
+    if [ -n "$TEST_ID" ]; then
         prefix="[${TEST_ID}]"
     else
-        prefix="[ERROR]"
+        prefix=""
     fi
-    printf "%s %s\n" "$prefix" "$@" > /dev/stderr
+    printf "%s%s\n" "$prefix" "$@" > /dev/stderr
     exit 1
 }
 
