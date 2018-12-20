@@ -36,8 +36,7 @@ animate_progress $task_id "${TEST_ID}: Running solver"
 
 code=$?
 if [ "$code" -ne "0" ]; then
-    echo ${TEST_ID}: FAIL Running ASOFI3D failed > /dev/stderr
-    exit 1
+    error "Running ASOFI3D solver failed"
 fi
 
 # Convert seismograms in SEG-Y format to the Madagascar RSF format.
@@ -50,8 +49,7 @@ tests/compare_datasets.py tmp/su/test_vx.rsf ${TEST_PATH}/su/test_vx.rsf \
                           --rtol=1e-12 --atol=1e-14
 result=$?
 if [ "$result" -ne "0" ]; then
-    echo "${TEST_ID}: FAIL Velocity x-component seismograms differ" > /dev/stderr
-    exit 1
+    error "Velocity x-component seismograms differ"
 fi
 
 echo "${TEST_ID}: PASS"
