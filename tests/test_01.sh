@@ -15,7 +15,8 @@ setup
 mv $MODEL ${MODEL}.bak.${TEST_ID}
 
 on_exit() {
-    mv ${MODEL}.bak.${TEST_ID} $MODEL
+    bak_file=${MODEL}.bak.${TEST_ID}
+    [ -e "$bak_file" ] && mv "$bak_file" $MODEL
 }
 
 # Execute function 'on_exit' when this script exits to avoid resource leak.
