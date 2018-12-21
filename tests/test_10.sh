@@ -16,12 +16,12 @@ setup
 mv $MODEL ${MODEL}.bak.${TEST_ID}
 
 on_exit() {
-    # Clean up function to be called at the end of the test.
-    mv ${MODEL}.bak.${TEST_ID} $MODEL
+    bak_file=${MODEL}.bak.${TEST_ID}
+    [ -e "$bak_file" ] && mv "$bak_file" $MODEL
 }
 
 # Execute function 'on_exit' when this script exits.
-trap on_exit INT TERM EXIT
+trap on_exit EXIT INT TERM
 
 # Copy input to the directory where the test is executed.
 cp "${TEST_PATH}/model_elastic.c"    src/
@@ -32,16 +32,14 @@ cp "${TEST_PATH}/receiver.dat"       tmp/receiver/
 compile_code
 
 # Run code.
-echo "${TEST_ID}: Running solver. Output is captured to tmp/ASOFI3D.log"
+log "Running solver. Output is captured to tmp/ASOFI3D.log"
 ./run_ASOFI3D.sh 16 tmp/ > tmp/ASOFI3D.log &
 task_id=$!
 animate_progress $task_id "${TEST_ID}: Running solver"
 
 code=$?
-
 if [ "$code" -ne "0" ]; then
-    echo "${TEST_ID}: FAIL Running ASOFI3D failed" > /dev/stderr
-    exit 1
+    error "Running ASOFI3D failed"
 fi
 
 # Convert seismograms in SEG-Y format to the Madagascar RSF format.
@@ -54,8 +52,7 @@ tests/compare_datasets.py tmp/su/test_p.rsf ${TEST_PATH}/su/ref_p.rsf \
     --rtol=1e-10 --atol=5e-11
 result=$?
 if [ "$result" -ne "0" ]; then
-    echo "${TEST_ID}: Seismograms (pressure) differ" > /dev/stderr
-    exit 1
+    error "Seismograms (pressure) differ"
 fi
 
-echo "${TEST_ID}: PASS"
+log "PASS"

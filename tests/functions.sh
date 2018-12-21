@@ -48,15 +48,14 @@ compile_code () {
 
     if [ $? -eq 0 ]
     then
-        echo "Executable 'sofi3D' is up do date."
+        log "Executable 'sofi3D' is up do date."
     else
-        echo "Recompiling 'sofi3D'. See tmp/make.log for details"
+        log "Recompiling 'sofi3D'. See tmp/make.log for details"
         make sofi3D > ../tmp/make.log
 
         if [ "$?" -ne 0 ]; then
             cd ..
-            echo "${TEST_ID}: FAIL" > /dev/stderr
-            exit 1
+            error "Compiling sofi3D"
         fi
     fi
 

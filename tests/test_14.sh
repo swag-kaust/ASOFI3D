@@ -17,20 +17,13 @@
 TEST_PATH="tests/fixtures/test_14"
 TEST_ID="TEST_14"
 
-# Setup function prepares environment for the test (creates directories).
 setup
 
 # Copy test data.
-cp "${TEST_PATH}/sofi3D.json"    tmp/in_and_out
+cp "${TEST_PATH}/sofi3D.json"    tmp/in_and_out/
 cp "${TEST_PATH}/source.dat"     tmp/sources/
 
-# Compile code.
-make asofi3D > tmp/make.log 2>&1
-if [ "$?" -ne "0" ]; then
-    cd ..
-    echo ${TEST_ID}: FAIL Compilation> /dev/stderr
-    exit 1
-fi
+compile_code
 
 cd tmp
 rm -rf snap_1 snap_2
@@ -42,15 +35,14 @@ cd ..
 
 # Run code.
 for i in 1 2; do
-    echo "${TEST_ID}: Running solver. Output is captured to tmp/ASOFI3D_$i.log"
+    log "Running solver. Output is captured to tmp/ASOFI3D_$i.log"
     ./run_ASOFI3D.sh 16 tmp/ > tmp/ASOFI3D_$i.log &
     task_id=$!
     animate_progress $task_id "${TEST_ID}: Running solver"
 
     code=$?
     if [ "$code" -ne "0" ]; then
-        echo ${TEST_ID}: FAIL Running ASOFI3D failed > /dev/stderr
-        exit 1
+        error "Running ASOFI3D failed"
     fi
     mv tmp/snap tmp/snap_$i
     mv tmp/source_field tmp/source_field_$i
@@ -62,8 +54,7 @@ done
 ${TEST_PATH}/analyze.py --directory=tmp/ --rtol=1e-6 --atol=0
 result=$?
 if [ "$result" -ne "0" ]; then
-    echo "${TEST_ID}: FAIL Dot product test fails" > /dev/stderr
-    exit 1
+    error "Dot product test failed"
 fi
 
-echo "${TEST_ID}: PASS"
+log "PASS"
