@@ -30,7 +30,7 @@ cp "${TEST_PATH}/sources/fullspace_sources.dat"    tmp/sources/
 compile_code
 
 # Run code.
-echo "TEST_02: Running solver. Output is captured to tmp/ASOFI3D.log"
+log "Running solver. Output is captured to tmp/ASOFI3D.log"
 ./run_ASOFI3D.sh 16 tmp/ > tmp/ASOFI3D.log &
 task_id=$!
 animate_progress $task_id "TEST_02: Running solver"
@@ -65,4 +65,4 @@ if [ "$result" -ne "0" ]; then
     error "Pressure seismograms differ"
 fi
 
-echo "TEST_02: PASS"
+log "PASS"
