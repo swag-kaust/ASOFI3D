@@ -25,7 +25,7 @@ logfile="ASOFI3D-readmod=-1.log"
 log "Running solver. Output is captured to tmp/$logfile"
 ./run_ASOFI3D.sh 16 tmp/ > tmp/$logfile &
 task_id=$!
-animate_progress $task_id "${TEST_ID}: Running solver"
+animate_progress $task_id "Running solver"
 
 wait "$task_id"
 code=$?
@@ -41,7 +41,7 @@ logfile="ASOFI3D-readmod=1.log"
 log "Running solver. Output is captured to tmp/$logfile"
 ./run_ASOFI3D.sh 16 tmp/ > tmp/$logfile &
 task_id=$!
-animate_progress $task_id "${TEST_ID}: Running solver"
+animate_progress $task_id "Running solver"
 
 wait "$task_id"
 code=$?

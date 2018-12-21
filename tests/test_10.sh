@@ -27,7 +27,7 @@ compile_code
 log "Running solver. Output is captured to tmp/ASOFI3D.log"
 ./run_ASOFI3D.sh 16 tmp/ > tmp/ASOFI3D.log &
 task_id=$!
-animate_progress $task_id "${TEST_ID}: Running solver"
+animate_progress $task_id "Running solver"
 
 code=$?
 if [ "$code" -ne "0" ]; then
