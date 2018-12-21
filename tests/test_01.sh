@@ -14,14 +14,6 @@ setup
 # Preserve old model.
 mv $MODEL ${MODEL}.bak.${TEST_ID}
 
-on_exit() {
-    bak_file=${MODEL}.bak.${TEST_ID}
-    [ -e "$bak_file" ] && mv "$bak_file" $MODEL
-}
-
-# Execute function 'on_exit' when this script exits to avoid resource leak.
-trap on_exit INT TERM EXIT
-
 # Copy test model.
 cp "${TEST_PATH}/src/model_elastic.c"       src/
 cp "${TEST_PATH}/in_and_out/sofi3D.json"    tmp/in_and_out

@@ -27,6 +27,7 @@ log "Running solver. Output is captured to tmp/$logfile"
 task_id=$!
 animate_progress $task_id "${TEST_ID}: Running solver"
 
+wait "$task_id"
 code=$?
 if [ "$code" -ne "0" ]; then
     error "Running ASOFI3D failed"
@@ -42,6 +43,7 @@ log "Running solver. Output is captured to tmp/$logfile"
 task_id=$!
 animate_progress $task_id "${TEST_ID}: Running solver"
 
+wait "$task_id"
 code=$?
 if [ "$code" -ne "0" ]; then
     error "Running ASOFI3D failed"

@@ -73,11 +73,15 @@ animate_progress () {
     #     $ animate_progress $! "Task is running"
     task_id="$1"
     message="$2"
+    if [ -n "$TEST_ID" ]
+    then
+        message="[$TEST_ID] $message"
+    fi
     pause=0.2
 
     if [ "${CI}" ]
     then
-        wait $task_id
+        wait "$task_id"
     else
         while kill -0 "${task_id}" > /dev/null 2>&1
         do
@@ -116,3 +120,22 @@ convert_segy_to_rsf() {
 
     sfsegyread tape="$file_sgy" tfile="$file_rsf_tfile" > "$file_rsf"
 }
+
+on_exit() {
+    # Cleanup when script exits (due to error, successful exit, or CTRL-C).
+
+    # Restore original $MODEL file.
+    if [ -n "$MODEL" ]; then
+        bak_file=${MODEL}.bak.${TEST_ID}
+        [ -e "$bak_file" ] && mv "$bak_file" "$MODEL"
+    fi
+
+    # Kill child processes (recall that the solver runs in the background).
+    for pid in $(jobs -pr); do
+        kill "$pid"
+    done
+    exit
+}
+
+# Register `on_exit` function to run when script exits.
+trap on_exit EXIT QUIT
