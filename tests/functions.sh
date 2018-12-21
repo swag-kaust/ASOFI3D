@@ -31,12 +31,11 @@ log() {
     # Print a message prefixed by test ID.
     local prefix
     if [ -n "$TEST_ID" ]; then
-        prefix="[${TEST_ID}]"
+        prefix="[${TEST_ID}] "
     else
         prefix=""
     fi
     printf "%s%s\n" "$prefix" "$@" > /dev/stderr
-    exit 1
 }
 
 compile_code () {
