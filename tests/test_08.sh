@@ -62,8 +62,7 @@ tests/compare_datasets.py tmp/su/force_in_x_vy.rsf tmp/su/force_in_y_vx.rsf \
     --rtol=1e-15 --atol=1e-15
 result=$?
 if [ "$result" -ne "0" ]; then
-    echo "${TEST_ID}: Traces differ" > /dev/stderr
-    exit 1
+    error "Traces differ"
 fi
 
 log "PASS"
