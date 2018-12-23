@@ -12,7 +12,7 @@ echo "$_TEST_MPI" > testmpi.c
 
 try_execute () {
     # Test if program $1 exists and than execute it with the following args.
-    command -V "$1" > /dev/null 2>&1 && "$@"
+    command -V "$1" > /dev/null 2>&1 && "$@" > /dev/null 2>&1
     return $?
 }
 
