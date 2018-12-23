@@ -27,6 +27,8 @@ test :
 	tests/test_08.sh
 	tests/test_09.sh
 	tests/test_10.sh
+	tests/test_11.sh
+	tests/test_14.sh
 
 # Developer-level target, to check that one single translation unit
 # compiles without any warnings from a compiler.
