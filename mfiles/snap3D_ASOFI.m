@@ -39,9 +39,9 @@ dir_Full = dir(snap_name_full);
 dir_000 = dir([opts.SNAP_FILE,'.bin.div.0.0.0']);
 
 if ~exist(snap_name_full,'file')
-    system('../bin/snapmerge ./in_and_out/sofi3D.json');
+    system(['../bin/snapmerge ' config_file]);
 elseif dir_Full.datenum < dir_000.datenum
-    system('../bin/snapmerge ./in_and_out/sofi3D.json');
+    system(['../bin/snapmerge ' config_file]);
 end
 
 cd(oldpwd)
@@ -172,7 +172,12 @@ if (cont_switch==1) | (type_switch==1)
     
     % opening file and reading
     disp(['Loading file ' file_mod]);
-    fid_mod=fopen(file_mod,'r','ieee-le');
+    [fid_mod, err_msg] = fopen(file_mod, 'r', 'ieee-le');
+    if fid_mod == -1
+        disp(['ERROR: Cannot open file ' file_mod]);
+        disp(['Reason: ' err_msg]);
+        return
+    end
     mod_data=fread(fid_mod,'float');
     mod_data=reshape(mod_data,ny,nx,nz);
     mod_data=permute(mod_data,[2,3,1]);
