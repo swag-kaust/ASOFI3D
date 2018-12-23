@@ -1,9 +1,9 @@
-# About
+## About
 
 CircleCI status:
 
-[![CircleCI](https://circleci.com/gh/swag-kaust/TD.svg?style=svg&circle-token=2bb57e94a999ba7f33afb12bf091751af6bda219
-)](https://circleci.com/gh/swag-kaust/TD)
+    [![CircleCI](https://circleci.com/gh/swag-kaust/TD.svg?style=svg&circle-token=2bb57e94a999ba7f33afb12bf091751af6bda219
+    )](https://circleci.com/gh/swag-kaust/TD)
 
 ASOFI3D stands for Anisotropic Seismic mOdeling with FInite differences.
 This code is a modification of
@@ -12,7 +12,7 @@ to accomodate orthorhombic anisotropy
 
 
 
-# Obtaining the code
+## Obtaining the code
 
 Get the code from this repo:
 
@@ -23,7 +23,7 @@ Then switch to the cloned repo directory:
     cd TD
 
 
-# Building the code
+## Building the code
 
 The prerequisites for ASOFI3D are:
 
@@ -55,7 +55,7 @@ To load them on your KAUST-provided workstation, execute the following commands:
     module load intelmpi/2016/intel-2016
 
 
-# Example usage
+## Example usage
 
 After successful compilation, you can run the code via command
 
@@ -67,7 +67,7 @@ Parameter `dirname` is optional and defaults to `par`, so that the main
 configuration file of the solver is `par/in_and_out/sofi3D.json`.
 
 
-# Running the tests
+## Running the tests
 
 To run the tests, Madagascar is an additional prerequisite.
 Tests are run via the command

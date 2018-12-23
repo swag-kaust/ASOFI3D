@@ -5,12 +5,20 @@
 \usepackage{epsf,pstricks,pst-grad,color}
 \usepackage{graphicx,amssymb,amsmath,makeidx,psfrag,subfigure}
 \usepackage{authda14,sws,wasysym,epsfig}
-\usepackage{longtable,rotating,latexsym,fancyhdr,eso-pic}
+\usepackage{longtable,rotating,latexsym,eso-pic}
 \usepackage[colorlinks=true,citecolor=blue,linkcolor=blue,bookmarks=true,urlcolor=blue,hyperfootnotes=true,plainpages=false,pdfpagelabels=true,breaklinks=true]{hyperref} %create interal an click-on links
-\usepackage{breakurl}
+%\usepackage{breakurl}
 \usepackage{tikz}
 \usepackage{tikz-3dplot}
 \usepackage{listings}
+
+\usepackage{fancyvrb}
+
+\newenvironment{markdown}%
+{\VerbatimEnvironment\begin{VerbatimOut}{tmp.markdown}}%
+	{\end{VerbatimOut}%
+	\immediate\write18{pandoc tmp.markdown -t latex -o tmp.tex}%
+	\input{tmp.tex}}
 
 %\usepackage{natbib}
 %\lstset{breaklines=true}
@@ -18,7 +26,10 @@
 \lstset{basicstyle=\bfseries}
 \bibliographystyle{authda3}
 \usepackage[english]{babel}
-%\makeindex
+\providecommand{\tightlist}{%
+	\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\makeindex
 %\selectlanguage{english}
 %\parindent0em \parskip1.5ex plus0.5ex minus 0.5ex
 %% -------------------------------------------------------------------
@@ -61,46 +72,14 @@
 \newcommand{\option}[1]{\texttt{#1}}
 
 
-\title{ASOFI anisotropic viscoelastic seismic modeling with finite differences (anisotropic SOFI3D)}
+\title{ASOFI anisotropic elastic seismic modeling with finite differences (anisotropic SOFI3D)}
 \author{Vladimir Kazei \& Dmitry Kabanov}
 
 \begin{document}
 	
 \maketitle
 
-%\thispagestyle{empty}
-%\newcommand{\Rule}{\rule{\textwidth}{1mm}}
-%\newtheorem{theorem}{Hypothese}[section]
-%\begin{center}
-%\Rule \vspace{5mm}
-%\sffamily \bfseries \Huge
-%- ASOFI - 
-%\\ 
-%anisotropic viscoelastic seismic modeling with finite differences 
-%\\
-%\vspace{1mm}\Rule\\
-%\vspace{1 cm}
-%\Large\emph{Users Guide} \par
-%\large Vladimir Kazei \par
-%\large Dmitry Kabanov \par
-%\Large KAUST
-%\\
-%\vspace{3cm}
-%this is a revision of SOFI3D by KIT group
-%\vspace{2 cm}
-%
-%\large Thomas Bohlen \par
-%\large Denise De Nil \par
-%\large Daniel K\"ohn \par
-%\large Stefan Jetschny\par
-%\vspace{2 cm}
-%
-%\small Karlsruhe Institute of Technology\par
-%\small Department of Physics, Geophysical Institute \par
-%\small Hertzstrasse 16, 76187 Karlsruhe, Germany \par
-%\end{center}
-
-%\tableofcontents
+\tableofcontents
 
 \section{Introduction}\label{intro}
 In order to extract information about the structure and composition of the crust from seismic observations, it is necessary to be able to predict how seismic wavefields are affected by complex structures.
@@ -117,9 +96,7 @@ The FD modeling program SOFI3D, that is described in this guide, is based on the
 	\cite{bohlen:02}.
 \end{itemize}
 
-In the following sections, we give a short description of the  theoretical background, the different modeling parameters and options and how the program is used in a parallel MPI environment.
-
-\section{License}\label{license}
+\subsection{License}\label{license}
 
 ASOFI3D is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2.0 of the License only.
 
@@ -128,7 +105,7 @@ ASOFI3D is distributed in the hope that it will be useful, but WITHOUT ANY WARRA
 The authors of ASOFI3D are listed in file  \lstinline{AUTHORS}.
 
 %\newpage
-\section{Requirements}
+\subsection{Requirements}
 \label{requirements}
 
 ASOFI3D has been tested under Linux \& Mac-OS. The preferred platform is Linux, since most of the large scale cluster computer run under Linux. On KAUST local workstations we use Ubuntu and OpenMPI.
@@ -159,22 +136,17 @@ xmovie & Console based movie program, can & usually included in Linux distributi
 
 \newpage 
 \section{Quick start}\label{qguide}
-To compile the program do: 
+%\begin{markdown}
+%	\input{../../README.md}
+%\end{markdown}
 
- \lstinline{cd src && make all}. 
- 
-You might need to change \lstinline{src/Makefile} to succeed. 
-
-To run the program on 8 CPUs do
-
- \lstinline{cd par && mpirun -np 8 ../bin/sofi3D ./in_and_out/sofi3D.json}
-
+\input{README}
 
 You may also use the shell script  \lstinline{startSOFI3D.sh} located in  \lstinline{sofi3D/par} that also writes the screen output to the file  \lstinline{sofi3D/par/in_and_out/sofi3D.jout}.
 
-The modeling parameters are specified in the input file \lstinline{./in_and_out/sofi3D.json}. The parameters should be more or less self-explanatory. The synthetic seismograms and snapshots are written to the files specified in the sofi3D input file. Model is generated on the fly by the function sofi3D/src/model\_elastic.c. This function generates a homogeneous medium with $v_p$=3500 m/s, $v_s$=2000 m/s, and $\rho$=2000 kg/$\mathrm{m}^3$. Instead, the function readmod.c can be used to read model info from external grid files. See readmod.c for the format of the external files. You can change the function which generates the model grid by switching the READMOD parameter in the sofi3D input file.
+The modeling parameters are specified in the input file \lstinline{par/in_and_out/sofi3D.json}. The parameters should be more or less self-explanatory. The synthetic seismograms and snapshots are written to the files specified in the sofi3D input file. Model is generated on the fly by the function sofi3D/src/model\_elastic.c. This function generates a homogeneous medium with $v_p$=3500 m/s, $v_s$=2000 m/s, and $\rho$=2000 kg/$\mathrm{m}^3$. Instead, the function readmod.c can be used to read model info from external grid files. See readmod.c for the format of the external files. You can change the function which generates the model grid by switching the READMOD parameter in the sofi3D input file.
 
-\subsection{Structure}
+\subsection{Structure of the code}
 \label{installation}
 In the SOFI3D directory you will find different subdirectories:
 
@@ -198,70 +170,7 @@ Parameter files for SOFI3D modeling.
 
                        
 \newpage
-\section{Theoretical Background}
-\subsection{(Visco)elastic Wave Equations}
-What happens in a rock, during the passage of a seismic wave? To answer this question, we consider an infinitesimal small cube, which is part of the rock. In this cube are atoms, ions or molecules which move in a not specified manner. If we could describe the microscopic motion of the particles we would be able to predict the particle displacements and therefore the propagation of the seismic wave in the rock. One of the fundamental principles in physics is the conservation of momentum. The total momentum $\MB{P}$ in the rock can be changed by three different ways:
-\begin{enumerate}
-
-\item Not a bit
-\EQ{1:3}{\frac{\partial \MB{P}}{\partial t}=\frac{\partial}{\partial t}\biggl \{\int_V \rho(\MB{x},t)\; \MB{v}(\MB{x},t) dV \biggr \} = 0.
-\notag} 
-
-where $t$ denotes the time, $\MB{x}$ the position vector, $\rho$ the density- and $\MB{v}$ the particle velocity distributions in the rock. 
-
-\item By adding particles to the cube or remove them, which leads to a momentum gain or loss in the cube:
-
-\EQ{1:5}{\Phi=\int_A \rho \MB{v} (\MB{v} \cdot dA). \notag}
-
-\item By forces acting on the surface of the cube, for example the hydrostatic pressure P, or  more generally the stress $p_{ij}$ (surface forces) and forces $f_i$ acting on all the particles in the volume (body forces). 
-\end{enumerate}
-
-After a short calculation we get the following system of linear 1st order differential equations: 
-
-\EQ{1:15}{\rho \frac{dv_i}{dt} + v_i \rho \MB{\nabla} v_i = - \frac{\partial p_{ij}}{\partial x_j} + f_i.}
-
-This equation is satisfied for any volume, independently if it is filled with a liquid, a gas or rock. Until now no proposition on how the medium deforms under an external stress was made. For an {\bf{elastic medium}} exists a linear relationship between stress and strain:
-
-\EQ{2:18}{p_{ij}=\lambda \theta \delta_{ij} + 2 \mu \epsilon_{ij}.}
-
-with
-
-\EQ{2:18:1}{\begin{split}
-    \lambda\; \text{and}\; \mu:\; & \text{Lam$\acute{\rm e}$ parameter}\notag
-\end{split}}
-
-\EQ{2:18:1:1}{\epsilon_{ij}=\biggl(\frac{\partial u_i}{\partial x_j}+\frac{\partial u_j}{\partial x_i}\biggr)\; \text{deformation tensor} \notag}  
-\EQ{2:18:2}{\theta = \epsilon_{11} + \epsilon_{22} + \epsilon_{33}:\; \text{cubic dilatation} \notag}
-\EQ{2:18:3}{\delta_{ij}=
-\begin{cases}
-    1 & \text{for } i=j\\
-    0 & \text{else}
-\end{cases} 
-\biggr \}: \;\text{Kronecker symbol} \notag}
-
-For a {\bf{viscoelastic medium}} the stress-strain relationship is more complicated:
-
-\EQ{2:19}{\begin{split}
-    \dot{p}_{ij}&=\frac{\partial v_k}{\partial x_k}\{\pi (1+\tau^s)-2 \mu(1+\tau^s)\}+2\frac{\partial v_i}{\partial x_j}
-    \mu(1+\tau^s)+\sum\limits_{l=1}^L r_{ijl}\; \text{if $i$=$j$}\\
-    \dot{p}_{ij}&=\biggl(\frac{\partial v_i}{\partial x_j}+\frac{\partial v_j}{\partial x_i}\biggr) \mu (1+\tau^s)+\sum\limits_{l=1}^L r_{ijl}\; \text{if $i$$\ne$$j$}
-\end{split}}
-
- with the memory variables 
-
- \EQ{2:20}{\begin{split}
-     \dot{r}_{ijl}&=-\frac{1}{\tau_{\sigma l}}\biggl\{(\pi \tau^p - 2 \mu \tau^s)\frac{\partial v_k}{\partial x_k} + 2 \frac{\partial
-    v_i}{\partial x_j} \mu \tau^s + r_{ijl} \biggr\}\; \text{if $i$ = $j$} \notag\\
-    \dot{r}_{ijl}&=-\frac{1}{\tau_{\sigma l}}\biggl\{\mu \tau^s \biggl(\frac{\partial v_i}{\partial x_j}+ \frac{\partial v_j}{\partial x_i} 
-    \biggr) + r_{ijl} \biggr\}\; \text{if $i$ $\ne$ $j$} \notag\\
- \end{split}}
-
-$\tau^s$ and $\tau^p$ are related to the seismic quality factor $Q_s$, $Q_p$ for the S- respectively the P-wave velocity, by 
-
-\EQ{2:21}{\begin{split}
-    \tau^s &= 2/Q_s\\
-    \tau^p &= 2/Q_p \notag
-\end{split}}  
+  
 
 \section{Solving the Elastic Wave Equation with Finite Differences}
 To solve the equations \ER{1:15} and \ER{2:18} for an elastic medium, or \ER{1:15} and \ER{2:19} for a viscoelastic medium, the particle velocities $\vec{v}$, the stresses $p_{ij}$, the Lame parameters $\lambda$ and $\mu$ are calculated at  discrete cartesian coordinates  $x=i\; \times dx$, $y=j\; \times dy$, $z=k\; \times dz$ and at discrete times $t=n\; \times dt$ on a grid. $dx$, $dy$ and $dz$, denote  the spatial grid point distance in x-, y-, z-direction and $dt$ the difference between two succeeding time steps with $i \in N | [1,NX]$, $j \in N | [1,NY]$, $k \in N | [1,NZ]$ 
@@ -280,6 +189,70 @@ To calculate with a larger grid point distance the variables are arranged on a s
 \caption{\label{fig_cell} Grid geometry for a Standard Staggered Grid (SSG).}
 \end{center}
 \end{figure}   
+
+\subsection{(Visco)elastic Wave Equations}
+What happens in a rock, during the passage of a seismic wave? To answer this question, we consider an infinitesimal small cube, which is part of the rock. In this cube are atoms, ions or molecules which move in a not specified manner. If we could describe the microscopic motion of the particles we would be able to predict the particle displacements and therefore the propagation of the seismic wave in the rock. One of the fundamental principles in physics is the conservation of momentum. The total momentum $\MB{P}$ in the rock can be changed by three different ways:
+\begin{enumerate}
+	
+	\item Not a bit
+	\EQ{1:3}{\frac{\partial \MB{P}}{\partial t}=\frac{\partial}{\partial t}\biggl \{\int_V \rho(\MB{x},t)\; \MB{v}(\MB{x},t) dV \biggr \} = 0.
+		\notag} 
+	
+	where $t$ denotes the time, $\MB{x}$ the position vector, $\rho$ the density- and $\MB{v}$ the particle velocity distributions in the rock. 
+	
+	\item By adding particles to the cube or remove them, which leads to a momentum gain or loss in the cube:
+	
+	\EQ{1:5}{\Phi=\int_A \rho \MB{v} (\MB{v} \cdot dA). \notag}
+	
+	\item By forces acting on the surface of the cube, for example the hydrostatic pressure P, or  more generally the stress $p_{ij}$ (surface forces) and forces $f_i$ acting on all the particles in the volume (body forces). 
+\end{enumerate}
+
+After a short calculation we get the following system of linear 1st order differential equations: 
+
+\EQ{1:15}{\rho \frac{dv_i}{dt} + v_i \rho \MB{\nabla} v_i = - \frac{\partial p_{ij}}{\partial x_j} + f_i.}
+
+This equation is satisfied for any volume, independently if it is filled with a liquid, a gas or rock. Until now no proposition on how the medium deforms under an external stress was made. For an {\bf{elastic medium}} exists a linear relationship between stress and strain:
+
+\EQ{2:18}{p_{ij}=\lambda \theta \delta_{ij} + 2 \mu \epsilon_{ij}.}
+
+with
+
+\EQ{2:18:1}{\begin{split}
+		\lambda\; \text{and}\; \mu:\; & \text{Lam$\acute{\rm e}$ parameter}\notag
+\end{split}}
+
+\EQ{2:18:1:1}{\epsilon_{ij}=\biggl(\frac{\partial u_i}{\partial x_j}+\frac{\partial u_j}{\partial x_i}\biggr)\; \text{deformation tensor} \notag}  
+\EQ{2:18:2}{\theta = \epsilon_{11} + \epsilon_{22} + \epsilon_{33}:\; \text{cubic dilatation} \notag}
+\EQ{2:18:3}{\delta_{ij}=
+	\begin{cases}
+		1 & \text{for } i=j\\
+		0 & \text{else}
+	\end{cases} 
+	\biggr \}: \;\text{Kronecker symbol} \notag}
+
+For a {\bf{viscoelastic medium}} the stress-strain relationship is more complicated:
+
+\EQ{2:19}{\begin{split}
+		\dot{p}_{ij}&=\frac{\partial v_k}{\partial x_k}\{\pi (1+\tau^s)-2 \mu(1+\tau^s)\}+2\frac{\partial v_i}{\partial x_j}
+		\mu(1+\tau^s)+\sum\limits_{l=1}^L r_{ijl}\; \text{if $i$=$j$}\\
+		\dot{p}_{ij}&=\biggl(\frac{\partial v_i}{\partial x_j}+\frac{\partial v_j}{\partial x_i}\biggr) \mu (1+\tau^s)+\sum\limits_{l=1}^L r_{ijl}\; \text{if $i$$\ne$$j$}
+\end{split}}
+
+with the memory variables 
+
+\EQ{2:20}{\begin{split}
+		\dot{r}_{ijl}&=-\frac{1}{\tau_{\sigma l}}\biggl\{(\pi \tau^p - 2 \mu \tau^s)\frac{\partial v_k}{\partial x_k} + 2 \frac{\partial
+			v_i}{\partial x_j} \mu \tau^s + r_{ijl} \biggr\}\; \text{if $i$ = $j$} \notag\\
+		\dot{r}_{ijl}&=-\frac{1}{\tau_{\sigma l}}\biggl\{\mu \tau^s \biggl(\frac{\partial v_i}{\partial x_j}+ \frac{\partial v_j}{\partial x_i} 
+		\biggr) + r_{ijl} \biggr\}\; \text{if $i$ $\ne$ $j$} \notag\\
+\end{split}}
+
+$\tau^s$ and $\tau^p$ are related to the seismic quality factor $Q_s$, $Q_p$ for the S- respectively the P-wave velocity, by 
+
+\EQ{2:21}{\begin{split}
+		\tau^s &= 2/Q_s\\
+		\tau^p &= 2/Q_p \notag
+\end{split}}
 
 \newpage
 \subsection{Accuracy of FD-operators}
@@ -348,6 +321,95 @@ The resulting coefficients are $\beta_1=9/8$ and $\beta_2=-1/24$, so the forward
 
 The coefficients $\beta_i$ in the FD operator are called {\bf{Taylor coefficients}}. The accuracy of higher order FD operators can be improved significantly simply by slightly changes in the FD coefficients \cite{holberg:87}. These numerically optimized coefficients are called {\bf{Holberg coefficients}}.
 
+\subsection{Grid Dispersion}\label{grid-dispersion}
+The first question when building a FD model is: What is the maximum spatial grid point distance dh, for a correct sampling of the wavefield? To answer this question we take a look at this simple example: The particle displacement in x-direction is defined by a sine function:
+\EQ{grid_disp:1}{v_x=\sin\biggl(2 \pi \frac{x}{\rm{\lambda}}\biggr),}
+where $\rm{\lambda}$ denotes the wavelength. When calculating the derivation of this function analytically at $x=0$ and setting $\rm{\lambda}=1\;\rm{m}$ we get:
+\EQ{grid_disp:2}{\frac{d v_x}{d x}\biggl|_{x=0}=\frac{2 \pi}{\rm{\lambda}} \cos\biggl(2 \pi \frac{x}{\rm{\lambda}}\biggr)\biggl|_{x=0}=2 \pi.}
+In the next step the derivation is approximated numerically by a staggered 2nd order finite-difference operator:
+\EQ{grid_disp:3}{\frac{d v_x}{d x}\biggl|_{x=0} \approx \frac{v_x(x+\frac{1}{2}\Delta x)-v_x(x-\frac{1}{2}\Delta x)}{\Delta x}\biggl|_{x=0}=\frac{\sin \biggl(\frac{2 \pi (\frac{1}{2}{\rm dx})}{\rm{\lambda}} \biggr)-\sin \biggl(\frac{2 \pi (\frac{1}{2}{\rm dx})}{\rm{\lambda}} \biggr)}{\Delta x}.}
+Using the Nyquist-Shannon sampling theorem it should be sufficient to sample the wavefield with $\Delta x = \rm{\lambda}/2$. In table \ref{grid_disp.1} the
+numerical solutions of eq. \ER{grid_disp:3} and the analytical solution \ER{grid_disp:2} are compared for different sample intervals 
+$\Delta x = \rm{\lambda} /n$, where n is the number of gridpoints per wavelength. For the case n=2, which corresponds to the Nyquist-Shannon theorem, the
+numerical solution is $\frac{d v_x}{d x}|_{x=0}=4.0$, which is not equal with the analytical solution $2 \pi$. A refinement of the spatial
+sampling of the wavefield results in an improvement of the finite difference solution. For $\rm n=16$ the numerical solution is accurate to the second
+decimal place. The effect of a sparsly sampled pressure field is illustrated in \FIG{grid_disp_pics} for a homogeneous block model with stress free surfaces. The dimensions of the FD grid are fixed
+and the central frequency of the source signal is increased systematically. 
+When using a spatial sampling of 16 grid points per minimum wavelength (\FIG{grid_disp_pics}, top) the wavefronts are sharply defined. For $\rm n=4$ 
+grid points a slight numerical dispersion of the wave occurs (\FIG{grid_disp_pics}, center). This effect is obvious when using the Nyquist criterion ($\rm n=2$) 
+(\FIG{grid_disp_pics}, bottom). Since the numerical calculated wavefield seem to be dispersive this numerical artefact is called {\bf{grid dispersion}}. 
+To avoid the occurence of grid dispersion the following criteria for the spatial grid spacing dh has to be satisfied:
+\EQ{grid_disp:4}{{\rm dh \le \frac{\lambda_{min}}{n}} = \frac{{\rm V_{min}}}{{\rm n}\; f_{max}}.}
+Here $\rm{\lambda_{min}}$ denotes the minimum wavelength, $\rm{V_{min}}$ the minimum velocity in the model and $f_{max}$ is the maximum
+frequency of the source signal.  
+Depending on the accuracy of the used FD operator the parameter n is different.  In table \ref{grid_disp.2} n is listed for different FD operator lengths 
+and types (Taylor and Holberg operators). The Holberg coefficients are calculated for a minimum dispersion error of $0.1\%$ at $3 f_{max}$. For short operators n should be choosen relatively large, so the spatial grid spacing is small, while for longer FD operators n is smaller and the grid spacing can be larger. 
+\begin{table}[hbt]
+	\begin{center}
+		\begin{tabular}{ccc}\hline \hline
+			n &  $\Delta x\; [m]$ & $\frac{d v_x}{d x}|_{x=0}\; []$ \\ \hline 
+			analytical & - & $2\pi \approx 6.283$ \\ 
+			2 & $\rm{\lambda}/2$ & 4.0 \\ 
+			4 & $\rm{\lambda}/4$ & 5.657 \\ 
+			8 & $\rm{\lambda}/8$ & 6.123 \\ 
+			16 & $\rm{\lambda}/16$ & 6.2429 \\ 
+			32 & $\rm{\lambda}/32$ & 6.2731\\ \hline \hline
+		\end{tabular}
+		\caption{\label{grid_disp.1} Comparison of the analytical solution Eq. \ER{grid_disp:2} with the numerical solution Eq. \ER{grid_disp:3} 
+			for different grid spacings $\Delta x = \rm{\lambda /n}$.}
+	\end{center}
+\end{table}
+
+\begin{table}[hbt]
+	\begin{center}
+		\begin{tabular}{ccc}\hline \hline
+			FDORDER & n (Taylor) & n (Holberg) \\ \hline 
+			2nd   &   12       &  12         \\
+			4th   &   8        &  8.32       \\
+			6th   &   6        &  4.77       \\
+			8th   &   5        &  3.69       \\ 
+			10th  &   5        &  3.19       \\
+			12th  &   4        &  2.91       \\
+			\hline \hline
+		\end{tabular}
+		\caption{\label{grid_disp.2} The number of grid points per minimum wavelength n for different orders (2nd-12th) and types (Taylor and
+			Holberg) of FD operators. For the Holberg coefficients n is calculated for a minimum dispersion error of $0.1\%$ at $3 f_{max}$.}
+	\end{center}
+\end{table} 
+\begin{figure}[ht]
+	\begin{center}
+		\epsfig{file=eps/homogenous_grid_n_16_5.pdf, width=4 cm}
+		\epsfig{file=eps/homogenous_grid_n_4_5.pdf, width=4 cm}
+		\epsfig{file=eps/homogenous_grid_n_2_5.pdf, width=4 cm}
+		\caption{\label{grid_disp_pics} The influence of grid dispersion in FD modeling: Spatial sampling of the wavefield using n=16 (left), n=4 (center) and n=2 gridpoints (right) per minimum wavelength $\rm{\lambda_{min}}$.}
+	\end{center}
+\end{figure}
+\clearpage
+\subsection{The Courant Instability}\label{courant}
+Beside the spatial, the temporal discretization has to satisfy a sampling criterion to ensure the stability of the FD code. If a 
+wave is propagating on a discrete grid, then the timestep $dt$ has to be less than the time for the wave to travel between two adjacent grid 
+points with grid spacing dh. For an elastic 2D grid this means mathematically:
+\EQ{courant:1}{\rm{dt \le \frac{dh}{h \sqrt{2} V_{max}},}}
+where $\rm{V_{max}}$ is the maximum velocity in the model. The factor h depends on the order of the FD operator and can easily calculated by summing over the weighting coefficients $\beta_i$
+\EQ{courant:1:1}{{\rm{h} = \sum_i \beta_i.}}
+In table \ref{courant.1} h is listed for different FD operator lengths and types (Taylor and Holberg operators). Criterion \ER{courant:1} 
+is called {\bf{Courant-Friedrichs-Lewy criterion}} (\cite{courant:28}, \cite{courant:67}). When the Courant criterion is violated. After a few time steps the amplitudes are growing to infinity and the calculation becomes unstable, execution breaks.
+\begin{table}[hbt]
+	\begin{center}
+		\begin{tabular}{ccc}\hline \hline
+			FDORDER & h (Taylor)      & h (Holberg) \\ \hline 
+			2nd   &   1.0             &  1.0        \\
+			4th   &   7/6             &  1.184614   \\
+			6th   &   149/120         &  1.283482   \\
+			8th   &   2161/1680       &  1.345927   \\
+			10th  &   53089/40320     &  1.387660   \\
+			12th  &   1187803/887040  &  1.417065   \\   
+			\hline \hline
+		\end{tabular}
+		\caption{\label{courant.1} The factor h in the Courant criterion for different orders (2nd-12th) and types (Taylor and Holberg) of FD operators.}
+	\end{center}
+\end{table} 
+
 \newpage
 
 \subsection{Boundary Conditions}\label{bound_cond}
@@ -385,122 +447,11 @@ where $V_{pml}$ denotes the typical P-wave velocity of the medium in the absorbi
 \end{enumerate} 
 \clearpage
 
-\section{Numerical Artefacts and Instabilities}\label{num_instab}
-To avoid numerical artefacts and instabilities during a FD modeling run, a spatial and temporal sampling condition for the wavefield has to be satisfied. These will be discussed in the following two sections. 
-
-\subsection{Grid Dispersion}\label{grid-dispersion}
-The first question when building a FD model is: What is the maximum spatial grid point distance dh, for a correct sampling of the wavefield? To answer this question we take a look at this simple example: The particle displacement in x-direction is defined by a sine function:
-\EQ{grid_disp:1}{v_x=\sin\biggl(2 \pi \frac{x}{\rm{\lambda}}\biggr),}
-where $\rm{\lambda}$ denotes the wavelength. When calculating the derivation of this function analytically at $x=0$ and setting $\rm{\lambda}=1\;\rm{m}$ we get:
-\EQ{grid_disp:2}{\frac{d v_x}{d x}\biggl|_{x=0}=\frac{2 \pi}{\rm{\lambda}} \cos\biggl(2 \pi \frac{x}{\rm{\lambda}}\biggr)\biggl|_{x=0}=2 \pi.}
-In the next step the derivation is approximated numerically by a staggered 2nd order finite-difference operator:
-\EQ{grid_disp:3}{\frac{d v_x}{d x}\biggl|_{x=0} \approx \frac{v_x(x+\frac{1}{2}\Delta x)-v_x(x-\frac{1}{2}\Delta x)}{\Delta x}\biggl|_{x=0}=\frac{\sin \biggl(\frac{2 \pi (\frac{1}{2}{\rm dx})}{\rm{\lambda}} \biggr)-\sin \biggl(\frac{2 \pi (\frac{1}{2}{\rm dx})}{\rm{\lambda}} \biggr)}{\Delta x}.}
-Using the Nyquist-Shannon sampling theorem it should be sufficient to sample the wavefield with $\Delta x = \rm{\lambda}/2$. In table \ref{grid_disp.1} the
-numerical solutions of eq. \ER{grid_disp:3} and the analytical solution \ER{grid_disp:2} are compared for different sample intervals 
-$\Delta x = \rm{\lambda} /n$, where n is the number of gridpoints per wavelength. For the case n=2, which corresponds to the Nyquist-Shannon theorem, the
-numerical solution is $\frac{d v_x}{d x}|_{x=0}=4.0$, which is not equal with the analytical solution $2 \pi$. A refinement of the spatial
-sampling of the wavefield results in an improvement of the finite difference solution. For $\rm n=16$ the numerical solution is accurate to the second
-decimal place. The effect of a sparsly sampled pressure field is illustrated in \FIG{grid_disp_pics} for a homogeneous block model with stress free surfaces. The dimensions of the FD grid are fixed
-and the central frequency of the source signal is increased systematically. 
-When using a spatial sampling of 16 grid points per minimum wavelength (\FIG{grid_disp_pics}, top) the wavefronts are sharply defined. For $\rm n=4$ 
-grid points a slight numerical dispersion of the wave occurs (\FIG{grid_disp_pics}, center). This effect is obvious when using the Nyquist criterion ($\rm n=2$) 
-(\FIG{grid_disp_pics}, bottom). Since the numerical calculated wavefield seem to be dispersive this numerical artefact is called {\bf{grid dispersion}}. 
-To avoid the occurence of grid dispersion the following criteria for the spatial grid spacing dh has to be satisfied:
-\EQ{grid_disp:4}{{\rm dh \le \frac{\lambda_{min}}{n}} = \frac{{\rm V_{min}}}{{\rm n}\; f_{max}}.}
-Here $\rm{\lambda_{min}}$ denotes the minimum wavelength, $\rm{V_{min}}$ the minimum velocity in the model and $f_{max}$ is the maximum
-frequency of the source signal.  
-Depending on the accuracy of the used FD operator the parameter n is different.  In table \ref{grid_disp.2} n is listed for different FD operator lengths 
-and types (Taylor and Holberg operators). The Holberg coefficients are calculated for a minimum dispersion error of $0.1\%$ at $3 f_{max}$. For short operators n should be choosen relatively large, so the spatial grid spacing is small, while for longer FD operators n is smaller and the grid spacing can be larger. 
-\begin{table}[hbt]
-\begin{center}
-\begin{tabular}{ccc}\hline \hline
-n &  $\Delta x\; [m]$ & $\frac{d v_x}{d x}|_{x=0}\; []$ \\ \hline 
-analytical & - & $2\pi \approx 6.283$ \\ 
-2 & $\rm{\lambda}/2$ & 4.0 \\ 
-4 & $\rm{\lambda}/4$ & 5.657 \\ 
-8 & $\rm{\lambda}/8$ & 6.123 \\ 
-16 & $\rm{\lambda}/16$ & 6.2429 \\ 
-32 & $\rm{\lambda}/32$ & 6.2731\\ \hline \hline
-\end{tabular}
-\caption{\label{grid_disp.1} Comparison of the analytical solution Eq. \ER{grid_disp:2} with the numerical solution Eq. \ER{grid_disp:3} 
-for different grid spacings $\Delta x = \rm{\lambda /n}$.}
-\end{center}
-\end{table}
- 
-\begin{table}[hbt]
-\begin{center}
-\begin{tabular}{ccc}\hline \hline
-FDORDER & n (Taylor) & n (Holberg) \\ \hline 
-2nd   &   12       &  12         \\
-4th   &   8        &  8.32       \\
-6th   &   6        &  4.77       \\
-8th   &   5        &  3.69       \\ 
-10th  &   5        &  3.19       \\
-12th  &   4        &  2.91       \\
-\hline \hline
-\end{tabular}
-\caption{\label{grid_disp.2} The number of grid points per minimum wavelength n for different orders (2nd-12th) and types (Taylor and
-Holberg) of FD operators. For the Holberg coefficients n is calculated for a minimum dispersion error of $0.1\%$ at $3 f_{max}$.}
-\end{center}
-\end{table} 
-\clearpage
-\begin{figure}[ht]
-\begin{center}
-\epsfig{file=eps/homogenous_grid_n_16_5.pdf, width=6 cm}\epsfig{file=eps/homogenous_grid_n_16_10.pdf, width=6 cm}
-\epsfig{file=eps/homogenous_grid_n_4_5.pdf, width=6 cm}\epsfig{file=eps/homogenous_grid_n_4_10.pdf, width=6 cm}
-\epsfig{file=eps/homogenous_grid_n_2_5.pdf, width=6 cm}\epsfig{file=eps/homogenous_grid_n_2_10.pdf, width=6 cm}
-\caption{\label{grid_disp_pics} The influence of grid dispersion in FD modeling: Spatial sampling of the wavefield using n=16 (top), n=4 (center) and n=2 gridpoints (bottom) per minimum wavelength $\rm{\lambda_{min}}$.}
-\end{center}
-\end{figure}
-\clearpage
-\subsection{The Courant Instability}\label{courant}
-Beside the spatial, the temporal discretization has to satisfy a sampling criterion to ensure the stability of the FD code. If a 
-wave is propagating on a discrete grid, then the timestep $dt$ has to be less than the time for the wave to travel between two adjacent grid 
-points with grid spacing dh. For an elastic 2D grid this means mathematically:
-\EQ{courant:1}{\rm{dt \le \frac{dh}{h \sqrt{2} V_{max}},}}
-where $\rm{V_{max}}$ is the maximum velocity in the model. The factor h depends on the order of the FD operator and can easily calculated by summing over the weighting coefficients $\beta_i$
-\EQ{courant:1:1}{{\rm{h} = \sum_i \beta_i.}}
-In table \ref{courant.1} h is listed for different FD operator lengths and types (Taylor and Holberg operators). Criterion \ER{courant:1} 
-is called {\bf{Courant-Friedrichs-Lewy criterion}} (\cite{courant:28}, \cite{courant:67}). When the Courant criterion is violated. After a few time steps the amplitudes are growing to infinity and the calculation becomes unstable, execution breaks.
-\begin{table}[hbt]
-\begin{center}
-\begin{tabular}{ccc}\hline \hline
-FDORDER & h (Taylor)      & h (Holberg) \\ \hline 
-2nd   &   1.0             &  1.0        \\
-4th   &   7/6             &  1.184614   \\
-6th   &   149/120         &  1.283482   \\
-8th   &   2161/1680       &  1.345927   \\
-10th  &   53089/40320     &  1.387660   \\
-12th  &   1187803/887040  &  1.417065   \\   
-\hline \hline
-\end{tabular}
-\caption{\label{courant.1} The factor h in the Courant criterion for different orders (2nd-12th) and types (Taylor and Holberg) of FD operators.}
-\end{center}
-\end{table} 
 
 
 
 
-
-\section{Example problem: Homogenous block model}\label{simple test}
-\subsection{Preliminary Considerations}
-In order to illustrate the usage of SOFI3D, we use a homogenous block model adapted from \cite{kang:04} with the dimensions 5400.0 x 5400.0 x 5400.0 m. The material parameters of the block are:  P-wave velocity $v_p=3500.0\; \frac{\mathrm{m}}{\mathrm{s}}$, S-wave velocity $v_s=2000.0\; \frac{\mathrm{m}}{\mathrm{s}}$ and density $\rho=2000.0\; \frac{\mathrm{kg}}{\mathrm{m}^3}$. An explosive source is located inside the model at point  $x_s=2592.0\;$m, $y_s=2106.0\;$m and $z_s=2592.0\;$ km (y denotes the vertical direction). The source function is a Ricker wavelet (Equation \ER{eq_ricker}) with a center frequency $f_c$ of 5 Hz. To calculate the dimensions of the grid the spatial grid spacing is estimated using the grid dispersion criterion \ER{grid_disp:4}. For an 8th order Holberg FD operator using $v_{s,min}=2000\;$m/s, $f_{max}=2 \cdot f_c=10\;$ Hz and $n=3.69$ (Table \ref{grid_disp.2}) we get:
-
-\EQ{prob1:1}{dh \le \frac{V_{s,min}}{n\; f_{max}} = 54.2\;\mathrm{m}.}
-
-The whole model grid has the dimensions 100 x 100 x 100 gridpoints. To avoid a violation of the Courant criterion the time step size DT is calculated according to \ER{courant:1} using $v_{p-max}=3500\; m/s$, $h=1.345$ (see Table \ref{courant.1}) and $dh=54.0\; m$:
-
-\EQ{prob1:2}{DT \le \frac{dh}{h \sqrt{3} v_{p-max}} = 6.62\times 10^{-3} s \approx 6.6\; \mathrm{ms}.}
-
-The modeling covers a time span of 5.0 s, so about NT=758 time steps are needed. A line of 100 Geophones is placed between $x_{start}=54.0\;$ m and $x_{end}=5400.0\;$ m and $y=2106.0\;$ m, $z=2592.0\;$m. Please note, that due to the small size of the model, more than half of the grid is covered by the absorbing boundary (if ABS=2, see Chapter \ref{abs}). 
-
-\subsection{Coordinate system}
-\label{coord_system}
-The original 3-D modeling code SOFI3D bases on the 2-D version called SOFI2D (formerly FDVEPS\_MPI). There, a Cartesian coordinate system denoted by the horizontal \textit{X} and the vertical \textit{Y} axis has been introduced. While considering the third dimension and expanding the 2-D code to SOFI3D, this coordinate system had been re-used with an additional axis \textit{Z} which was not the vertical but the second horizontal axis. Consequently, SOFI3D still uses \textit{Y} as the vertical coordinate. All cooordinate related parameters read from the input file (such as DY and DZ, IDY and IDZ, REFREC,...) follow the logic that \textit{Y} denotes the depth (vertical axis). A previous attempt to switch \textit{Y} and \textit{Z} within the input file in order to make \textit{Z} the vertical direction has been reversed. Even though the coordinate system with \textit{Z} as the depth axis was more intuitive, maintaining and developing the code has been more complicated. For this reason, \textit{Y} is still the vertical depth axis!
-
-Please note that if you choose the Seismic Unix output format ( \textbf{SEIS\_FORMAT = 1}) the coordinate orientation written into the header will not follow the SOFI3D coordinate convention as described above. Instead, the header word \textit{gy} denotes the second horizontal axis (equivalent to the \textit{Z} coordinate in SOFI3D) while the header word \textit{gelev} denotes the vertical axis (equivalent to the \textit{Y} coordinate in SOFI3D).
-
-\subsection{Definition of the Wave Modeling Parameters}
+\section{Modeling Parameters}
 \label{modelgeom}
 The geometry of the FD grid and all parameters for the wave field simulation have to be defined in a parameter file (which we name in this case { \lstinline{sofi3D/par/in_and_out/sofi3D.json}}). In the following we will first list the full input file and later explain every input parameter section in detail:
 \input{sofi3D.json}
@@ -519,7 +470,14 @@ a comment line can look like this
 
 where VARNAME denotes the name of the global variable in which the value is saved in all functions of the program. The possible values are described in comments, feel free to add own comments. Basically all non JSON conform line will be ignored. The order of parameters can be arbitrary organized. The built-in JSON parser will search for the need parameters and displays found values. If critical parameters are missing the code will stop and an error message will appear. The meaning of the different parameters is described in the following.
 
-\subsubsection{Domain decomposition}
+\subsection{Coordinate system}
+\label{coord_system}
+ASOFI3D uses \textit{Y} as the vertical coordinate. All cooordinate related parameters read from the input file (such as DY and DZ, IDY and IDZ, REFREC,...) follow the logic that \textit{Y} denotes the depth (vertical axis).
+
+Please note that if you choose the Seismic Unix output format ( \textbf{SEIS\_FORMAT = 1}) the coordinate orientation written into the header will not follow the SOFI3D coordinate convention as described above. Instead, the header word \textit{gy} denotes the second horizontal axis (equivalent to the \textit{Z} coordinate in SOFI3D) while the header word \textit{gelev} denotes the vertical axis (equivalent to the \textit{Y} coordinate in SOFI3D).
+
+
+\subsection{Domain decomposition}
 
 \begin{verbatim}
 "Domain Decomposition" : "comment",
@@ -548,7 +506,7 @@ and the command line differ, the program will terminate immediately with a corre
 At the top of the numerical mesh the PEs apply a free surface boundary condition if FREE\_SURF=1, otherwise an absorbing boundary condition (ABS or PML) is applied. The width of the absorbing frame is FW grid points.  The size of the total grid is NX grid points in x-direction, NY gridpoints in y-direction and NZ gridpoints in z-direction. The size of each sub-grid  thus is NX/NPROCX x NY/NPROCY x NZ/NPROCZ gridpoints. The source is located at (XSRC,YSRC,ZSRC). The first receiver is at (XREC1,YREC1,ZREC1) and the  last receiver at (XREC2,YREC2,ZREC2). The origin of the Cartesian coordinate system (x,y,z) is at the top left corner of the grid. }
 \label{fig_grid}
 \end{figure}
-\subsubsection{Discretization}
+\subsection{Discretization}
 \begin{verbatim}
 "3-D Grid" : "comment",
 "NX" : "100",
@@ -582,7 +540,7 @@ max(DX,DY,DZ)\le\frac{v_{s,min}}{2 f_c n} \label{eq_dispersion}
 \end{equation}
 where $\frac{v_{s,min}}{2 f_c}$ is the smallest wavelength propagating through the model. $v_{s,min}$ denotes the minimum shear wave velocity in the model, and $f_c=1/TS$ is the center frequency of the source wavelet. The program assumes that the maximum frequency of the source signal is approximately two times the center frequency. The center frequency is approximately one over the duration time TS. The value of n for different FD operators is tabulated in table \ref{grid_disp.2}. The criterion \ref{eq_dispersion} is checked by the FD software. If the criterion is violated a warning message will be displayed in the SOFI3D output (default :  \lstinline{./in_and_out/sofi3D.jout}), section ``--- CHECK FOR GRID DISPERSION ---``. Please note, that the FD-code will NOT terminate due to grid dispersion, only a warning is given in the output file.
 
-\subsubsection{Order of the FD operator}
+\subsection{Order of the FD operator}
 
 \begin{verbatim}
 "FD order" : "comment",
@@ -595,7 +553,7 @@ The order of the used spatial FD operator is defined by the option FDORDER. The 
 The variable FDORDER\_TIME represents the used temporal FD order. FDORDER\_TIME=2 correspondents to the classical leapfrog scheme. Available higher order temporal FD operators are 3 and 4. Higher temporal orders will increase memory usage significant at least by a factor of 2.2. With the option FDCOEFF the user can switch between Taylor (FDCOEFF=1) and Holberg (FDCOEFF=2) FD coefficients. The chosen FD operator and FD coefficients have an influence on the numerical stability and grid dispersion (see section \ref{grid-dispersion}).
 
 
-\subsubsection{Time stepping}
+\subsection{Time stepping}
 \begin{verbatim}
 "Time Stepping" : "comment",
 "TIME" : "5.0",
@@ -612,7 +570,7 @@ The propagation time of seismic waves in the entire model is TIME. The time step
 The program checks these criteria for the entire model, outputs a warning message if these are violated , stops the program and will output the time step interval for a stable model run. 
 
 
-\subsubsection{Sources}
+\subsection{Sources}
 \label{Sources}
 \begin{verbatim}
 "SOURCE_SHAPE" : "1",
@@ -714,7 +672,7 @@ By choosing SOURCE\_TYPE=5 a custom directive force can be defined by the force 
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=9cm,angle=0]{eps/coordinate_system_customforcesource.pdf}
+\includegraphics[width=7cm,angle=0]{eps/coordinate_system_customforcesource.pdf}
 \end{center}
 \caption{Scheme for SOURCE\_TYPE=5. The parameter SOURCE\_ALPHA denotes the angle between the horizontal x- and z-coordinate, while SOURCE\_BETA denotes the angle between horizontal x- and vertical y-coordinate. As an example, parameters for SOURCE\_ALPHA and SOURCE\_BETA are given in order to gain force sources in single coordinate direction (as specified by SOURCE\_TYPE=2-4)}
 \label{coordinate_system_customforcesource}
@@ -750,7 +708,6 @@ When using the earthquake double couple source (SOURCE\_TYPE=6), the orientation
 \label{Fig:EQS}
 \end{figure}
 
-\clearpage
 
 
 The locations of multiple sources must be defined in an external ASCII file (SOURCE\_FILE) that has the following format:
@@ -775,7 +732,7 @@ from i=1 to i=NSRC with source locations and properties defined at line i+1 of t
 
 Instead of a single source or multiple sources specified in the SOURCE\_FILE, you can also specify to excite a plane wave parallel (or tilted by an angle PLANE\_WAVE\_ANGLE) to the top of the model. This plane wave is approximated by a plane of single sources at every grid point at a depth of PLANE\_WAVE\_DEPTH below. The center source frequency $f_c$ is specified by the inverse of the duration of the source signal TS. SOURCE\_SHAPE and SOURCE\_TYPE are taken from the parameters as described above. If you choose the plane wave option by specifying a PLANE\_WAVE\_DEPTH$>$0, the parameters SRCREC and SOURCE\_FILE will be ignored.
 
-\subsubsection{Generation of models}
+\subsection{Generation of models}
 \label{gen_of_mod}
 \begin{verbatim}
 "Model" : "comment",
@@ -784,7 +741,6 @@ Instead of a single source or multiple sources specified in the SOURCE\_FILE, yo
 "WRITE_MODELFILES" : "0",
 
 \end{verbatim}
-xasdfascvaqwerasxdfasdf
 READMOD : read model parameters from MFILE (yes=1) \\
 READMOD = 1 -- binary files need to be provided
 READMOD = 0 -- default parameters are generated by hh\_elastic on the fly, more models (hh\_elastic like files) can be found in src/hh\_old 
@@ -836,7 +792,7 @@ If READMOD=0 the model is generated ''on the fly'' by SOFI3D, i.e. it is generat
 
 Due to the fact that the variable MFILE is also used to write the model - expanded by the extension-string ''SOFI3D'' to file for verification (also see the output file, section ''MODEL CREATION AND OUTPUT''), you can specify, whether only the density model is written (WRITE\_MODELFILES=0) or the Vp-velocity, Vs-velocity, density as well as Qp-damping and Qs-damping models (WRITE\_MODELFILES=1). BE AWARE that the output of additional models besides density cause extra but temporal memory allocation of the size of the local subgrid times the number of models! To give an example, the file name of the density models written for verification looks like this  \lstinline{model/test.SOFI3D.rho}.
 
-\subsubsection{Q-approximation}
+\subsection{Q-approximation}
 \begin{verbatim}
 "Q-approximation" : "comment",
 "L" : "0",
@@ -860,7 +816,7 @@ If you set TAU=0.0, it is further possible to simulate any spatial distribution 
 Please note, that due to dispersive media properties the viscoelastic velocity model is only defined for the reference frequency only. In sofi3D, this reference frequency is specified as the center source frequency. At the exact reference frequency, elastic and viscoelastic models are equivalent. As a consequence, slightly smaller and larger minimum and maximum velocity values occur in the viscoelastic model.
 
 
-\subsubsection{Boundary conditions}
+\subsection{Boundary conditions}
 \label{abs}
 
 \begin{verbatim}
@@ -903,7 +859,7 @@ Two different absorbing boundary conditions are available: an unsplit
 convolutional perfectly matched layer (CPML) boundary condition (in the elastic
 case) and split perfectly matched layer (PML) boundary condition (in the
 acoustic case), respectively, and a conventional exponential wavefield damping
-condition (ABS) (see Sections~\ref{bound_cond} and~\ref{comp_EXP_PML}).
+condition (ABS) (see Section~\ref{bound_cond}).
 
 If \option{ABS\_TYPE=1}, the PML implementation is based on the papers
 \cite{collino:01,komatitsch:07,martin:09}. It should be
@@ -935,7 +891,7 @@ Instead, wavefield information is copied from left to right and vice versa,
 etc. The effect is that a wave which, for example, leaves the model at the left
 side, enters the model again at the right side.
 
-\subsubsection{Wavefield snapshots}
+\subsection{Wavefield snapshots}
 \begin{verbatim}
 "Snapshots" : "comment",
 "SNAP" : "4",
@@ -967,7 +923,7 @@ SNAP\_PLANE : output of snapshots as energy (without sign=1, with sign true for 
 
 If SNAP$>0$, wavefield information (particle velocities, pressure, or curl and divergence of particle velocities) for the entire model is saved on the hard disk (assure that enough free space is on disk!). Each PE is writing his sub-volume to disk. The filenames have the basic filename SNAP\_FILE plus an extension that indicates the PE number in the logical processor array (see Figure \ref{fig_grid}), i.e. the PE with number PEno writes his wavefield to SNAPFILE.PEno. The first snapshot is written at TSNAP1 seconds of seismic wave traveltime to the output files, the second at TSNAP1+TSNAPINC seconds etc. The last snapshots contains wavefield at TSNAP2 seconds. Note that the file sizes increase during the simulation. The snapshot files might become quite LARGE. It may therefore be necessary to reduce the amount of snapshot data by increasing IDX, IDY and IDZ and/or TSNAPINC. A detailed description how to visualize 3-D wavefields is given in section \ref{visual}. In order to merge the separate snapshot of each PE after the comletion of the wave modeling, you can use the program snapmerge (see Chapter \ref{installation}, section \textbf{src}). The bash command line to merge the snapshot files can look like this:  \lstinline{../bin/snapmerge ./in_and_out/sofi3D.json}.
 
-\subsubsection{Receivers}
+\subsection{Receivers}
 \label{Receivers}
 \begin{verbatim}
 "Receiver" : "comment",
@@ -993,7 +949,7 @@ NGEOPH : distance between two adjacent receivers (in gridpoints)\\
 
 
 If SEISMO$>$0, seismograms are saved on hard disk. If SEISMO equals 1 x-, y-, and z-component of particle velocity will be written according to parameters specified in Chapter \ref{seismograms}.
-If SEISMO==2 pressure (sum of the diagonal components of the stress tensor) recorded at the receiver locations (receivers are hydrophones!) is written. if SEISMO=3 the curl and divergence are saved. As described in section \ref{Sources} the seismogram output is physically correct for a seismic moment of 1 Nm (explosive source) and a force of 1 N (force source), respectively. A validation of SOFI3D and analytical data can be found in section \ref{analytic}.
+If SEISMO==2 pressure (sum of the diagonal components of the stress tensor) recorded at the receiver locations (receivers are hydrophones!) is written. if SEISMO=3 the curl and divergence are saved. As described in section \ref{Sources} the seismogram output is physically correct for a seismic moment of 1 Nm (explosive source) and a force of 1 N (force source), respectively.
 
 The curl and divergence of the particle velocities are useful to separate between P- and S-waves in the snapshots of the wavefield. SOFI3D calculates the divergence and the magnitude of the curl of the particle velocity field \cite{dougherty:88}. The motivation for this is as follows. According to Morse and Feshbach \shortcite{morse:53} the energy of P- and S-wave particle velocities is, respectively,
 \begin{equation}
@@ -1026,7 +982,7 @@ to output seismograms for arbitrary receiver locations since this would require 
 
 In our example, we specify 100 receiver location. Due to the small size of the model, most of the specified receiver positions will be located inside this absorbing boundary (if ABS=2, see Chapter \ref{abs}). A corresponding warning message will appear. If you choose to read the receiver location from REC\_FILE  \lstinline{./receiver/receiver.dat} (READREC=1), only 10 receivers locations are considered. The list of receivers specified in file  \lstinline{./receiver/receiver.dat} is equivalent to the parameters in the input file with only a larger distance between adjacent receivers (NGEOPH = 10.)
 
-\subsubsection{Receiver array}
+\subsection{Receiver array}
 \begin{verbatim}
 "Receiver array" : "comment",
 
@@ -1039,7 +995,7 @@ In our example, we specify 100 receiver location. Due to the small size of the m
 
 A horizontal 2-D array of receivers is simulated if REC\_ARRAY$>$0. This option specifies the number of receiver planes horizontal to the x-z-plane (surface of the model). The first plane is located in depth REC\_ARRAY\_DEPTH meter. The second plane in REC\_ARRAY\_DEPTH + REC\_ARRAY\_DIST, the last in REC\_ARRAY\_DEPTH + (REC\_ARRAY-1) $\times$ REC\_ARRAY\_DIST. The distance between receivers within each plane is DRX and DRZ grid points (DRX*DX and DRZ*DZ meters).
 
-\subsubsection{Seismograms}
+\subsection{Seismograms}
 \label{seismograms}
 \begin{verbatim}
 "Seismograms" : "comment",
@@ -1079,7 +1035,7 @@ Each PE internally stores seismograms which are recorded in his portion of the g
 %\emph{cat SEIS\_FILE\_VR.* $>$ SEIS\_FILE\_VR} 
 %The shell script  \lstinline{sucat.sh} merges all seismograms at the same time.
 
-\subsubsection{Monitoring the simulation}
+\subsection{Monitoring the simulation}
 \begin{verbatim}
 "Monitoring the simulation" : "comment",
 "LOG_FILE" : "log/test.log",
@@ -1098,11 +1054,11 @@ OUT\_TIMESTEP\_INFO : every OUTNTIMESTEPINFOth time step information on update a
 
 
 SOFI3D can output a lot of useful and possibly not useful information about the modeling parameters and the status of the modeling process etc. The major part of this information is output by PE 0.
-If LOG=1, PE 0 writes this info to stdout, i.e. on the screen of your shell. This is generally recommended  to monitor the modeling process. You may want to save this screen info to a output file by adding  \lstinline{> sofi3D.jout} or  \lstinline{|tee sofi3D.jout}. to your starting command. If LOG=1 all other processes with PE number (PEno) greater than zero will write their information to LOG\_FILE.PEno. If you specify LOG=2 also PE 0 will output his information to LOG\_FILE.0. As a consequence only little information is written directly to the screen of your shell. On supercomputers where you submit modeling jobs to a queuing system as batch jobs LOG=2 may be advantageous. In case of LOG=2, you may still watch the simulation by checking the content of LOG\_FILE.0 for example by using the Unix commands more or tail. After finishing the program the timing information is written to the ASCII file log/test.log.0.timings. This feature is useful to benchmark your local PC cluster or supercomputer (see section \ref{benchmark_sofi3D}). If LOG=0 no output from node 0 will be written, neither to stdout nor to an LOG file. There will be also no output of timing information to the ASCII file log/test.log.0.timings. 
+If LOG=1, PE 0 writes this info to stdout, i.e. on the screen of your shell. This is generally recommended  to monitor the modeling process. You may want to save this screen info to a output file by adding  \lstinline{> sofi3D.jout} or  \lstinline{|tee sofi3D.jout}. to your starting command. If LOG=1 all other processes with PE number (PEno) greater than zero will write their information to LOG\_FILE.PEno. If you specify LOG=2 also PE 0 will output his information to LOG\_FILE.0. As a consequence only little information is written directly to the screen of your shell. On supercomputers where you submit modeling jobs to a queuing system as batch jobs LOG=2 may be advantageous. In case of LOG=2, you may still watch the simulation by checking the content of LOG\_FILE.0 for example by using the Unix commands more or tail. After finishing the program the timing information is written to the ASCII file log/test.log.0.timings. If LOG=0 no output from node 0 will be written, neither to stdout nor to an LOG file. There will be also no output of timing information to the ASCII file log/test.log.0.timings. 
 
 By using the switch OUT\_SOURCE\_WAVELET you can decide to output the used source wavelet (yes=1/no=0). Every PE that includes a source locatation will than outputs the source signal time series as SU output. Due to the fact that the output of information on the update and exchange via fprint can be both slowing down the computation for very small models and producing large output files, you can choose by OUT\_TIMESTEP\_INFO after how many time steps such intermediate information are given.
 
-\subsubsection{Checkpointing}
+\subsection{Checkpointing}
 \begin{verbatim}
 "Checkpoints" : "comment",
 "CHECKPTREAD" : "0",
@@ -1222,7 +1178,9 @@ or
 
 The program snapmerge that is used to merge the snapshots (see below) can be compiled with ''make snapmerge''. Since this is not a MPI program (no MPI functions are called) the MPI libraries are not required and any standard compiler (like gcc and cc) can be used to compile this program. The executables sofi3D and snapmerge are located the directory bin.
 
-\subsection{Running the program}\label{compexec1} 
+\subsection{Running the program}\label{compexec1}
+
+\section{Visualization with MATALB} \label{visual}
 
 
 
