@@ -119,7 +119,7 @@ SOFI3D_SRC = \
 		$(SOFI3D_UTIL) \
 		merge_source_field.c \
 		write_source_field.c \
-		madinput.c \
+		madinput.c 
 
 SOFI3D_SRC_BENCH = \
 		sofi3D.c \
