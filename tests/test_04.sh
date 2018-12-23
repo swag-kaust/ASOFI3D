@@ -10,8 +10,7 @@ TEST_ID="TEST_04"
 
 setup
 
-# Preserve old model.
-mv $MODEL ${MODEL}.bak
+backup_default_model
 
 # Copy test model.
 cp "${TEST_PATH}/model_elastic.c"    src/
@@ -27,9 +26,7 @@ log "Running solver. Output is captured to tmp/ASOFI3D.log"
 task_id=$!
 animate_progress $task_id "Running solver"
 
-wait $task_id
 code=$?
-
 if [ "$code" -ne "0" ]; then
     error "Running ASOFI3D failed"
 fi

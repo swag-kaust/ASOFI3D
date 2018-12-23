@@ -16,8 +16,7 @@ TEST_ID="TEST_06"
 
 setup
 
-# Preserve old model.
-mv $MODEL ${MODEL}.bak
+backup_default_model
 
 # Copy test model.
 cp "${TEST_PATH}/model_elastic.c"            src/

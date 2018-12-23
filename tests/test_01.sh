@@ -11,8 +11,7 @@ TEST_ID="TEST_01"
 # Setup function prepares environment for the test (creates directories).
 setup
 
-# Preserve old model.
-mv $MODEL ${MODEL}.bak.${TEST_ID}
+backup_default_model
 
 # Copy test model.
 cp "${TEST_PATH}/src/model_elastic.c"       src/

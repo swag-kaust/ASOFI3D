@@ -32,7 +32,7 @@
 
 "Time Stepping" : "comment",
 			"TIME" : "1.0",
-			"DT" : "1e-3",
+			"DT" : "2e-3",
 
 "Source" : "comment",
 

@@ -16,6 +16,12 @@ setup() {
     mkdir tmp/su
 }
 
+backup_default_model() {
+    if [ -n "${MODEL}" ]; then
+        mv "${MODEL}" "${MODEL}.bak.${TEST_ID}"
+    fi
+}
+
 error() {
     local prefix
     if [ -n "$TEST_ID" ]; then
