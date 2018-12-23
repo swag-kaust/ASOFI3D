@@ -14,6 +14,40 @@
 
 \usepackage{fancyvrb}
 
+\makeatletter
+\newread\pin@file
+\newcounter{pinlineno}
+\newcommand\pin@accu{}
+\newcommand\pin@ext{pintmp}
+% inputs #3, selecting only lines #1 to #2 (inclusive)
+\newcommand*\partialinput [3] {%
+	\IfFileExists{#3}{%
+		\openin\pin@file #3
+		% skip lines 1 to #1 (exclusive)
+		\setcounter{pinlineno}{1}
+		\@whilenum\value{pinlineno}<#1 \do{%
+			\read\pin@file to\pin@line
+			\stepcounter{pinlineno}%
+		}
+		% prepare reading lines #1 to #2 inclusive
+		\addtocounter{pinlineno}{-1}
+		\let\pin@accu\empty
+		\begingroup
+		\endlinechar\newlinechar
+		\@whilenum\value{pinlineno}<#2 \do{%
+			% use safe catcodes provided by e-TeX's \readline
+			\readline\pin@file to\pin@line
+			\edef\pin@accu{\pin@accu\pin@line}%
+			\stepcounter{pinlineno}%
+		}
+		\closein\pin@file
+		\expandafter\endgroup
+		\scantokens\expandafter{\pin@accu}%
+	}{%
+		\errmessage{File `#3' doesn't exist!}%
+	}%
+}
+
 \newenvironment{markdown}%
 {\VerbatimEnvironment\begin{VerbatimOut}{tmp.markdown}}%
 	{\end{VerbatimOut}%
@@ -72,12 +106,16 @@
 \newcommand{\option}[1]{\texttt{#1}}
 
 
-\title{ASOFI anisotropic elastic seismic modeling with finite differences (anisotropic SOFI3D)}
+\title{ASOFI anisotropic elastic seismic modeling with finite differences}
 \author{Vladimir Kazei \& Dmitry Kabanov}
 
 \begin{document}
 	
 \maketitle
+ASOFI3D stands for Anisotropic Seismic mOdeling with FInite differences.
+This code is a modification of
+\href{https://git.scc.kit.edu/GPIAG-Software/SOFI3D/wikis/home}{SOFI3D}
+to accomodate orthorhombic anisotropy
 
 \tableofcontents
 
@@ -139,7 +177,7 @@ xmovie & Console based movie program, can & usually included in Linux distributi
 %\begin{markdown}
 %	\input{../../README.md}
 %\end{markdown}
-
+\partialinput{15}{95}{README}
 \input{README}
 
 You may also use the shell script  \lstinline{startSOFI3D.sh} located in  \lstinline{sofi3D/par} that also writes the screen output to the file  \lstinline{sofi3D/par/in_and_out/sofi3D.jout}.
@@ -453,8 +491,8 @@ where $V_{pml}$ denotes the typical P-wave velocity of the medium in the absorbi
 
 \section{Modeling Parameters}
 \label{modelgeom}
-The geometry of the FD grid and all parameters for the wave field simulation have to be defined in a parameter file (which we name in this case { \lstinline{sofi3D/par/in_and_out/sofi3D.json}}). In the following we will first list the full input file and later explain every input parameter section in detail:
-\input{sofi3D.json}
+The geometry of the FD grid and all parameters for the wave field simulation have to be defined in a parameter file (which we name in this case { \lstinline{sofi3D/par/in_and_out/asofi.json}}). In the following we will first list the full input file and later explain every input parameter section in detail:
+\VerbatimInput{../../par/in_and_out/asofi.json}
 All lines in the parameter file are formated according to the JSON standard (\url{http://www.json.org}) and organized as follows: 
 
 \begin{verbatim}
