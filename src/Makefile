@@ -120,7 +120,6 @@ SOFI3D_SRC = \
 		merge_source_field.c \
 		write_source_field.c \
 		madinput.c \
-		mad_elastic.c
 
 SOFI3D_SRC_BENCH = \
 		sofi3D.c \
