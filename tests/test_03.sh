@@ -4,9 +4,9 @@
 # while the medium is isotropic.
 . tests/functions.sh
 
-MODEL="src/model_elastic.c"
-TEST_PATH="tests/fixtures/test_03"
-TEST_ID="TEST_03"
+readonly MODEL="src/model_elastic.c"
+readonly TEST_PATH="tests/fixtures/test_03"
+readonly TEST_ID="TEST_03"
 
 setup
 

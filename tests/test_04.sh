@@ -4,9 +4,9 @@
 # while the medium is anisotropic.
 . tests/functions.sh
 
-MODEL="src/model_elastic.c"
-TEST_PATH="tests/fixtures/test_04"
-TEST_ID="TEST_04"
+readonly MODEL="src/model_elastic.c"
+readonly TEST_PATH="tests/fixtures/test_04"
+readonly TEST_ID="TEST_04"
 
 setup
 

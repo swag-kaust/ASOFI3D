@@ -4,9 +4,9 @@
 # of the ASOFI3D code.
 . tests/functions.sh
 
-MODEL="src/model_elastic.c"
-TEST_PATH="tests/fixtures/test_01"
-TEST_ID="TEST_01"
+readonly MODEL="src/model_elastic.c"
+readonly TEST_PATH="tests/fixtures/test_01"
+readonly TEST_ID="TEST_01"
 
 # Setup function prepares environment for the test (creates directories).
 setup

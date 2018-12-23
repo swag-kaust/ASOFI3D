@@ -4,9 +4,9 @@
 # from the benchmark `fullspace`.
 . tests/functions.sh
 
-MODEL="src/model_elastic.c"
-TEST_PATH="tests/fixtures/test_02"
-TEST_ID="TEST_02"
+readonly MODEL="src/model_elastic.c"
+readonly TEST_PATH="tests/fixtures/test_02"
+readonly TEST_ID="TEST_02"
 
 # Setup function prepares environment for the test (creates directories).
 setup

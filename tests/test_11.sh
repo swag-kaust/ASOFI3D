@@ -5,9 +5,9 @@
 # Model is one-layer orthorhombic.
 . tests/functions.sh
 
-MODEL="src/model_elastic.c"
-TEST_PATH="tests/fixtures/test_11"
-TEST_ID="TEST_11"
+readonly MODEL="src/model_elastic.c"
+readonly TEST_PATH="tests/fixtures/test_11"
+readonly TEST_ID="TEST_11"
 
 setup
 

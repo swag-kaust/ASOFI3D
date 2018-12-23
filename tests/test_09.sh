@@ -9,8 +9,8 @@
 # 3. Compare that the seismograms are close to each other.
 . tests/functions.sh
 
-TEST_PATH="tests/fixtures/test_09"
-TEST_ID="TEST_09"
+readonly TEST_PATH="tests/fixtures/test_09"
+readonly TEST_ID="TEST_09"
 
 setup
 

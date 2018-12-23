@@ -5,9 +5,9 @@
 # Model is one-layer isotropic with free surface boundary conditions.
 . tests/functions.sh
 
-MODEL="src/model_elastic.c"
-TEST_PATH="tests/fixtures/test_10"
-TEST_ID="TEST_10"
+readonly MODEL="src/model_elastic.c"
+readonly TEST_PATH="tests/fixtures/test_10"
+readonly TEST_ID="TEST_10"
 
 # Setup function prepares environment for the test (creates directories).
 setup

@@ -10,9 +10,9 @@
 # We consider anisotropic half-space (two-layer) medium.
 . tests/functions.sh
 
-MODEL="src/model_elastic.c"
-TEST_PATH="tests/fixtures/test_08"
-TEST_ID="TEST_08"
+readonly MODEL="src/model_elastic.c"
+readonly TEST_PATH="tests/fixtures/test_08"
+readonly TEST_ID="TEST_08"
 
 setup
 

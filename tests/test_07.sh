@@ -10,9 +10,9 @@
 # We consider isotropic half-space (two-layer) medium.
 . tests/functions.sh
 
-MODEL="src/model_elastic.c"
-TEST_PATH="tests/fixtures/test_07"
-TEST_ID="TEST_07"
+readonly MODEL="src/model_elastic.c"
+readonly TEST_PATH="tests/fixtures/test_07"
+readonly TEST_ID="TEST_07"
 
 setup
 

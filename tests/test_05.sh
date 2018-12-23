@@ -10,9 +10,9 @@
 # We consider isotropic fullspace (one-layer) medium.
 . tests/functions.sh
 
-MODEL="src/model_elastic.c"
-TEST_PATH="tests/fixtures/test_05"
-TEST_ID="TEST_05"
+readonly MODEL="src/model_elastic.c"
+readonly TEST_PATH="tests/fixtures/test_05"
+readonly TEST_ID="TEST_05"
 
 setup
 

@@ -14,8 +14,8 @@
 # See also http://sepwww.stanford.edu/sep/prof/pvi/conj/paper_html/node9.html
 . tests/functions.sh
 
-TEST_PATH="tests/fixtures/test_14"
-TEST_ID="TEST_14"
+readonly TEST_PATH="tests/fixtures/test_14"
+readonly TEST_ID="TEST_14"
 
 setup
 
