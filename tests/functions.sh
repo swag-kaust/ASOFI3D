@@ -131,9 +131,16 @@ on_exit() {
     # Cleanup when script exits (due to error, successful exit, or CTRL-C).
 
     # Restore original $MODEL file.
-    if [ -n "$MODEL" ]; then
-        bak_file=${MODEL}.bak.${TEST_ID}
-        [ -e "$bak_file" ] && mv "$bak_file" "$MODEL"
+    if [ -n "${MODEL}" ]; then
+        bak_file="${MODEL}.bak.${TEST_ID}"
+        if [ -e "$bak_file" ]; then
+            # We rename the model file to its default name and touch it
+            # to make sure that the solver is recompiled for the next test.
+            # Otherwise, *.o file can be newer than the *.c file
+            # and the next test will be executed with the incorrect model.
+            mv "${bak_file}" "${MODEL}"
+            touch "${MODEL}"
+        fi
     fi
 
     # Kill child processes (recall that the solver runs in the background).
