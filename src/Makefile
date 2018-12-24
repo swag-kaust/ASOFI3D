@@ -23,8 +23,14 @@ MODEL_SRC_BENCH = benchmod.c
 # Do not detect code prerequisites while executing commands
 # `make clean` or `make clobber`.
 ifeq "$(filter clean clobber, $(MAKECMDGOALS))" ""
-	-include config-auto.mk
-	-include config-manual.mk
+    -include config-auto.mk
+    -include config-manual.mk
+endif
+
+mpicheck = $(shell $(CC) testmpi.c -o /dev/null >/dev/null 2>&1 && echo "yes")
+
+ifneq "$(mpicheck)" "yes"
+    $(error Compiler $(CC) cannot compile test MPI program. Cannot proceed)
 endif
 
 SILENT ?= @
