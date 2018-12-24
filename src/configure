@@ -1,17 +1,6 @@
 #!/bin/sh
 # This scripts outputs everything to stdout.
 # It is assumed that the caller redirects stdout appropriately.
-_TEST_MPI="$(cat <<EOF
-#include <mpi.h>
-int main(int argc, char *argv[])
-{
-    MPI_Init(&argc, &argv);
-    MPI_Finalize();
-}
-EOF
-)"
-echo "$_TEST_MPI" > testmpi.c
-
 try_execute () {
     # Test if program $1 exists and than execute it with the following args.
     command -V "$1" > /dev/null 2>&1 && "$@" > /dev/null 2>&1
@@ -46,7 +35,6 @@ err() {
 
 cleanup () {
     # Remove temporary files.
-    rm -f testmpi.c
     rm -f testmpi
 }
 
