@@ -1,4 +1,6 @@
 #!/bin/sh
+# This scripts outputs everything to stdout.
+# It is assumed that the caller redirects stdout appropriately.
 _TEST_MPI="$(cat <<EOF
 #include <mpi.h>
 int main(int argc, char *argv[])
@@ -43,31 +45,37 @@ err() {
 }
 
 cleanup () {
-    # Remove temporary file.
-    rm testmpi.c
+    # Remove temporary files.
+    rm -f testmpi.c
+    rm -f testmpi
 }
 
 trap cleanup INT TERM EXIT
+
+echo "# Automatic configuration file for ASOFI3D"
+echo "# Do not modify! This file was created automatically."
+
 
 #------------------------------------------------------------------------------
 # Determine correct MPI wrapper for the C compiler.
 
 # Check if CC is already defined, then assume that the user knows better.
-if [ -n "$CC" ] && try_execute "$CC" -c testmpi.c; then
+if [ -n "$CC" ] && try_execute "$CC" testmpi.c -o testmpi; then
     CC="$CC"
 # Check if cc is an MPI compiler itself, which is the case, e. g., on Cray. 
-elif try_execute cc -c testmpi.c; then
+elif try_execute cc testmpi.c -o testmpi; then
     CC=cc
 # Check for Intel MPI wrapper for Intel C compiler (mpiicc).
-elif try_execute mpiicc -c testmpi.c; then
+elif try_execute mpiicc testmpi.c -o testmpi; then
     CC=mpiicc
 # Check for mpicc wrapper: it is available in several MPI libraries.
-elif try_execute mpicc -c testmpi.c; then
+elif try_execute mpicc testmpi.c -o testmpi; then
     CC=mpicc
 fi
 
 if [ -z "$CC" ]; then
-    echo >&2 "ERROR: could not find MPI wrapper for the C compiler."
+	echo "# ERROR: Cannot compile MPI test program"
+    echo "_config_error=1"
     exit 1
 fi
 
@@ -81,8 +89,7 @@ elif $CC -v 2>&1 | grep -q ^gcc; then
 elif $CC -v 2>&1 | grep -q craycc; then
     C_COMPILER=craycc
 else
-    echo 2>&1 'WARNING: unknown C compiler.'
-    exit 1
+    echo '# WARNING: unknown C compiler.'
 fi
 
 unset cflags_common cflags_opt cflags_debug
@@ -154,8 +161,6 @@ CC="$(trim_whitespace "$CC")"
 CFLAGS="$(trim_whitespace "$CFLAGS")"
 LDLIBS="$(trim_whitespace "$LDLIBS")"
 
-echo "# Automatic configuration file for ASOFI3D"
-echo "# Do not modify! This file was created automatically."
 echo "# Detected C compiler: $C_COMPILER"
 echo "# CC: MPI wrapper over C compiler"
 echo "# CFLAGS: flags for C compiler"
