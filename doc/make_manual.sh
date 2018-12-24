@@ -25,6 +25,8 @@ name=asofi3d_user_guide
 fullname=${name}.pdf
 cd tex
 
+./parseREADME2tex.sh
+
 clean
 
 pdflatex $name
