@@ -104,6 +104,9 @@ void writepar(FILE *fp, int ns){
 
 	fprintf(fp," Default type of source:");
 	switch (SOURCE_TYPE){
+    case 0 :
+		fprintf(fp," Random source field\n");
+		break;
 	case 1 :
 		fprintf(fp," explosive point source (concentrated at a single gridpoint)\n");
 		break;
@@ -128,9 +131,6 @@ void writepar(FILE *fp, int ns){
 		fprintf(fp," Dip angle of fault plane (DIP): %f\n", DIP);
 		fprintf(fp," Rake angle of slip vector (RAKE): %f\n", RAKE);
 		
-		break;
-    case 7 :
-		fprintf(fp," Random source field\n");
 		break;
 	default :
 		fprintf(fp," WARNING: Default type of source ('%d') not available -> changed to explosive! ", SOURCE_TYPE);
