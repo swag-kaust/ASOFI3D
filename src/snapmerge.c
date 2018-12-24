@@ -25,9 +25,10 @@ printf(" Syntax example if excecuted from ./par directory: ../bin/snapmerge in_a
 static int snapmerge(int argc, char **argv) {
 int nsnap;
 char *fileinp="";
-//FILE *FP;
+extern FILE *FP;
 extern float TSNAP1;
 
+FILE *fp_param;
 
 _usage();
 if (argc != 2) {
@@ -39,19 +40,20 @@ fileinp = argv[1];
 printf("\n");
 printf("Input file for the snapmerge from command line: %s\n", fileinp);
 
-FP=fopen(fileinp, "r");
-if (FP != NULL) {
-    printf("Opening input file was successful.\n\n");
-    fclose(FP);
+fp_param=fopen(fileinp, "r");
+if (fp_param != NULL) {
+    printf("Opening input file was successful.\n");
+    fclose(fp_param);
 } else {
     err("Opening input file failed.");
 }
 
+FP = stdout;
+
 /* read parameters from parameter-file */
 
 //read json formated input file
-read_par_json(stdout, fileinp);
-
+read_par_json(FP, fileinp);
 
 NXG=NX;
 NYG=NY;	
@@ -61,11 +63,9 @@ NY = NYG/NPROCY;
 NZ = NZG/NPROCZ;
 
 nsnap=1+floor((TSNAP2-TSNAP1)/TSNAPINC);
-fprintf(FP,"nsnap = %d\n", nsnap);
-printf("Number of snapshots to be saved: nsnap = %d\n", nsnap);
+fprintf(FP, "Number of snapshots to be saved: nsnap = %d\n", nsnap);
 
 /*printf("NX = %i, NY = %d, NZ = %d",NX,NY,NZ);*/
-FP=stdout;
 
 	switch(SNAP){
 	case 1 : /*particle velocity*/
