@@ -44,6 +44,7 @@ fp_param=fopen(fileinp, "r");
 if (fp_param != NULL) {
     printf("Opening input file was successful.\n");
     fclose(fp_param);
+	fp_param = NULL;
 } else {
     err("Opening input file failed.");
 }
