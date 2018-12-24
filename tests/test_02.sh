@@ -20,16 +20,7 @@ cp "${TEST_PATH}/sources/fullspace_sources.dat"    tmp/sources/
 
 compile_code
 
-# Run code.
-log "Running solver. Output is captured to tmp/ASOFI3D.log"
-./run_ASOFI3D.sh 16 tmp/ > tmp/ASOFI3D.log &
-task_id=$!
-animate_progress $task_id "Running solver"
-
-code=$?
-if [ "$code" -ne "0" ]; then
-    error "Running ASOFI3D solver failed"
-fi
+run_solver np=16 dir=tmp log=ASOFI3D.log
 
 # Convert seismograms in SEG-Y format to the Madagascar RSF format.
 convert_segy_to_rsf tmp/su/fullspace_vx.sgy

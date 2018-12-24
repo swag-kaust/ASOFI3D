@@ -35,15 +35,7 @@ cd ..
 
 # Run code.
 for i in 1 2; do
-    log "Running solver. Output is captured to tmp/ASOFI3D_$i.log"
-    ./run_ASOFI3D.sh 16 tmp/ > tmp/ASOFI3D_$i.log &
-    task_id=$!
-    animate_progress $task_id "Running solver"
-
-    code=$?
-    if [ "$code" -ne "0" ]; then
-        error "Running ASOFI3D failed"
-    fi
+    run_solver np=16 dir=tmp log="ASOFI3D_$i.log"
     mv tmp/snap tmp/snap_$i
     mv tmp/source_field tmp/source_field_$i
 

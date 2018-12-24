@@ -68,6 +68,43 @@ compile_code () {
     cd ..
 }
 
+run_solver () {
+    # Run solver with given parameters animating in progress.
+    # USAGE:
+    #     run_solver np=<nmpiprocs> dir=<dirname> log=<logname>
+    # where
+    #     nmpiprocs    Number of MPI processes
+    #     dirname      Directory name
+    #     logname      Log filename relative to <dirname>
+    #
+    # Example:
+    #     $ run_solver np=4 dir=par log=solver.log
+    local nmpiprocs
+    local dirname
+    local logname
+    for i in "$@"; do
+    case $i in
+        np=*)
+            nmpiprocs="${i#*=}"
+            ;;
+        dir=*)
+            dirname="${i#*=}"
+            ;;
+        log=*)
+            logname="${i#*=}"
+            ;;
+    esac
+    done
+
+    # Run code.
+    log "Running solver. Output is captured to ${dirname}/${logname}"
+    ./run_ASOFI3D.sh "${nmpiprocs}" "${dirname}" > "${dirname}/${logname}" &
+    animate_progress $! "Running solver..."
+    if [ $? -ne 0 ]; then
+        error "Running solver failed"
+    fi
+}
+
 animate_progress () {
     # Animate long-running tasks visually for usability.
     # USAGE: animate_progress task_id message

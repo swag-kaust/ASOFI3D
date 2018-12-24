@@ -20,16 +20,7 @@ cp "${TEST_PATH}/receiver.dat"       tmp/receiver/
 
 compile_code
 
-# Run code.
-log "Running solver. Output is captured to tmp/ASOFI3D.log"
-./run_ASOFI3D.sh 16 tmp/ > tmp/ASOFI3D.log &
-task_id=$!
-animate_progress $task_id "Running solver"
-
-code=$?
-if [ "$code" -ne "0" ]; then
-    error "Running ASOFI3D failed"
-fi
+run_solver np=16 dir=tmp log=ASOFI3D.log
 
 # Convert seismograms in SEG-Y format to the Madagascar RSF format.
 sfsegyread tape=tmp/su/test_p.sgy.shot1 \

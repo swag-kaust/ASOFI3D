@@ -26,31 +26,13 @@ cp "${TEST_PATH}/receiver_force_in_x.dat"    tmp/receiver/
 
 compile_code
 
-# Run code.
-log "Running solver. Output is captured to tmp/ASOFI3D.log"
-./run_ASOFI3D.sh 16 tmp/ > tmp/ASOFI3D.log &
-task_id=$!
-animate_progress $task_id "Running solver"
-
-code=$?
-if [ "$code" -ne "0" ]; then
-    error "Running ASOFI3D failed" > /dev/stderr
-fi
+run_solver np=16 dir=tmp log=ASOFI3D.log
 
 cp "${TEST_PATH}/sofi3D_force_in_y.json"      tmp/in_and_out/sofi3D.json
 cp "${TEST_PATH}/source_force_in_y.dat"       tmp/sources/
 cp "${TEST_PATH}/receiver_force_in_y.dat"     tmp/receiver/
 
-# Run code.
-log "Running solver. Output is captured to tmp/ASOFI3D.log"
-./run_ASOFI3D.sh 16 tmp/ > tmp/ASOFI3D.log &
-task_id=$!
-animate_progress $task_id "${TEST_ID}: Running solver"
-
-code=$?
-if [ "$code" -ne "0" ]; then
-    log "Running ASOFI3D failed"
-fi
+run_solver np=16 dir=tmp log=ASOFI3D.log
 
 # Convert seismograms in SEG-Y format to the Madagascar RSF format.
 convert_segy_to_rsf tmp/su/force_in_x_vy.sgy
