@@ -121,6 +121,7 @@ SOFI3D_SRC = \
 		exchange_s.c \
 		psource.c \
 		readmod.c \
+		source_moment_tensor.c \
 		source_random.c \
 		$(MODEL_SRC_E) \
 		$(MODEL_SRC_V) \
