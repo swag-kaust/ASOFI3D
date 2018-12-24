@@ -115,35 +115,31 @@ animate_progress () {
     #
     # Examples:
     #     $ animate_progress $! "Task is running"
+    local task_id
+    local message
     task_id="$1"
     message="$2"
     if [ -n "$TEST_ID" ]
     then
         message="[$TEST_ID] $message"
     fi
-    pause=0.2
+    local pause=0.2
 
     if [ "${CI}" ]
     then
         wait "$task_id"
     else
+        local i
+        local s
+        i=0
         while kill -0 "${task_id}" > /dev/null 2>&1
         do
-            printf "\r"
-            printf "%s |" "${message}"
-            sleep $pause
-            printf "\r"
-            printf "%s /" "${message}"
-            sleep $pause
-            printf "\r"
-            printf "%s -" "${message}"
-            sleep $pause
-            printf "\r"
-            printf "%s \\" "${message}"
+            i=$(( (i+1) %4 ))
+            case $i in 0) s="-";; 1) s="\\";; 2) s="|";; 3) s="/";; esac
+            printf "\r%s %s" "${message}" "$s"
             sleep $pause
         done
-        printf "\r"
-        printf "%s\n" "${message}"
+        printf "\r%s\n" "${message}"
     fi
 }
 
