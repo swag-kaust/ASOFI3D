@@ -82,6 +82,7 @@ run_solver () {
     local nmpiprocs
     local dirname
     local logname
+    local i
     for i in "$@"; do
     case $i in
         np=*)
