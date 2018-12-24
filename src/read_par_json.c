@@ -4,6 +4,7 @@
  *
  ------------------------------------------------------------------------*/
 
+#include "enum.h"
 #include "fd.h"
 
 void read_par_json(FILE *fp, char *fileinp)
@@ -512,14 +513,14 @@ void read_par_json(FILE *fp, char *fileinp)
 
     if (get_int_from_objectlist("SOURCE_TYPE", number_readobjects, &SOURCE_TYPE, varname_list, value_list))
         err("Variable SOURCE_TYPE could not be retrieved from the json input file!");
-    if (SOURCE_TYPE == 5)
+    if (SOURCE_TYPE == SOURCE_TYPE_CUSTOM)
     {
         if (get_float_from_objectlist("SOURCE_ALPHA", number_readobjects, &SOURCE_ALPHA, varname_list, value_list))
             err("Variable SOURCE_ALPHA could not be retrieved from the json input file!");
         if (get_float_from_objectlist("SOURCE_BETA", number_readobjects, &SOURCE_BETA, varname_list, value_list))
             err("Variable SOURCE_BETA could not be retrieved from the json input file!");
     }
-    if (SOURCE_TYPE == 6)
+    if (SOURCE_TYPE == SOURCE_TYPE_EARTHQUAKE)
     {
         if (get_float_from_objectlist("AMON", number_readobjects, &AMON, varname_list, value_list))
             err("Variable AMON could not be retrieved from the json input file!");
