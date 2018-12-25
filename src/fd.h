@@ -26,8 +26,8 @@
 
 // Check that C compiler conforms at least to the C11 standard
 // and define macro `ASOFI_STDC11_AT_LEAST` that signals about that.
-#if defined(__STDC__VERSION__)
-    #if (__STDC__VERSION >= 201112L)
+#if defined(__STDC_VERSION__)
+    #if (__STDC_VERSION__ >= 201112L)
         #define ASOFI_STDC11_AT_LEAST
     #endif
 #endif
