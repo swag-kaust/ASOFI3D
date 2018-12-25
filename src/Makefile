@@ -27,10 +27,12 @@ ifeq "$(filter clean clobber, $(MAKECMDGOALS))" ""
     -include config-manual.mk
 endif
 
-mpicheck = $(shell $(CC) testmpi.c -o /dev/null >/dev/null 2>&1 && echo "yes")
+ifneq "$(wildcard config.auto.mk)" ""
+    mpicheck = $(shell $(CC) testmpi.c -o /dev/null >/dev/null 2>&1 && echo 1)
 
-ifneq "$(mpicheck)" "yes"
-    $(error Compiler $(CC) cannot compile test MPI program. Cannot proceed)
+    ifneq "$(mpicheck)" "1"
+        $(error Compiler $(CC) cannot compile test MPI program. Cannot proceed)
+    endif
 endif
 
 SILENT ?= @
@@ -200,8 +202,10 @@ SNAPMERGE_OBJ = $(SNAPMERGE_SCR:%.c=%.o)
 PARTMODEL_OBJ = $(PARTMODEL_SCR:%.c=%.o)
 SEISMERGE_OBJ = $(SEISMERGE_SCR:%.c=%.o)
 
+program_list = sofi3D seismerge snapmerge part_model sofi3D_acoustic 
+
 .PHONY: all
-all: clean sofi3D seismerge snapmerge part_model sofi3D_acoustic 
+all: clean print-config-auto.mk $(program_list)
 
 .PHONY: clean
 clean:
@@ -243,10 +247,12 @@ clobber: clean
 
 config-auto.mk: configure
 	@./$< > $@
-	@echo "*** Configuration file: begin"
-	@cat $@
-	@echo "*** Configuration file: end"
 
+.PHONY : print-config-auto.mk
+print-config-auto.mk : config-auto.mk
+	@echo "*** config-auto.mk: begin"
+	@cat $<
+	@echo "*** config-auto.mk: end"
 
 .SUFFIXES: .c .o
 .c.o:
