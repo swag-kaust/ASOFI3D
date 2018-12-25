@@ -685,6 +685,23 @@ void read_par_json(FILE *fp, char *fileinp)
         }
     }
 
+    // Check that the grid size is large enough for the given width
+    // of the boundary frame.
+    {
+        if (NX < 3*FW) {
+            err("Grid resolution along X-axis NX=%d is smaller than "
+                "three boundary widths (FW=%d)", NX, FW);
+        }
+        if (NY < 3*FW) {
+            err("Grid resolution along Y-axis NY=%d is smaller than "
+                "three boundary widths (FW=%d)", NY, FW);
+        }
+        if (NZ < 3*FW) {
+            err("Grid resolution along Z-axis NZ=%d is smaller than "
+                "three boundary widths (FW=%d)", NZ, FW);
+        }
+    }
+
     /*=================================
       TODO: Check why this if executes even when RSF=0 in the json file.
       =================================*/
