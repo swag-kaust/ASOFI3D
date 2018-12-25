@@ -136,6 +136,9 @@ void CPML_coeff(float * K_x, float * alpha_prime_x, float * a_x, float * b_x,
 	b_x[i] = exp(- (d_x[i] / K_x[i] + alpha_prime_x[i]) * DT);
 
  	/* avoid division by zero outside the PML */
+        // if ((fabs(d_x[i]) > 1.0e-6) && !(abs(d_x[i]) > 1.0e-6)) {
+        //     printf("ERROR: fabs(d_x[i] mismatch with abs(d_x[i])) for i = %d, d_x[i] = %f\n", i, d_x[i]);
+        // }
         if(fabs(d_x[i]) > 1.0e-6){ a_x[i] = d_x[i] * (b_x[i] - 1.0) / (K_x[i] * (d_x[i] + K_x[i] * alpha_prime_x[i]));}
 	else a_x[i]=0.0;
 	
@@ -161,6 +164,9 @@ void CPML_coeff(float * K_x, float * alpha_prime_x, float * a_x, float * b_x,
 
         b_x_half[i1] = exp(- (d_x_half[i1] / K_x_half[i1] + alpha_prime_x_half[i1]) * DT);
 
+        // if ((fabs(d_x_half[i1]) > 1.0e-6) && !(abs(d_x_half[i1]) > 1.0e-6)) {
+        //     printf("ERROR: fabs(d_x_half[i1] mismatch with abs(d_x_half[i1])) for i1 = %d, d_x_half[i1] = %f\n", i1, d_x_half[i1]);
+        // }
         if(fabs(d_x_half[i1]) > 1.0e-6){ a_x_half[i1] = d_x_half[i1] * (b_x_half[i1] - 1.0) / (K_x_half[i1] * (d_x_half[i1] + K_x_half[i1] * alpha_prime_x_half[i1]));}
 
 	/* right boundary --> mirroring left boundary*/
@@ -205,6 +211,9 @@ void CPML_coeff(float * K_x, float * alpha_prime_x, float * a_x, float * b_x,
 	b_y[i] = exp(- (d_y[i] / K_y[i] + alpha_prime_y[i]) * DT);
 
  	/* avoid division by zero outside the PML */
+        // if ((fabs(d_y[i]) > 1.0e-6) && !(abs(d_y[i]) > 1.0e-6)) {
+        //     printf("ERROR: fabs(d_y[i] mismatch with abs(d_y[i])) for i = %d, d_y[i] = %f\n", i, d_y[i]);
+        // }
         if(fabs(d_y[i]) > 1.0e-6){ a_y[i] = d_y[i] * (b_y[i] - 1.0) / (K_y[i] * (d_y[i] + K_y[i] * alpha_prime_y[i]));}
       	else a_x[i]=0.0;
 
@@ -227,6 +236,9 @@ void CPML_coeff(float * K_x, float * alpha_prime_x, float * a_x, float * b_x,
         if(alpha_prime_y_half[i1] < 0.0) {fprintf(FP,"ERROR:alpha_prime_y_half[i] < 0.0, i %d", i);}
         b_y_half[i1] = exp(- (d_y_half[i1] / K_y_half[i1] + alpha_prime_y_half[i1]) * DT);
           
+        // if ((fabs(d_y_half[i1]) > 1.0e-6) && !(abs(d_y_half[i1]) > 1.0e-6)) {
+        //     printf("ERROR: fabs(d_y_half[i1] mismatch with abs(d_y_half[i1])) for i1 = %d, d_y_half[i1] = %f\n", i1, d_y_half[i1]);
+        // }
       	if(fabs(d_y_half[i1]) > 1.0e-6){ a_y_half[i1] = d_y_half[i1] * (b_y_half[i1] - 1.0) / (K_y_half[i1] * (d_y_half[i1] + K_y_half[i1] * alpha_prime_y_half[i1]));}
 	
         /* right boundary --> mirroring left boundary*/
@@ -269,6 +281,9 @@ void CPML_coeff(float * K_x, float * alpha_prime_x, float * a_x, float * b_x,
 	b_z[i] = exp(- (d_z[i] / K_z[i] + alpha_prime_z[i]) * DT);
 
  	/* avoid division by zero outside the PML */
+        // if ((fabs(d_z[i]) > 1.0e-6) && !(abs(d_z[i]) > 1.0e-6)) {
+        //     printf("ERROR: fabs(d_z[i] mismatch with abs(d_z[i])) for i = %d, d_z[i] = %f\n", i, d_z[i]);
+        // }
         if(fabs(d_z[i]) > 1.0e-6){ a_z[i] = d_z[i] * (b_z[i] - 1.0) / (K_z[i] * (d_z[i] + K_z[i] * alpha_prime_z[i]));}
 	
 	if(i<=FW){
@@ -291,6 +306,9 @@ void CPML_coeff(float * K_x, float * alpha_prime_x, float * a_x, float * b_x,
  
         b_z_half[i1] = exp(- (d_z_half[i1] / K_z_half[i1] + alpha_prime_z_half[i1]) * DT);
 
+        // if ((fabs(d_z_half[i1]) > 1.0e-6) && !(abs(d_z_half[i1]) > 1.0e-6)) {
+        //     printf("ERROR: fabs(d_z_half[i1] mismatch with abs(d_z_half[i1])) for i1 = %d, d_z_half[i1] = %f\n", i1, d_z_half[i1]);
+        // }
         if(fabs(d_z_half[i1]) > 1.0e-6){ a_z_half[i1] = d_z_half[i1] * (b_z_half[i1] - 1.0) / (K_z_half[i1] * (d_z_half[i1] + K_z_half[i1] * alpha_prime_z_half[i1]));}
 	
         /* right boundary --> mirroring left boundary*/
