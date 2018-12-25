@@ -31,7 +31,7 @@ convert_segy_to_rsf ${TEST_PATH}/su/ref_p.sgy
 # Read the files.
 # Compare with the recorded output.
 tests/compare_datasets.py tmp/su/test_p.rsf ${TEST_PATH}/su/ref_p.rsf \
-    --rtol=1e-10 --atol=5e-11
+    --rtol=1e-10 --atol=6e-11
 result=$?
 if [ "$result" -ne "0" ]; then
     error "Seismograms (pressure) differ"

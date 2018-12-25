@@ -24,6 +24,14 @@
 #define max(x,y) ((x<y)?y:x)
 #define fsign(x) ((x<0.0)?(-1):1)
 
+// Check that C compiler conforms at least to the C11 standard
+// and define macro `ASOFI_STDC11_AT_LEAST` that signals about that.
+#if defined(__STDC_VERSION__)
+    #if (__STDC_VERSION__ >= 201112L)
+        #define ASOFI_STDC11_AT_LEAST
+    #endif
+#endif
+
 
 /* declaration of functions */
 
