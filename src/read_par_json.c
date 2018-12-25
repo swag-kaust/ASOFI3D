@@ -531,6 +531,23 @@ void read_par_json(FILE *fp, char *fileinp)
         if (get_float_from_objectlist("RAKE", number_readobjects, &RAKE, varname_list, value_list))
             err("Variable RAKE could not be retrieved from the json input file!");
     }
+    if (SOURCE_TYPE == SOURCE_TYPE_MOMENT_TENSOR)
+    {
+        if (get_float_from_objectlist("AMON", number_readobjects, &AMON, varname_list, value_list))
+            err("Variable AMON could not be retrieved from the json input file!");
+        if (get_float_from_objectlist("M11", number_readobjects, &M11, varname_list, value_list))
+            err("Variable M11 could not be retrieved from the json input file!");
+        if (get_float_from_objectlist("M12", number_readobjects, &M12, varname_list, value_list))
+            err("Variable M12 could not be retrieved from the json input file!");
+        if (get_float_from_objectlist("M13", number_readobjects, &M13, varname_list, value_list))
+            err("Variable M13 could not be retrieved from the json input file!");
+        if (get_float_from_objectlist("M22", number_readobjects, &M22, varname_list, value_list))
+            err("Variable M22 could not be retrieved from the json input file!");
+        if (get_float_from_objectlist("M23", number_readobjects, &M23, varname_list, value_list))
+            err("Variable M23 could not be retrieved from the json input file!");
+        if (get_float_from_objectlist("M33", number_readobjects, &M33, varname_list, value_list))
+            err("Variable M33 could not be retrieved from the json input file!");
+    }
 
     /*=================================
       section model and log file parameters
