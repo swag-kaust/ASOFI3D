@@ -74,6 +74,8 @@ if $CC -v 2>&1 | grep -q ^icc; then
     C_COMPILER=icc
 elif $CC -v 2>&1 | grep -q ^gcc; then
     C_COMPILER=gcc
+elif $CC -v 2>&1 | grep -q clang; then
+    C_COMPILER=clang
 elif $CC -v 2>&1 | grep -q craycc; then
     C_COMPILER=craycc
 else
@@ -102,11 +104,26 @@ elif [ "$C_COMPILER" = gcc ]; then
     # -Wextra           Show even more warnings
     # -Wpedantic        Show even more warnings!
     # -std=c11          Compile with accordance with C 2011 standard
+    # -O3               Use 3rd level of optimizations
+    # -flto             Link-time optimization of the whole program
+    # -ftree-vectorize  Perform loop vectorization
+    # -funroll-loops    Unroll loops to imporove performance
+    # -O0               Do not optimize code to facilitate debuggging
     # -fbounds-check    Check for array boundaries
     # -g                Embed debugging information into the final executable
     append cflags_common -Wall -Wextra -Wpedantic -std=c11
     append cflags_opt -O3 -flto -ftree-vectorize -funroll-loops
     append cflags_debug -O0 -fbounds-check -g
+elif [ "$C_COMPILER" = clang ]; then
+    # clang options:
+    # -Wall             Show all warnings
+    # -O3               Use 3rd level of optimizations
+    # -flto             Link-time optimization of the whole program
+    # -O0               Do not optimize code to facilitate debuggging
+    # -g                Embed debugging information into the final executable
+    append cflags_common -Wall
+    append cflags_opt -O3 -flto
+    append cflags_debug -O0 -g
 elif [ "$C_COMPILER" = craycc ]; then
     # craycc options are:
     # -m 0         Show errors, warnings, cautions, notes, and comments
