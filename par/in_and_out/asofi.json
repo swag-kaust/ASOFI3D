@@ -42,8 +42,10 @@
 	"SIGNAL_FILE" : "signal_mseis.tz",
 
 	"SOURCE_TYPE" : "1",
-	"source_type values (point_source): explosive=1;" : "comment",
-	"force_in_x=2;in_y=3;in_z=4;custom=5;earthquake=6" : "comment",
+	"SOURCE_TYPE values: explosive=1;" : "comment",
+	"SOURCE_TYPE values: force_in_x=2; force_in_y=3; force_in_z=4;" : "comment",
+	"SOURCE_TYPE values: custom=5; earthquake=6;" : "comment",
+	"SOURCE_TYPE values: moment_tensor=7" : "comment",
 	"SOURCE_ALPHA, SOURCE_BETA" : "0.0 , 0.0",
 	"AMON, STR, DIP, RAKE" : "1.0e2 , 45.0 , 90.0 , 45.0",
 	"SRCREC" : "1",
