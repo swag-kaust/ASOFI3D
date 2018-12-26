@@ -2,10 +2,7 @@
 
 CircleCI status:
 
-\begin{verbatim}
-[![CircleCI](https://circleci.com/gh/swag-kaust/TD.svg?style=svg&circle-token=2bb57e94a999ba7f33afb12bf091751af6bda219
-)](https://circleci.com/gh/swag-kaust/TD)
-\end{verbatim}
+\href{https://circleci.com/gh/swag-kaust/TD}{\includegraphics{https://circleci.com/gh/swag-kaust/TD.svg?style=svg\&circle-token=2bb57e94a999ba7f33afb12bf091751af6bda219}}
 
 ASOFI3D stands for Anisotropic Seismic mOdeling with FInite differences.
 This code is a modification of
@@ -40,8 +37,8 @@ The prerequisites for ASOFI3D are:
   Make build system (GNU Make is a popular choice)
 \end{itemize}
 
-\subsection{Example build scenario 1: Compile with gcc and OpenMPI on
-Ubuntu}\label{example-build-scenario-1-compile-with-gcc-and-openmpi-on-ubuntu}
+\subsection{Compile with gcc and OpenMPI on
+Ubuntu}\label{compile-with-gcc-and-openmpi-on-ubuntu}
 
 On recent Ubuntu versions such as 14.04, 16.04, or 18.04 all
 prerequisites can be obtained by the following commands:
@@ -57,19 +54,6 @@ make
 \end{verbatim}
 
 which compiles the solver and several auxiliary utilities.
-
-\subsection{Example build scenario 2: Intel compiler and Intel MPI on
-KAUST
-workstation}\label{example-build-scenario-2-intel-compiler-and-intel-mpi-on-kaust-workstation}
-
-In this scenario, we will use Intel C compiler and the Intel MPI
-library. To load them on your KAUST-provided workstation, execute the
-following commands:
-
-\begin{verbatim}
-module load intel/2016
-module load intelmpi/2016/intel-2016
-\end{verbatim}
 
 \subsection{Example usage}\label{example-usage}
 
