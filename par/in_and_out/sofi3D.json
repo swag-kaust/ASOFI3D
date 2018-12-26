@@ -35,19 +35,21 @@
 	"DT" : "1e-3",
 
 "Source" : "comment",
-
-	"SOURCE_SHAPE" : "5",
-	"source shape values: ricker derivative=1;" : "comment",
-	"fumue=2; from_SIGNAL_FILE=3;SIN**3=4; ricker=5 " : "comment",
+	"SOURCE_SHAPE" : "1",
+	"SOURCE_SHAPE values: Ricker derivative=1; fumue=2;" : "comment",
+	"SOURCE_SHAPE values: from_SIGNAL_FILE=3; SIN**3=4; Ricker=5" : "comment",
 	"SIGNAL_FILE" : "signal_mseis.tz",
 
 	"SOURCE_TYPE" : "1",
-	"source_type values (point_source): explosive=1;" : "comment",
-	"force_in_x=2;in_y=3;in_z=4;custom=5;earthquake=6" : "comment",
+	"SOURCE_TYPE values: explosive=1;" : "comment",
+	"SOURCE_TYPE values: force_in_x=2; force_in_y=3; force_in_z=4;" : "comment",
+	"SOURCE_TYPE values: custom=5; earthquake=6;" : "comment",
+	"SOURCE_TYPE values: moment_tensor=7" : "comment",
 	"SOURCE_ALPHA, SOURCE_BETA" : "0.0 , 0.0",
 	"AMON, STR, DIP, RAKE" : "1.0e2 , 45.0 , 90.0 , 45.0",
+	"AMON, M11, M12, M13, M22, M23, M33" : "1.0e2 , 1.0 , 0.0 , 0.0 , 1.0 , 0.0 , 1.0",
 	"SRCREC" : "1",
-	"read from SOURCE_FILE=1, PLANE_WAVE=2 (internal)" : "comment",
+	"SRCREC values: read from SOURCE_FILE=1, PLANE_WAVE=2 (internal)" : "comment",
 
 	"SOURCE_FILE" : "./sources/source.dat",
 	"RUN_MULTIPLE_SHOTS" : "0",
