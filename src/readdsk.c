@@ -7,10 +7,15 @@
 #include "fd.h"
 
 /*
-different data formats of output:
-format=1  :  SU (IEEE)
-format=2  :  ASCII
-format=3  :  BINARY (IEEE)
+ * Read one single float value from a given file.
+ *
+ * The given file can be in one of the given formats:
+ * format = 1 : SU (IEEE)
+ * format = 2 : ASCII
+ * format = 3 : BINARY (IEEE)
+ *
+ * fp_in   Pointer to the open file
+ * format  File format
 */
 
 float readdsk(FILE *fp_in, int format)
