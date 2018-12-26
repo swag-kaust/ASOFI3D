@@ -1,10 +1,8 @@
-/*------------------------------------------------------------------------
- *   Exchange FD-Parameters between PEs                         
- *
- *  ----------------------------------------------------------------------*/
-
 #include "fd.h"
 
+/*
+ * Exchange parameters read from the parameter file between the MPI processes.
+ */
 void exchange_par(void) {
 	/* declaration of extern variables */
 
@@ -37,6 +35,9 @@ void exchange_par(void) {
     extern float GAMX1, GAMY1, RHO1, DH1;
     extern float VPV2, VSV2, EPSX2, EPSY2, DELX2, DELY2, DELXY2;
     extern float GAMX2, GAMY2, RHO2, DH2;
+
+    // Moment tensor components.
+    extern float M11, M12, M13, M22, M23, M33;
 
 
 	int idum[NPAR];
@@ -108,6 +109,14 @@ void exchange_par(void) {
         fdum[58]  = GAMY2;
         fdum[59]  = RHO2;
         fdum[60]  = DH2;
+
+        // Moment tensor components.
+        fdum[61] = M11;
+        fdum[62] = M12;
+        fdum[63] = M13;
+        fdum[64] = M22;
+        fdum[65] = M23;
+        fdum[66] = M33;
 
 
 
@@ -260,6 +269,13 @@ void exchange_par(void) {
     RHO2   = fdum[59];
     DH2    = fdum[60];
 
+    // Moment tensor components, for SOURCE_TYPE = 7.
+    M11 = fdum[61];
+    M12 = fdum[62];
+    M13 = fdum[63];
+    M22 = fdum[64];
+    M23 = fdum[65];
+    M33 = fdum[66];
 
     // -------------------
     // Integer parameters.
