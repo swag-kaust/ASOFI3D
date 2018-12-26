@@ -11,6 +11,8 @@ sofi3D_acoustic
 guide_sofi3D.pdf
 asofi3d_user_guide.pdf
 
+bin/
+
 # Cache directory for tools that need cache (such as ccls).
 .cache/
 
