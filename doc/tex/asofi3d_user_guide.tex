@@ -59,7 +59,7 @@
 %\lstset{breaklines=true}
 %\usepackage{multirow}
 \lstset{basicstyle=\bfseries}
-\bibliographystyle{authda3}
+\bibliographystyle{apalike}
 \usepackage[english]{babel}
 \providecommand{\tightlist}{%
 	\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -216,7 +216,7 @@ After a short calculation we get the following system of linear 1st order differ
 
 \EQ{1:15}{\rho \frac{dv_i}{dt} + v_i \rho \MB{\nabla} v_i = - \frac{\partial \sigma_{ij}}{\partial x_j} + f_i.}
 
-This equation is satisfied for any volume, independently if it is filled with a liquid, a gas or rock. Until now no proposition on how the medium deforms under an external stress was made. For an {\bf{elastic medium}} exists a linear relationship between stress and strain:
+The momentum equation is satisfied for any volume, independently if it is filled with a liquid, a gas or rock. For an {\bf{elastic medium}} exists a linear relationship between stress and strain:
 
 \begin{equation} \label{eq:stressStrain}
 \sigma_{ij}= c_{ijkl} \varepsilon_{kl},
@@ -226,10 +226,23 @@ where $c_{ijkl}$ is the elasticity tensor, and
 \begin{equation}
 \varepsilon_{ij}=\biggl(\frac{\partial u_i}{\partial x_j}+\frac{\partial u_j}{\partial x_i}\biggr)\
 \end{equation}
-is the deformation tensor.
+is the deformation or strain tensor.
 
+The general elasticity tensor has symmetries:
+\begin{equation}
+c_{ijkl} = c_{jikl},~ and ~ c_{ijkl} = c_{klij}.
+\end{equation}
+Therefore it can be compactly written down in Voigt $(C_{ij}$ notation as a 6x6 matrix:
+\begin{equation}
+c_{ijkl} \equiv C_{N(i,j), N(k,l)},
+\end{equation}
+where
+\begin{eqnarray}
+N(i,i) = i, //
+N(2,3) = 4,~ N(1,3) = 5, ~N(1,2) = 6.
+\end{eqnarray}
+In gneral anisotropic medium it leads the 21 elastic constants. We focus on orthorhombic medium which has 9 constants depicted in \cref{fig:CijOrtho}. Orthorhombic \cite{kazei2018}
 
-Th
 \begin{equation}
 {\delta_{ij}=
 	\begin{cases}
@@ -239,6 +252,12 @@ Th
 	\biggr \}: \;\text{Kronecker symbol} \notag}
 \end{equation}
 
+\begin{figure}
+	\centering
+	\includegraphics[width=0.5\linewidth]{eps/CijOrtho}
+	\caption{Voigt notation for elasticity tensor , orthorhombic medium has only nine elastic parameters with non-zero values (in red).}
+	\label{fig:CijOrtho}
+\end{figure}
 
 \subsection{Finite Differences}
 
@@ -1186,11 +1205,30 @@ or
 
 The program snapmerge that is used to merge the snapshots (see below) can be compiled with ''make snapmerge''. Since this is not a MPI program (no MPI functions are called) the MPI libraries are not required and any standard compiler (like gcc and cc) can be used to compile this program. The executables sofi3D and snapmerge are located the directory bin.
 
-\subsection{Running the program}\label{compexec1}
+\subsection*{Running the program}
+We recommend to create clones of the par folder for individual simulations. All the code inputs and outputs are then contained within those folders.
 
-\section{Visualization with MATALB} \label{visual}
+\section{Visualization with MATLAB} \label{visual}
+Inside mfiles folder you will find the following scripts:
+\begin{verbatim}
+merge_snapshots.m
+read_asofi3D_json.m
+snap3D_ASOFI.m.
+\end{verbatim}
+
+Run snap3D\_ASOFI.m to visualize the snapshots. You should get smth like this
 
 
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\linewidth]{defaultSnap.eps}
+	\caption{}
+	\label{fig:defaultSnap}
+\end{figure}
+
+
+merge_snapshots.m, can help you merge snapshots faster than snapmerge, if they fit into the ram memmory of your workstation.
 
 
 
