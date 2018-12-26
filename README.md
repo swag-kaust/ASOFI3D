@@ -2,8 +2,7 @@
 
 CircleCI status:
 
-    [![CircleCI](https://circleci.com/gh/swag-kaust/TD.svg?style=svg&circle-token=2bb57e94a999ba7f33afb12bf091751af6bda219
-    )](https://circleci.com/gh/swag-kaust/TD)
+[![CircleCI](https://circleci.com/gh/swag-kaust/TD.svg?style=svg&circle-token=2bb57e94a999ba7f33afb12bf091751af6bda219)](https://circleci.com/gh/swag-kaust/TD)
 
 ![](doc/tex/eps/invisible_gamma_1.gif)
 
@@ -34,7 +33,7 @@ The prerequisites for ASOFI3D are:
 * Make build system (GNU Make is a popular choice)
 
 
-## Example build scenario 1: Compile with gcc and OpenMPI on Ubuntu
+## Compile with gcc and OpenMPI on Ubuntu
 
 On recent Ubuntu versions such as 14.04, 16.04, or 18.04 all prerequisites
 can be obtained by the following commands:
@@ -46,16 +45,6 @@ Then while in the root directory of the code, build the code via command
     make
 
 which compiles the solver and several auxiliary utilities.
-
-
-## Example build scenario 2: Intel compiler and Intel MPI on KAUST workstation
-
-In this scenario, we will use Intel C compiler and the Intel MPI library.
-To load them on your KAUST-provided workstation, execute the following commands:
-
-    module load intel/2016
-    module load intelmpi/2016/intel-2016
-
 
 ## Example usage
 

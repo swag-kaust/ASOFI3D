@@ -4,14 +4,13 @@
 # while the medium is isotropic.
 . tests/functions.sh
 
-MODEL="src/model_elastic.c"
-TEST_PATH="tests/fixtures/test_03"
+readonly MODEL="src/model_elastic.c"
+readonly TEST_PATH="tests/fixtures/test_03"
+readonly TEST_ID="TEST_03"
 
-# Setup function prepares environment for the test (creates directories).
 setup
 
-# Preserve old model.
-mv $MODEL ${MODEL}.bak
+backup_default_model
 
 # Copy test model.
 cp "${TEST_PATH}/model_elastic.c"    src/
@@ -19,29 +18,9 @@ cp "${TEST_PATH}/sofi3D.json"        tmp/in_and_out/
 cp "${TEST_PATH}/source.dat"         tmp/sources/
 cp "${TEST_PATH}/receiver.dat"       tmp/receiver/
 
-# Compile code.
-cd src
-make sofi3D > /dev/null
-if [ "$?" -ne "0" ]; then
-    cd ..
-    echo TEST_03: FAIL > /dev/stderr
-    exit 1
-fi
-cd ..
+compile_code
 
-# Run code.
-echo "TEST_03: Running solver. Output is captured to tmp/ASOFI3D.log"
-./run_ASOFI3D.sh 16 tmp/ > tmp/ASOFI3D.log &
-task_id=$!
-animate_progress $task_id "TEST_03: Running solver"
-
-wait $task_id
-code=$?
-
-if [ "$code" -ne "0" ]; then
-    echo TEST_03: FAIL Running ASOFI3D failed > /dev/stderr
-    exit 1
-fi
+run_solver np=16 dir=tmp log=ASOFI3D.log
 
 # Convert seismograms in SEG-Y format to the Madagascar RSF format.
 sfsegyread tape=tmp/su/test_p.sgy.shot1 \
@@ -65,11 +44,7 @@ tests/compare_datasets.py \
     --rtol=1e-10 --atol=1e-12
 result=$?
 if [ "$result" -ne "0" ]; then
-    echo "TEST_03: Traces differ" > /dev/stderr
-    exit 1
+    error "Traces differ"
 fi
 
-# Teardown
-git checkout -- ${MODEL}
-
-echo "TEST_03: PASS"
+log "PASS"

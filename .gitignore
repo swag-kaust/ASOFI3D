@@ -275,6 +275,8 @@ tags
 .exrc
 .[n?]vimrc
 _[n?]vimrc
+.vimrc.local
+_vimrc.local
 
 
 ### SVN ###

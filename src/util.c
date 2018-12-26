@@ -44,7 +44,7 @@ void err2(char errformat[],char errfilename[]){
  *      Variable arguments to be substituted into the `format` string.
  */
 void err(char *format, ...) {
-	extern int MYID;
+    extern int MYID;
 
     // The list of VAs behind '...' in the function signature.
     va_list arg_list;
@@ -52,17 +52,18 @@ void err(char *format, ...) {
     // Initialize arg_list to point to arguments after `format`.
     va_start(arg_list, format);
 
-    // Render message `msg` using `format` and variable arguments.
-    char msg[2*STRING_SIZE];
-    sprintf(msg, format, arg_list);
+    // Flush stdout to avoid interleaving of stdout and stderr streams.
+    fflush(stdout);
+
+    fprintf(stderr, "Message from PE %d\n", MYID);
+    fprintf(stderr, "R U N - T I M E  E R R O R:\n");
+    // `fprintf` function prints variable arguments.
+    vfprintf(stderr, format, arg_list);
+    fprintf(stderr, "\n");
+    fprintf(stderr, "...now exiting to system.\n");
     va_end(arg_list);
 
-	fprintf(stderr, "Message from PE %d\n", MYID);
-	fprintf(stderr, "R U N - T I M E  E R R O R:\n");
-	fprintf(stderr, "%s\n", msg);
-	fprintf(stderr, "...now exiting to system.\n");
-	
-	MPI_Abort(MPI_COMM_WORLD, 1);
+    MPI_Abort(MPI_COMM_WORLD, 1);
 }
 
 void warning(char warn_text[]){

@@ -28,7 +28,7 @@
 			"FDORDER" : "4",
 			"FDORDER_TIME" : "2",
 			"FDCOEFF" : "2",
-			"fdcoeff values: Taylor=1, Holberg=2" : "comment",
+			"FDCOEFF values: Taylor=1, Holberg=2" : "comment",
 
 "Time Stepping" : "comment",
 			"TIME" : "1.0",
