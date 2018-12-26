@@ -43,7 +43,7 @@ for i in 1 2; do
     mkdir tmp/source_field
 done
 
-${TEST_PATH}/analyze.py --directory=tmp/ --rtol=1e-6 --atol=0
+${TEST_PATH}/analyze.py --directory=tmp/ --rtol=1e-6 --atol=1e-12
 result=$?
 if [ "$result" -ne "0" ]; then
     error "Dot product test failed"
