@@ -688,17 +688,17 @@ void read_par_json(FILE *fp, char *fileinp)
     // Check that the grid size is large enough for the given width
     // of the boundary frame.
     {
-        if (NX < 3*FW) {
-            err("Grid resolution along X-axis NX=%d is smaller than "
-                "three boundary widths (FW=%d)", NX, FW);
+        if (NX / (float) NPROCX < FW) {
+            err("Local grid resolution along X-axis %d is smaller than "
+                "boundary width (FW=%d)", (int) (NX / (float) NPROCX), FW);
         }
-        if (NY < 3*FW) {
-            err("Grid resolution along Y-axis NY=%d is smaller than "
-                "three boundary widths (FW=%d)", NY, FW);
+        if (NY / (float) NPROCY < FW) {
+            err("Local grid resolution along Y-axis NY=%d is smaller than "
+                "boundary width (FW=%d)", (int) (NY / (float) NPROCY), FW);
         }
-        if (NZ < 3*FW) {
-            err("Grid resolution along Z-axis NZ=%d is smaller than "
-                "three boundary widths (FW=%d)", NZ, FW);
+        if (NZ / (float) NPROCZ < FW) {
+            err("Local grid resolution along Z-axis NZ=%d is smaller than "
+                "boundary width (FW=%d)", (int) (NZ / (float) NPROCZ), FW);
         }
     }
 
