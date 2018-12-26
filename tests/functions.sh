@@ -127,7 +127,7 @@ animate_progress () {
 
     if [ "${CI}" ]
     then
-        wait "$task_id"
+        wait "${task_id}"
     else
         local i
         local s
@@ -140,7 +140,9 @@ animate_progress () {
             sleep $pause
         done
         printf "\r%s\n" "${message}"
+        wait "${task_id}"
     fi
+    return $?
 }
 
 convert_segy_to_rsf() {
