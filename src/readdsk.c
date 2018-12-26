@@ -1,7 +1,3 @@
-/*------------------------------------------------------------------------
- *   Read one single amplitude from file
- *
- *  ----------------------------------------------------------------------*/
 
 #include "enum.h"
 #include "fd.h"
@@ -30,21 +26,21 @@ float readdsk(FILE *fp_in, int format)
             break;
         case FILE_FORMAT_ASCII: /*ASCII*/
             if (fscanf(fp_in, "%e\n", &amp) != 1) {
-                err("[readdsk] Could not read an amplitude "
-                    "from a file in ASCII format\n");
+                err("[%s] Could not read an amplitude "
+                    "from a file in ASCII format\n", __func__);
             }
             break;
         case FILE_FORMAT_BINARY: /* BINARY */
             nelems = fread(&amp, sizeof(float), 1, fp_in);
             if (nelems != 1) {
-                err("[readdsk] Could not read an amplitude "
-                    "from a file in binary format\n");
+                err("[%s] Could not read an amplitude "
+                    "from a file in binary format\n", __func__);
             }
             break;
 
         default:
-            printf(" Don't know the format for the snapshot-data !\n");
-            err(" No output was written. ");
+            err("[%s] Unsupported file format. "
+                "Supported formats are SU, ASCII, and BINARY", __func__);
     }
 
     return amp;
