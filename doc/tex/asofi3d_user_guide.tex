@@ -3,6 +3,7 @@
 %\usepackage[T1]{fontenc}
 %\usepackage{lmodern}
 \usepackage{epsf,pstricks,pst-grad,color}
+\usepackage{cleveref}
 \usepackage{graphicx,amssymb,amsmath,makeidx,psfrag,subfigure}
 \usepackage{authda14,sws,wasysym,epsfig}
 \usepackage{longtable,rotating,latexsym,eso-pic}
@@ -207,10 +208,41 @@ Parameter files for SOFI3D modeling.
 
                        
 \newpage
-  
 
-\section{Solving the Elastic Wave Equation with Finite Differences}
-To solve the equations \ER{1:15} and \ER{2:18} for an elastic medium, or \ER{1:15} and \ER{2:19} for a viscoelastic medium, the particle velocities $\vec{v}$, the stresses $p_{ij}$, the Lame parameters $\lambda$ and $\mu$ are calculated at  discrete cartesian coordinates  $x=i\; \times dx$, $y=j\; \times dy$, $z=k\; \times dz$ and at discrete times $t=n\; \times dt$ on a grid. $dx$, $dy$ and $dz$, denote  the spatial grid point distance in x-, y-, z-direction and $dt$ the difference between two succeeding time steps with $i \in N | [1,NX]$, $j \in N | [1,NY]$, $k \in N | [1,NZ]$ 
+\section{Solving the Elastic Wave Equation}
+
+\subsection{Anisotropic elastic Wave Equations}
+After a short calculation we get the following system of linear 1st order differential equations: 
+
+\EQ{1:15}{\rho \frac{dv_i}{dt} + v_i \rho \MB{\nabla} v_i = - \frac{\partial \sigma_{ij}}{\partial x_j} + f_i.}
+
+This equation is satisfied for any volume, independently if it is filled with a liquid, a gas or rock. Until now no proposition on how the medium deforms under an external stress was made. For an {\bf{elastic medium}} exists a linear relationship between stress and strain:
+
+\begin{equation} \label{eq:stressStrain}
+\sigma_{ij}= c_{ijkl} \varepsilon_{kl},
+\end{equation}
+
+where $c_{ijkl}$ is the elasticity tensor, and
+\begin{equation}
+\varepsilon_{ij}=\biggl(\frac{\partial u_i}{\partial x_j}+\frac{\partial u_j}{\partial x_i}\biggr)\
+\end{equation}
+is the deformation tensor.
+
+
+Th
+\begin{equation}
+{\delta_{ij}=
+	\begin{cases}
+	1 & \text{for } i=j\\
+	0 & \text{else}
+	\end{cases} 
+	\biggr \}: \;\text{Kronecker symbol} \notag}
+\end{equation}
+
+
+\subsection{Finite Differences}
+
+To solve the equations \ER{1:15} and \eqref{eq:stressStrain} for an elastic medium, the particle velocities $\vec{v}$, the stresses $\sigma_{ij}$, the Lame parameters $\lambda$ and $\mu$ are calculated at  discrete cartesian coordinates  $x=i\; \times dx$, $y=j\; \times dy$, $z=k\; \times dz$ and at discrete times $t=n\; \times dt$ on a grid. $dx$, $dy$ and $dz$, denote  the spatial grid point distance in x-, y-, z-direction and $dt$ the difference between two succeeding time steps with $i \in N | [1,NX]$, $j \in N | [1,NY]$, $k \in N | [1,NZ]$ 
 and $n \in N | [1,NT]$, where $NX$, $NY$, $NZ$ and $NT$ denote the number of spatial grid points and time steps. Finally the partial derivatives  are replaced by {\bf{(finite)-difference}} operators. The derivative of a function y after a variable x can be approximated by a forward $D^+$ or a backward operator $D^-$:
 
 \EQ{disc:1}{\begin{split}
@@ -227,69 +259,8 @@ To calculate with a larger grid point distance the variables are arranged on a s
 \end{center}
 \end{figure}   
 
-\subsection{(Visco)elastic Wave Equations}
-What happens in a rock, during the passage of a seismic wave? To answer this question, we consider an infinitesimal small cube, which is part of the rock. In this cube are atoms, ions or molecules which move in a not specified manner. If we could describe the microscopic motion of the particles we would be able to predict the particle displacements and therefore the propagation of the seismic wave in the rock. One of the fundamental principles in physics is the conservation of momentum. The total momentum $\MB{P}$ in the rock can be changed by three different ways:
-\begin{enumerate}
-	
-	\item Not a bit
-	\EQ{1:3}{\frac{\partial \MB{P}}{\partial t}=\frac{\partial}{\partial t}\biggl \{\int_V \rho(\MB{x},t)\; \MB{v}(\MB{x},t) dV \biggr \} = 0.
-		\notag} 
-	
-	where $t$ denotes the time, $\MB{x}$ the position vector, $\rho$ the density- and $\MB{v}$ the particle velocity distributions in the rock. 
-	
-	\item By adding particles to the cube or remove them, which leads to a momentum gain or loss in the cube:
-	
-	\EQ{1:5}{\Phi=\int_A \rho \MB{v} (\MB{v} \cdot dA). \notag}
-	
-	\item By forces acting on the surface of the cube, for example the hydrostatic pressure P, or  more generally the stress $p_{ij}$ (surface forces) and forces $f_i$ acting on all the particles in the volume (body forces). 
-\end{enumerate}
 
-After a short calculation we get the following system of linear 1st order differential equations: 
 
-\EQ{1:15}{\rho \frac{dv_i}{dt} + v_i \rho \MB{\nabla} v_i = - \frac{\partial p_{ij}}{\partial x_j} + f_i.}
-
-This equation is satisfied for any volume, independently if it is filled with a liquid, a gas or rock. Until now no proposition on how the medium deforms under an external stress was made. For an {\bf{elastic medium}} exists a linear relationship between stress and strain:
-
-\EQ{2:18}{p_{ij}=\lambda \theta \delta_{ij} + 2 \mu \epsilon_{ij}.}
-
-with
-
-\EQ{2:18:1}{\begin{split}
-		\lambda\; \text{and}\; \mu:\; & \text{Lam$\acute{\rm e}$ parameter}\notag
-\end{split}}
-
-\EQ{2:18:1:1}{\epsilon_{ij}=\biggl(\frac{\partial u_i}{\partial x_j}+\frac{\partial u_j}{\partial x_i}\biggr)\; \text{deformation tensor} \notag}  
-\EQ{2:18:2}{\theta = \epsilon_{11} + \epsilon_{22} + \epsilon_{33}:\; \text{cubic dilatation} \notag}
-\EQ{2:18:3}{\delta_{ij}=
-	\begin{cases}
-		1 & \text{for } i=j\\
-		0 & \text{else}
-	\end{cases} 
-	\biggr \}: \;\text{Kronecker symbol} \notag}
-
-For a {\bf{viscoelastic medium}} the stress-strain relationship is more complicated:
-
-\EQ{2:19}{\begin{split}
-		\dot{p}_{ij}&=\frac{\partial v_k}{\partial x_k}\{\pi (1+\tau^s)-2 \mu(1+\tau^s)\}+2\frac{\partial v_i}{\partial x_j}
-		\mu(1+\tau^s)+\sum\limits_{l=1}^L r_{ijl}\; \text{if $i$=$j$}\\
-		\dot{p}_{ij}&=\biggl(\frac{\partial v_i}{\partial x_j}+\frac{\partial v_j}{\partial x_i}\biggr) \mu (1+\tau^s)+\sum\limits_{l=1}^L r_{ijl}\; \text{if $i$$\ne$$j$}
-\end{split}}
-
-with the memory variables 
-
-\EQ{2:20}{\begin{split}
-		\dot{r}_{ijl}&=-\frac{1}{\tau_{\sigma l}}\biggl\{(\pi \tau^p - 2 \mu \tau^s)\frac{\partial v_k}{\partial x_k} + 2 \frac{\partial
-			v_i}{\partial x_j} \mu \tau^s + r_{ijl} \biggr\}\; \text{if $i$ = $j$} \notag\\
-		\dot{r}_{ijl}&=-\frac{1}{\tau_{\sigma l}}\biggl\{\mu \tau^s \biggl(\frac{\partial v_i}{\partial x_j}+ \frac{\partial v_j}{\partial x_i} 
-		\biggr) + r_{ijl} \biggr\}\; \text{if $i$ $\ne$ $j$} \notag\\
-\end{split}}
-
-$\tau^s$ and $\tau^p$ are related to the seismic quality factor $Q_s$, $Q_p$ for the S- respectively the P-wave velocity, by 
-
-\EQ{2:21}{\begin{split}
-		\tau^s &= 2/Q_s\\
-		\tau^p &= 2/Q_p \notag
-\end{split}}
 
 \newpage
 \subsection{Accuracy of FD-operators}
@@ -461,7 +432,7 @@ The Dirichlet boundary condition could take the form
 
 \EQ{FD:5}{\begin{split}
     v_i(0)&=v_i(NX)=0 \\
-    p_{ij}(0)&=p_{ij}(NX)=0
+    \sigma_{ij}(0)&=\sigma_{ij}(NX)=0
     \end{split}}
 
 The Dirichlet boundary conditions have the disadvantage that it is not possible to model an infinite full space, because the wavefield is reflected at the boundaries of the model grid.
