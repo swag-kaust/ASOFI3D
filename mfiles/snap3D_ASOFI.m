@@ -112,8 +112,8 @@ xslice=nx/2; % for yz plane in grid points
 TSNAP1=str2num(opts.TSNAP1);
 TSNAPINC=str2num(opts.TSNAPINC);
 % firts and last snapshot that is considered for displayin
-firstframe=1;
-lastframe=3;
+firstframe=2;
+lastframe=2;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---3D definitions: defines two rotating planes (xz, yz plane)
