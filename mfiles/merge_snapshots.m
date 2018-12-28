@@ -25,7 +25,20 @@ IDZ = str2num(jV.IDZ);
 nlx = (nx/NPROCX)/IDX;
 nly = (ny/NPROCY)/IDY;
 nlz = (nz/NPROCZ)/IDZ;
-nsnap = 1+floor((str2num(jV.TSNAP2)-str2num(jV.TSNAP1))/str2num(jV.TSNAPINC));
+
+TSNAP1 = str2num(jV.TSNAP1);
+TSNAP2 = str2num(jV.TSNAP2);
+TIME = str2num(jV.TIME);
+TSNAPINC = str2num(jV.TSNAPINC);
+
+if TSNAP2 > TIME
+    fprintf(['WARNING: TSNAP2 = %f is larger than TIME = %f. ' ...
+             'Set TSNAP2 = TIME.\n'], ...
+            TSNAP2, TIME);
+    TSNAP2 = TIME;
+end
+
+nsnap = 1+floor((TSNAP2 - TSNAP1) / TSNAPINC);
 
 %%
 for i = 1:NPROCX

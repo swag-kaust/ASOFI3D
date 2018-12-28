@@ -110,10 +110,43 @@ xslice=nx/2; % for yz plane in grid points
 
 % time increment for snapshots:
 TSNAP1=str2num(opts.TSNAP1);
+TSNAP2=str2num(opts.TSNAP2);
+TIME = str2num(opts.TIME);
 TSNAPINC=str2num(opts.TSNAPINC);
+
+if TSNAP2 > TIME
+    fprintf(['WARNING: TSNAP2 = %f is larger than TIME = %f. ' ...
+             'Set TSNAP2 = TIME.\n'], ...
+            TSNAP2, TIME);
+    TSNAP2 = TIME;
+end
+
+nsnap = 1+floor((TSNAP2 - TSNAP1) / TSNAPINC);
+
 % firts and last snapshot that is considered for displayin
 firstframe=2;
 lastframe=2;
+
+if lastframe > nsnap
+    fprintf(['WARNING: Number of snapshots (nsnap = %d) is ' ...
+             'larger than the last snapshot number (lastframe = %d). ' ...
+             'Set lastframe = nsnap.\n'], ...
+            nsnap, lastframe);
+end
+
+if firstframe > nsnap
+    error('snap3D_ASOFI:incorrectFirstFrame', ...
+          ['ERROR: First snapshot number (firstframe = %d) is ' ...
+           'larger than the number of snapshots (nsnap = %d).\n'], ...
+           firstframe, nsnap);
+end
+
+if lastframe < firstframe
+    fprintf(['WARNING: First snapshot number (firstframe = %d) is ' ...
+             'larger than the last snapshot number (lastframe = %d). ' ...
+             'Set lastframe = firstframe\n'], ...
+            firstframe, lastframe);
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---3D definitions: defines two rotating planes (xz, yz plane)
