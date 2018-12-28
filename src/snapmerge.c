@@ -63,6 +63,12 @@ NX = NXG/NPROCX;
 NY = NYG/NPROCY;
 NZ = NZG/NPROCZ;
 
+if (TSNAP2 > TIME) {
+    fprintf(FP, "WARNING: TSNAP2 = %f is larger than TIME = %f. "
+            "Set TSNAP2 = TIME\n", TSNAP2, TIME);
+    TSNAP2 = TIME;
+}
+
 nsnap=1+floor((TSNAP2-TSNAP1)/TSNAPINC);
 fprintf(FP, "Number of snapshots to be saved: nsnap = %d\n", nsnap);
 
