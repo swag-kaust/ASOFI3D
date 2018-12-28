@@ -66,20 +66,19 @@ void merge(int nsnap, int type)
     }
 
     sprintf(mfile, "%s%s", SNAP_FILE, ext);
-    fprintf(FP, " (files: %s.??? ).\n", mfile);
+    fprintf(FP, " (files: %s.x.y.z).\n", mfile);
 
     sprintf(outfile, "%s%s", SNAP_FILE, ext);
-    fprintf(FP, "\n writing merged snapshot file to  %s \n", outfile);
+    fprintf(FP, "Writing merged snapshot file to %s\n", outfile);
     fpout = fopen(outfile, "w");
 
-    fprintf(FP, " Opening snapshot files: %s.??? ", mfile);
-
+    fprintf(FP, "Opening snapshot files with template %s.x.y.z\n", mfile);
     for (kp = 0; kp <= NPROCZ - 1; kp++)
         for (ip = 0; ip <= NPROCX - 1; ip++)
             for (jp = 0; jp <= NPROCY - 1; jp++)
             {
                 sprintf(file, "%s.%i.%i.%i", mfile, ip, jp, kp);
-                fprintf(FP, file, "\n");
+                fprintf(FP, "%s\n", file);
                 fp[jp][ip][kp] = fopen(file, "r");
                 if (fp[jp][ip][kp] == NULL)
                 {
@@ -87,11 +86,9 @@ void merge(int nsnap, int type)
                     err(file);
                 }
             }
-
     fprintf(FP, " ... finished. \n");
 
     fprintf(FP, " Copying...");
-
     for (n = 0; n < nsnap; n++)
         for (kp = 0; kp <= NPROCZ - 1; kp++)
             for (k = 1; k <= NZ; k += IDZ)
@@ -103,13 +100,11 @@ void merge(int nsnap, int type)
                                 a = readdsk(fp[jp][ip][kp], SNAP_FORMAT);
                                 writedsk(fpout, a, SNAP_FORMAT);
                             }
-
     fprintf(FP, " ... finished. \n");
 
     for (kp = 0; kp <= NPROCZ - 1; kp++)
         for (ip = 0; ip <= NPROCX - 1; ip++)
-            for (jp = 0; jp <= NPROCY - 1; jp++)
-            {
+            for (jp = 0; jp <= NPROCY - 1; jp++) {
                 fclose(fp[jp][ip][kp]);
             }
 
