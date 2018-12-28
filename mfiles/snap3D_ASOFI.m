@@ -110,7 +110,17 @@ xslice=nx/2; % for yz plane in grid points
 
 % time increment for snapshots:
 TSNAP1=str2num(opts.TSNAP1);
+TSNAP2=str2num(opts.TSNAP2);
+TIME = str2num(opts.TIME);
 TSNAPINC=str2num(opts.TSNAPINC);
+
+if TSNAP2 > TIME
+    fprintf(['WARNING: TSNAP2 = %f is larger than TIME = %f. ' ...
+             'Set TSNAP2 = TIME.\n'], ...
+            TSNAP2, TIME);
+    TSNAP2 = TIME;
+end
+
 % firts and last snapshot that is considered for displayin
 firstframe=2;
 lastframe=2;
