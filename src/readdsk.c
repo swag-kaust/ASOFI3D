@@ -10,7 +10,7 @@
  * format = 2 : ASCII
  * format = 3 : BINARY (IEEE)
  *
- * fp_in   Pointer to the open file
+ * fp_in   Pointer to the opened file
  * format  File format
  */
 float readdsk(FILE *fp_in, int format)
