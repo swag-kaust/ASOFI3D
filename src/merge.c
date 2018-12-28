@@ -4,6 +4,7 @@
   *
  *  ----------------------------------------------------------------------*/
 
+#include "enum.h"
 #include "fd.h"
 
 void merge(int nsnap, int type)
@@ -114,8 +115,7 @@ void merge(int nsnap, int type)
 
     fclose(fpout);
 
-    if (SNAP_FORMAT == 3)
-    {
+    if (SNAP_FORMAT == FILE_FORMAT_BINARY) {
         fprintf(FP, "Use command:\n");
         fprintf(FP, "xmovie n1=%d n2=%d < %s loop=1 label1=Y label2=X\n",
                 ((NYG - 1) / IDY) + 1, ((NXG - 1) / IDY) + 1, outfile);
