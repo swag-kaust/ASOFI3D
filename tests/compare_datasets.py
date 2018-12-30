@@ -84,11 +84,12 @@ def get_datasets(filename1, filename2):
         nsnap = int(1 + np.floor((TSNAP2 - TSNAP1) / TSNAPINC));
 
         NX, NY, NZ = params['NX'], params['NY'], params['NZ']
+        IDX, IDY, IDZ = params['IDX'], params['IDY'], params['IDZ']
 
         data1 = np.fromfile(filename1, dtype=np.float32)
         data2 = np.fromfile(filename2, dtype=np.float32)
-        data1.reshape((NY, NX, NZ, nsnap))
-        data2.reshape((NY, NX, NZ, nsnap))
+        data1.reshape((NY/IDY, NX/IDX, NZ/IDZ, nsnap))
+        data2.reshape((NY/IDY, NX/IDX, NZ/IDZ, nsnap))
     else:
         raise Exception('Cannot determine dataset format!')
 
@@ -109,7 +110,7 @@ def read_asofi3d_json(json_filename):
     clean_json_string = ''.join(clean_lines)
     params = json.loads(clean_json_string)
 
-    for key in ['NX', 'NY', 'NZ']:
+    for key in ['NX', 'NY', 'NZ', 'IDX', 'IDY', 'IDZ']:
         params[key] = int(params[key])
 
     for key in ['TIME', 'TSNAP1', 'TSNAP2', 'TSNAPINC']:
