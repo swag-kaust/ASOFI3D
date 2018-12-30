@@ -19,10 +19,6 @@ compile_code
 
 run_solver np=16 dir=tmp log=ASOFI3D.log
 
-# Convert seismograms in SEG-Y format to the Madagascar RSF format.
-convert_segy_to_rsf tmp/su/test_vx.sgy
-convert_segy_to_rsf ${TEST_PATH}/su/test_vx.sgy
-
 # Read the files.
 # Compare with the old output.
 tests/compare_datasets.py \
