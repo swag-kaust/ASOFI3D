@@ -19,7 +19,7 @@ void read_par_json(FILE *fp, char *fileinp)
     extern float DX, DY, DZ, TIME, DT, TS, *FL, TAU, FREF, PLANE_WAVE_DEPTH, PLANE_WAVE_ANGLE;
     extern float XREC1, XREC2, YREC1, YREC2, ZREC1, ZREC2, SOURCE_ALPHA, SOURCE_BETA, AMON, STR, DIP, RAKE;
     // Moment tensor components.
-    float M11 = 0.0, M12 = 0.0, M13 = 0.0, M22 = 0.0, M23 = 0.0, M33 = 0.0;
+    extern float M11, M12, M13, M22, M23, M33;
     extern float REC_ARRAY_DEPTH, REC_ARRAY_DIST;
     extern int SEISMO, NDT, NDTSHIFT, NGEOPH, SEIS_FORMAT[6], FREE_SURF, READMOD, READREC, RUN_MULTIPLE_SHOTS;
     extern int BOUNDARY, REC_ARRAY, LOG, IDX, IDY, IDZ, ABS_TYPE, WRITE_MODELFILES;
