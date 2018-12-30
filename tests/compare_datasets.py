@@ -16,6 +16,8 @@ Exit codes are:
 """
 
 import argparse
+import json
+import os
 import sys
 
 import numpy as np
@@ -42,11 +44,7 @@ def main(argv=None):
     rtol, atol = args.rtol, args.atol
     verbose = args.verbose
 
-    file1 = rsf.Input(filename1)
-    file2 = rsf.Input(filename2)
-
-    data1 = file1.getalldata()
-    data2 = file2.getalldata()
+    data1, data2 = get_datasets(filename1, filename2)
 
     try:
         result = np.allclose(data1, data2, rtol=rtol, atol=atol)
@@ -64,6 +62,63 @@ def main(argv=None):
         if verbose:
             print('Datasets are not elementwise close within tolerance')
         return 1
+
+
+def get_datasets(filename1, filename2):
+    rsf_format = '.rsf' in filename1 and '.rsf' in filename2
+    bin_format = '.bin' in filename1 and '.bin' in filename2
+
+    if rsf_format:
+        file1 = rsf.Input(filename1)
+        file2 = rsf.Input(filename2)
+
+        data1 = file1.getalldata()
+        data2 = file2.getalldata()
+    elif bin_format:
+        top_dir = filename1.split('/')[0]
+        json_filename = os.path.join(top_dir, 'in_and_out', 'sofi3D.json')
+        params = read_asofi3d_json(json_filename)
+
+        TSNAP1, TSNAP2 = params['TSNAP1'], params['TSNAP2']
+        TSNAPINC = params['TSNAPINC']
+        nsnap = int(1 + np.floor((TSNAP2 - TSNAP1) / TSNAPINC));
+
+        NX, NY, NZ = params['NX'], params['NY'], params['NZ']
+
+        data1 = np.fromfile(filename1, dtype=np.float32)
+        data2 = np.fromfile(filename2, dtype=np.float32)
+        data1.reshape((NY, NX, NZ, nsnap))
+        data2.reshape((NY, NX, NZ, nsnap))
+    else:
+        raise Exception('Cannot determine dataset format!')
+
+    return data1, data2
+
+def read_asofi3d_json(json_filename):
+    with open(json_filename) as fp:
+        line_list = fp.readlines()
+
+    clean_lines = []
+    for line in line_list:
+        line_strip = line.strip()
+        if line_strip.startswith('#') or line_strip.startswith('//'):
+            continue
+        else:
+            clean_lines.append(line)
+
+    clean_json_string = ''.join(clean_lines)
+    params = json.loads(clean_json_string)
+
+    for key in ['NX', 'NY', 'NZ']:
+        params[key] = int(params[key])
+
+    for key in ['TIME', 'TSNAP1', 'TSNAP2', 'TSNAPINC']:
+        params[key] = float(params[key])
+
+    if params['TSNAP2'] > params['TIME']:
+        params['TSNAP2'] = params['TIME']
+
+    return params
 
 
 if __name__ == '__main__':
