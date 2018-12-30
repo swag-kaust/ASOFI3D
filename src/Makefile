@@ -27,7 +27,7 @@ ifeq "$(filter clean clobber, $(MAKECMDGOALS))" ""
     -include config-manual.mk
 endif
 
-ifneq "$(wildcard config.auto.mk)" ""
+ifneq "$(wildcard config-auto.mk)" ""
     mpicheck = $(shell $(CC) testmpi.c -o /dev/null >/dev/null 2>&1 && echo 1)
 
     ifneq "$(mpicheck)" "1"
