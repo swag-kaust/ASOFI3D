@@ -241,7 +241,7 @@ where
 N(i,i) = i, //
 N(2,3) = 4,~ N(1,3) = 5, ~N(1,2) = 6.
 \end{eqnarray}
-In gneral anisotropic medium it leads the 21 elastic constants. We focus on orthorhombic medium which has 9 constants depicted in \cref{fig:CijOrtho}. Orthorhombic \cite{kazei2018}
+In gneral anisotropic medium it leads the 21 elastic constants. We focus on orthorhombic medium which has nine non-zero elastic constants (Figure~\ref{fig:CijOrtho}, \cite{kazei2018}).
 
 \begin{equation}
 {\delta_{ij}=
@@ -255,7 +255,7 @@ In gneral anisotropic medium it leads the 21 elastic constants. We focus on orth
 \begin{figure}
 	\centering
 	\includegraphics[width=0.5\linewidth]{eps/CijOrtho}
-	\caption{Voigt notation for elasticity tensor , orthorhombic medium has only nine elastic parameters with non-zero values (in red).}
+	\caption{Voigt notation for elasticity tensor, orthorhombic medium has only nine elastic parameters with non-zero values (in red).}
 	\label{fig:CijOrtho}
 \end{figure}
 
@@ -1196,13 +1196,9 @@ MODEL_SRC_BENCH = benchmod.c
 # --------------------------------------------------------
 \end{verbatim} 
 To compile the program SOFI3D you must change to the  \lstinline{src} directory and execute:
-
-
  \lstinline{make all}
 or
  \lstinline{make sofi3D}
-
-
 The program snapmerge that is used to merge the snapshots (see below) can be compiled with ''make snapmerge''. Since this is not a MPI program (no MPI functions are called) the MPI libraries are not required and any standard compiler (like gcc and cc) can be used to compile this program. The executables sofi3D and snapmerge are located the directory bin.
 
 \subsection*{Running the program}
@@ -1215,20 +1211,23 @@ merge_snapshots.m
 read_asofi3D_json.m
 snap3D_ASOFI.m.
 \end{verbatim}
-
 Run snap3D\_ASOFI.m to visualize the snapshots. You should get smth like this
-
-
-
-\begin{figure}
+\begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.7\linewidth]{defaultSnap.eps}
-	\caption{}
+	
+	\includegraphics[width=0.9\linewidth]{eps/defaultSnap}
+	\caption{Wave propagation in anisotropic medium. Snapshot is produced with default parameter file}
 	\label{fig:defaultSnap}
 \end{figure}
+merge\_snapshots.m, can help you merge snapshots faster than bin/snapmerge, if they fit into the RAM of your workstation.
+
+\newpage
+\section{Acknowledgments}
+
+We thank KAUST for support and KSL for computational resources to test the code. We are also grateful to Thomas Bohlen and his team from KIT, who released isotropic SOFI3D, which we based our development on. Finally, we would like to thank Tariq Alkhalifah and Seismic Wave Analysis Group (SWAG) for discussions and comments on the code. We also validated the code with recent normal mode theory \cite{ivanov2018} and thank Alexey Stovas and Yuriy Ivanov of NTNU for their contribution to that. Juwon Oh and Mahesh Kalita we thank, in particular, for their direct contributions to the code development. For full list of developers have a look at the file ``AUTHORS".
 
 
-merge_snapshots.m, can help you merge snapshots faster than snapmerge, if they fit into the ram memmory of your workstation.
+
 
 
 
