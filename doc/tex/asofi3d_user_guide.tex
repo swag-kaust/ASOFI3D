@@ -12,48 +12,8 @@
 \usepackage{tikz}
 \usepackage{tikz-3dplot}
 \usepackage{listings}
-
+\usepackage{catchfilebetweentags}
 \usepackage{fancyvrb}
-
-\makeatletter
-\newread\pin@file
-\newcounter{pinlineno}
-\newcommand\pin@accu{}
-\newcommand\pin@ext{pintmp}
-% inputs #3, selecting only lines #1 to #2 (inclusive)
-\newcommand*\partialinput [3] {%
-	\IfFileExists{#3}{%
-		\openin\pin@file #3
-		% skip lines 1 to #1 (exclusive)
-		\setcounter{pinlineno}{1}
-		\@whilenum\value{pinlineno}<#1 \do{%
-			\read\pin@file to\pin@line
-			\stepcounter{pinlineno}%
-		}
-		% prepare reading lines #1 to #2 inclusive
-		\addtocounter{pinlineno}{-1}
-		\let\pin@accu\empty
-		\begingroup
-		\endlinechar\newlinechar
-		\@whilenum\value{pinlineno}<#2 \do{%
-			% use safe catcodes provided by e-TeX's \readline
-			\readline\pin@file to\pin@line
-			\edef\pin@accu{\pin@accu\pin@line}%
-			\stepcounter{pinlineno}%
-		}
-		\closein\pin@file
-		\expandafter\endgroup
-		\scantokens\expandafter{\pin@accu}%
-	}{%
-		\errmessage{File `#3' doesn't exist!}%
-	}%
-}
-
-\newenvironment{markdown}%
-{\VerbatimEnvironment\begin{VerbatimOut}{tmp.markdown}}%
-	{\end{VerbatimOut}%
-	\immediate\write18{pandoc tmp.markdown -t latex -o tmp.tex}%
-	\input{tmp.tex}}
 
 %\usepackage{natbib}
 %\lstset{breaklines=true}
@@ -113,6 +73,7 @@
 \begin{document}
 	
 \maketitle
+
 ASOFI3D stands for Anisotropic Seismic mOdeling with FInite differences.
 This code is a modification of
 \href{https://git.scc.kit.edu/GPIAG-Software/SOFI3D/wikis/home}{SOFI3D}
@@ -175,10 +136,7 @@ xmovie & Console based movie program, can & usually included in Linux distributi
 
 \newpage 
 \section{Quick start}\label{qguide}
-%\begin{markdown}
-%	\input{../../README.md}
-%\end{markdown}
-\partialinput{12}{79}{README}
+\input{README}
 
 You may also use the shell script  \lstinline{startSOFI3D.sh} located in  \lstinline{sofi3D/par} that also writes the screen output to the file  \lstinline{sofi3D/par/in_and_out/sofi3D.jout}.
 

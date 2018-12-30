@@ -2,5 +2,6 @@
 
 # parses README.md to tex
 
-pandoc ../../README.md -t latex -o README.tex
+grep -A10000 "## Obtaining" ../../README.md | \
+pandoc -t latex -o README.tex
 
