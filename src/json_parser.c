@@ -171,6 +171,45 @@ int read_objects_from_intputfile(FILE *fp, char *input_file,char ** varname_list
 					//value_list[number_readobject] = (char**)malloc(STRING_SIZE*sizeof(char*));
 
 					break;
+				case 11://six objects (name-value pairs) in line
+					//remove old data from strings
+					memset(value_tmp1, '\0', sizeof(value_tmp1));
+					memset(value_tmp2, '\0', sizeof(value_tmp2));
+					memset(value_tmp3, '\0', sizeof(value_tmp3));
+					memset(value_tmp4, '\0', sizeof(value_tmp4));
+					memset(value_tmp5, '\0', sizeof(value_tmp5));
+					memset(value_tmp6, '\0', sizeof(value_tmp6));
+					memset(varname_tmp1, '\0', sizeof(varname_tmp1));
+					memset(varname_tmp2, '\0', sizeof(varname_tmp2));
+					memset(varname_tmp3, '\0', sizeof(varname_tmp3));
+					memset(varname_tmp4, '\0', sizeof(varname_tmp4));
+					memset(varname_tmp5, '\0', sizeof(varname_tmp5));
+					memset(varname_tmp6, '\0', sizeof(varname_tmp6));
+
+					if (sscanf(cline," \"%[^,], %[^,], %[^,], %[^,], %[^,], %[^\"]\" : \"%[^,],%[^,],%[^,],%[^,], %[^,], %[^\"]\"",
+							varname_tmp1,varname_tmp2,varname_tmp3,varname_tmp4,varname_tmp5, varname_tmp6,
+							value_tmp1,value_tmp2,value_tmp3,value_tmp4,value_tmp5, value_tmp6) != 12) {
+						sprintf(errormessage,"Error in Input file, line %i, cannot read six object names and values!",lineno);
+						err(errormessage);
+					}
+
+					add_object_tolist(varname_tmp1, value_tmp1,&number_readobject, varname_list, value_list);
+					add_object_tolist(varname_tmp2, value_tmp2,&number_readobject, varname_list, value_list);
+					add_object_tolist(varname_tmp3, value_tmp3,&number_readobject, varname_list, value_list);
+					add_object_tolist(varname_tmp4, value_tmp4,&number_readobject, varname_list, value_list);
+					add_object_tolist(varname_tmp5, value_tmp5,&number_readobject, varname_list, value_list);
+					add_object_tolist(varname_tmp6, value_tmp6,&number_readobject, varname_list, value_list);
+
+					//very strange: code crashes if both lines are commented here!
+					//this only effects the last case of the switch!
+					//should though not affect anything as long as number_readobject keeps its value
+					//in this case a new object is allocated which is already there...
+
+					//varname_list = malloc(sizeof(*varname_list));
+					//value_list = malloc(sizeof(*value_list));
+					varname_list[number_readobject] = malloc(STRING_SIZE*sizeof(char*));
+
+					break;
 				case 13: // seven key-value pairs in line
 					//remove old data from strings
 					memset(value_tmp1, '\0', sizeof(value_tmp1));
