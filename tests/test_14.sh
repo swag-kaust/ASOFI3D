@@ -20,7 +20,7 @@ readonly TEST_ID="TEST_14"
 setup
 
 # Copy test data.
-cp "${TEST_PATH}/sofi3D.json"    tmp/in_and_out/
+cp "${TEST_PATH}/asofi3D.json"   tmp/in_and_out/
 cp "${TEST_PATH}/source.dat"     tmp/sources/
 
 compile_code

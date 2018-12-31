@@ -12,16 +12,16 @@ addpath('./utils');
 % Directory name with the simulation input and output, relative to this script.
 plot_opts.par_folder = '../par';
 % % Path to configuration file, relative to par_folder.
-plot_opts.config_file='./in_and_out/sofi3D.json';
+plot_opts.config_file='./in_and_out/asofi3D.json';
 plot_opts.file_out = [plot_opts.par_folder, '/figures/'];
 plot_opts.file_ext = '.bin.div';
 
 for phi2=0:15:90
     plot_opts.phi2 = phi2;
-    snap3D_ASOFI_fun(plot_opts);
+    snap3D_asofi3D_func(plot_opts);
 end
  
-function snap3D_ASOFI_fun(plot_opts)
+function snap3D_asofi3D_func(plot_opts)
 phi2 = plot_opts.phi2;
 par_folder = plot_opts.par_folder;
 config_file = plot_opts.config_file;

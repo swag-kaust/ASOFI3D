@@ -24,7 +24,7 @@ void seismo(int lsamp, int ntr, int **recpos, float **sectionvx, float **section
         float ***syy = s->yy;
         float ***szz = s->zz;
 
-	ins=lsamp; /* changed from "ins=lsamp/NDT;" (neccessary after correction of the buggy ns in sofi3D.c) */
+	ins=lsamp;
 	dh24x=1.0/DX;
 	dh24y=1.0/DY;
 	dh24z=1.0/DZ;

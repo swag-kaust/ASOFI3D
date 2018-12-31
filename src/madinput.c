@@ -1,12 +1,3 @@
-/*
- * Create the function
- * put it in fd.h
- * use in sofi3D.c
- *
- *
- * Mahesh Kalita 1st December, 2016
- *
- */
 #include <string.h>
 
 #include "fd.h"

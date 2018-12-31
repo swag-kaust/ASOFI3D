@@ -5,7 +5,7 @@ function D = merge_snapshots(par_folder, file_ext)
 % clear all
 % par_folder = '../par/';
 par_folder = [par_folder, '/'];
-jV = read_asofi3D_json([par_folder, 'in_and_out/sofi3D.json']);
+jV = read_asofi3D_json([par_folder, 'in_and_out/asofi3D.json']);
 
 snap_name = [par_folder, jV.SNAP_FILE, file_ext];
 

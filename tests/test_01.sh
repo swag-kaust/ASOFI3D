@@ -15,7 +15,7 @@ backup_default_model
 
 # Copy test model.
 cp "${TEST_PATH}/src/model_elastic.c"       src/
-cp "${TEST_PATH}/in_and_out/sofi3D.json"    tmp/in_and_out
+cp "${TEST_PATH}/in_and_out/asofi3D.json"   tmp/in_and_out
 cp "${TEST_PATH}/sources/source.dat"        tmp/sources/
 
 compile_code

@@ -118,8 +118,6 @@ float **pwsources(int *nsrc, int * stype){ /* plane wave excitation */
 
 		srcpos=fmatrix(1,6,1,*nsrc);
 
-
-		/*read from sofi3D.c */
 		fprintf(FP," x-range for plane wave: %d to %d gridpoints. \n",FW,ixend);
 		fprintf(FP," y-range for plane wave: %d to %d gridpoints. \n",FW,iyend);
 

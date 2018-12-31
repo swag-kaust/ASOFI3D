@@ -19,7 +19,7 @@ printf(" Institute of Technology, Karlsruhe, Germany         \n");
 printf(" http://www.gpi.kit.edu \n");
 printf(" ***********************************************************\n");
 printf("\n");
-printf(" Syntax example if excecuted from ./par directory: ../bin/snapmerge in_and_out/sofi3D.json \n");
+printf(" Syntax example if excecuted from ./par directory: ../bin/snapmerge in_and_out/asofi3D.json \n");
 }
 
 static int snapmerge(int argc, char **argv) {

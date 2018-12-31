@@ -39,8 +39,7 @@ printf(" Institute of Technology, Karlsruhe, Germany         \n");
 printf(" http://www.gpi.kit.edu \n");
 printf(" ***********************************************************\n");
 printf("\n");
-printf(" Syntax if excecuted from ./par directory: ../bin/snapmerge in_and_out/sofi3D.inp \n");
-printf(" Syntax if excecuted from ./par directory: ../bin/snapmerge in_and_out/sofi3D.json \n");
+printf(" Syntax if executed from ./par directory: ../bin/snapmerge in_and_out/ASOFI3D.inp \n");
 printf(" Input file for the snapmerge process from command line : %s \n",fileinp);
 
 /* read parameters from parameter-file */

@@ -22,7 +22,7 @@ fi
 # Compile the whole code.
 echo "$sep"
 echo "Compilation"
-make asofi3D
+make asofi3d
 if [ "$?" -eq 0 ]; then
     echo "Compilation successful"
 else
@@ -31,7 +31,7 @@ else
 fi
 
 # Add `bin` directory to $PATH to be able to execute programs
-# (sofi3d, snapmerge, etc.) without specifying the file path.
+# (asofi3d, snapmerge, etc.) without specifying the file path.
 script_dir="$(cd "$(dirname $0)" && pwd)"
 export PATH=${script_dir}/bin:$PATH
 
@@ -39,9 +39,9 @@ export PATH=${script_dir}/bin:$PATH
 pushd "$sim_dir" > /dev/null || exit 1
 
 # Run the code
-config_file="in_and_out/sofi3D.json"
+config_file="in_and_out/ASOFI3D.json"
 printf "Run code\n"
-mpirun -n $nmpiprocs nice -19 sofi3D $config_file | tee in_and_out/sofi3D.jout
+mpirun -n $nmpiprocs nice -19 asofi3D $config_file | tee in_and_out/ASOFI3D.log
 if [ $? -eq 0 ]; then
     echo "OK"
 else
@@ -64,5 +64,5 @@ popd > /dev/null || exit 1
 
 echo "$sep"
 echo "Done."
-script="./ASOFI3D/mfiles/snap3D_ASOFI.m"
+script="./ASOFI3D/mfiles/snap_ASOFI3D.m"
 printf "Run MATLAB script %s to see the wavefield.\n" "$script"

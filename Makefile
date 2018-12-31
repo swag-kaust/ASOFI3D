@@ -2,9 +2,9 @@
 all :
 	$(MAKE) --directory=src all
 
-.PHONY : asofi3D sofi3D asofi3d sofi3d
-asofi3D sofi3D asofi3d sofi3d :
-	$(MAKE) --directory=src sofi3D
+.PHONY : asofi3D sofi3D asofi3d sofi3d ASOFI3D
+asofi3D sofi3D asofi3d sofi3d ASOFI3D:
+	$(MAKE) --directory=src asofi3D
 
 .PHONY : clean
 clean :

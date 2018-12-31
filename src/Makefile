@@ -1,4 +1,4 @@
-# Makefile for SOFI3D
+# Makefile for ASOFI3D
 
 #--------------------------------------------------------
 # edit here
@@ -58,7 +58,7 @@ PARTMODEL_SCR = \
 	util.c
 
 
-SOFI3D_UTIL = \
+ASOFI3D_UTIL = \
 		absorb.c \
 		av_mat.c \
 		comm_ini.c \
@@ -98,7 +98,7 @@ SOFI3D_UTIL = \
 		zero_elastic_CPML.c \
 		rwsegy.c
 
-SOFI3D_SRC = \
+ASOFI3D_SRC = \
 		sofi3D.c \
 		comm_ini_s.c \
 		checkfd.c \
@@ -125,7 +125,7 @@ SOFI3D_SRC = \
 		source_random.c \
 		$(MODEL_SRC_E) \
 		$(MODEL_SRC_V) \
-		$(SOFI3D_UTIL) \
+		$(ASOFI3D_UTIL) \
 		merge_source_field.c \
 		write_source_field.c \
 		madinput.c 
@@ -155,7 +155,7 @@ SOFI3D_SRC_BENCH = \
 		readmod.c \
 		$(MODEL_SRC_BENCH) \
 		$(MODEL_SRC_V) \
-		$(SOFI3D_UTIL)
+		$(ASOFI3D_UTIL)
 
 SOFI3D_SRC_RSG = \
 		sofi3D_rsg.c \
@@ -170,7 +170,7 @@ SOFI3D_SRC_RSG = \
 		psource_rsg.c \
 		$(MODEL_SRC_E) \
 		$(MODEL_SRC_V) \
-		$(SOFI3D_UTIL)
+		$(ASOFI3D_UTIL)
 
 SOFI3D_SRC_ACOUSTIC = \
 		av_mat_acoustic.c \
@@ -192,9 +192,9 @@ SOFI3D_SRC_ACOUSTIC = \
 		psource_acoustic.c \
 		readmod_acoustic.c \
 		$(MODEL_SRC_A) \
-		$(SOFI3D_UTIL)
+		$(ASOFI3D_UTIL)
 
-SOFI3D_OBJ = $(SOFI3D_SRC:%.c=%.o)
+ASOFI3D_OBJ = $(ASOFI3D_SRC:%.c=%.o)
 SOFI3D_OBJ_RSG = $(SOFI3D_SRC_RSG:%.c=%.o)
 SOFI3D_OBJ_BENCH = $(SOFI3D_SRC_BENCH:%.c=%.o)
 SOFI3D_OBJ_ACOUSTIC = $(SOFI3D_SRC_ACOUSTIC:%.c=%.o)
@@ -203,7 +203,7 @@ SNAPMERGE_OBJ = $(SNAPMERGE_SCR:%.c=%.o)
 PARTMODEL_OBJ = $(PARTMODEL_SCR:%.c=%.o)
 SEISMERGE_OBJ = $(SEISMERGE_SCR:%.c=%.o)
 
-program_list = sofi3D seismerge snapmerge part_model sofi3D_acoustic 
+program_list = asofi3D seismerge snapmerge part_model sofi3D_acoustic 
 
 .PHONY: all
 all: clean print-config-auto.mk $(program_list)
@@ -214,14 +214,14 @@ clean:
 	find . -name "*.bck" -exec rm {} \;
 	find . -name "core"  -exec rm {} \;
 
-# Target `sofi3D` is defined only for user convenience and has empty recipe.
-.PHONY : sofi3D
-sofi3D: ../bin/sofi3D ;
+# Target `asofi3D` is defined only for user convenience and has empty recipe.
+.PHONY : asofi3D
+asofi3D: ../bin/asofi3D ;
 
 # Using built-in variable LINK.c defined as
 # LINK.c = $(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
 
-../bin/sofi3D: $(SOFI3D_OBJ)
+../bin/asofi3D: $(ASOFI3D_OBJ)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $^ $(LDLIBS) -o $@
 
 seismerge:	$(SEISMERGE_OBJ)

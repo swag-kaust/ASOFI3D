@@ -15,7 +15,7 @@ readonly TEST_ID="TEST_09"
 setup
 
 # Copy test model.
-cp "${TEST_PATH}/in_and_out/sofi3D-readmod=-1.json"  tmp/in_and_out/sofi3D.json
+cp "${TEST_PATH}/in_and_out/asofi3D-readmod=-1.json" tmp/in_and_out/asofi3D.json
 cp "${TEST_PATH}/sources/source.dat"                 tmp/sources/
 
 compile_code
@@ -25,7 +25,7 @@ logfile="ASOFI3D-readmod=-1.log"
 run_solver np=16 dir=tmp log="${logfile}"
 
 # Copy second parameter file.
-cp "${TEST_PATH}/in_and_out/sofi3D-readmod=1.json"  tmp/in_and_out/sofi3D.json
+cp "${TEST_PATH}/in_and_out/asofi3D-readmod=1.json" tmp/in_and_out/asofi3D.json
 
 # Run code.
 logfile="ASOFI3D-readmod=1.log"

@@ -76,7 +76,7 @@ def get_datasets(filename1, filename2):
         data2 = file2.getalldata()
     elif bin_format:
         top_dir = filename1.split('/')[0]
-        json_filename = os.path.join(top_dir, 'in_and_out', 'sofi3D.json')
+        json_filename = os.path.join(top_dir, 'in_and_out', 'ASOFI3D.json')
         params = read_asofi3d_json(json_filename)
 
         TSNAP1, TSNAP2 = params['TSNAP1'], params['TSNAP2']
