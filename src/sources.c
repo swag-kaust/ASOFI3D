@@ -47,11 +47,9 @@ float **sources(FILE * fpsrc, int *nsrc, int * stype){
 				srcpos[3][l]=iround(zsrc/DZ)*DZ/0.3048-REFSRC[2];
 			}
 			else {
-				//fprintf(FP," xsrc %6.2f  %5.2f \n",xsrc,DX);
 				srcpos[1][l]=iround(xsrc/DX)*DX-REFSRC[0];
 				srcpos[2][l]=iround(ysrc/DY)*DY-REFSRC[1];
 				srcpos[3][l]=iround(zsrc/DZ)*DZ-REFSRC[2];
-				//fprintf(FP," srcpos[1][l] %6.2f \n",srcpos[1][l]);
 			}
 			srcpos[4][l]=tshift+SRCTSHIFT*(l-1);
 		}

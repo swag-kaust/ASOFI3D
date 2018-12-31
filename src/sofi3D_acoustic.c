@@ -248,15 +248,6 @@ int main(int argc, char **argv){
 	if (!buff_addr) err("allocation failure for buffer for MPI_Bsend !");
 	MPI_Buffer_attach(buff_addr,buffsize);
 
-
-	/* allocation for request and status arrays */
-	// MPI_Request *req_send, *req_rec, *sreq_send, *sreq_rec;
-	// req_send=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
-	// req_rec=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
-	// sreq_send=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
-	// sreq_rec=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
-
-
 	/* allocation for timing arrays used for performance analysis */
 	time_v_update=dvector(1,NT);
 	time_s_update=dvector(1,NT);
@@ -665,10 +656,6 @@ int main(int argc, char **argv){
 
 		/* write seismograms to file(s) */
 		if (SEISMO){
-
-			/* saves seismograms portion of each PE individually to file */
-			//if (ntr>0) saveseis(FP,sectionvx,sectionvy,sectionvz,sectionp,sectioncurl,sectiondiv,recpos,recpos_loc,ntr,srcpos1,ishot,ns);
-
 			/* merge of seismogram data from all PE and output data collectively */
 			switch (SEISMO){
 			case 1 : /* particle velocities only */

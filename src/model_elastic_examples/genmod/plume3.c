@@ -13,7 +13,6 @@ float ***  taus, float ***  taup, float *  eta){
  
 	extern float DT, DH, *FL, TS;
 	extern int NX, NY, NZ, NXG, NYG, NZG, POS[4], L, MYID;
-//	extern char  MFILE[STRING_SIZE];
 	
 	/* local variables */
 	float muv, piv, ws;

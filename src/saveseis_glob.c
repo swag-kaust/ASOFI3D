@@ -12,7 +12,6 @@ void saveseis_glob(FILE *fp, float **sectiondata, int **recpos, int ntr,
 
 	extern int SEIS_FORMAT[6], RUN_MULTIPLE_SHOTS;
 	extern char  SEIS_FILE[STRING_SIZE];
-	//extern FILE *FP;
 
 	char vxf[STRING_SIZE], vyf[STRING_SIZE], vzf[STRING_SIZE], curlf[STRING_SIZE], divf[STRING_SIZE], pf[STRING_SIZE],file_ext[5];
 	int nsrc=1;
@@ -45,8 +44,6 @@ void saveseis_glob(FILE *fp, float **sectiondata, int **recpos, int ntr,
 		sprintf(pf,"%s_p.%s",SEIS_FILE,file_ext);
 
 	}
-
-	//fprintf(fp," Start writing merged data: ntr  %d  nsrc %d ns %d \n",ntr,nsrc, ns);
 
 	switch (sectiondatatype){
 	case 1 : /* particle velocities vx only */

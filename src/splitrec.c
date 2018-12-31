@@ -13,7 +13,6 @@ int **splitrec(int **recpos,int *ntr_loc, int ntr, int *recswitch)
 
 	extern int IENDX, IENDY, IENDZ, MYID, POS[4];
 	extern FILE *FP;
-	//extern float DX,DY,DZ;
 
 	int a,b,c,i=0,j,k;
 	int ** recpos_dummy, **recpos_local=NULL;

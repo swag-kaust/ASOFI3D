@@ -136,10 +136,6 @@ int main(int argc, char **argv)
     MPI_Comm_size(MPI_COMM_WORLD, &NP);
     MPI_Comm_rank(MPI_COMM_WORLD, &MYID);
 
-    // Assign each MPI process to a GPU
-    // acc_init(acc_device_nvidia);
-    // acc_set_device_num(MYID, acc_device_nvidia);
-
     setvbuf(stdout, NULL, _IONBF, 0);
 
     /* Initialize clock for estimating runtime of program. */
@@ -233,8 +229,6 @@ int main(int argc, char **argv)
     lsnap = iround(TSNAP1 / DT); /* first snapshot at this timestep */
     if (((ns < 0) && (MYID == 0)) && (SEISMO > 0))
     {
-        //fprintf(FP," \nSampling interval for seismogram output (DT) : %f \n\n",DT);
-        //fprintf(FP," \nSampling interval shift (NDTSHIFT) : %i , TIME : %f NT : %i NDT : %i \n\n",NDTSHIFT,TIME, NT,NDT);
         fprintf(FP, " \nSampling rate for seismogram output (NDT) is out of limit : %i \n\n", ns);
         err(" Check Sampling rate for seismogram output (NDT)!");
     }
@@ -264,7 +258,6 @@ int main(int argc, char **argv)
         ntr_glob = ntr;
         ntr = ntr_loc;
         fprintf(FP,"SEISMO = %d, ntr = %d\n\n", ntr, SEISMO);
-        // getchar();
     }
 
     /* number of seismogram sections which have to be stored in core memory*/
@@ -367,13 +360,6 @@ int main(int argc, char **argv)
     if (!buff_addr)
         err("allocation failure for buffer for MPI_Bsend !");
     MPI_Buffer_attach(buff_addr, buffsize);
-
-    /* allocation for request and status arrays */
-    // MPI_Request *req_send, *req_rec, *sreq_send, *sreq_rec;
-    // req_send = (MPI_Request *)malloc(REQUEST_COUNT * sizeof(MPI_Request));
-    // req_rec = (MPI_Request *)malloc(REQUEST_COUNT * sizeof(MPI_Request));
-    // sreq_send = (MPI_Request *)malloc(REQUEST_COUNT * sizeof(MPI_Request));
-    // sreq_rec = (MPI_Request *)malloc(REQUEST_COUNT * sizeof(MPI_Request));
 
     /* allocation for timing arrays used for performance analysis */
     time_v_update = dvector(1, NT);
@@ -698,21 +684,12 @@ int main(int argc, char **argv)
         // Madagascar
 
         if (RSF) madinput(RSFDEN,rho);
-        //mad_elastic(rho, pi, u, C11, C12, C13, C22, C23, C33, C44, C55, C66);
 
         if (RUN_MULTIPLE_SHOTS)
             nshots = nsrc;
         else
             nshots = 1;
-        /*printf("\n ------------------ checkfd by MYID %i -------------------- \n", MYID);*/
-        /* check if the FD run will be stable and free of numerical dispersion */
         checkfd(FP, rho, pi, u, taus, taup, eta, srcpos, nsrc, recpos, ntr_glob);
-
-        /* calculate 3-D array for exponential damping of reflections
-           at the edges of the numerical mesh (PML-boundary)*/
-        /*if(ABS_TYPE==1){
-          absorb_PML(absorb_coeffx, absorb_coeffy, absorb_coeffz);
-          }*/
 
         /* calculate damping coefficients for CPML boundary*/
         if (ABS_TYPE == 1)
@@ -833,40 +810,6 @@ int main(int argc, char **argv)
 
             /* calculate wavelet for each source point */
             signals = wavelet(srcpos_loc, nsrc_loc);
-
-            // if (irtm > 0)
-            // {
-            //     // sustrip <
-
-            //     // free_matrix()
-            //     ntr = ntr_glob;
-            //     srcpos = fmatrix(1, 6, 1, ntr);
-            //     srcpos_loc = fmatrix(1, 6, 1, ntr);
-            //     stype = ivector(1, ntr);
-            //     stype_loc = ivector(1, ntr);
-            //     for (int ii = 1; ii <= ntr; ii++)
-            //     {
-            //         srcpos_loc[1][ii] = recpos_loc[1][ii];
-            //         srcpos_loc[2][ii] = recpos_loc[2][ii];
-            //         srcpos_loc[3][ii] = recpos_loc[3][ii];
-
-            //         srcpos[1][ii] = recpos[1][ii]; // x
-            //         srcpos[2][ii] = recpos[2][ii]; // y
-            //         srcpos[3][ii] = recpos[3][ii]; // z
-            //         srcpos[4][ii] = 0.0;           // tshift
-            //         srcpos[5][ii] = 1.0;           // fc
-            //         srcpos[6][ii] = 5;             // stype??
-
-            //         fprintf(FP, "\n WE ARE INSIDE \n");
-            //     }
-            //     nsrc = ntr;
-            //     nsrc_loc = ntr_loc;
-
-            //     signals = wavelet(srcpos_loc, nsrc_loc);
-
-            // 	fprintf(FP, "nsrc = %d  nsrc_loc = %d",nsrc, nsrc_loc);
-            //     // srcpos_loc = splitsrc(srcpos,&nsrc_loc, nsrc, stype_loc, stype);
-            // }
 
             /* output of calculated wavelet for each source point */
 
@@ -1229,10 +1172,8 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                 }
 
                 /* save snapshot in file */
-                // fprintf(FP,"SNAP = %d, nt = %d, lsnap = %d, TSNAP2 / DT = %f\n\n", SNAP, nt, lsnap, TSNAP2 / DT);
                 if ((SNAP) && (nt == lsnap) && (nt <= TSNAP2 / DT))
                 {
-                    // fprintf(FP,"irtm = %d !!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n\n", irtm);
                     snap(FP, nt, ++nsnap, SNAP_FORMAT, SNAP, &v, &s, u, pi,
                             IDX, IDY, IDZ, 1, 1, 1, NX, NY, NZ);
                     lsnap = lsnap + iround(TSNAPINC / DT);
@@ -1255,9 +1196,6 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
             /* write seismograms to file(s) */
             if (SEISMO)
             {
-                /* saves seismograms portion of each PE individually to file */
-                //if (ntr>0) saveseis(FP,sectionvx,sectionvy,sectionvz,sectionp,sectioncurl,sectiondiv,recpos,recpos_loc,ntr,srcpos1,ishot,ns);
-
                 /* merge of seismogram data from all PE and output data collectively */
                 switch (SEISMO)
                 {

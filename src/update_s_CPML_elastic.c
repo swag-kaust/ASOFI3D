@@ -61,8 +61,8 @@ double update_s_CPML_elastic(
 			break;
 		default:
 			b1=9.0/8.0; b2=-1.0/24.0;
-			//warning(" Warning in function update_s_ssg_CPML_elastic : CPML Update of FDORDER > 4 not implemented yet, coefficients of FDORDER==4 are used instead!");
-			//warning is issued in checkfd_ssg, section "ABSORBING BOUNDARY"
+			//warning(" Warning in function update_s_CPML_elastic : CPML Update of FDORDER > 4 not implemented yet, coefficients of FDORDER==4 are used instead!");
+			//warning is issued in checkfd, section "ABSORBING BOUNDARY"
 			break;
 		}
 	}
@@ -79,7 +79,7 @@ double update_s_CPML_elastic(
 		default:
 			b1=1.1382; b2=-0.046414;
 			//warning(" Warning in function update_s_ssg_CPML_elastic : CPML Update of FDORDER > 4 not implemented yet, coefficients of FDORDER==4 are used instead!");
-			//warning is issued in checkfd_ssg, section "ABSORBING BOUNDARY"
+			//warning is issued in checkfd, section "ABSORBING BOUNDARY"
 			break;
 		}
 	}

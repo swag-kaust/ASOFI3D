@@ -499,7 +499,6 @@ int DDN_wtraceh(FILE * outstream, int lbendian, int ieeeibm, int meterfeet, int 
 	extern float DX, DY, DZ, REFREC[4];
 	
 	float fnull=0.0, fh=0.0, xshot=0.0, yshot=0.0, zshot=0.0, y, z, scalefac;
-	//float x;
 	short snull=0, sone=1, sh=0, scalef;
 	unsigned short /*uh=0,*/ udt, uns;
 	int inull=0, ione=1, ih=0, n=0, m, scoo[3], gcoo[3], gwdep, gdel, tracl, offset, scale, doswap=0;

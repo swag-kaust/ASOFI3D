@@ -510,8 +510,6 @@ void read_par_json(FILE *fp, char *fileinp){
 			break;
 		}
 		(get_float_from_objectlist("FREF",number_readobjects,&FREF,varname_list, value_list));
-		//	err("Variable FREF could not be retrieved from the json input file!");
-
 		/* in the viscoelastic case : reference frequency where no velocity dispersion occurs */
 	}
 	if (L) {

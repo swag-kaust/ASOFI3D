@@ -121,7 +121,7 @@ double update_s_CPML(
 			break;
 		default:
 			b1=9.0/8.0; b2=-1.0/24.0;
-			//warning(" Warning in function update_s_ssg_CPML : CPML Update of FDORDER > 4 not implemented yet, coefficients of FDORDER==4 are used instead!");
+			//warning("Warning in function update_s_CPML: CPML Update of FDORDER > 4 not implemented yet, coefficients of FDORDER==4 are used instead!");
 			//warning is issued in checkfd_ssg, section "ABSORBING BOUNDARY"
 			break;
 		}

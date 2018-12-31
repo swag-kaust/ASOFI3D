@@ -84,7 +84,6 @@ void merge(int nsnap, int type)
                 fp[jp][ip][kp] = fopen(file, "r");
                 if (fp[jp][ip][kp] == NULL)
                 {
-                    //err("merge: can't read snapfile !");
                     err(file);
                 }
             }
