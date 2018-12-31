@@ -16,6 +16,8 @@
 #include <stdarg.h>
 
 #include "fd.h"
+#include "globvar.h"
+
 
 // The need for using NR_END is described on pages 940--941 of [1].
 #define NR_END 1

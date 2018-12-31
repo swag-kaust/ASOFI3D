@@ -2,8 +2,10 @@
  *   Source excitation using Moment tensor for simulation of earthquakes
  *  ----------------------------------------------------------------------*/
 
-#include "fd.h"
 #include "data_structures.h"
+#include "fd.h"
+#include "globvar.h"
+
 
 void eqsource(int nt, Tensor3d *s,
         float **  srcpos_loc, float ** signals, int nsrc, int * stype,

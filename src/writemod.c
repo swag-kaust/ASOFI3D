@@ -1,4 +1,5 @@
 #include "fd.h"
+#include "globvar.h"
 
 
 /*

@@ -5,6 +5,8 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "globvar.h"
+
 
 void PML_ini_acoustic(int * xa, int * xb, int * ya, int * yb, int * za, int * zb){
 

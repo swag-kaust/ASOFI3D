@@ -4,6 +4,8 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "globvar.h"
+
 
 void av_mat(float *** rho, 
         float *** C44, float *** C55, float *** C66,

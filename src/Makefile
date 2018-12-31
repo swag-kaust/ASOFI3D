@@ -101,22 +101,22 @@ SOFI3D_UTIL = \
 SOFI3D_SRC = \
 		sofi3D.c \
 		comm_ini_s.c \
-		checkfd_ssg.c \
+		checkfd.c \
 		CPML_coeff.c \
 		CPML_ini_elastic.c\
 		eqsource.c \
-		seismo_ssg.c \
+		seismo.c \
 		matcopy.c \
 		memory.c \
-		surface_ssg.c \
-		surface_ssg_elastic.c \
-		update_s_ssg.c \
-		update_s_ssg_elastic.c \
-		update_s_ssg_CPML.c \
-		update_s_ssg_CPML_elastic.c \
-		update_v_ssg.c \
-		update_v_ssg_CPML.c \
-		snap_ssg.c \
+		surface.c \
+		surface_elastic.c \
+		update_s.c \
+		update_s_elastic.c \
+		update_s_CPML.c \
+		update_s_CPML_elastic.c \
+		update_v.c \
+		update_v_CPML.c \
+		snap.c \
 		exchange_v.c \
 		exchange_s.c \
 		psource.c \
@@ -133,22 +133,22 @@ SOFI3D_SRC = \
 SOFI3D_SRC_BENCH = \
 		sofi3D.c \
 		comm_ini_s.c \
-		checkfd_ssg.c \
+		checkfd.c \
 		CPML_coeff.c \
 		CPML_ini_elastic.c\
 		eqsource.c \
-		seismo_ssg.c \
+		seismo.c \
 		matcopy.c \
 		memory.c \
-		surface_ssg.c \
-		surface_ssg_elastic.c \
-		update_s_ssg.c \
-		update_s_ssg_elastic.c \
-		update_s_ssg_CPML.c \
-		update_s_ssg_CPML_elastic.c \
-		update_v_ssg.c \
-		update_v_ssg_CPML.c \
-		snap_ssg.c \
+		surface.c \
+		surface_elastic.c \
+		update_s.c \
+		update_s_elastic.c \
+		update_s_CPML.c \
+		update_s_CPML_elastic.c \
+		update_v.c \
+		update_v_CPML.c \
+		snap.c \
 		exchange_v.c \
 		exchange_s.c \
 		psource.c \
@@ -177,7 +177,7 @@ SOFI3D_SRC_ACOUSTIC = \
 		sofi3D_acoustic.c \
 		checkfd_acoustic.c \
 		comm_ini_acoustic.c \
-		seismo_ssg_acoustic.c \
+		seismo_acoustic.c \
 		matcopy_acoustic.c \
 		surface_acoustic.c \
 		PML_ini_acoustic.c \
@@ -186,7 +186,7 @@ SOFI3D_SRC_ACOUSTIC = \
 		update_v_acoustic.c \
 		update_s_acoustic_PML.c \
 		update_v_acoustic_PML.c \
-		snap_ssg_acoustic.c \
+		snap_acoustic.c \
 		exchange_v_acoustic.c \
 		exchange_s_acoustic.c \
 		psource_acoustic.c \

@@ -1,4 +1,6 @@
 #include "fd.h"
+#include "globvar.h"
+
 
 /*
  * Exchange parameters read from the parameter file between the MPI processes.

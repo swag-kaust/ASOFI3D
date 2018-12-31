@@ -6,6 +6,8 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "globvar.h"
+
 
 void matcopy_acoustic(float *** rho, float *** pi){
 

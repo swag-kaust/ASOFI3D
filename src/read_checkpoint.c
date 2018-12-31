@@ -1,8 +1,10 @@
 /* ----------------------------------------------------------------------
  * reads checkpoint file for the continuation of a simulation
  ----------------------------------------------------------------------*/
-#include "fd.h"
 #include "data_structures.h"
+#include "fd.h"
+#include "globvar.h"
+
 
 static void read_value(float *dst, FILE *fp);
 

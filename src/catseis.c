@@ -4,6 +4,8 @@
   *------------------------------------------------------------- */
 
 #include "fd.h"
+#include "globvar.h"
+
 
 void	catseis(float **data, float **fulldata, int *recswitch, int ntr_glob, int ns) {
 

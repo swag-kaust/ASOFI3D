@@ -10,6 +10,8 @@
  ------------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "globvar.h"
+
 
 void absorb(float *** absorb_coeff){
 

@@ -5,6 +5,8 @@
 
 #include "data_structures.h"
 #include "fd.h"
+#include "globvar.h"
+
 
 void psource(int nt, Tensor3d *s, float **srcpos_loc, float **signals, int nsrc, int *stype)
 {

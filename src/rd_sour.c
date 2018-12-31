@@ -3,6 +3,8 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "globvar.h"
+
 
 float *rd_sour(int *nts,FILE* fp_source){
 

@@ -4,7 +4,9 @@
  *
  *  ----------------------------------------------------------------------*/
 #include "fd.h"
+#include "globvar.h"
 #include "segy.h"
+
 
 void  output_source_signal(FILE *fp, float **signals, int ns, int seis_form){
 

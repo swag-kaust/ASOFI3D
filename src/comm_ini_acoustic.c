@@ -5,6 +5,8 @@
   *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "globvar.h"
+
 
 void comm_ini_acoustic(float *** bufferlef_to_rig, float *** bufferrig_to_lef, 
 float *** buffertop_to_bot, float *** bufferbot_to_top, 

@@ -1,68 +1,68 @@
 #ifndef GLOBVAR_H
 #define GLOBVAR_H
-/*------------------------------------------------------------------------
- *   globvar.h - global variables used in SOFI3D
- *
- *  ----------------------------------------------------------------------*/
+/*
+ * Provide declaration of the global variables.
+ * For the names of the global variables uppercase letters are used.
+ * 
+ * See read_par_json.c for the definition of these variables.
+ */
 #include <stdio.h>
 
 #include "constants.h"
 
-/* definition of global variables used in the finite difference programs*/
-/* For the names of the global variables
-   uppercase letters are used */
 //Imaging
-int   RTM_FLAG=0;
+extern int   RTM_FLAG;
 
 
 //MADAGASCAR VAR start
-int  RSF=1;
-char RSFDEN[STRING_SIZE];
+extern int  RSF;
+extern char RSFDEN[STRING_SIZE];
 //MADAGASCAR VAR end
 
 
-float DX=0.0, DY=0.0, DZ=0.0, TIME=0.0, DT=0.0, TS=0.0, PLANE_WAVE_DEPTH=0.0, PLANE_WAVE_ANGLE=0.0;
-float TSNAP1=0.0, TSNAP2=0.0, TSNAPINC=0.0, *FL=NULL, TAU=0.0, FREF=0.0, REC_ARRAY_DEPTH=0.0, REC_ARRAY_DIST=0.0;
-float XREC1=0.0, XREC2=0.0, YREC1=0.0, YREC2=0.0, ZREC1=0.0, ZREC2=0.0;
-float REFREC[4]={0.0, 0.0, 0.0, 0.0}, DAMPING=8.0, VPPML=0.0, FPML=0.0, NPOWER=2.0, K_MAX_CPML=10.0;
-float SOURCE_ALPHA=0.0, SOURCE_BETA=0.0;
-float AMON=0.0, STR=0.0, DIP=0.0, RAKE=0.0;
+extern float DX, DY, DZ, TIME, DT, TS, PLANE_WAVE_DEPTH, PLANE_WAVE_ANGLE;
+extern float TSNAP1, TSNAP2, TSNAPINC, *FL, TAU, FREF, REC_ARRAY_DEPTH, REC_ARRAY_DIST;
+extern float XREC1, XREC2, YREC1, YREC2, ZREC1, ZREC2;
+extern float REFREC[4], DAMPING, VPPML, FPML, NPOWER, K_MAX_CPML;
+extern float SOURCE_ALPHA, SOURCE_BETA;
+extern float AMON, STR, DIP, RAKE;
 
 // Moment tensor components.
-float M11 = 0.0, M12 = 0.0, M13 = 0.0, M22 = 0.0, M23 = 0.0, M33 = 0.0;
+extern float M11, M12, M13, M22, M23, M33;
 
-int   SEISMO=0, NDT=1, NDTSHIFT=0, NGEOPH=0, SEIS_FORMAT[6]={0, 0, 0, 0, 0, 0}, FREE_SURF=0, READMOD=0;
-int   READREC=0, REC_ARRAY=0, LOG=0, FDORDER=2, FDORDER_TIME=2, FW=0, ABS_TYPE=0, BLOCK=0;
-int   NX=1, NY=1, NZ=1, NT=0, SOURCE_SHAPE=0, SOURCE_TYPE=0, SNAP=0, SNAP_FORMAT=0, BOUNDARY=0, SRCREC=0;
-int   CHECKPTREAD=0, CHECKPTWRITE=0, SNAP_PLANE=0;
-int   NXG=1, NYG=1, NZG=1, IDX=1, IDY=1, IDZ=1, L=1, NX1=1, NX2=1, NY1=1, NY2=1, NZ1=1, NZ2=1, DRX=0, DRZ=0;
-int   RUN_MULTIPLE_SHOTS=0, FDCOEFF=0, WRITE_MODELFILES=2;
-int   OUTNTIMESTEPINFO=1; /*every OUTNTIMESTEPINFO th timestep, information on the time step will be given to screen/file */
-int   OUTSOURCEWAVELET=0;
-char  SNAP_FILE[STRING_SIZE]="", SOURCE_FILE[STRING_SIZE]="", SIGNAL_FILE[STRING_SIZE]="";
-char  MFILE[STRING_SIZE]="", REC_FILE[STRING_SIZE]="", LOG_FILE[STRING_SIZE]="", CHECKPTFILE[STRING_SIZE]="";
-char  SEIS_FILE[STRING_SIZE]="";
-char  FILEINP[STRING_SIZE]; /* input file name (appears in SEG-Y header) */
-FILE  *FP=NULL;
+extern int SEISMO, NDT, NDTSHIFT, NGEOPH, SEIS_FORMAT[6], FREE_SURF, READMOD;
+extern int READREC, REC_ARRAY, LOG, FDORDER, FDORDER_TIME, FW, ABS_TYPE, BLOCK;
+extern int NX, NY, NZ, NT, SOURCE_SHAPE, SOURCE_TYPE, SNAP, SNAP_FORMAT, BOUNDARY, SRCREC;
+extern int CHECKPTREAD, CHECKPTWRITE, SNAP_PLANE;
+extern int NXG, NYG, NZG, IDX, IDY, IDZ, L, NX1, NX2, NY1, NY2, NZ1, NZ2, DRX, DRZ;
+extern int RUN_MULTIPLE_SHOTS, FDCOEFF, WRITE_MODELFILES;
+extern int OUTNTIMESTEPINFO; /*every OUTNTIMESTEPINFO th timestep, information on the time step will be given to screen/file */
+extern int OUTSOURCEWAVELET;
+
+extern char SNAP_FILE[STRING_SIZE], SOURCE_FILE[STRING_SIZE], SIGNAL_FILE[STRING_SIZE];
+extern char MFILE[STRING_SIZE], REC_FILE[STRING_SIZE], LOG_FILE[STRING_SIZE], CHECKPTFILE[STRING_SIZE];
+extern char SEIS_FILE[STRING_SIZE];
+extern char FILEINP[STRING_SIZE]; /* input file name (appears in SEG-Y header) */
+extern FILE *FP;
 
 // Default for personal computers: Little Endian, ASCII, IEEE, which are
 // encoded with "zero" values in the next line.
-int   LITTLEBIG=0, ASCIIEBCDIC=0, IEEEIBM=0;
-int   SOFI3DVERS; /* version of SOFI3D 33: current 3D isotropic elastic (SSG), version of SOFI3D 32: current 3D isotropic acoustic (SSG) */
+extern int LITTLEBIG, ASCIIEBCDIC, IEEEIBM;
+extern int SOFI3DVERS; /* version of SOFI3D 33: current 3D isotropic elastic (SSG), version of SOFI3D 32: current 3D isotropic acoustic (SSG) */
 
-// MPI variables
-int   NP, NPSP, NPROC, NPROCX, NPROCY, NPROCZ, MYID, IENDX, IENDY, IENDZ;
-int   POS[4], INDEX[7];
-int TAG1 = 1, TAG2 = 2, TAG3 = 3, TAG4 = 4, TAG5 = 5, TAG6 = 6;
+// MPI variables.
+extern int NP, NPSP, NPROC, NPROCX, NPROCY, NPROCZ, MYID, IENDX, IENDY, IENDZ;
+extern int POS[4], INDEX[7];
+extern const int TAG1, TAG2, TAG3, TAG4, TAG5, TAG6;
 
-float FC=0.0,AMP=1.0, REFSRC[3]={0.0, 0.0, 0.0}, SRC_DT, SRCTSHIFT=0.0;
-int SRC_MF=0, SIGNAL_FORMAT[6]={0, 0, 0, 0, 0, 0};
-int SRCOUT_PAR[6]={0, 0, 0, 0, 0, 0}, FSRC=1, JSRC=2147483647, LSRC=0;
-char SRCOUT_FILE[STRING_SIZE]="";
+extern float FC, AMP, REFSRC[3], SRC_DT, SRCTSHIFT;
+extern int SRC_MF, SIGNAL_FORMAT[6];
+extern int SRCOUT_PAR[6], FSRC, JSRC, LSRC;
+extern char SRCOUT_FILE[STRING_SIZE];
 
 // Model parameters for model generation.
-float VPV1, VSV1, EPSX1, EPSY1, DELX1, DELY1, DELXY1;
-float GAMX1, GAMY1, RHO1, DH1;
-float VPV2, VSV2, EPSX2, EPSY2, DELX2, DELY2, DELXY2;
-float GAMX2, GAMY2, RHO2, DH2;
+extern float VPV1, VSV1, EPSX1, EPSY1, DELX1, DELY1, DELXY1;
+extern float GAMX1, GAMY1, RHO1, DH1;
+extern float VPV2, VSV2, EPSX2, EPSY2, DELX2, DELY2, DELXY2;
+extern float GAMX2, GAMY2, RHO2, DH2;
 #endif /* ifndef GLOBVAR_H */

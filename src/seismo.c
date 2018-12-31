@@ -3,8 +3,9 @@
      in arrays
  *  ----------------------------------------------------------------------*/
 
-#include "fd.h"
 #include "data_structures.h"
+#include "fd.h"
+#include "globvar.h"
 
 void seismo(int lsamp, int ntr, int **recpos, float **sectionvx, float **sectionvy, 
         float **sectionvz, float **sectiondiv, float **sectioncurl, float **sectionp,

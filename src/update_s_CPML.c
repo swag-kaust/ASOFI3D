@@ -1,5 +1,6 @@
-#include "fd.h"
 #include "data_structures.h"
+#include "fd.h"
+#include "globvar.h"
 
 #ifdef __GNUC__
 	#define ATTR_UNUSED __attribute__((unused))

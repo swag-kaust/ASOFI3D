@@ -1,5 +1,7 @@
-#include "fd.h"
 #include "data_structures.h"
+#include "fd.h"
+#include "globvar.h"
+
 
 /*
  * Exchange particle velocities at the grid boundaries between MPI processes.

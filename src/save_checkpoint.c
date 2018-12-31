@@ -2,8 +2,9 @@
  *  saves checkpoint file for a later continuation of a simulation
  *
  ---------------------------------------------------------------------- */
-#include "fd.h"
 #include "data_structures.h"
+#include "fd.h"
+#include "globvar.h"
 
 void save_checkpoint(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
         Velocity *v, Tensor3d *s, Tensor3d *r,

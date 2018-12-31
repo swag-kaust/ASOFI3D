@@ -4,6 +4,8 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "globvar.h"
+
 
 void CPML_ini_elastic(int * xb, int * yb, int * zb){
 

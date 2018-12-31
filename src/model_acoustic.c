@@ -3,6 +3,8 @@
  ---------------------------------------------------------------------- */
 
 #include "fd.h"
+#include "globvar.h"
+
 
 void model_acoustic(float  ***  rho, float ***  pi){
 

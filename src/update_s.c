@@ -1,5 +1,7 @@
 #include "fd.h"
 #include "data_structures.h"
+#include "globvar.h"
+
 
 /**
  * Update stress for the viscoelastic model by a staggered grid scheme.

@@ -4,7 +4,10 @@
  *	 
  ---------------------------------------------------------------------- */
 
- #include "fd.h"
+#include "fd.h"
+#include "globvar.h"
+
+
 int **splitrec(int **recpos,int *ntr_loc, int ntr, int *recswitch)
 {
 

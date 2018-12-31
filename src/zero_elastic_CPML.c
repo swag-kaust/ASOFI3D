@@ -3,8 +3,9 @@
  *
  * ----------------------------------------------------------------------*/
 
-#include "fd.h"
 #include "data_structures.h"
+#include "fd.h"
+#include "globvar.h"
 
 
 void zero_elastic_CPML(int NX, int NY, int NZ, Velocity *v,

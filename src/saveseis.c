@@ -3,6 +3,7 @@
  *------------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "globvar.h"
 
 void saveseis(FILE *fp, float **sectionvx, float **sectionvy,float **sectionvz,
 		float **sectionp, float **sectioncurl, float **sectiondiv,

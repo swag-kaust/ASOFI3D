@@ -5,6 +5,7 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "globvar.h"
 
 
 void mergemod(char modfile[STRING_SIZE], int format){

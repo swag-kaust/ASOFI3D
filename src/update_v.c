@@ -1,5 +1,6 @@
-#include "fd.h"
 #include "data_structures.h"
+#include "fd.h"
+#include "globvar.h"
 
 /**
  * Update particle velocities by a staggered grid finite-difference scheme.

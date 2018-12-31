@@ -4,6 +4,9 @@
  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "globvar.h"
+
+
 float **splitsrc(float **srcpos,int *nsrc_loc, int nsrc, int * stype_loc, int *stype)
 {
 

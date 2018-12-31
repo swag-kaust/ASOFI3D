@@ -3,8 +3,10 @@
  *
  *  ----------------------------------------------------------------------*/
 
-#include "fd.h"
 #include "data_structures.h"
+#include "fd.h"
+#include "globvar.h"
+
 
 void surface_elastic(int ndepth, float *** u, float *** pi,
         Tensor3d *s,

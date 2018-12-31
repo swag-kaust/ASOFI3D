@@ -10,9 +10,9 @@
  * Computers @ Geosciences, Vol. 28, No. 8, 887-889.
  *
  *  ----------------------------------------------------------------------*/
+#include "data_structures.h"
 #include "fd.h"
 #include "globvar.h"
-#include "data_structures.h"
 //#include "openacc.h"
 
 

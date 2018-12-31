@@ -10,6 +10,8 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "globvar.h"
+
 
 void model_visco(float  ***  rho, float ***  pi, float ***  u,
 		float ***  taus, float ***  taup, float *  eta){

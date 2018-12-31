@@ -1,6 +1,8 @@
 #include "data_structures.h"
 #include "enum.h"
 #include "fd.h"
+#include "globvar.h"
+
 
 /**
  * Add general moment tensor source for simulation of earthquakes.

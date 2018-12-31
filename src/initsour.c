@@ -6,6 +6,8 @@
 ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "globvar.h"
+
 
 int initsour(int nxs,int nys, int  nzs, int *nxsl,int *nysl, int  *nzsl )
 {

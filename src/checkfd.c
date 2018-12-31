@@ -9,6 +9,8 @@
 #include <libgen.h>
 #include <unistd.h>
 #include "fd.h"
+#include "globvar.h"
+
 
 void checkfd(FILE *fp, float *** prho, float *** ppi, float *** pu,
 		float *** ptaus, float *** ptaup, float *peta, float **srcpos, int nsrc, int **recpos, int ntr){

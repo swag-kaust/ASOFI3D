@@ -5,6 +5,8 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "globvar.h"
+
 
 void timing(double * time_v_update,  double * time_s_update, double * time_s_exchange, double * time_v_exchange,
             double * time_timestep, int ishot){

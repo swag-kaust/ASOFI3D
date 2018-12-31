@@ -8,7 +8,10 @@
 
 #include <libgen.h>
 #include <unistd.h>
+
 #include "fd.h"
+#include "globvar.h"
+
 
 void checkfd_acoustic(FILE *fp, float *** prho, float *** ppi, float **srcpos, int nsrc, int **recpos, int ntr){
 
