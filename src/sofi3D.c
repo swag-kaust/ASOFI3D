@@ -1289,8 +1289,6 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
 
                         break;
                     case 4: /* everything */
-                        /*fprintf(FP," start merging, ntr= %d : \n",ntr_glob);
-                          fprintf(stdout,"Message from PE %d\n",MYID);*/
                         catseis(sectionvx, seismo_fulldata, recswitch, ntr_glob, ns);
                         if (MYID == 0)
                             saveseis_glob(FP, seismo_fulldata, recpos, ntr_glob, srcpos, ishot, ns, 1);

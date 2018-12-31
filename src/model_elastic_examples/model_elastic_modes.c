@@ -138,36 +138,6 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
 						// leftovers from isotropic case -- necessary for PML
 						u[jj][ii][kk]=muv;
 						pi[jj][ii][kk]=piv;
-						/*VTI
-						  C11[jj][ii][kk] = (1+2*Epsx)*Rho*Vpv*Vpv;
-						  C22[jj][ii][kk] = C11[jj][ii][kk];
-						  C33[jj][ii][kk] = Rho*Vpv*Vpv;
-						  C66[jj][ii][kk] = Rho*Vsv*Vsv;
-						  C12[jj][ii][kk] = C11[jj][ii][kk] - 2*C66[jj][ii][kk];
-						  C13[jj][ii][kk]=Rho*sqrt((Vpv*Vpv-Vsv*Vsv)*((1+2*Delx)*Vpv*Vpv-Vsv*Vsv))-Rho*Vsv*Vsv;
-						  C23[jj][ii][kk]=C13[jj][ii][kk];
-						  C44[jj][ii][kk]=Rho*Vsv*Vsv/(1+2*Gamx);
-						  C55[jj][ii][kk]=Rho*Vsv*Vsv/(1+2*Gamx);
-						  rho[jj][ii][kk]=Rho;                        
-						 */
-						//ORTHO 123 in SOFI sense
-						/*C_33 = Rho*Vpv*Vpv;
-						C_55 = Rho*Vsv*Vsv;
-						C_66 = (1+2*gamma_1)*C_55;
-						C_11 = (1+2*eps_2)*C_33;
-						C_44 = C_66/(1+2*gamma_2);
-						
-						C11[jj][ii][kk]=C_11;
-						C22[jj][ii][kk]=(1+2*eps_1)*C_33;
-						C33[jj][ii][kk]=C_33;
-						
-						C44[jj][ii][kk]=C_44;
-						C55[jj][ii][kk]=C_55;
-						C66[jj][ii][kk]=C_66;
-											
-						C12[jj][ii][kk]=-C_66+sqrt(2*delta_3*C_11*(C_11-C_66) + (C_11-C_66)*(C_11-C_66));
-						C13[jj][ii][kk]=-C_55+sqrt(2*delta_2*C_33*(C_33-C_55) + (C_33-C_55)*(C_33-C_55));
-						C23[jj][ii][kk]=-C_44+sqrt(2*delta_1*C_33*(C_33-C_44) + (C_33-C_44)*(C_33-C_44));*/
 
 
 						//ORTHO humane flipped axis 2-3 indices (so that the third axis is vertical)

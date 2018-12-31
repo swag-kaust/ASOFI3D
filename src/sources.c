@@ -115,15 +115,6 @@ float **pwsources(int *nsrc, int * stype){ /* plane wave excitation */
 		tan_phi=tan(PLANE_WAVE_ANGLE*PI/180.0);
 		fprintf(FP," Message from function sources (written by PE %d):\n",MYID);				
 
-
-		/*code relic, not quite sure about the purpose */
-		/*if (PLANE_WAVE_ANGLE==0.0) ifw=1;
-		if (PLANE_WAVE_ANGLE==0.0) ixend=NXG;
-		else ixend=iround((((float)(FW*DX))+(((float)NYG*DY-((float)(FW*DX))-PLANE_WAVE_DEPTH)/tan_phi))/DX);
-
-
-		if (ixend>(NXG-ifw+1)) ixend=NXG-ifw+1; */
-
 		ixend=NXG-FW;
 		iyend=NZG-FW;
 
@@ -131,7 +122,6 @@ float **pwsources(int *nsrc, int * stype){ /* plane wave excitation */
 
 
 		/*read from sofi3D.c */
-		/*fprintf(FP," Number of source positions: %i\n",*nsrc);*/
 		fprintf(FP," x-range for plane wave: %d to %d gridpoints. \n",FW,ixend);
 		fprintf(FP," y-range for plane wave: %d to %d gridpoints. \n",FW,iyend);
 

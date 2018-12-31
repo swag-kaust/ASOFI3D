@@ -58,7 +58,6 @@ float ***  taus, float ***  taup, float *  eta){
 	for (k=1;k<=NZG;k++){
 		for (i=1;i<=NXG;i++){
 			for (j=1;j<=NYG;j++){
-				
 				/* background */
 				Vp=vp1; Vs=vs1; Rho=rho1; tp=2.0/Qp1; ts=2.0/Qs1;
 				
@@ -67,14 +66,6 @@ float ***  taus, float ***  taup, float *  eta){
 				y=(float)j*DH;
 				z=(float)k*DH;
 				
-					
-				/* dipping reflector */
-
-/*				yr=tan(dip_rad)*(xs-x);
-				if (y>yr+axis_y+radius){
-					Vp=vp2; Vs=vs2; Rho=rho2;tp=2.0/Qp2; ts=2.0/Qs2;}
-				
-*/
 
 				/* create tunnel */
 				/* distance from axis of the tunnel */

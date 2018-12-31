@@ -15,8 +15,6 @@ int i, j, k, ntr=0, itr, nsrc, l, c, ishot, imin, imax, kmin, kmax;
 int * stype=NULL;
 float vp, xsrc, ysrc, zsrc, tshift, xrec, yrec, zrec;
 float Xr1, Xr2, Zr1, Zr2, xmin, xmax, zmin, zmax;
-/*float Xm1, Xm2, Zm1, Zm2;
-float Ax, Az;*/
 float xc, zc, rho;
 
 float  ** srcpos=NULL, ** recpos=NULL;
