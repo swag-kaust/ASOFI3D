@@ -3,8 +3,10 @@
  *
  *  ----------------------------------------------------------------------*/
 
-#include "fd.h"
 #include "data_structures.h"
+#include "fd.h"
+#include "globvar.h"
+
 
 void surface(int ndepth, float *** u, float *** pi, float ***taus, float *** taup,
         float * eta, Tensor3d *s,

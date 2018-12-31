@@ -4,6 +4,8 @@
  * ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "globvar.h"
+
 
 void saveseis_glob(FILE *fp, float **sectiondata, int **recpos, int ntr,
         float ** srcpos, int ishot, int ns, int sectiondatatype){

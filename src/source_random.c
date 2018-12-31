@@ -1,6 +1,8 @@
 #include "enum.h"
 #include "data_structures.h"
 #include "fd.h"
+#include "globvar.h"
+
 
 /*
  * Generate random P-wave source at all grid nodes.

@@ -7,11 +7,10 @@
  * Mahesh Kalita 1st December, 2016
  *
  */
-
-#include "fd.h"
 #include <string.h>
 
-
+#include "fd.h"
+#include "globvar.h"
 
 
 void removespace(char *str) {

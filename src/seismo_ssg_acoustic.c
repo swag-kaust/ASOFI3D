@@ -3,8 +3,10 @@
      in arrays
  *  ----------------------------------------------------------------------*/
 
-#include "fd.h"
 #include "data_structures.h"
+#include "fd.h"
+#include "globvar.h"
+
 
 // Macro ATTR_UNUSED allows to tell a compiler to stop complaining
 // about an unused variable.
@@ -15,6 +17,7 @@
 #else
     #define ATTR_UNUSED
 #endif
+
 
 void seismo_acoustic(int lsamp, int ntr, int **recpos,
         float **sectionvx, float **sectionvy, float **sectionvz,

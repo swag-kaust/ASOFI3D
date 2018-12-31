@@ -4,6 +4,8 @@
  *  ------------------------------------------------------------------------ */
 
 #include "fd.h"
+#include "globvar.h"
+
 
 float **sources(FILE * fpsrc, int *nsrc, int * stype){
 

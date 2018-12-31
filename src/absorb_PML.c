@@ -10,6 +10,8 @@
  ------------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "globvar.h"
+
 
 void absorb_PML(float *** absorb_coeffx, float *** absorb_coeffy, float *** absorb_coeffz){
 

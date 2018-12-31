@@ -4,6 +4,8 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "globvar.h"
+
 
 void av_mat_acoustic(float *** rho, float  *** rjp, float  *** rkp, float  *** rip ){
 

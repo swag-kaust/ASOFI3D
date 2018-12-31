@@ -5,6 +5,8 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "globvar.h"
+
 
 double exchange_v(int nt, Velocity *v,
 		float *** bufferlef_to_rig, float *** bufferrig_to_lef,

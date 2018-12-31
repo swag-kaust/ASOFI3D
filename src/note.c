@@ -2,8 +2,9 @@
  *   Write note to stdout                          
  *
  *  ----------------------------------------------------------------------*/
-
 #include "fd.h"
+#include "globvar.h"
+
 
 void note(FILE *fp){
 

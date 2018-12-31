@@ -3,9 +3,11 @@
  * Purpose: Find global grid positions for the receivers.
  *
 ------------------------------------------------------------------------*/
+#include <stdbool.h>
 
 #include "fd.h"
-#include <stdbool.h>
+#include "globvar.h"
+
 
 int **receiver(FILE *fp, int *ntr){
 

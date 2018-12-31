@@ -3,8 +3,9 @@
  *
  *  ----------------------------------------------------------------------*/
 
-#include "fd.h"
 #include "data_structures.h"
+#include "fd.h"
+#include "globvar.h"
 
 void surface_acoustic(int ndepth,  float *** pi, float *** sxx, Velocity *v){
 

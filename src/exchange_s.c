@@ -4,8 +4,10 @@
  *
  *  ----------------------------------------------------------------------*/
 
-#include "fd.h"
 #include "data_structures.h"
+#include "fd.h"
+#include "globvar.h"
+
 
 double exchange_s(int nt, Tensor3d *s,
 		float *** bufferlef_to_rig, float *** bufferrig_to_lef,

@@ -6,6 +6,7 @@
 *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "globvar.h"
 
 float **wavelet(float **srcpos_loc, int nsrc)
 {

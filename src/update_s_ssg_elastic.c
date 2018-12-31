@@ -8,6 +8,8 @@
 
 #include "data_structures.h"
 #include "fd.h"
+#include "globvar.h"
+
 
 double update_s_elastic(
 		int nx1, int nx2, int ny1, int ny2, int nz1, int nz2, int nt,

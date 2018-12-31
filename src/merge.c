@@ -6,6 +6,8 @@
 
 #include "enum.h"
 #include "fd.h"
+#include "globvar.h"
+
 
 void merge(int nsnap, int type)
 {

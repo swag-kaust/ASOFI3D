@@ -14,6 +14,8 @@
 #include <string.h>
 #include <strings.h>
 
+#include "globvar.h"
+
 #ifndef STRING_SIZE
 #define STRING_SIZE 74
 #endif

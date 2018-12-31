@@ -10,6 +10,8 @@
  *  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "globvar.h"
+
 
 void model_elastic(float ***rho, float ***pi, float ***u,
         float ***C11, float ***C12, float ***C13,

@@ -3,8 +3,9 @@
  *
  *  ----------------------------------------------------------------------*/
 
-#include "fd.h"
 #include "data_structures.h"
+#include "fd.h"
+#include "globvar.h"
 
 
 void snap(FILE *fp, int nt, int nsnap, int format, int type, 

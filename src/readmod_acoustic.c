@@ -4,6 +4,8 @@
  ----------------------------------------------------------------------*/
 
 #include "fd.h"
+#include "globvar.h"
+
 
 void readmod_acoustic(float  ***  rho, float ***  pi, int ishot){
 

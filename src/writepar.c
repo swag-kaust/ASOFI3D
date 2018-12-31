@@ -5,6 +5,8 @@
    ----------------------------------------------------------------------*/
 #include <limits.h>
 #include "fd.h"
+#include "globvar.h"
+
 
 /* printing all important parameters to FILE *fp */
 void writepar(FILE *fp, int ns){
