@@ -7,6 +7,7 @@ setup() {
     # Setup environment for the execution of a test.
     rm -rf tmp/
     mkdir tmp
+    mkdir tmp/figures
     mkdir tmp/in_and_out
     mkdir tmp/log
     mkdir tmp/model

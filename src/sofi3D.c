@@ -1195,6 +1195,9 @@ out: sxx, syy, szz, sxy, syz, sxz,*/
                     eqsource(nt, &s, srcpos_loc, signals, nsrc_loc, stype_loc,
                             amon, str, dip, rake);
 
+                    source_moment_tensor(nt, &s, srcpos_loc,
+                            signals, nsrc_loc, stype_loc);
+
                     source_random(nt, &s, source_field);
                 }
 

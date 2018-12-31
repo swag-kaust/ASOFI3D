@@ -4,6 +4,7 @@
  *
  ------------------------------------------------------------------------*/
 
+#include "enum.h"
 #include "fd.h"
 
 void read_par_json(FILE *fp, char *fileinp)
@@ -17,6 +18,8 @@ void read_par_json(FILE *fp, char *fileinp)
     extern int DRX, DRZ, L, SRCREC, FDORDER, FW, FDCOEFF, FDORDER_TIME;
     extern float DX, DY, DZ, TIME, DT, TS, *FL, TAU, FREF, PLANE_WAVE_DEPTH, PLANE_WAVE_ANGLE;
     extern float XREC1, XREC2, YREC1, YREC2, ZREC1, ZREC2, SOURCE_ALPHA, SOURCE_BETA, AMON, STR, DIP, RAKE;
+    // Moment tensor components.
+    extern float M11, M12, M13, M22, M23, M33;
     extern float REC_ARRAY_DEPTH, REC_ARRAY_DIST;
     extern int SEISMO, NDT, NDTSHIFT, NGEOPH, SEIS_FORMAT[6], FREE_SURF, READMOD, READREC, RUN_MULTIPLE_SHOTS;
     extern int BOUNDARY, REC_ARRAY, LOG, IDX, IDY, IDZ, ABS_TYPE, WRITE_MODELFILES;
@@ -510,14 +513,14 @@ void read_par_json(FILE *fp, char *fileinp)
 
     if (get_int_from_objectlist("SOURCE_TYPE", number_readobjects, &SOURCE_TYPE, varname_list, value_list))
         err("Variable SOURCE_TYPE could not be retrieved from the json input file!");
-    if (SOURCE_TYPE == 5)
+    if (SOURCE_TYPE == SOURCE_TYPE_CUSTOM)
     {
         if (get_float_from_objectlist("SOURCE_ALPHA", number_readobjects, &SOURCE_ALPHA, varname_list, value_list))
             err("Variable SOURCE_ALPHA could not be retrieved from the json input file!");
         if (get_float_from_objectlist("SOURCE_BETA", number_readobjects, &SOURCE_BETA, varname_list, value_list))
             err("Variable SOURCE_BETA could not be retrieved from the json input file!");
     }
-    if (SOURCE_TYPE == 6)
+    if (SOURCE_TYPE == SOURCE_TYPE_EARTHQUAKE)
     {
         if (get_float_from_objectlist("AMON", number_readobjects, &AMON, varname_list, value_list))
             err("Variable AMON could not be retrieved from the json input file!");
@@ -527,6 +530,23 @@ void read_par_json(FILE *fp, char *fileinp)
             err("Variable DIP could not be retrieved from the json input file!");
         if (get_float_from_objectlist("RAKE", number_readobjects, &RAKE, varname_list, value_list))
             err("Variable RAKE could not be retrieved from the json input file!");
+    }
+    if (SOURCE_TYPE == SOURCE_TYPE_MOMENT_TENSOR)
+    {
+        if (get_float_from_objectlist("AMON", number_readobjects, &AMON, varname_list, value_list))
+            err("Variable AMON could not be retrieved from the json input file!");
+        if (get_float_from_objectlist("M11", number_readobjects, &M11, varname_list, value_list))
+            err("Variable M11 could not be retrieved from the json input file!");
+        if (get_float_from_objectlist("M12", number_readobjects, &M12, varname_list, value_list))
+            err("Variable M12 could not be retrieved from the json input file!");
+        if (get_float_from_objectlist("M13", number_readobjects, &M13, varname_list, value_list))
+            err("Variable M13 could not be retrieved from the json input file!");
+        if (get_float_from_objectlist("M22", number_readobjects, &M22, varname_list, value_list))
+            err("Variable M22 could not be retrieved from the json input file!");
+        if (get_float_from_objectlist("M23", number_readobjects, &M23, varname_list, value_list))
+            err("Variable M23 could not be retrieved from the json input file!");
+        if (get_float_from_objectlist("M33", number_readobjects, &M33, varname_list, value_list))
+            err("Variable M33 could not be retrieved from the json input file!");
     }
 
     /*=================================

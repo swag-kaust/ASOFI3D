@@ -264,6 +264,9 @@ void snap_rsg(FILE *fp, int nt, int nsnap, int format, int type,
 
 void source_random(int nt, Tensor3d *s, float ***source_field);
 
+void source_moment_tensor(int nt, Tensor3d *s, float **srcpos_loc,
+		float ** signals, int nsrc, int * stype);
+
 float **sources(FILE * fpsrc, int *nsrc, int * stype);
 
 int **splitrec(int **recpos,int *ntr_loc, int ntr,int *recswitch);

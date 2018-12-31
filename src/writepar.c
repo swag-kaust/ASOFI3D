@@ -15,6 +15,7 @@ void writepar(FILE *fp, int ns){
 	extern float DX, DY, DZ, TIME, DT, TS, *FL, TAU, PLANE_WAVE_DEPTH;
 	extern float XREC1, XREC2, YREC1, YREC2, ZREC1, ZREC2;
 	extern float SOURCE_ALPHA, SOURCE_BETA, AMON, STR, DIP, RAKE;
+    extern float AMON, M11, M12, M13, M22, M23, M33;
 	extern float REC_ARRAY_DEPTH, REC_ARRAY_DIST;
 	extern int SEISMO, NDT, NDTSHIFT, NGEOPH, SEIS_FORMAT[6], FREE_SURF;
 	extern int  READMOD, READREC, DRX, DRZ, BOUNDARY, SRCREC, IDX, IDY, IDZ;
@@ -104,6 +105,9 @@ void writepar(FILE *fp, int ns){
 
 	fprintf(fp," Default type of source:");
 	switch (SOURCE_TYPE){
+    case 0 :
+		fprintf(fp," Random source field\n");
+		break;
 	case 1 :
 		fprintf(fp," explosive point source (concentrated at a single gridpoint)\n");
 		break;
@@ -127,11 +131,17 @@ void writepar(FILE *fp, int ns){
 		fprintf(fp," Strike angle of fault plane (STR): %f\n", STR);
 		fprintf(fp," Dip angle of fault plane (DIP): %f\n", DIP);
 		fprintf(fp," Rake angle of slip vector (RAKE): %f\n", RAKE);
-		
 		break;
-    case 7 :
-		fprintf(fp," Random source field\n");
-		break;
+	case 7:
+        fprintf(fp, "Seismic general moment tensor point source\n");
+        fprintf(fp, "Seismic moment of source (AMON): %f\n", AMON);
+        fprintf(fp, "Moment tensor components: M11=%f\n", M11);
+        fprintf(fp, "Moment tensor components: M12=%f\n", M12);
+        fprintf(fp, "Moment tensor components: M13=%f\n", M13);
+        fprintf(fp, "Moment tensor components: M22=%f\n", M22);
+        fprintf(fp, "Moment tensor components: M23=%f\n", M23);
+        fprintf(fp, "Moment tensor components: M33=%f\n", M33);
+        break;
 	default :
 		fprintf(fp," WARNING: Default type of source ('%d') not available -> changed to explosive! ", SOURCE_TYPE);
 		SOURCE_TYPE=1;

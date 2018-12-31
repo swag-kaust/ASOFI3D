@@ -132,6 +132,7 @@ if lastframe > nsnap
              'larger than the last snapshot number (lastframe = %d). ' ...
              'Set lastframe = nsnap.\n'], ...
             nsnap, lastframe);
+    lastframe = nsnap;
 end
 
 if firstframe > nsnap
@@ -146,6 +147,7 @@ if lastframe < firstframe
              'larger than the last snapshot number (lastframe = %d). ' ...
              'Set lastframe = firstframe\n'], ...
             firstframe, lastframe);
+    lastframe = firstframe;
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
