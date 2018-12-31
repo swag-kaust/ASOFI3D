@@ -32,7 +32,7 @@ void readmod(float ***rho, float ***pi, float ***u,
     float *pts = NULL, sumu = 0.0, sumpi = 0.0, ws = 0.0;
     float ***pwavemod = NULL, ***swavemod = NULL;
     float ***qpmod = NULL, ***qsmod = NULL;
-    int i, j, k, ii, jj, kk;
+    int i, j, k, l, ii, jj, kk;
 
     FILE *fp_vs, *fp_vp, *fp_rho, *fp_qp = NULL, *fp_qs = NULL;
     FILE *fp_C11, *fp_C22, *fp_C33, *fp_C44, *fp_C55, *fp_C66;
@@ -385,7 +385,7 @@ void readmod(float ***rho, float ***pi, float ***u,
 
 					sumu=0.0;
 					sumpi=0.0;
-					for (int l=1;l<=L;l++){
+					for (l=1;l<=L;l++){
 						sumu=sumu+((ws*ws*pts[l]*pts[l]*(2/Qs))/(1.0+ws*ws*pts[l]*pts[l]));
 						sumpi=sumpi+((ws*ws*pts[l]*pts[l]*(2/Qp))/(1.0+ws*ws*pts[l]*pts[l]));
 					}

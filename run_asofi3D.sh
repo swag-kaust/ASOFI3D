@@ -39,7 +39,7 @@ export PATH=${script_dir}/bin:$PATH
 pushd "$sim_dir" > /dev/null || exit 1
 
 # Run the code
-config_file="in_and_out/ASOFI3D.json"
+config_file="in_and_out/asofi3D.json"
 printf "Run code\n"
 mpirun -n $nmpiprocs nice -19 asofi3D $config_file | tee in_and_out/ASOFI3D.log
 if [ $? -eq 0 ]; then
