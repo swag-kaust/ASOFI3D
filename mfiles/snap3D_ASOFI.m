@@ -127,10 +127,10 @@ xslice=nx/2; % for yz plane in grid points
 %---Snapshot definitions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% time increment for snapshots:
+% time increment for snapshots.
 TSNAP1=opts.TSNAP1;
-TSNAPINC=opts.TSNAPINC;
-TIME = (opts.TIME;
+TSNAP2=opts.TSNAP2;
+TIME = opts.TIME;
 TSNAPINC=opts.TSNAPINC;
 
 if TSNAP2 > TIME
