@@ -31,12 +31,12 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('filename1', help='Filename of the 1st file for comparison')
     p.add_argument('filename2', help='Filename of the 2nd file for comparison')
-    p.add_argument('--rtol', help='Relative tolerance',
-                   type=float, default=1e-5)
-    p.add_argument('--atol', help='Absolute tolerance',
-                   type=float, default=1e-15)
-    p.add_argument('--verbose', '-v', help='Print results to stdout',
-                   action='store_true')
+    p.add_argument(
+        '--rtol', help='Relative tolerance', type=float, default=1e-5)
+    p.add_argument(
+        '--atol', help='Absolute tolerance', type=float, default=1e-15)
+    p.add_argument(
+        '--verbose', '-v', help='Print results to stdout', action='store_true')
 
     args = p.parse_args()
 
@@ -76,24 +76,25 @@ def get_datasets(filename1, filename2):
         data2 = file2.getalldata()
     elif bin_format:
         top_dir = filename1.split('/')[0]
-        json_filename = os.path.join(top_dir, 'in_and_out', 'ASOFI3D.json')
+        json_filename = os.path.join(top_dir, 'in_and_out', 'asofi3D.json')
         params = read_asofi3d_json(json_filename)
 
         TSNAP1, TSNAP2 = params['TSNAP1'], params['TSNAP2']
         TSNAPINC = params['TSNAPINC']
-        nsnap = int(1 + np.floor((TSNAP2 - TSNAP1) / TSNAPINC));
+        nsnap = int(1 + np.floor((TSNAP2 - TSNAP1) / TSNAPINC))
 
         NX, NY, NZ = params['NX'], params['NY'], params['NZ']
         IDX, IDY, IDZ = params['IDX'], params['IDY'], params['IDZ']
 
         data1 = np.fromfile(filename1, dtype=np.float32)
         data2 = np.fromfile(filename2, dtype=np.float32)
-        data1.reshape((NY/IDY, NX/IDX, NZ/IDZ, nsnap))
-        data2.reshape((NY/IDY, NX/IDX, NZ/IDZ, nsnap))
+        data1.reshape((NY / IDY, NX / IDX, NZ / IDZ, nsnap))
+        data2.reshape((NY / IDY, NX / IDX, NZ / IDZ, nsnap))
     else:
         raise Exception('Cannot determine dataset format!')
 
     return data1, data2
+
 
 def read_asofi3d_json(json_filename):
     with open(json_filename) as fp:
