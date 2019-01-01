@@ -351,60 +351,61 @@ void readmod(float ***rho, float ***pi, float ***u,
 
         /* if TAU is specified in input file, q-files will NOT be read-in separately
 		thus a constant q-model will be assumed */
-		if (TAU==0.0) {
-			fprintf(FP,"\t Qp:\n\t %s.qp\n\n",MFILE);
-			sprintf(filename,"%s.qp",MFILE);
-			fp_qp=fopen(filename,"r");
-			if (fp_qp==NULL) err(" Could not open model file for Qp-values ! ");
+        if (TAU == 0.0) {
+            fprintf(FP, "\t Qp:\n\t %s.qp\n\n", MFILE);
+            sprintf(filename, "%s.qp", MFILE);
+            fp_qp = fopen(filename, "r");
+            if (fp_qp == NULL) err(" Could not open model file for Qp-values ! ");
 
-			fprintf(FP,"\t Qs:\n\t %s.qs\n\n",MFILE);
-			sprintf(filename,"%s.qs",MFILE);
-			fp_qs=fopen(filename,"r");
-			if (fp_qs==NULL) err(" Could not open model file for Qs-values ! ");
-		}
+            fprintf(FP, "\t Qs:\n\t %s.qs\n\n", MFILE);
+            sprintf(filename, "%s.qs", MFILE);
+            fp_qs = fopen(filename, "r");
+            if (fp_qs == NULL) err(" Could not open model file for Qs-values ! ");
+        }
 
-		/* vector for maxwellbodies */
-		pts=vector(1,L);
-		for (l=1;l<=L;l++) {
-			pts[l]=1.0/(2.0*PI*FL[l]);
-			eta[l]=DT/pts[l];
-		}
-		/* in the viscoelastic case : reference frequency where no velocity dispersion occurs.
+        /* vector for maxwellbodies */
+        pts = vector(1, L);
+        for (l = 1; l <= L; l++) {
+            pts[l] = 1.0 / (2.0 * PI * FL[l]);
+            eta[l] = DT / pts[l];
+        }
+        /* in the viscoelastic case : reference frequency where no velocity dispersion occurs.
 		 * if FREF is not given in input file, the largest center source frequency FC
 		 * as specified in input file is used (not that the relation : FC=1/TS) is used here)*/
-		if (FREF==0.0) ws=2.0*PI/TS;
-		else ws=2.0*PI*FREF;
+        if (FREF == 0.0)
+            ws = 2.0 * PI / TS;
+        else
+            ws = 2.0 * PI * FREF;
 
-		/* loop over global grid */
-		for (k=1;k<=NZG;k++){
-			for (i=1;i<=NXG;i++){
-				for (j=1;j<=NYG;j++){
-					Vp=readdsk(fp_vp, format);
-					Vs=readdsk(fp_vs, format);
-					Rho=readdsk(fp_rho , format);
+        /* loop over global grid */
+        for (k = 1; k <= NZG; k++) {
+            for (i = 1; i <= NXG; i++) {
+                for (j = 1; j <= NYG; j++) {
+                    Vp = readdsk(fp_vp, format);
+                    Vs = readdsk(fp_vs, format);
+                    Rho = readdsk(fp_rho, format);
 
-					/*calculation of taus and taup by read-in q-files*/
-					if (TAU==0.0) {
-						Qp=readdsk(fp_qp, format);
-						Qs=readdsk(fp_qs, format);
-					}
-					else {
-						/*constant q (damping) case:*/
-						Qp=2.0/TAU;
-						Qs=2.0/TAU;
-					}
+                    /*calculation of taus and taup by read-in q-files*/
+                    if (TAU == 0.0) {
+                        Qp = readdsk(fp_qp, format);
+                        Qs = readdsk(fp_qs, format);
+                    } else {
+                        /*constant q (damping) case:*/
+                        Qp = 2.0 / TAU;
+                        Qs = 2.0 / TAU;
+                    }
 
-					sumu=0.0;
-					sumpi=0.0;
-					for (l=1;l<=L;l++){
-						sumu=sumu+((ws*ws*pts[l]*pts[l]*(2/Qs))/(1.0+ws*ws*pts[l]*pts[l]));
-						sumpi=sumpi+((ws*ws*pts[l]*pts[l]*(2/Qp))/(1.0+ws*ws*pts[l]*pts[l]));
-					}
+                    sumu = 0.0;
+                    sumpi = 0.0;
+                    for (l = 1; l <= L; l++) {
+                        sumu = sumu + ((ws * ws * pts[l] * pts[l] * (2 / Qs)) / (1.0 + ws * ws * pts[l] * pts[l]));
+                        sumpi = sumpi + ((ws * ws * pts[l] * pts[l] * (2 / Qp)) / (1.0 + ws * ws * pts[l] * pts[l]));
+                    }
 
-					muv=Vs*Vs*Rho/(1.0+sumu);
-					piv=Vp*Vp*Rho/(1.0+sumpi);
+                    muv = Vs * Vs * Rho / (1.0 + sumu);
+                    piv = Vp * Vp * Rho / (1.0 + sumpi);
 
-					/* only the PE which belongs to the current global gridpoint
+                    /* only the PE which belongs to the current global gridpoint
 						is saving model parameters in his local arrays */
                     if ((POS[1] == ((i - 1) / NX)) &&
                         (POS[2] == ((j - 1) / NY)) &&
