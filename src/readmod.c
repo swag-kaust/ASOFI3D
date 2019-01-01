@@ -206,19 +206,22 @@ void readmod(float ***rho, float ***pi, float ***u,
         fprintf(FP, "\tC23: %s\n", fname_C23);
         fp_C23 = fopen(fname_C23, "r");
 
-        bool cond_1 = fp_C11 != NULL && fp_C22 != NULL && fp_C33 != NULL;
-        bool cond_2 = fp_C44 != NULL && fp_C55 != NULL && fp_C66 != NULL;
-        bool cond_3 = fp_C12 != NULL && fp_C13 != NULL && fp_C23 != NULL;
+        bool readable_1 = fp_C11 != NULL && fp_C22 != NULL && fp_C33 != NULL;
+        bool readable_2 = fp_C44 != NULL && fp_C55 != NULL && fp_C66 != NULL;
+        bool readable_3 = fp_C12 != NULL && fp_C13 != NULL && fp_C23 != NULL;
 
-        bool cond_no_1 = fp_C11 == NULL && fp_C22 == NULL && fp_C33 == NULL;
-        bool cond_no_2 = fp_C44 == NULL && fp_C55 == NULL && fp_C66 == NULL;
-        bool cond_no_3 = fp_C12 == NULL && fp_C13 == NULL && fp_C23 == NULL;
+        bool noreadable_1 = fp_C11 == NULL && fp_C22 == NULL && fp_C33 == NULL;
+        bool noreadable_2 = fp_C44 == NULL && fp_C55 == NULL && fp_C66 == NULL;
+        bool noreadable_3 = fp_C12 == NULL && fp_C13 == NULL && fp_C23 == NULL;
 
-        if (cond_1 && cond_2 && cond_3) {
+        if (readable_1 && readable_2 && readable_3) {
             flag_cij_files_avail = true;
-        } else if (cond_no_1 && cond_no_2 && cond_no_3) {
+            fprintf(FP, "All Cij models are readable\n\n");
+        } else if (noreadable_1 && noreadable_2 && noreadable_3) {
             flag_cij_files_avail = false;
+            fprintf(FP, "All Cij models are not readable\n\n");
         } else {
+            fprintf(FP, "Some Cij models are readable and some are not\n");
             if (fp_C11 == NULL) err("Could not open model file for C11!");
             if (fp_C22 == NULL) err("Could not open model file for C22!");
             if (fp_C33 == NULL) err("Could not open model file for C33!");
@@ -278,8 +281,7 @@ void readmod(float ***rho, float ***pi, float ***u,
                         if (fp_dely != NULL) {
                             dely = readdsk(fp_dely, format);
                         }
-                        if (fp_delxy != NULL)
-                        {
+                        if (fp_delxy != NULL) {
                             delxy = readdsk(fp_delxy, format);
                         }
                         if (fp_gamx != NULL) {
