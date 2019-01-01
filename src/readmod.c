@@ -146,7 +146,7 @@ void readmod(float ***rho, float ***pi, float ***u,
         fp_delxy = fopen(fname_delxy, "r");
 
         fprintf(FP, "\t gamx field:\n\t %s.gamx\n\n", MFILE);
-        sprintf(fname_gamx, "%s.epsx", MFILE);
+        sprintf(fname_gamx, "%s.gamx", MFILE);
         fp_gamx = fopen(fname_gamx, "r");
 
         fprintf(FP, "\t gamy field:\n\t %s.gamy\n\n", MFILE);
