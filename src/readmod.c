@@ -91,27 +91,32 @@ void readmod(float ***rho, float ***pi, float ***u,
 
     // Read density model.
     char fname_rho[STRING_SIZE];
-    fprintf(FP, "\t Density:\n\t %s.rho\n\n", MFILE);
     sprintf(fname_rho, "%s.rho", MFILE);
+    fprintf(FP, "\tDensity: %s\n\n", fname_rho);
     fp_rho = fopen(fname_rho, "r");
-    if (fp_rho == NULL) err(" Could not open model file for densities ! ");
+    if (fp_rho == NULL) {
+        err("Could not open model file containing density field!");
+    }
 
     // Read P- and S-velocity models.
     {
         char fname_vp[STRING_SIZE];
-        char fname_vs[STRING_SIZE];
-        fprintf(FP, "\t P-wave velocities:\n\t %s.vp\n\n", MFILE);
         sprintf(fname_vp, "%s.vp", MFILE);
+        fprintf(FP, "\tP-wave velocities: %s\n", fname_vp);
         fp_vp = fopen(fname_vp, "r");
 
-        fprintf(FP, "\t Shear wave velocities:\n\t %s.vs\n\n", MFILE);
+        char fname_vs[STRING_SIZE];
         sprintf(fname_vs, "%s.vs", MFILE);
+        fprintf(FP, "\tS-wave velocities: %s\n", fname_vs);
         fp_vs = fopen(fname_vs, "r");
 
         // Checking that either model files for Vp and Vs are both present
         // or both absent, otherwise terminate with error.
         if (fp_vp != NULL && fp_vs != NULL) {
             flag_velocity_files_avail = true;
+            fprintf(FP,
+                    "\tBoth P- and S-wave velocity models are readable\n\n"
+            );
         } else if (fp_vp == NULL && fp_vs != NULL) {
             err("Could not open model file for P-velocity "
                 "but model file for S-velocity is available.");
@@ -120,37 +125,41 @@ void readmod(float ***rho, float ***pi, float ***u,
                 "but model file for P-velocity is available.");
         } else {
             flag_velocity_files_avail = false;
+            fprintf(FP,
+                    "\tBoth P- and S-wave velocity models are not readable\n\n"
+            );
         }
     }
 
-    // Try opening files for anisotropic parameters.
+    // Read anisotropic parameters.
     {
-        fprintf(FP, "\t epsx field:\n\t %s.epsx\n\n", MFILE);
+        fprintf(FP, "Try reading anisotropic parameters\n");
         sprintf(fname_epsx, "%s.epsx", MFILE);
+        fprintf(FP, "\tepsx field: %s\n", fname_epsx);
         fp_epsx = fopen(fname_epsx, "r");
 
-        fprintf(FP, "\t epsy field:\n\t %s.epsy\n\n", MFILE);
         sprintf(fname_epsy, "%s.epsy", MFILE);
+        fprintf(FP, "\tepsy field: %s\n", fname_epsy);
         fp_epsy = fopen(fname_epsy, "r");
 
-        fprintf(FP, "\t delx field:\n\t %s.delx\n\n", MFILE);
         sprintf(fname_delx, "%s.delx", MFILE);
+        fprintf(FP, "\tdelx field: %s\n", fname_delx);
         fp_delx = fopen(fname_delx, "r");
 
-        fprintf(FP, "\t dely field:\n\t %s.dely\n\n", MFILE);
         sprintf(fname_dely, "%s.dely", MFILE);
+        fprintf(FP, "\tdely field: %s\n", fname_dely);
         fp_dely = fopen(fname_dely, "r");
 
-        fprintf(FP, "\t delxy field:\n\t %s.delxy\n\n", MFILE);
         sprintf(fname_delxy, "%s.delxy", MFILE);
+        fprintf(FP, "\tdelxy field: %s\n", fname_delxy);
         fp_delxy = fopen(fname_delxy, "r");
 
-        fprintf(FP, "\t gamx field:\n\t %s.gamx\n\n", MFILE);
         sprintf(fname_gamx, "%s.gamx", MFILE);
+        fprintf(FP, "\tgamx field: %s\n", fname_gamx);
         fp_gamx = fopen(fname_gamx, "r");
 
-        fprintf(FP, "\t gamy field:\n\t %s.gamy\n\n", MFILE);
         sprintf(fname_gamy, "%s.gamy", MFILE);
+        fprintf(FP, "\tgamy field: %s\n", fname_gamy);
         fp_gamy = fopen(fname_gamy, "r");
     }
 
@@ -161,40 +170,40 @@ void readmod(float ***rho, float ***pi, float ***u,
     // Otherwise, if some Cij files are present and some are absent,
     // terminate the program.
     {
-        fprintf(FP, "\t C11:\n\t %s.C11\n\n", MFILE);
         sprintf(fname_C11, "%s.C11", MFILE);
+        fprintf(FP, "\tC11 model: %s\n", fname_C11);
         fp_C11 = fopen(fname_C11, "r");
 
-        fprintf(FP, "\t C22:\n\t %s.C22\n\n", MFILE);
         sprintf(fname_C22, "%s.C22", MFILE);
+        fprintf(FP, "\tC22: %s\n", fname_C22);
         fp_C22 = fopen(fname_C22, "r");
 
-        fprintf(FP, "\t C33:\n\t %s.C33\n\n", MFILE);
         sprintf(fname_C33, "%s.C33", MFILE);
+        fprintf(FP, "\tC33: %s\n", fname_C33);
         fp_C33 = fopen(fname_C33, "r");
 
-        fprintf(FP, "\t C44:\n\t %s.C44\n\n", MFILE);
         sprintf(fname_C44, "%s.C44", MFILE);
+        fprintf(FP, "\tC44: %s\n", fname_C44);
         fp_C44 = fopen(fname_C44, "r");
 
-        fprintf(FP, "\t C55:\n\t %s.C55\n\n", MFILE);
         sprintf(fname_C55, "%s.C55", MFILE);
+        fprintf(FP, "\tC55: %s\n", fname_C55);
         fp_C55 = fopen(fname_C55, "r");
 
-        fprintf(FP, "\t C66:\n\t %s.C66\n\n", MFILE);
         sprintf(fname_C66, "%s.C66", MFILE);
+        fprintf(FP, "\tC66: %s\n", fname_C66);
         fp_C66 = fopen(fname_C66, "r");
 
-        fprintf(FP, "\t C12:\n\t %s.C12\n\n", MFILE);
         sprintf(fname_C12, "%s.C12", MFILE);
+        fprintf(FP, "\tC12: %s\n", fname_C12);
         fp_C12 = fopen(fname_C12, "r");
 
-        fprintf(FP, "\t C13:\n\t %s.C13\n\n", MFILE);
         sprintf(fname_C13, "%s.C13", MFILE);
+        fprintf(FP, "\tC13: %s\n", fname_C13);
         fp_C13 = fopen(fname_C13, "r");
 
-        fprintf(FP, "\t C23:\n\t %s.C23\n\n", MFILE);
         sprintf(fname_C23, "%s.C23", MFILE);
+        fprintf(FP, "\tC23: %s\n", fname_C23);
         fp_C23 = fopen(fname_C23, "r");
 
         bool cond_1 = fp_C11 != NULL && fp_C22 != NULL && fp_C33 != NULL;
