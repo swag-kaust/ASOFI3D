@@ -14,6 +14,14 @@ if verLessThan('matlab', MATLAB_MIN_VERSION)
     return;
 end
 
+MATLAB_MIN_VERSION = 'R2016b';
+
+if verLessThan('matlab', MATLAB_MIN_VERSION)
+    fprintf('ERROR: The minimal supported version of MATLAB is %s.\n', ...
+            MATLAB_MIN_VERSION);
+    return;
+end
+
 addpath('./utils');
 
 config_file = './in_and_out/asofi3D.json';
@@ -35,6 +43,9 @@ for phi2=0:15:90
     plot_opts.phi2 = phi2;
     snap3D_asofi3D_func(plot_opts);
 end
+
+disp('  ');
+disp('Script ended...');
 end
 
  
@@ -740,6 +751,4 @@ end
             end
         end
     end
-disp(['  ']);
-disp(['Script ended...']);
 end

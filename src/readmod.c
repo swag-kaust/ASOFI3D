@@ -134,6 +134,7 @@ void readmod(float ***rho, float ***pi, float ***u,
     // Read anisotropic parameters.
     {
         fprintf(FP, "Try reading anisotropic parameters\n");
+
         sprintf(fname_epsx, "%s.epsx", MFILE);
         fprintf(FP, "\tepsx field: %s\n", fname_epsx);
         fp_epsx = fopen(fname_epsx, "r");

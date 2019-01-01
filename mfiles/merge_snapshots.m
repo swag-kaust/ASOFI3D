@@ -10,19 +10,8 @@ nlx = (opts.NX / opts.NPROCX) / opts.IDX;
 nly = (opts.NY / opts.NPROCY) / opts.IDY;
 nlz = (opts.NZ / opts.NPROCZ) / opts.IDZ;
 
-TSNAP1 = opts.TSNAP1;
-TSNAP2 = opts.TSNAP2;
-TIME = opts.TIME;
-TSNAPINC = opts.TSNAPINC;
-
-if TSNAP2 > TIME
-    fprintf(['WARNING: TSNAP2 = %f is larger than TIME = %f. ' ...
-             'Set TSNAP2 = TIME.\n'], ...
-            TSNAP2, TIME);
-    TSNAP2 = TIME;
-end
-
-nsnap = 1+floor((TSNAP2 - TSNAP1) / TSNAPINC);
+% The number of snapshots.
+nsnap = 1 + floor((opts.TSNAP2 - opts.TSNAP1) / opts.TSNAPINC);
 
 %%
 for i = 1:opts.NPROCX
