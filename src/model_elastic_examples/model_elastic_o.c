@@ -35,7 +35,6 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
 	const float vp1=3500.0, vs1=2000.0, rho1=2000.0, h=100000.0;
 
 	/* parameters for layer 2 */
-	//const float vp2=5700.0, vs2=3400.0, rho2=2500.0;
 	const float vp2=3500.0, vs2=2000.0, rho2=2000.0 ;
 
 	if (WRITE_MODELFILES==1) {

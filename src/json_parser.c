@@ -158,17 +158,7 @@ int read_objects_from_intputfile(FILE *fp, char *input_file,char ** varname_list
 					add_object_tolist(varname_tmp4, value_tmp4,&number_readobject, varname_list, value_list);
 					add_object_tolist(varname_tmp5, value_tmp5,&number_readobject, varname_list, value_list);
 
-					//very strange: code crashes if both lines are commented here!
-					//this only effects the last case of the switch!
-					//should though not affect anything as long as number_readobject keeps its value
-					//in this case a new object is allocated which is already there...
-
-					//varname_list = malloc(sizeof(*varname_list));
-					//value_list = malloc(sizeof(*value_list));
 					varname_list[number_readobject] = malloc(STRING_SIZE*sizeof(char*));
-
-					//varname_list[number_readobject] = (char**)malloc(STRING_SIZE*sizeof(char*));
-					//value_list[number_readobject] = (char**)malloc(STRING_SIZE*sizeof(char*));
 
 					break;
 				case 11://six objects (name-value pairs) in line
@@ -199,14 +189,6 @@ int read_objects_from_intputfile(FILE *fp, char *input_file,char ** varname_list
 					add_object_tolist(varname_tmp4, value_tmp4,&number_readobject, varname_list, value_list);
 					add_object_tolist(varname_tmp5, value_tmp5,&number_readobject, varname_list, value_list);
 					add_object_tolist(varname_tmp6, value_tmp6,&number_readobject, varname_list, value_list);
-
-					//very strange: code crashes if both lines are commented here!
-					//this only effects the last case of the switch!
-					//should though not affect anything as long as number_readobject keeps its value
-					//in this case a new object is allocated which is already there...
-
-					//varname_list = malloc(sizeof(*varname_list));
-					//value_list = malloc(sizeof(*value_list));
 					varname_list[number_readobject] = malloc(STRING_SIZE*sizeof(char*));
 
 					break;
@@ -257,9 +239,6 @@ int read_objects_from_intputfile(FILE *fp, char *input_file,char ** varname_list
 					break;
 
 			}
-
-			//printf("line %i contains objectno %i varnamme %s with value %s \n",lineno,number_readobject, varname_list[number_readobject-1],value_list[number_readobject-1]);
-
 		}
 	}
 	fclose(fp_in);
@@ -284,10 +263,7 @@ int count_occure_charinstring(char stringline[STRING_SIZE], char teststring[]){
 	int ii=0, number_occurence=0;
 
 	for(ii=0; stringline[ii] != '\0'; ii++) {
-		//printf("lineno = %i ii= %i cline[ii]= %c  ",lineno, ii,cline[ii]);
-		//printf("teststring= %s ",teststring);
 		if (strchr(teststring,stringline[ii])) {
-			//printf("hello");
 			number_occurence++;
 		}
 	}
@@ -303,7 +279,6 @@ void copy_str2str_uptochar(char string_in[STRING_SIZE], char string_out[STRING_S
 			strncpy(string_out,string_in,ii);
 		}
 	}
-	//return EXIT_SUCCESS;
 }
 
 int get_int_from_objectlist(char string_in[STRING_SIZE], int number_readobject, int * int_buffer,
@@ -320,27 +295,20 @@ int get_int_from_objectlist(char string_in[STRING_SIZE], int number_readobject, 
 		ii++;
 	}
 	if (strcmp(varname_list[ii],string_in)==0) {
-		//printf("String %s found with value -%s- \n",string_in,value_list[ii]);
 		if (strlen(value_list[ii])==0){
 			sprintf(errormessage,"Error in Input file, value of object %s is empty!",string_in);
 			err(errormessage);
 		}
 		memset(&string_buffer, '\0', sizeof(string_buffer));
 		double_buffer = strtod(value_list[ii],&string_buffer);
-		//printf("From string: -%s- double %f exctracted \n",value_list[ii],double_buffer);
-		//printf("RemString found: -%s- with length %i \n",string_buffer,strlen(string_buffer));
 		if (strlen(string_buffer)>0){
 			/* string empty or 'garbage after double' */
 			sprintf(errormessage,"Error in Input file, value of object %s contains more than one float: '%s'!",string_in,string_buffer);
 			err(errormessage);
 		}
 
-		//printf("string %s found with value %f \n",string_in,double_buffer);
-		//printf ("%lf = %lf + %lf \n", double_buffer, intpart, fractpart);
-
 		if ((modf (double_buffer, &intpart))==0){
 			*int_buffer = atoi(value_list[ii]);
-			//printf("\nfunc: string %s found with value %i \n",string_in,*int_buffer);
 			checkifstringfound=0;
 		}
 		else {
@@ -372,17 +340,13 @@ int get_float_from_objectlist(char string_in[STRING_SIZE], int number_readobject
 	//note: strstr compares if string_in is within varname_list[ii]
 	// strcmp compares characterwise if string_in is equal to varname_list[ii]
 	if (strcmp(varname_list[ii],string_in)==0) {
-		//printf("func1: String %s found with value -%s- \n",string_in,value_list[ii]);
 		if (strlen(value_list[ii])==0){
 			sprintf(errormessage,"Error in Input file, value of object %s is empty!",string_in);
 			err(errormessage);
 		}
 		memset(&string_buffer, '\0', sizeof(string_buffer));
 		double_dummy = strtod(value_list[ii],&string_buffer);
-		//printf("From string: -%s- double %f exctracted \n",value_list[ii],double_dummy);
-		//printf("RemString found: -%s- with length %i \n",string_buffer,strlen(string_buffer));
 		if ((strlen(string_buffer)==0) || ((strlen(string_buffer)>0) && ((is_string_blankspace(string_buffer))==1))){
-			//printf("\nfunc: string %s found with value %5.5f \n",string_in,double_dummy);
 			*double_buffer=double_dummy;
 			checkifstringfound=0;
 		}
@@ -392,7 +356,6 @@ int get_float_from_objectlist(char string_in[STRING_SIZE], int number_readobject
 			err(errormessage);
 			checkifstringfound=2;
 		}
-
 	}
 	else {
 		checkifstringfound=1;
@@ -408,10 +371,8 @@ int get_string_from_objectlist(char string_in[STRING_SIZE], int number_readobjec
 
 	while ((strcmp(varname_list[ii],string_in)!=0) && ((ii+1)<number_readobject)){
 		ii++;
-		//printf("ii= %i, number_readobject= %i",ii,number_readobject);
 	}
 	if (strcmp(varname_list[ii],string_in)==0) {
-		//printf("String %s found with value -%s- \n",string_in,value_list[ii]);
 		if (strlen(value_list[ii])==0){
 			sprintf(errormessage,"Error in Input file, value of object %s is empty!",string_in);
 			err(errormessage);
@@ -420,7 +381,6 @@ int get_string_from_objectlist(char string_in[STRING_SIZE], int number_readobjec
 			memset(string_buffer, '\0', sizeof(*string_buffer));
 			strcpy(string_buffer,value_list[ii]);
 			checkifstringfound=0;
-			//printf("\nfunc: string %s found with value -%s- \n",string_in,string_buffer);
 		}
 	}
 	else {
@@ -439,7 +399,6 @@ int is_string_blankspace(char string_in[STRING_SIZE]){
 		if(string_in[ii++] == ' ')
 			blank_num++;
 	}
-	//printf("\nString has length %i and contains %i black spaces \n",string_length, blank_num);
 	if (blank_num==string_length) return 1;
 	else return 0;
 
@@ -470,11 +429,8 @@ void add_object_tolist(char string_name[STRING_SIZE],char string_value[STRING_SI
 	remove_blankspaces_around_string(string_value);
 
 	//allocate memory for a new object
-
 	varname_list[*number_readobject] = malloc(STRING_SIZE*sizeof(char*));
 	value_list[*number_readobject] = malloc(STRING_SIZE*sizeof(char*));
-	//	varname_list[*number_readobject] = (char**)malloc(STRING_SIZE*sizeof(char*));
-	//	value_list[*number_readobject] = (char**)malloc(STRING_SIZE*sizeof(char*));
 
 	//copy temp strings into object list
 	strcpy(varname_list[*number_readobject],string_name);
@@ -482,5 +438,4 @@ void add_object_tolist(char string_name[STRING_SIZE],char string_value[STRING_SI
 
 	//count number of read objects
 	*number_readobject=*number_readobject+1;
-	//printf("func after number_readobject : %i \n",number_readobject);
 }

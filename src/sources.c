@@ -47,11 +47,9 @@ float **sources(FILE * fpsrc, int *nsrc, int * stype){
 				srcpos[3][l]=iround(zsrc/DZ)*DZ/0.3048-REFSRC[2];
 			}
 			else {
-				//fprintf(FP," xsrc %6.2f  %5.2f \n",xsrc,DX);
 				srcpos[1][l]=iround(xsrc/DX)*DX-REFSRC[0];
 				srcpos[2][l]=iround(ysrc/DY)*DY-REFSRC[1];
 				srcpos[3][l]=iround(zsrc/DZ)*DZ-REFSRC[2];
-				//fprintf(FP," srcpos[1][l] %6.2f \n",srcpos[1][l]);
 			}
 			srcpos[4][l]=tshift+SRCTSHIFT*(l-1);
 		}
@@ -115,23 +113,11 @@ float **pwsources(int *nsrc, int * stype){ /* plane wave excitation */
 		tan_phi=tan(PLANE_WAVE_ANGLE*PI/180.0);
 		fprintf(FP," Message from function sources (written by PE %d):\n",MYID);				
 
-
-		/*code relic, not quite sure about the purpose */
-		/*if (PLANE_WAVE_ANGLE==0.0) ifw=1;
-		if (PLANE_WAVE_ANGLE==0.0) ixend=NXG;
-		else ixend=iround((((float)(FW*DX))+(((float)NYG*DY-((float)(FW*DX))-PLANE_WAVE_DEPTH)/tan_phi))/DX);
-
-
-		if (ixend>(NXG-ifw+1)) ixend=NXG-ifw+1; */
-
 		ixend=NXG-FW;
 		iyend=NZG-FW;
 
 		srcpos=fmatrix(1,6,1,*nsrc);
 
-
-		/*read from sofi3D.c */
-		/*fprintf(FP," Number of source positions: %i\n",*nsrc);*/
 		fprintf(FP," x-range for plane wave: %d to %d gridpoints. \n",FW,ixend);
 		fprintf(FP," y-range for plane wave: %d to %d gridpoints. \n",FW,iyend);
 

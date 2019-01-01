@@ -9,7 +9,6 @@
 void psource_acoustic(int nt, float *** sxx, float **  srcpos_loc, float ** signals, int nsrc, int * stype){
 
 	extern float DX, DY, DZ;
-	//extern float DT;
 	extern int NT;
 
 	int i, j, k, l;

@@ -22,7 +22,6 @@ void model_visco(float  ***  rho, float ***  pi, float ***  u,
 	extern int NX, NY, NZ, NXG, NYG, NZG, POS[4], L, MYID;
 	extern int WRITE_MODELFILES;
 	extern char  MFILE[STRING_SIZE];
-	//extern FILE *FP;
 	extern float TS;
 
 	/* local variables */
@@ -69,15 +68,12 @@ void model_visco(float  ***  rho, float ***  pi, float ***  u,
 			eta[l]=DT/pts[l];
 		}
 
-		//previously : ws=2.0*PI*FL[1];
 		/* in the viscoelastic case : reference frequency where no velocity dispersion occurs.
 		 * if FREF is not given in input file, the largest center source frequency FC
 		 * as specified in input file is used (not that the relation : FC=1/TS) is used here)*/
 		
 		if (FREF==0.0) ws=2.0*PI/TS;
 		else ws=2.0*PI*FREF;
-
-		//fprintf(FP,"MYID=%d \t\t ws=%5.5f \t pts=%5.5f \t FL=%5.5f \n ",MYID,ws,pts[l],FL[l]);
 		
 		/* loop over global grid */
 		for (k=1;k<=NZG;k++){

@@ -72,7 +72,7 @@ void writepar(FILE *fp, int ns){
 		fprintf(fp," Reading source positions, time delay, centre frequency \n");
 		fprintf(fp," and initial amplitude from ASCII-file \n");
 		fprintf(fp,"\t%s\n\n",SOURCE_FILE);
-		if (RUN_MULTIPLE_SHOTS)	fprintf(fp,"\n SOFI3D will run (independent) simulations for each source defined in %s\n\n", SOURCE_FILE);
+		if (RUN_MULTIPLE_SHOTS)	fprintf(fp,"\n ASOFI3D will run (independent) simulations for each source defined in %s\n\n", SOURCE_FILE);
  
 	} else {
 		fprintf(fp," Plane wave excitation: depth= %5.2f meter \n",PLANE_WAVE_DEPTH);
@@ -423,7 +423,7 @@ void writepar(FILE *fp, int ns){
 	}
 
 	fprintf(fp,"\n **********************************************************");
-	fprintf(fp,"\n ******* PARAMETERS READ or PROCESSED within SOFI3D *******");
+	fprintf(fp,"\n ******* PARAMETERS READ or PROCESSED within ASOFI3D *******");
 	fprintf(fp,"\n **********************************************************\n\n");
 
 

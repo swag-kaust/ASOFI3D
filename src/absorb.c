@@ -143,15 +143,7 @@ void absorb(float *** absorb_coeff){
 		}
 	}
 
-
 	sprintf(modfile,"model/absorb.bin");
-
-	/*writemod(modfile,absorb_coeff,3); 
-
-	MPI_Barrier(MPI_COMM_WORLD);
-
-	if (MYID==0) mergemod(modfile,3); */
-
 
 	free_vector(coeff,1,ifw);
 }

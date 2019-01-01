@@ -78,19 +78,6 @@ float ***  taus, float ***  taup, float *  eta){
 
 				/* create tunnel */
 				/* distance from axis of the tunnel */
-
-/*				d=sqrt(((y-axis_y)*(y-axis_y))+((z-axis_z)*(z-axis_z)));
-				if ((d<radius)&&(x>=x1)&&(x<=x2)){ 
-					Vp=vpt; Vs=vst; Rho=rhot;tp=2.0/Qpt; ts=2.0/Qst;}
-*/					
-							
-							
-				
-				
-				
-/*				if ((x>x1)&&(x<x2)&&(y>axis_y-radius)&&(y<axis_y+radius)&&(z>axis_z-radius)&&(z<axis_z+radius))
-				{ Vp=vpt; Vs=vst; Rho=rhot; tp=2.0/Qpt; ts=2.0/Qst;}
-*/
 				if (y<(axis_y+radius)){ 
 					Vp=vpt; Vs=vst; Rho=rhot;tp=2.0/Qpt; ts=2.0/Qst;}
 
@@ -126,12 +113,6 @@ float ***  taus, float ***  taup, float *  eta){
 
 	sprintf(modfile,"model/tunnel5.bin");
 
-/*	writemod(modfile,rho,3);
-
-	MPI_Barrier(MPI_COMM_WORLD);
-
-	if (MYID==0) mergemod(modfile,3);
-*/
 	free_vector(pts,1,L);
 	
 }

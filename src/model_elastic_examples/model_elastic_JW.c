@@ -40,12 +40,6 @@ void model_elastic(float  ***  rho, float ***  pi, float ***  u,
     const float vpv1=2326.0, poi1=0.25, epsx1=0.135, epsy1=-0.082, delx1=-0.166, dely1=-0.24, delxy1=-0.089,
             gamx1=0.438, gamy1=0.25, rho1=2000.0, h=10000.0;
     
-    /* parameters for layer 2 */
-    //const float vp2=5700.0, vs2=3400.0, rho2=2500.0;
-    const float vpv2=2326.0, poi2=0.25, epsx2=0., epsy2=0.0, delx2=0., dely2=0., delxy2=0.,
-            gamx2=0., gamy2=0., rho2=5000.0;
-    
-    
     if (WRITE_MODELFILES==1) {
         vpv  =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);
         vsv  =  f3tensor(0,NY+1,0,NX+1,0,NZ+1);

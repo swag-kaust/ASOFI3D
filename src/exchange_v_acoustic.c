@@ -60,14 +60,6 @@ double exchange_v(int nt, Velocity *v,
 
 
 	/* persistent communication see comm_ini.c*/
-	/*for (i=4;i<=5;i++){*/
-	/* send and reveive values at edges of the local grid */
-	/*	MPI_Start(&req_send[i]);
-		MPI_Wait(&req_send[i],&status);
-		MPI_Start(&req_rec[i]);
-		MPI_Wait(&req_rec[i],&status);
-	}*/
-
 
 	MPI_Sendrecv_replace(&buffertop_to_bot[1][1][1],NX*NZ*nf1,MPI_FLOAT,INDEX[3],TAG5,INDEX[4],TAG5,MPI_COMM_WORLD,&status);
 	MPI_Sendrecv_replace(&bufferbot_to_top[1][1][1],NX*NZ*nf2,MPI_FLOAT,INDEX[4],TAG6,INDEX[3],TAG6,MPI_COMM_WORLD,&status);
@@ -130,26 +122,9 @@ double exchange_v(int nt, Velocity *v,
 
 
 	/* persistent communication see comm_ini.c*/
-	/*for (i=0;i<=1;i++){*/
-	/* send and reveive values at edges of the local grid */
-	/*	MPI_Start(&req_send[i]);
-		MPI_Wait(&req_send[i],&status);
-		MPI_Start(&req_rec[i]);
-		MPI_Wait(&req_rec[i],&status);
-	}*/
-
-
 	MPI_Sendrecv_replace(&bufferlef_to_rig[1][1][1],NY*NZ*nf1,MPI_FLOAT,INDEX[1],TAG1,INDEX[2],TAG1,MPI_COMM_WORLD,&status);
 	MPI_Sendrecv_replace(&bufferrig_to_lef[1][1][1],NY*NZ*nf2,MPI_FLOAT,INDEX[2],TAG2,INDEX[1],TAG2,MPI_COMM_WORLD,&status);
 
-
-	/*	MPI_Bsend(&bufferlef_to_rig[1][1][1],NY*NZ*nf1,MPI_FLOAT,INDEX[1],TAG1,MPI_COMM_WORLD);
-	MPI_Barrier(MPI_COMM_WORLD);
-	MPI_Recv(&bufferlef_to_rig[1][1][1], NY*NZ*nf1,MPI_FLOAT,INDEX[2],TAG1,MPI_COMM_WORLD,&status);
-	MPI_Bsend(&bufferrig_to_lef[1][1][1],NY*NZ*nf2,MPI_FLOAT,INDEX[2],TAG2,MPI_COMM_WORLD);
-	MPI_Barrier(MPI_COMM_WORLD);
-	MPI_Recv(&bufferrig_to_lef[1][1][1], NY*NZ*nf2,MPI_FLOAT,INDEX[1],TAG2,MPI_COMM_WORLD,&status);			
-	 */
 
 	if ((BOUNDARY) || (POS[1]!=NPROCX-1))	/* no boundary exchange at right edge of global grid */
 		for (j=1;j<=NY;j++){
@@ -202,28 +177,8 @@ double exchange_v(int nt, Velocity *v,
 			}
 		}
 
-
-	/* persistent communication see comm_ini.c*/
-	/*for (i=2;i<=3;i++){*/
-	/* send and reveive values at edges of the local grid */
-	/*	MPI_Start(&req_send[i]);
-		MPI_Wait(&req_send[i],&status);
-		MPI_Start(&req_rec[i]);
-		MPI_Wait(&req_rec[i],&status);
-	}*/
-
 	MPI_Sendrecv_replace(&bufferfro_to_bac[1][1][1],NX*NY*nf1,MPI_FLOAT,INDEX[5],TAG3,INDEX[6],TAG3,MPI_COMM_WORLD,&status);
 	MPI_Sendrecv_replace(&bufferbac_to_fro[1][1][1],NX*NY*nf2,MPI_FLOAT,INDEX[6],TAG4,INDEX[5],TAG4,MPI_COMM_WORLD,&status);
-
-	/*
-
-	MPI_Bsend(&bufferfro_to_bac[1][1][1],NX*NY*nf1,MPI_FLOAT,INDEX[5],TAG3,MPI_COMM_WORLD);
-	MPI_Barrier(MPI_COMM_WORLD);
-	MPI_Recv(&bufferfro_to_bac[1][1][1], NX*NY*nf1,MPI_FLOAT,INDEX[6],TAG3,MPI_COMM_WORLD,&status);
-	MPI_Bsend(&bufferbac_to_fro[1][1][1],NX*NY*nf2,MPI_FLOAT,INDEX[6],TAG4,MPI_COMM_WORLD);
-        MPI_Barrier(MPI_COMM_WORLD);
-	MPI_Recv(&bufferbac_to_fro[1][1][1], NX*NY*nf2,MPI_FLOAT,INDEX[5],TAG4,MPI_COMM_WORLD,&status);			
-	 */
 
 	/* no exchange if periodic boundary condition is applied */
 	if ((BOUNDARY) || (POS[3]!=NPROCZ-1))	/* no boundary exchange at back side of global grid */

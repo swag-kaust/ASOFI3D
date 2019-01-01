@@ -6,31 +6,30 @@ CircleCI status:
 
 ![](doc/tex/eps/invisible_gamma_1.gif)
 
-ASOFI3D stands for Anisotropic Seismic mOdeling with FInite differences.
+ASOFI3D stands for Anisotropic Seismic mOdeling with FInite differences in 3D.
 This code is a modification of
-[SOFI3D](https://git.scc.kit.edu/GPIAG-Software/SOFI3D/wikis/home)
-to accomodate orthorhombic anisotropy 
-
+[SOFI3D](https://git.scc.kit.edu/GPIAG-Software/SOFI3D/wikis/home) code
+to accommodate orthorhombic anisotropy.
 
 
 ## Obtaining the code
 
 Get the code from this repo:
 
-    git clone git@github.com:swag-kaust/TD.git
+    git clone git@github.com:swag-kaust/ASOFI3D.git
 
-Then switch to the cloned repo directory:
+Then switch to the created directory:
 
-    cd TD
+    cd ASOFI3D
 
 
 ## Building the code
 
 The prerequisites for ASOFI3D are:
 
-* C compiler (for example, `gcc`)
+* C compiler (for example, `gcc`) with the support of C11 standard
 * MPI library (for example, [OpenMPI](https://www.open-mpi.org/))
-* Make build system (GNU Make is a popular choice)
+* [GNU Make](https://www.gnu.org/software/make/) build system
 
 
 ## Compile with gcc and OpenMPI on Ubuntu
@@ -50,12 +49,12 @@ which compiles the solver and several auxiliary utilities.
 
 After successful compilation, you can run the code via command
 
-    ./run_ASOFI3D.sh np dirname
+    ./run_asofi3D.sh np dirname
 
 where `np` is a number of MPI processes you want to use and `dirname` is the
 directory that contains configuration of the problem to solve.
 Parameter `dirname` is optional and defaults to `par`, so that the main
-configuration file of the solver is `par/in_and_out/sofi3D.json`.
+configuration file of the solver is `par/in_and_out/asofi3D.json`.
 
 
 ## Running the tests
@@ -64,5 +63,3 @@ To run the tests, Madagascar is an additional prerequisite.
 Tests are run via the command
 
     make test
-
-

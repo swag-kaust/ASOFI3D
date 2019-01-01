@@ -286,8 +286,8 @@ void model_elastic(float ***rho, float ***pi, float ***u,
             mergemod(modfile, 3);
 
         // Notice that the stiffness parameters are written
-        // to disk in the conventional notation (third axis is vertical);
-        // that's why there is a mismatch between filenames and variable names.
+        // to disk in the conventional notation (third axis is vertical).
+        // That's why there is a mismatch between filenames and variable names.
         sprintf(modfile, "%s.SOFI3D.C11", MFILE);
         writemod(modfile, C11, 3);
         MPI_Barrier(MPI_COMM_WORLD);

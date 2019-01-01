@@ -47,7 +47,6 @@ void surface(int ndepth, float *** u, float *** pi, float ***taus, float *** tau
 	switch (FDORDER){
 	case 2 :
 	
-	//dh24x=DX*24.0;
 	b1=9.0/8.0; b2=-1.0/24.0; /* Taylor coefficients */
 		
 	if(FDCOEFF==2){b1=1.1382; b2=-0.046414;} /* Holberg coefficients E=0.1 %*/ 
@@ -66,12 +65,6 @@ void surface(int ndepth, float *** u, float *** pi, float ***taus, float *** tau
                         syz[j-1][i][k]=-syz[j][i][k];
                         syz[j-2][i][k]=-syz[j+1][i][k];
 
-
-			/* in the case of using several relaxation mechanisms all
-						 memory-variables corresponding to syy must be set to zero
-					  for (l=1;l<=L;l++) ryy(i,j,k,l)=0.0;*/
-
-
 			/* now updating the stress components sxx, szz and the memory-
 						 variables rxx,rzz at the free surface */
 
@@ -79,10 +72,6 @@ void surface(int ndepth, float *** u, float *** pi, float ***taus, float *** tau
 			vxx = (b1*(vx[j][i][k]-vx[j][i-1][k])+b2*(vx[j][i+1][k]-vx[j][i-2][k]))/DX;
                         vyy = (b1*(vy[j][i][k]-vy[j-1][i][k])+b2*(vy[j+1][i][k]-vy[j-2][i][k]))/DY;
 			vzz = (b1*(vz[j][i][k]-vz[j][i][k-1])+b2*(vz[j][i][k+1]-vz[j][i][k-2]))/DZ;
-			
-			/*vxx=(-vx[j][i+1][k]+27.0*(vx[j][i][k]-vx[j][i-1][k])+vx[j][i-2][k])/(dh24x);
-                        vyy=(-vy[j+1][i][k]+27.0*(vy[j][i][k]-vy[j-1][i][k])+vy[j-2][i][k])/(dh24x);
-                        vzz=(-vz[j][i][k+1]+27.0*(vz[j][i][k]-vz[j][i][k-1])+vz[j][i][k-2])/(dh24x);*/
 			
 			if (ABS_TYPE==1){
 				if((POS[1]==0) && (i<=FW)){

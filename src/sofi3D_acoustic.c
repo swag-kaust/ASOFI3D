@@ -248,15 +248,6 @@ int main(int argc, char **argv){
 	if (!buff_addr) err("allocation failure for buffer for MPI_Bsend !");
 	MPI_Buffer_attach(buff_addr,buffsize);
 
-
-	/* allocation for request and status arrays */
-	// MPI_Request *req_send, *req_rec, *sreq_send, *sreq_rec;
-	// req_send=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
-	// req_rec=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
-	// sreq_send=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
-	// sreq_rec=(MPI_Request *)malloc(REQUEST_COUNT*sizeof(MPI_Request));
-
-
 	/* allocation for timing arrays used for performance analysis */
 	time_v_update=dvector(1,NT);
 	time_s_update=dvector(1,NT);
@@ -401,16 +392,6 @@ int main(int argc, char **argv){
 	/* Reading source positions from SOURCE_FILE */
 	fprintf(FP,"\n ------------------ READING SOURCE PARAMETERS ------------------- \n");
 	if (PLANE_WAVE_DEPTH>0) {
-
-
-
-		/*srcpos=pwsources(&nsrc);*/
-
-		/* for unknown reasons, the pointer does not point to memory that has been allocated by a subroutine this way */
-		/*stype=(int *)malloc(nsrc*sizeof(int)); 
-		stype_loc=(int *)malloc(nsrc*sizeof(int));*/
-
-		/* I replaced malloc with ivector and started with ishot=1 */
 		stype=ivector(1,nsrc);
 		stype_loc=ivector(1,nsrc);
 
@@ -434,10 +415,6 @@ int main(int argc, char **argv){
 			rewind(fpsrc);
 			if ((nsrc)==0) fprintf(FP,"\n WARNING: Could not determine number of sources parameter sets in input file. Assuming %d.\n",(nsrc=0));
 			else fprintf(FP," Number of source positions specified in %s : %d \n",SOURCE_FILE,nsrc);
-
-			/*fgets(cline,255,fpsrc);
-			if (sscanf(cline,"%d",&nsrc)==0) fprintf(FP,"\n WARNING: Could not determine number of sources parameter sets in input file. Assuming %d.\n",(nsrc=0));
-			else fprintf(FP," Number of source positions specified in %s : %d \n",SOURCE_FILE,nsrc);*/
 			break;
 		case 2: fprintf(FP,"\n Reading source and receiver parameters from file: %s (UKOOA format)\n",SOURCE_FILE);
 		err("\n  UNDER CONSTRUCTION !!! \n");
@@ -452,11 +429,6 @@ int main(int argc, char **argv){
 		MPI_Barrier(MPI_COMM_WORLD);
 		MPI_Bcast(&nsrc,1,MPI_INT,0,MPI_COMM_WORLD);
 
-		/* for unknown reasons, the pointer does not point to memory that has been allocated by a subroutine this way */
-		/*stype=(int *)malloc(nsrc*sizeof(int));
-	    stype_loc=(int *)malloc(nsrc*sizeof(int));*/
-
-		/* I replaced malloc with ivector and started with ishot=1 */
 		stype=ivector(1,nsrc);
 		stype_loc=ivector(1,nsrc);
 
@@ -684,10 +656,6 @@ int main(int argc, char **argv){
 
 		/* write seismograms to file(s) */
 		if (SEISMO){
-
-			/* saves seismograms portion of each PE individually to file */
-			//if (ntr>0) saveseis(FP,sectionvx,sectionvy,sectionvz,sectionp,sectioncurl,sectiondiv,recpos,recpos_loc,ntr,srcpos1,ishot,ns);
-
 			/* merge of seismogram data from all PE and output data collectively */
 			switch (SEISMO){
 			case 1 : /* particle velocities only */
@@ -712,8 +680,6 @@ int main(int argc, char **argv){
 
 				break;
 			case 4 : /* everything */
-				/*fprintf(FP," start merging, ntr= %d : \n",ntr_glob);
-						fprintf(stdout,"Message from PE %d\n",MYID);*/
 				catseis(sectionvx, seismo_fulldata, recswitch, ntr_glob,ns);
 				if (MYID==0) saveseis_glob(FP,seismo_fulldata,recpos, ntr_glob,srcpos,ishot,ns,1);
 				catseis(sectionvy, seismo_fulldata, recswitch, ntr_glob,ns);

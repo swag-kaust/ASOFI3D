@@ -20,7 +20,7 @@ backup_default_model
 
 # Copy test model.
 cp "${TEST_PATH}/model_elastic.c"            src/
-cp "${TEST_PATH}/sofi3D_force_in_x.json"     tmp/in_and_out/sofi3D.json
+cp "${TEST_PATH}/asofi3D_force_in_x.json"    tmp/in_and_out/asofi3D.json
 cp "${TEST_PATH}/source_force_in_x.dat"      tmp/sources/
 cp "${TEST_PATH}/receiver_force_in_x.dat"    tmp/receiver/
 
@@ -28,9 +28,9 @@ compile_code
 
 run_solver np=16 dir=tmp log=ASOFI3D.log
 
-cp "${TEST_PATH}/sofi3D_force_in_y.json"      tmp/in_and_out/sofi3D.json
-cp "${TEST_PATH}/source_force_in_y.dat"       tmp/sources/
-cp "${TEST_PATH}/receiver_force_in_y.dat"     tmp/receiver/
+cp "${TEST_PATH}/asofi3D_force_in_y.json"    tmp/in_and_out/asofi3D.json
+cp "${TEST_PATH}/source_force_in_y.dat"      tmp/sources/
+cp "${TEST_PATH}/receiver_force_in_y.dat"    tmp/receiver/
 
 run_solver np=16 dir=tmp log=ASOFI3D.log
 

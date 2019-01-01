@@ -275,6 +275,7 @@ Session.vim
 
 # Vim database for C code (functions, variables, etc. and their locations).
 tags
+.ccls-cache
 
 # Project-specific settings.
 .exrc

@@ -155,13 +155,6 @@ void snap(FILE *fp, int nt, int nsnap, int format, int type,
 		for (k=nz1;k<=nz2;k+=idz)
 			for (i=nx1;i<=nx2;i+=idx)
 				for (j=ny1;j<=ny2;j+=idy){
-					/*vxy=(-vx[j+2][i][k]+27.0*(vx[j+1][i][k]-vx[j][i][k])+vx[j-1][i][k])*(dh24);
-					vxz=(-vx[j][i][k+2]+27.0*(vx[j][i][k+1]-vx[j][i][k])+vx[j][i][k-1])*(dh24);
-					vyx=(-vy[j][i+2][k]+27.0*(vy[j][i+1][k]-vy[j][i][k])+vy[j][i-1][k])*(dh24);
-					vyz=(-vy[j][i][k+2]+27.0*(vy[j][i][k+1]-vy[j][i][k])+vy[j][i][k-1])*(dh24);
-					vzx=(-vz[j][i+2][k]+27.0*(vz[j][i+1][k]-vz[j][i][k])+vz[j][i-1][k])*(dh24);
-					vzy=(-vz[j+2][i][k]+27.0*(vz[j+1][i][k]-vz[j][i][k])+vz[j-1][i][k])*(dh24);*/
-					
 					vxy=(vx[j+1][i][k]-vx[j][i][k])*(dh24y);
 					vxz=(vx[j][i][k+1]-vx[j][i][k])*(dh24z);
 					vyx=(vy[j][i+1][k]-vy[j][i][k])*(dh24x);
@@ -197,13 +190,6 @@ void snap(FILE *fp, int nt, int nsnap, int format, int type,
 					
 					}
 					
-					/*sign(rot(v)t * sqrt(Es) with Es = u*amp*amp (second amp removed due to missing sqrt in amp*/
-					/*a=fsign((vxz-vzx))*sqrt((u[j][i][k])*amp); 
-
-					amp=u[j][i][k]*((vyz-vzy)*fabs(vyz-vzy)+
-					    (vzx-vxz)*fabs(vzx-vxz)+(vxy-vyx)*fabs(vxy-vyx));
-					a=fsign(amp)*sqrt(fabs(amp));*/
-					
 					writedsk(fpy2,a,format);
 					   
 
@@ -216,10 +202,6 @@ void snap(FILE *fp, int nt, int nsnap, int format, int type,
 		for (k=nz1;k<=nz2;k+=idz)
 			for (i=nx1;i<=nx2;i+=idx)
 				for (j=ny1;j<=ny2;j+=idy){
-					/*vxx=(-vx[j][i+1][k]+27.0*(vx[j][i][k]-vx[j][i-1][k])+vx[j][i-2][k])*(dh24);
-					vyy=(-vy[j+1][i][k]+27.0*(vy[j][i][k]-vy[j-1][i][k])+vy[j-2][i][k])*(dh24);
-					vzz=(-vz[j][i][k+1]+27.0*(vz[j][i][k]-vz[j][i][k-1])+vz[j][i][k-2])*(dh24);*/
-					
 					vxx=(vx[j][i][k]-vx[j][i-1][k])*(dh24x);
 					vyy=(vy[j][i][k]-vy[j-1][i][k])*(dh24y);
 					vzz=(vz[j][i][k]-vz[j][i][k-1])*(dh24z);
@@ -246,15 +228,7 @@ void snap(FILE *fp, int nt, int nsnap, int format, int type,
 						break;
 					}
 					
-					/*sign of div(v) * Ep with Ep=pi*amp*amp */
-					/*a=fsign(amp)*sqrt((pi[j][i][k])*amp*amp);
-										
-					a=(vxx+vyy+vzz)*sqrt(pi[j][i][k]);*/
-					
 					writedsk(fpx2,a,format);
-				
-					
-
 				}
 
 		fclose(fpx2);

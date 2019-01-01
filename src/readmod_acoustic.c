@@ -88,17 +88,11 @@ void readmod_acoustic(float  ***  rho, float ***  pi, int ishot){
 			time4=MPI_Wtime();
 			fprintf(FP," real time : %4.2f s.\n",time4-time3);
 		}
-		//printf("Myid=%d NXG=%d\t NYG=%d\t NZG=%d \t N=%d \t ind=%d \n",MYID,NXG,NYG,NZG,N,ind);
 		for (i=1;i<=NXG;i++){
 			for (j=1;j<=NYG;j++){
 				ind=(i-1)*NYG +j;
-				//if (MYID==0) printf("N=%d \t ind=%d \n",N,ind);
 				Vp=vpbuffer[ind-1];
 				Rho=rhobuffer[ind-1];
-
-				/*Vp=1900.0;  Rho=1000.0;*/
-
-
 
 				piv=Vp*Vp*Rho;
 

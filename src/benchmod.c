@@ -124,7 +124,6 @@ void model_elastic(float  ***rho, float ***pi, float ***u,
 		    pts=vector(1,L);
 		    for (l=1;l<=L;l++) {
 			    pts[l]=1.0/(2.0*PI*FL[l]);
-			    //eta[l]=DT/pts[l];
 		    }
 		    ws=2.0*PI*FL[1];
 

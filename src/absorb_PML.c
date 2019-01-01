@@ -38,16 +38,11 @@ void absorb_PML(float *** absorb_coeffx, float *** absorb_coeffy, float *** abso
 	ifw=FW;  /* frame width in gridpoints */
 	ffw=(float)(FW*DX); /* frame width in m*/
 	coeff=vector(1,ifw);
-	//amp=1.0-DAMPING/100.0;   /* amplitude at the edge of the numerical grid */
-	//pis=4.0*atan(1.0);
-	//f0=467.0;
-	//a0=1.79;
 
 	alpha=1e-4;
 	a=0.25;
 	b=0.75;
 	
-	/*c=log(1.0/DAMPING)*(3.0*Vp/(2.0*FW));*/ /* Collino */
 	c=-VPPML*log(alpha)/ffw;  /* Wang 2003 */
 	
 	for (i=1;i<=ifw;i++){

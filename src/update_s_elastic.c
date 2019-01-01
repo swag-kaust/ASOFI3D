@@ -76,8 +76,6 @@ double update_s_elastic(
     float c66ipjp, c44jpkp, c55ipkp;
     float vdiag;
     float b1, b2, b3, b4, b5, b6;
-    // float vxyyx_T2, vyzzy_T2, vxzzx_T2;
-    // vxxyyzz_T2,vyyzz_T2,vxxzz_T2,vxxyy_T2; /* for FDORDER_TIME=2 */
     float c1, c2, c3, c4;               /* Coefficients for Adam Bashforth */
 
     float **vxyyx_j, **vyzzy_j, **vxzzx_j, **vxxyyzz_j, **vyyzz_j, **vxxzz_j, **vxxyy_j;
@@ -2352,8 +2350,6 @@ inline void update_s_ijk_2nd_order(OrthoPar *op, Strain_ijk *e, int i, int j, in
     float c66ipjp = op->C66ipjp[j][i][k];
     float c44jpkp = op->C44jpkp[j][i][k];
     float c55ipkp = op->C55ipkp[j][i][k];
-    //g=pi[j][i][k];
-    //f=2.0*u[j][i][k];
 
     float c11 = op->C11[j][i][k];
     float c12 = op->C12[j][i][k];

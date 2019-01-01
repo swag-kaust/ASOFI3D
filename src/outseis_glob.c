@@ -39,7 +39,6 @@ void  outseis_glob(FILE *fp, FILE *fpdata, float **section,
 	segy tr;
 	int tracl ;
 	float xr, yr, zr, y, z, scalefac, tfloat;
-	//float x;
 	float XS=0.0, YS=0.0, ZS=0.0;
 	const float scale=3.0;
 	char kindofdata[STRING_SIZE];

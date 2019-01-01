@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------
- *  fd.h - include file for sofi3D
+ *  fd.h - main include file
  *
  *  ---------------------------------------------------------------------*/
 #ifndef FD_H
@@ -38,8 +38,6 @@
 //Madagascar
 void removespace(char *str);
 void madinput(char header[],float ***DEN );
-//void madinput(char header[],char binary_file[]);
-
 
 void absorb(float *** absorb_coeff);
 

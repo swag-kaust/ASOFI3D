@@ -22,10 +22,8 @@ int **receiver(FILE *fp, int *ntr){
 	int itr=1, itr1=0, itr2=0, recflag=0, i, j, k, ifw, n;
 	int nxrec1, nxrec2, nyrec1, nyrec2, nzrec1, nzrec2;
 	float xrec, yrec, zrec;
-	/*char rec_file_sub[STRING_SIZE]; */ /* variable not in use*/
 	char bufferstring[10], buffer[STRING_SIZE];
 	bool testbuff1, testbuff2, testbuff3;
-	//bool testbuff4;
 	FILE *fpr;
 
 
@@ -44,12 +42,6 @@ int **receiver(FILE *fp, int *ntr){
 				testbuff2=strchr(buffer,'%');
 				testbuff3=sscanf(buffer,"%s",bufferstring)==1;
 
-				/*the following output is for debugging*/
-				//testbuff4=(testbuff1==1 || testbuff2==1);
-				//fprintf(fp," buffer: _%s_with testbuff1=_%i_ testbuff2=_%i_testbuff3=_%i_ testbuff4=_%i_\n",buffer,testbuff1, testbuff2, testbuff3,testbuff4);
-				/* checks if the line contains a '%' or '#' character which indicates a 
-					comment line, and if the reading of a string was successful, 
-					which is not the case for an empty line*/
 				if (((testbuff1==1 || testbuff2==1)==0) && testbuff3==1) ++(*ntr);
 			}
 			rewind(fpr);

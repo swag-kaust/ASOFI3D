@@ -50,19 +50,19 @@ compile_code () {
     cd src
 
     # First invoke `make` in question mode to check if
-    # `sofi3D` target is up to date.
-    make sofi3D --question
+    # `asofi3D` target is up to date.
+    make asofi3D --question
 
     if [ $? -eq 0 ]
     then
-        log "Executable 'sofi3D' is up do date."
+        log "Executable 'asofi3D' is up do date."
     else
-        log "Recompiling 'sofi3D'. See tmp/make.log for details"
-        make sofi3D > ../tmp/make.log
+        log "Recompiling 'asofi3D'. See tmp/make.log for details"
+        make asofi3D > ../tmp/make.log
 
         if [ "$?" -ne 0 ]; then
             cd ..
-            error "Compiling sofi3D"
+            error "Compilation of asofi3D failed"
         fi
     fi
 
@@ -100,7 +100,7 @@ run_solver () {
 
     # Run code.
     log "Running solver. Output is captured to ${dirname}/${logname}"
-    ./run_ASOFI3D.sh "${nmpiprocs}" "${dirname}" > "${dirname}/${logname}" &
+    ./run_asofi3D.sh "${nmpiprocs}" "${dirname}" > "${dirname}/${logname}" &
     animate_progress $! "Running solver..."
     if [ $? -ne 0 ]; then
         error "Running solver failed"

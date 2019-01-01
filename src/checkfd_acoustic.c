@@ -17,15 +17,11 @@ void checkfd_acoustic(FILE *fp, float *** prho, float *** ppi, float **srcpos, i
 
 	/* external variables */
 	extern float DX, DY, DZ, DT, TS, TIME, TSNAP2;
-	//extern float XREC1, XREC2, YREC1, YREC2, ZREC1, ZREC2;
 	extern int NX, NY, NZ, MYID, IDX, IDY, IDZ, FW, POS[4], NT, NDT, NDTSHIFT;
 	extern int FDCOEFF, ABS_TYPE;
-	//extern int READREC;
 	extern int NPROCX, NPROCY,NPROCZ, FW, SRCREC, FREE_SURF;
 	extern int SNAP, SEISMO, CHECKPTREAD, CHECKPTWRITE, SEIS_FORMAT[6], SNAP_FORMAT;
 	extern int FDORDER;
-	/*extern int RUN_MULTIPLE_SHOTS; no determination is done for the output check whether the simulation runs with one or multiple shot
-			-> directorys specified in input file should work in both cases */
 	extern char SEIS_FILE[STRING_SIZE], CHECKPTFILE[STRING_SIZE], SNAP_FILE[STRING_SIZE];
 	extern char SOURCE_FILE[STRING_SIZE], REC_FILE[STRING_SIZE];
 
@@ -44,7 +40,6 @@ void checkfd_acoustic(FILE *fp, float *** prho, float *** ppi, float **srcpos, i
 	nx=NX; ny=NY; nz=NZ;
 
 	/* low Q frame not yet applied as a absorbing boundary */
-	/* if (!FREE_SURF) ny1=1+nfw;*/
 	nfw=0;
 
 	fprintf(fp,"\n **********************************************************");

@@ -71,12 +71,12 @@ float **wavelet(float **srcpos_loc, int nsrc)
                     else
                         amp = (0.75 * PI / ts) * (pow(sin(PI * (t - tshift) / ts), 3.0));
                     break;
-                case 5: /* Ricker (like SAVA) */
+                case 5: /* Ricker wavelet (like in SAVA code) */
                     tau = PI * (t - 1.5 * ts - tshift) / (ts);
                     amp = (((1.0 - 2.0 * tau * tau) * exp(-tau * tau)));
                     break;
                 default:
-                    err("Which source-wavelet? ");
+                    err("Which source-wavelet?");
                     break;
             }
 
@@ -84,7 +84,7 @@ float **wavelet(float **srcpos_loc, int nsrc)
         }
     }
 
-    // central numeric derivative of the Ricker wavelet to match SOFI3D.
+    // Central numeric derivative of the Ricker wavelet to match SOFI3D.
     if (SOURCE_SHAPE == 1)
     {
         for (k = 1; k <= nsrc; k++)

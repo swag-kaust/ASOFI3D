@@ -16,7 +16,7 @@
 # when running under Slurm. Number of MPI processes is determined by the above
 # directive `--ntasks`.
 echo "SLURM_NTASKS = $SLURM_NTASKS" 
-srun ../bin/sofi3D ./in_and_out/sofi3D.json | tee ./in_and_out/sofi3D.jout
+srun ../bin/asofi3D ./in_and_out/asofi3D.json | tee ./in_and_out/ASOFI3D.log
 
 #----excecute with LAMMPI
 #lamboot -v mpihosts

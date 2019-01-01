@@ -17,15 +17,11 @@ void checkfd(FILE *fp, float *** prho, float *** ppi, float *** pu,
 
 	/* external variables */
 	extern float DX, DY, DZ, DT, TS, TIME, TSNAP2;
-	//extern float XREC1, XREC2, YREC1, YREC2, ZREC1, ZREC2;
 	extern int NX, NY, NZ, L, MYID, IDX, IDY, IDZ, FW, POS[4], NT, NDT, NDTSHIFT;
 	extern int FDCOEFF, ABS_TYPE;
-	//extern int READREC;
 	extern int NPROCX, NPROCY,NPROCZ, FW, SRCREC, FREE_SURF;
 	extern int SNAP, SEISMO, CHECKPTREAD, CHECKPTWRITE, SEIS_FORMAT[6], SNAP_FORMAT;
 	extern int FDORDER, FDORDER_TIME;
-	/*extern int RUN_MULTIPLE_SHOTS; no determination is done for the output check whether the simulation runs with one or multiple shot
-		-> directorys specified in input file should work in both cases */
 	extern char SEIS_FILE[STRING_SIZE], CHECKPTFILE[STRING_SIZE], SNAP_FILE[STRING_SIZE];
 	extern char SOURCE_FILE[STRING_SIZE], REC_FILE[STRING_SIZE];
 
@@ -191,7 +187,6 @@ void checkfd(FILE *fp, float *** prho, float *** ppi, float *** pu,
 			/*in case of number of PE's=500, there will be 500 messages, too many to be displayed! */
 			fprintf(fp,"    Check accessibility for seismogram file %s... \n",xfile);
 			sprintf(errormessage,"PE %i cannot write seismogram file %s!",MYID,xfile);
-			//if (access(xfile,W_OK|X_OK)==-1) err(errormessage);
 			if ((fpcheck=fopen(xfile,xmod))==NULL) err(errormessage);
 			else fclose(fpcheck);
 			remove(xfile);
@@ -530,11 +525,6 @@ void checkfd(FILE *fp, float *** prho, float *** ppi, float *** pu,
 
 
 	fprintf(fp," \n\n --------------------- CHECK FOR INPUT ERRORS ---------------------\n");
-
-//    /* Higher temporal orders only work in the elastic case */
-//    if(L==1 && FDORDER_TIME>2){
-//        err("Higher temporal orders (FDORDER_TIME>2) only work in the elastic case.");
-//    }
 
 	if (SNAP){
 		fprintf(fp," Checking the snapshot parameters. \n");

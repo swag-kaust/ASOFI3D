@@ -13,7 +13,6 @@ int **splitrec(int **recpos,int *ntr_loc, int ntr, int *recswitch)
 
 	extern int IENDX, IENDY, IENDZ, MYID, POS[4];
 	extern FILE *FP;
-	//extern float DX,DY,DZ;
 
 	int a,b,c,i=0,j,k;
 	int ** recpos_dummy, **recpos_local=NULL;
@@ -48,21 +47,6 @@ int **splitrec(int **recpos,int *ntr_loc, int ntr, int *recswitch)
 	fprintf(FP,"\n **Message from split_rec:\n");
 	fprintf(FP," Splitting of receivers from global to local grids finished.\n");
 	fprintf(FP," MYID= %d \t \t no. of receivers= %d\n",MYID,i);
-
-
-	/*fprintf(FP,"\n **Message from split_rec:\n");
-	fprintf(FP," Table of local receiver positions (in m):\n");
-	if (i>50) fprintf(FP," The following table is quite large (%d lines) and will, thus, be truncated to the first 25 entries! \n",i);
-	fprintf(FP," MYID \t x \t\t y \t\t z\n");
-
-	if (i>25) {
-		for (j=1;j<=25;j++)	fprintf(FP," %d \t %5.3f \t %5.3f \t %5.3f \n",MYID,(float)recpos_local[1][j]*DX,(float)recpos_local[3][j]*DZ,(float)recpos_local[2][j]*DY);
-	}
-	else
-		for (j=1;j<=i;j++)	fprintf(FP," %d \t %5.3f \t %5.3f \t %5.3f \n",MYID,(float)recpos_local[1][j]*DX,(float)recpos_local[3][j]*DZ,(float)recpos_local[2][j]*DY);
-
-
-	fprintf(FP,"\n\n");*/
 
 	*ntr_loc=i;
 	return recpos_local;

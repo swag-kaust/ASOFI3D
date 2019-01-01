@@ -1531,10 +1531,7 @@ double update_v(int nx1, int nx2, int ny1, int ny2, int nz1, int nz2,
         i=(int)srcpos_loc[1][l];
         j=(int)srcpos_loc[2][l];
         k=(int)srcpos_loc[3][l];
-        //amp=signals[l][nt]; // unscaled force amplitude
         amp=(DT*signals[l][nt])/(DX*DY*DZ);// scaled force amplitude with F= 1N
-        
-        //fprintf(FP," amp at timestep nt %i = %5.5e with DX=%5.2f DY=%5.2f DZ=%5.2f  DT=%5.8f\n",nt,amp,DX,DY,DZ,DT);
         
         switch (stype[l]){
             case 2 :

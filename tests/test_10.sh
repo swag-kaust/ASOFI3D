@@ -16,7 +16,7 @@ backup_default_model
 
 # Copy input to the directory where the test is executed.
 cp "${TEST_PATH}/model_elastic.c"    src/
-cp "${TEST_PATH}/sofi3D.json"        tmp/in_and_out/
+cp "${TEST_PATH}/asofi3D.json"       tmp/in_and_out/
 cp "${TEST_PATH}/source.dat"         tmp/sources/
 cp "${TEST_PATH}/receiver.dat"       tmp/receiver/
 

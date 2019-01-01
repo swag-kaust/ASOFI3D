@@ -1,51 +1,25 @@
-%% merges snapshots otput has Z X Y order of axis
-function D = merge_snapshots(par_folder, file_ext)
+function D = merge_snapshots(plot_opts, opts)
+%MERGE_SNAPSHOTS  Merge snapshots such that the output has
+%   the order of axes (Z, X, Y).
+par_folder = plot_opts.par_folder;
+file_ext = plot_opts.file_ext;
+
+snap_name = fullfile(par_folder, [opts.SNAP_FILE file_ext]);
+
+nlx = (opts.NX / opts.NPROCX) / opts.IDX;
+nly = (opts.NY / opts.NPROCY) / opts.IDY;
+nlz = (opts.NZ / opts.NPROCZ) / opts.IDZ;
+
+% The number of snapshots.
+nsnap = 1 + floor((opts.TSNAP2 - opts.TSNAP1) / opts.TSNAPINC);
 
 %%
-% clear all
-% par_folder = '../par/';
-par_folder = [par_folder, '/'];
-jV = read_asofi3D_json([par_folder, 'in_and_out/sofi3D.json']);
-
-snap_name = [par_folder, jV.SNAP_FILE, file_ext];
-
-nx = str2num(jV.NX);
-ny = str2num(jV.NY);
-nz = str2num(jV.NZ);
-
-NPROCX = str2num(jV.NPROCX);
-NPROCY = str2num(jV.NPROCY);
-NPROCZ = str2num(jV.NPROCZ);
-
-IDX = str2num(jV.IDX);
-IDY = str2num(jV.IDY);
-IDZ = str2num(jV.IDZ);
-
-
-nlx = (nx/NPROCX)/IDX;
-nly = (ny/NPROCY)/IDY;
-nlz = (nz/NPROCZ)/IDZ;
-
-TSNAP1 = str2num(jV.TSNAP1);
-TSNAP2 = str2num(jV.TSNAP2);
-TIME = str2num(jV.TIME);
-TSNAPINC = str2num(jV.TSNAPINC);
-
-if TSNAP2 > TIME
-    fprintf(['WARNING: TSNAP2 = %f is larger than TIME = %f. ' ...
-             'Set TSNAP2 = TIME.\n'], ...
-            TSNAP2, TIME);
-    TSNAP2 = TIME;
-end
-
-nsnap = 1+floor((TSNAP2 - TSNAP1) / TSNAPINC);
-
-%%
-for i = 1:NPROCX
-    disp(i*100/NPROCX);
-    for j = 1:NPROCY
-        for k = 1:NPROCZ
-            fid=fopen([snap_name,'.',num2str(i-1),'.',num2str(j-1),'.',num2str(k-1)]);
+for i = 1:opts.NPROCX
+    disp(i*100/opts.NPROCX);
+    for j = 1:opts.NPROCY
+        for k = 1:opts.NPROCZ
+            snap_file = [snap_name,'.',num2str(i-1),'.',num2str(j-1),'.',num2str(k-1)];
+            fid=fopen(snap_file);
             A = fread(fid,'float');
             A = reshape(A,[nly,nlx,nlz,nsnap]);
             A = permute(A,[2,1,3,4]);
@@ -75,4 +49,3 @@ end
 D = permute(D,[3, 1, 2, 4]);
 
 end
-

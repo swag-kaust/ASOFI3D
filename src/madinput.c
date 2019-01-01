@@ -1,12 +1,3 @@
-/*
- * Create the function
- * put it in fd.h
- * use in sofi3D.c
- *
- *
- * Mahesh Kalita 1st December, 2016
- *
- */
 #include <string.h>
 
 #include "fd.h"
@@ -100,16 +91,13 @@ void madinput(char header[], float *** DEN ){
 	    }
 	    else if (strcmp(pch,"o1")==0)       {
 		pch = strtok (NULL, " = ");
-		// Oz=atof(pch);
 	    }
 	    else if (strcmp(pch,"o2")==0)       {
 		pch = strtok (NULL, " = ");
-		// Ox=atof(pch);
 	    }
 
 	    else if (strcmp(pch,"o3")==0)       {
 		pch = strtok (NULL, " = ");
-		// Oy=atof(pch);
 	    }
 
 	}

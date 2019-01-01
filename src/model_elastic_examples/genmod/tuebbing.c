@@ -225,27 +225,11 @@ float ***  taus, float ***  taup, float *  eta){
 	MPI_Barrier(MPI_COMM_WORLD);
 	if (MYID==0) mergemod(outfile,3);
 
-	/*sprintf(outfile,"model/test.u");
-	writemod(outfile,u,3);
-	MPI_Barrier(MPI_COMM_WORLD);
-	if (MYID==0) mergemod(outfile,3);
-
-	*/
 	sprintf(outfile,"model/tuebbingtbm.rho");
 	writemod(outfile,rho,3);
 	MPI_Barrier(MPI_COMM_WORLD);
 	if (MYID==0) mergemod(outfile,3);
 	
-	/*
-	sprintf(outfile,"model/test.pi");
-	writemod(outfile,pi,3);
-	MPI_Barrier(MPI_COMM_WORLD);
-	if (MYID==0) mergemod(outfile,3);
-
-	*/
-
-
-
 	free_vector(pts,1,L);
 	
 	
