@@ -10,19 +10,6 @@ nlx = (opts.NX / opts.NPROCX) / opts.IDX;
 nly = (opts.NY / opts.NPROCY) / opts.IDY;
 nlz = (opts.NZ / opts.NPROCZ) / opts.IDZ;
 
-NPROCX = opts.NPROCX;
-NPROCY = opts.NPROCY;
-NPROCZ = opts.NPROCZ;
-
-IDX = opts.IDX;
-IDY = opts.IDY;
-IDZ = opts.IDZ;
-
-
-nlx = (nx/NPROCX)/IDX;
-nly = (ny/NPROCY)/IDY;
-nlz = (nz/NPROCZ)/IDZ;
-
 TSNAP1 = opts.TSNAP1;
 TSNAP2 = opts.TSNAP2;
 TIME = opts.TIME;
