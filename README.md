@@ -2,7 +2,7 @@
 
 CircleCI status:
 
-[![CircleCI](https://circleci.com/gh/swag-kaust/TD.svg?style=svg&circle-token=2bb57e94a999ba7f33afb12bf091751af6bda219)](https://circleci.com/gh/swag-kaust/TD)
+[![CircleCI](https://circleci.com/gh/swag-kaust/ASOFI3D.svg?style=svg)](https://circleci.com/gh/swag-kaust/ASOFI3D)
 
 ASOFI3D stands for Anisotropic Seismic mOdeling with FInite differences in 3D.
 This code is intended for the modeling of seismic wave propagation and
