@@ -4,12 +4,13 @@ CircleCI status:
 
 [![CircleCI](https://circleci.com/gh/swag-kaust/TD.svg?style=svg&circle-token=2bb57e94a999ba7f33afb12bf091751af6bda219)](https://circleci.com/gh/swag-kaust/TD)
 
-![](doc/tex/eps/invisible_gamma_1.gif)
-
 ASOFI3D stands for Anisotropic Seismic mOdeling with FInite differences in 3D.
-This code is a modification of
+This code is intended for the modeling of seismic wave propagation and
+is based on 
 [SOFI3D](https://git.scc.kit.edu/GPIAG-Software/SOFI3D/wikis/home) code
-to accommodate orthorhombic anisotropy.
+with the addition of orthorhombic anisotropy.
+
+![](doc/tex/eps/invisible_gamma_1.gif)
 
 
 ## Obtaining the code
@@ -64,7 +65,7 @@ configuration file of the solver is `par/in_and_out/asofi3D.json`.
 
 ## Running the tests
 
-To run the tests, Madagascar is an additional prerequisite.
+To run the tests, [Madagascar](http://www.ahay.org) is an additional prerequisite.
 Tests are run via the command
 
     make test
