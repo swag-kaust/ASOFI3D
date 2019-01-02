@@ -27,23 +27,28 @@ Then switch to the created directory:
 
 The prerequisites for ASOFI3D are:
 
-* C compiler (for example, `gcc`) with the support of C11 standard
+* C compiler (for example, `gcc`), which supports C11 standard
 * MPI library (for example, [OpenMPI](https://www.open-mpi.org/))
 * [GNU Make](https://www.gnu.org/software/make/) build system
 
 
-## Compile with gcc and OpenMPI on Ubuntu
+## Building the code with gcc and OpenMPI on Ubuntu
 
 On recent Ubuntu versions such as 14.04, 16.04, or 18.04 all prerequisites
 can be obtained by the following commands:
 
-    sudo apt-get install gcc make libopenmpi-dev
+    sudo apt-get install gcc libopenmpi-dev make
 
 Then while in the root directory of the code, build the code via command
 
     make
 
 which compiles the solver and several auxiliary utilities.
+
+Before compilation, make will automatically test for the ability to compile
+MPI programs and generate file `src/config-auto.mk` with the flags for
+compilation.
+
 
 ## Example usage
 
