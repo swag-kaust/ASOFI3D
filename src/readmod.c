@@ -245,10 +245,140 @@ void readmod(float ***rho, float ***pi, float ***u,
         float delxy = 0.0f;
         float gamx = 0.0f;
         float gamy = 0.0f;
-        /* loop over global grid */
-        for (k = 1; k <= NZG; k++) {
-            for (i = 1; i <= NXG; i++) {
-                for (j = 1; j <= NYG; j++) {
+
+/*((POS[1] == ((i - 1) / NX)) &&
+                        (POS[2] == ((j - 1) / NY)) &&
+                        (POS[3] == ((k - 1) / NZ))) { */
+
+        int offset_POS = (POS[3] * NZ * NXG * NYG + POS[1] * NX * NYG + POS[2] * NY)*sizeof(float);
+
+		fseek(fp_rho,   offset_POS, SEEK_SET);
+		if (flag_velocity_files_avail) {
+			fseek(fp_vp,    offset_POS, SEEK_SET);
+			fseek(fp_vs,    offset_POS, SEEK_SET);
+		}
+
+		if (flag_cij_files_avail) {
+			fseek(fp_C11,   offset_POS, SEEK_SET);
+			fseek(fp_C22,   offset_POS, SEEK_SET);
+			fseek(fp_C33,   offset_POS, SEEK_SET);
+			fseek(fp_C44,   offset_POS, SEEK_SET);
+			fseek(fp_C55,   offset_POS, SEEK_SET);
+			fseek(fp_C66,   offset_POS, SEEK_SET);
+			fseek(fp_C12,   offset_POS, SEEK_SET);
+			fseek(fp_C13,   offset_POS, SEEK_SET);
+			fseek(fp_C23,   offset_POS, SEEK_SET);
+		}
+		if (fp_epsx != NULL) {
+			fseek(fp_epsx,  offset_POS, SEEK_SET);
+		}
+		if (fp_epsy != NULL) {
+			fseek(fp_epsy,  offset_POS, SEEK_SET);
+		}
+		if (fp_delx != NULL) {
+			fseek(fp_delx,  offset_POS, SEEK_SET);
+		}
+		if (fp_dely != NULL) {
+			fseek(fp_dely,  offset_POS, SEEK_SET);
+		}
+		if (fp_delxy != NULL) {
+			fseek(fp_delxy, offset_POS, SEEK_SET);
+		}
+		if (fp_gamx != NULL) {
+			fseek(fp_gamx,  offset_POS, SEEK_SET);
+		}
+		if (fp_gamy != NULL) {
+			fseek(fp_gamy,  offset_POS, SEEK_SET);
+		}
+            
+        
+        /* loop over local grid */
+        for (k = 1; k <= NZ; k++) {
+            int offset_Z = offset_POS + ((k-1) * NXG * NYG * sizeof(float));
+			int cur_offset = offset_Z;
+			fseek(fp_rho,   cur_offset, SEEK_SET);
+			if (flag_velocity_files_avail) {
+				fseek(fp_vp,    cur_offset, SEEK_SET);
+				fseek(fp_vs,    cur_offset, SEEK_SET);
+			}
+
+			if (flag_cij_files_avail) {
+				fseek(fp_C11,   cur_offset, SEEK_SET);
+				fseek(fp_C22,   cur_offset, SEEK_SET);
+				fseek(fp_C33,   cur_offset, SEEK_SET);
+				fseek(fp_C44,   cur_offset, SEEK_SET);
+				fseek(fp_C55,   cur_offset, SEEK_SET);
+				fseek(fp_C66,   cur_offset, SEEK_SET);
+				fseek(fp_C12,   cur_offset, SEEK_SET);
+				fseek(fp_C13,   cur_offset, SEEK_SET);
+				fseek(fp_C23,   cur_offset, SEEK_SET);
+			}
+			if (fp_epsx != NULL) {
+				fseek(fp_epsx,  cur_offset, SEEK_SET);
+			}
+			if (fp_epsy != NULL) {
+				fseek(fp_epsy,  cur_offset, SEEK_SET);
+			}
+			if (fp_delx != NULL) {
+				fseek(fp_delx,  cur_offset, SEEK_SET);
+			}
+			if (fp_dely != NULL) {
+				fseek(fp_dely,  cur_offset, SEEK_SET);
+			}
+			if (fp_delxy != NULL) {
+				fseek(fp_delxy, cur_offset, SEEK_SET);
+			}
+			if (fp_gamx != NULL) {
+				fseek(fp_gamx,  cur_offset, SEEK_SET);
+			}
+			if (fp_gamy != NULL) {
+				fseek(fp_gamy,  cur_offset, SEEK_SET);
+			}
+            fprintf(FP, "k = %d\n", k);
+            
+            for (i = 1; i <= NX; i++) {
+				int cur_offset = (i-1)*NYG*sizeof(float) + offset_Z;
+
+				fseek(fp_rho,   cur_offset, SEEK_SET);
+				if (flag_velocity_files_avail) {
+					fseek(fp_vp,    cur_offset, SEEK_SET);
+					fseek(fp_vs,    cur_offset, SEEK_SET);
+				}
+
+				if (flag_cij_files_avail) {
+					fseek(fp_C11,   cur_offset, SEEK_SET);
+					fseek(fp_C22,   cur_offset, SEEK_SET);
+					fseek(fp_C33,   cur_offset, SEEK_SET);
+					fseek(fp_C44,   cur_offset, SEEK_SET);
+					fseek(fp_C55,   cur_offset, SEEK_SET);
+					fseek(fp_C66,   cur_offset, SEEK_SET);
+					fseek(fp_C12,   cur_offset, SEEK_SET);
+					fseek(fp_C13,   cur_offset, SEEK_SET);
+					fseek(fp_C23,   cur_offset, SEEK_SET);
+				}
+				if (fp_epsx != NULL) {
+					fseek(fp_epsx,  cur_offset, SEEK_SET);
+				}
+				if (fp_epsy != NULL) {
+					fseek(fp_epsy,  cur_offset, SEEK_SET);
+				}
+				if (fp_delx != NULL) {
+					fseek(fp_delx,  cur_offset, SEEK_SET);
+				}
+				if (fp_dely != NULL) {
+					fseek(fp_dely,  cur_offset, SEEK_SET);
+				}
+				if (fp_delxy != NULL) {
+					fseek(fp_delxy, cur_offset, SEEK_SET);
+				}
+				if (fp_gamx != NULL) {
+					fseek(fp_gamx,  cur_offset, SEEK_SET);
+				}
+				if (fp_gamy != NULL) {
+					fseek(fp_gamy,  cur_offset, SEEK_SET);
+				}
+
+                for (j = 1; j <= NY; j++) {
                     Rho = readdsk(fp_rho, format);
 
                     if (flag_velocity_files_avail) {
@@ -307,40 +437,31 @@ void readmod(float ***rho, float ***pi, float ***u,
                         // clang-format on
                     }
 
-                    /* only the PE which belongs to the current global gridpoint
-						is saving model parameters in his local arrays */
-                    if ((POS[1] == ((i - 1) / NX)) &&
-                        (POS[2] == ((j - 1) / NY)) &&
-                        (POS[3] == ((k - 1) / NZ))) {
-                        ii = i - POS[1] * NX;
-                        jj = j - POS[2] * NY;
-                        kk = k - POS[3] * NZ;
 
-                        rho[jj][ii][kk] = Rho;
+                    rho[j][i][k] = Rho;
 
-                        if (flag_velocity_files_avail) {
-                            u[jj][ii][kk] = muv;
-                            pi[jj][ii][kk] = piv;
-                        }
+                    if (flag_velocity_files_avail) {
+                        u[j][i][k] = muv;
+                        pi[j][i][k] = piv;
+                    }
 
 
-                        C11[jj][ii][kk] = C_11;
-                        C33[jj][ii][kk] = C_22;
-                        C22[jj][ii][kk] = C_33;
+                    C11[j][i][k] = C_11;
+                    C33[j][i][k] = C_22;
+                    C22[j][i][k] = C_33;
 
-                        C44[jj][ii][kk] = C_44;
-                        C66[jj][ii][kk] = C_55;
-                        C55[jj][ii][kk] = C_66;
+                    C44[j][i][k] = C_44;
+                    C66[j][i][k] = C_55;
+                    C55[j][i][k] = C_66;
 
-                        C13[jj][ii][kk] = C_12;
-                        C12[jj][ii][kk] = C_13;
-                        C23[jj][ii][kk] = C_23;
+                    C13[j][i][k] = C_12;
+                    C12[j][i][k] = C_13;
+                    C23[j][i][k] = C_23;
 
 
-                        if (WRITE_MODELFILES) {
-                            pwavemod[jj][ii][kk] = Vp;
-                            swavemod[jj][ii][kk] = Vs;
-                        }
+                    if (WRITE_MODELFILES) {
+                        pwavemod[j][i][k] = Vp;
+                        swavemod[j][i][k] = Vs;
                     }
                 }
             }
