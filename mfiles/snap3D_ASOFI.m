@@ -1,4 +1,4 @@
-function [] = snap3D_ASOFI(varargin)
+function [opts, plot_opts] = snap3D_ASOFI(varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---script for the visualization of snapshots gained from the ASOFI simulation
 %---most parameters are as specified in ASOFI parameter-file, e.g. sofi3D.json
@@ -33,9 +33,9 @@ plot_opts.file_ext = '.bin.div';
 plot_opts.file_out = [plot_opts.par_folder, '/figures/'];
 plot_opts.file_ext = '.bin.div';
 
-for phi2=0:15:90
+for phi2=90:90
     plot_opts.phi2 = phi2;
-    snap3D_asofi3D_func(plot_opts);
+    opts = snap3D_asofi3D_func(plot_opts);
 end
 
 disp('  ');
@@ -43,7 +43,7 @@ disp('Script ended...');
 end
 
  
-function snap3D_asofi3D_func(plot_opts)
+function opts = snap3D_asofi3D_func(plot_opts)
 phi2 = plot_opts.phi2;
 par_folder = plot_opts.par_folder;
 config_file = plot_opts.config_file;
@@ -146,7 +146,7 @@ end
 nsnap = 1+floor((TSNAP2 - TSNAP1) / TSNAPINC);
 
 % firts and last snapshot that is considered for displayin
-firstframe=2;
+firstframe=1;
 lastframe=2;
 
 if lastframe > nsnap
@@ -300,15 +300,7 @@ fid_file1=fopen(file_inp1,'r','ieee-le');
         % calculating time of snapshot
         tsnap=(i-1)*TSNAPINC+TSNAP1;
         disp(['Loading snapshot no ',int2str(i),' at time=',num2str(tsnap),' s.']);
-            
-        % loading data (model or snapshot)
-        % calculate offset in order to jump to specific snapshot within file
-        offset=4*nx*ny*nz*(i-1);
-        fseek(fid,offset,-1);
-        file1_data=fread(fid,(nx*ny*nz),'float');
-        file1_data=reshape(file1_data,ny,nx,nz);
-        file1_data=permute(file1_data,[3,2,1]);
-        
+          
         D = merge_snapshots(plot_opts, opts);
         file1_data = D(:,:,:,i);
         % creating a grid
