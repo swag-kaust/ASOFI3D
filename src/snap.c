@@ -187,6 +187,14 @@ void snap(FILE *fp, int nt, int nsnap, int format, int type,
 						/*sign(rot(v)t * sqrt(Es) with Es = u*amp*amp (second amp removed due to missing sqrt in amp*/
 						a=fsign((vxz-vzx))*sqrt((u[j][i][k])*amp);
 						break;
+					case 6 : /*SH wave*/
+						amp=(vxz-vzx)*(vxz-vzx);
+						a=fsign((vxz-vzx))*sqrt((u[j][i][k])*amp);
+						break;
+					case 7 : /*SV wave*/
+						amp=(vzy-vyz)*(vzy-vyz)+(vyx-vxy)*(vyx-vxy);
+						a=sqrt((u[j][i][k])*amp);
+						break;
 					
 					}
 					
