@@ -72,6 +72,13 @@ write_asofi3D_json(config.jsonPath, config);
 %% run modeling
 % find number of processors NP to run on
 NP = config.NPROCX * config.NPROCY * config.NPROCZ;
+NP_max = feature('numcores');
+if NP > NP_max
+    error('ASOFI3D:NP_MAX', ...
+          ['Required number of MPI processes %d is larger ' ...
+           'than available %d'], ...
+          NP, NP_max);
+end
 cd ../
 system(['./run_asofi3D.sh ', num2str(NP)])
 cd mfiles
