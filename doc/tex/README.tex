@@ -3,13 +3,13 @@
 Get the code from this repo:
 
 \begin{verbatim}
-git clone git@github.com:swag-kaust/TD.git
+git clone git@github.com:swag-kaust/ASOFI3D.git
 \end{verbatim}
 
-Then switch to the cloned repo directory:
+Then switch to the created directory:
 
 \begin{verbatim}
-cd TD
+cd ASOFI3D
 \end{verbatim}
 
 \subsection{Building the code}\label{building-the-code}
@@ -19,21 +19,21 @@ The prerequisites for ASOFI3D are:
 \begin{itemize}
 \tightlist
 \item
-  C compiler (for example, \texttt{gcc})
+  C compiler (for example, \texttt{gcc}), which supports C11 standard
 \item
   MPI library (for example, \href{https://www.open-mpi.org/}{OpenMPI})
 \item
-  Make build system (GNU Make is a popular choice)
+  \href{https://www.gnu.org/software/make/}{GNU Make} build system
 \end{itemize}
 
-\subsection{Compile with gcc and OpenMPI on
-Ubuntu}\label{compile-with-gcc-and-openmpi-on-ubuntu}
+\subsection{Building the code with gcc and OpenMPI on
+Ubuntu}\label{building-the-code-with-gcc-and-openmpi-on-ubuntu}
 
 On recent Ubuntu versions such as 14.04, 16.04, or 18.04 all
 prerequisites can be obtained by the following commands:
 
 \begin{verbatim}
-sudo apt-get install gcc make libopenmpi-dev
+sudo apt-get install gcc libopenmpi-dev make
 \end{verbatim}
 
 Then while in the root directory of the code, build the code via command
@@ -44,24 +44,28 @@ make
 
 which compiles the solver and several auxiliary utilities.
 
+Before compilation, make will automatically test for the ability to
+compile MPI programs and generate file \texttt{src/config-auto.mk} with
+the flags for compilation.
+
 \subsection{Example usage}\label{example-usage}
 
 After successful compilation, you can run the code via command
 
 \begin{verbatim}
-./run_ASOFI3D.sh np dirname
+./run_asofi3D.sh np dirname
 \end{verbatim}
 
 where \texttt{np} is a number of MPI processes you want to use and
 \texttt{dirname} is the directory that contains configuration of the
 problem to solve. Parameter \texttt{dirname} is optional and defaults to
 \texttt{par}, so that the main configuration file of the solver is
-\texttt{par/in\_and\_out/sofi3D.json}.
+\texttt{par/in\_and\_out/asofi3D.json}.
 
 \subsection{Running the tests}\label{running-the-tests}
 
-To run the tests, Madagascar is an additional prerequisite. Tests are
-run via the command
+To run the tests, \href{http://www.ahay.org}{Madagascar} is an
+additional prerequisite. Tests are run via the command
 
 \begin{verbatim}
 make test
