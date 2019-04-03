@@ -11,11 +11,11 @@ nly = (opts.NY / opts.NPROCY) / opts.IDY;
 nlz = (opts.NZ / opts.NPROCZ) / opts.IDZ;
 
 % The number of snapshots.
-nsnap = 1 + floor((opts.TSNAP2 - opts.TSNAP1) / opts.TSNAPINC);
+nsnap = 1 + floor(10*eps+(opts.TSNAP2 - opts.TSNAP1) / opts.TSNAPINC);
 
 %%
 for i = 1:opts.NPROCX
-    disp(i*100/opts.NPROCX);
+    disp(['Merging snapshots ', num2str(i*100/opts.NPROCX), ' %']);
     for j = 1:opts.NPROCY
         for k = 1:opts.NPROCZ
             snap_file = [snap_name,'.',num2str(i-1),'.',num2str(j-1),'.',num2str(k-1)];
