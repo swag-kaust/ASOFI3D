@@ -1,10 +1,17 @@
-function [opts, plot_opts] = snap3D_ASOFI(varargin)
+function [opts, plot_opts, D] = snap3D_ASOFI(folder_out, diffFlag, config_file)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---script for the visualization of snapshots gained from the ASOFI simulation
 %---most parameters are as specified in ASOFI parameter-file, e.g. sofi3D.json
 %---Please note : y denotes the vertical axis!!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clc;
+
+% by default the figures will be saved to the figures folder without any
+% subfolder structure
+defval('folder_out', '.');
+defval('diffFlag', false);
+defval('config_file','./in_and_out/asofi3D.json');
+
 
 %% check MATLAB 
 MATLAB_MIN_VERSION = 'R2016b';
@@ -18,24 +25,19 @@ end
 %%
 addpath('./utils');
 
-config_file = './in_and_out/asofi3D.json';
-if length(varargin) >= 1
-    config_file = varargin{1};
-    disp(['Parameter `config_file` is set to "' config_file '"']);
-end
-
 % User-defined parameters.
 % Directory name with the simulation input and output, relative to this script.
 plot_opts.par_folder = '../par';
 % % Path to configuration file, relative to par_folder.
 plot_opts.config_file = config_file;
-plot_opts.file_ext = '.bin.div';
-plot_opts.file_out = [plot_opts.par_folder, '/figures/'];
-plot_opts.file_ext = '.bin.div';
+plot_opts.file_ext = '.bin.curl';
+plot_opts.file_out = [plot_opts.par_folder, '/figures/',folder_out,'/'];
+mkdir(plot_opts.file_out);
+plot_opts.diffFlag = diffFlag;
 
 for phi2=90:90
     plot_opts.phi2 = phi2;
-    opts = snap3D_asofi3D_func(plot_opts);
+    [opts, D] = snap3D_asofi3D_func(plot_opts);
 end
 
 disp('  ');
@@ -43,11 +45,10 @@ disp('Script ended...');
 end
 
  
-function opts = snap3D_asofi3D_func(plot_opts)
+function [opts, D] = snap3D_asofi3D_func(plot_opts)
 phi2 = plot_opts.phi2;
 par_folder = plot_opts.par_folder;
 config_file = plot_opts.config_file;
-
 
 %% Read from json to opts.
 opts = read_asofi3D_json([par_folder, '/', config_file]);
@@ -94,14 +95,14 @@ file_mod = fullfile(par_folder, [opts.MFILE '.SOFI3D.rho']);
 
 % Output file
 % switch for saving snapshots to picture file 1=yes (jpg) 2= yes (png) other=no
-filesave=1;
+file_save=1;
 % base name of picture file output, will be expanded by extension jpg/png
 file_out=plot_opts.file_out;
 
 
 
 % title strings for each sub-figure
-title_inp1='\nabla \cdot u';
+title_inp1='|\nabla \times u|';
 
 title_mod='Density model';
 
@@ -143,11 +144,11 @@ if TSNAP2 > TIME
     TSNAP2 = TIME;
 end
 
-nsnap = 1+floor((TSNAP2 - TSNAP1) / TSNAPINC);
+nsnap = 1+floor(10*eps+(TSNAP2 - TSNAP1) / TSNAPINC);
 
-% firts and last snapshot that is considered for displayin
+% first and last snapshot that is considered for displayin
 firstframe=1;
-lastframe=2;
+lastframe=3;
 
 if lastframe > nsnap
     fprintf(['WARNING: Number of snapshots (nsnap = %d) is ' ...
@@ -188,7 +189,7 @@ rotaxis=[0,1,0];
 rotpoint=[0 0 0];
 % defines angles of perspective for the 3-D view
 % i.e. it rotates the plot to favorable perspective
-viewpoint=[1,4,1];
+viewpoint=0.8*[1,4,1];
 
 file_out = [file_out, num2str(phi2)];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -282,7 +283,7 @@ fid_file1=fopen(file_inp1,'r','ieee-le');
     if type_switch==2
         % loading snapshot data of input1
         fid=fopen(file_inp1,'r','ieee-le');
-        colormap(load(fullfile('utils', 'colormap', './srgb.map')));
+        colormap(rdbuMap());
         
         % adding contour of model to snapshot data
         if cont_switch==1
@@ -294,14 +295,24 @@ fid_file1=fopen(file_inp1,'r','ieee-le');
         end
     end
     
+    
+    if plot_opts.diffFlag
+        load('D_hom','D');
+        D_hom = D;
+        
+        D = merge_snapshots(plot_opts, opts);
+        
+        D = D-D_hom;
+    else
+        D = merge_snapshots(plot_opts, opts);
+    end
+    
     % loop over number of snaphsots
     for i=firstframe:lastframe
-        
         % calculating time of snapshot
         tsnap=(i-1)*TSNAPINC+TSNAP1;
-        disp(['Loading snapshot no ',int2str(i),' at time=',num2str(tsnap),' s.']);
-          
-        D = merge_snapshots(plot_opts, opts);
+        disp(['Displaying snapshot no ',int2str(i),' at time=',num2str(tsnap),' s.']);
+              
         file1_data = D(:,:,:,i);
         % creating a grid
         [X,Z,Y]=meshgrid(x,z,y);
@@ -366,9 +377,15 @@ fid_file1=fopen(file_inp1,'r','ieee-le');
             h2=contourslice(X,Z,Y,mod_data,xd2,zd2,yd2,numbOFcont);
             set(h2,'FaceColor','black','EdgeColor','black');
         end
+        
+        %% 3D scatter snapshot visualization
+        if plot_opts.diffFlag
+            scatter_plot(file1_data, opts);
+        end
+        
         hold off
         
-        % formating figure
+        %% formating figure
         %daspect([1,1,1]);
         axis tight
         box on
@@ -381,9 +398,9 @@ fid_file1=fopen(file_inp1,'r','ieee-le');
         
         set(gcf,'Renderer','zbuffer');
         %colorbar
-        xlabel('x in m');
-        ylabel('y in m');
-        zlabel('Depth z in m');
+        xlabel('x(m)');
+        ylabel('y(m)');
+        zlabel('z(m)');
         
         % adding title string to plot
         if type_switch==2
@@ -392,6 +409,10 @@ fid_file1=fopen(file_inp1,'r','ieee-le');
         if type_switch==1
             title(title_mod);
         end
+        
+        
+        
+        %
         
         set(get(gca,'title'),'FontSize',13);
         set(get(gca,'title'),'FontWeight','bold');
@@ -408,15 +429,17 @@ fid_file1=fopen(file_inp1,'r','ieee-le');
         set(gca,'Linewidth',1.0);
         set(gca,'Box','on');
         
+        %%
+        
         % determing maximum amplitude of plot
         file1max=max(max(max(abs(file1_data))));
         % display maximum amplitude to command window
         disp(['  Maximum amplitude of ',title_inp1,'-snapshot: ', num2str(file1max)]);
         
         % cropping model/snapshot dimensions
-        ylim([0 nz*dh*outz+0.1])
-        xlim([0 nx*dh*outx+0.1])
-        zlim([0 ny*dh*outy+1.1])
+        ylim([0 nz*dh*outz])
+        xlim([0 nx*dh*outx])
+        zlim([0 ny*dh*outy])
         
         % for snapshot input files
         if type_switch==2
@@ -431,34 +454,62 @@ fid_file1=fopen(file_inp1,'r','ieee-le');
             end
             
             % adding text string for timestep of snapshot
-            set(text(3500,-1000,['T= ',sprintf('%2.4f',tsnap), 's']),'FontSize',12,'FontWeight','bold','Color','black');
+            %set(text(3500,-1000,['T= ',sprintf('%2.4f',tsnap), 's']),'FontSize',12,'FontWeight','bold','Color','black');
             
             pause(pause4display);
             
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             %---Saving the snapshot to file
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            if (filesave~=0)
-                % generating filename string
-                if i<10
-                    imagefile=[file_out,'3D_00',int2str(i)];
-                elseif i<100
-                    imagefile=[file_out,'3D_0',int2str(i)];
-                else
-                    imagefile=[file_out,'3D_',int2str(i)];
-                end
-                
-                % output as jpg graphic (or eps) via print command
-                if filesave==1
-                    eval(['print -djpeg100  ' [imagefile,'.jpg']]);
-                    %             eval(['print -depsc  '[imagefile2,'.eps']]);
-                end
-                
-                % output as png graphic via additional matlab function
-                if filesave==2
-                    savefig(imagefile, 'png', '-rgb', '-c0', '-r250');
-                end
-            end
+            save_snap(file_save, file_out, i)
+           
+            
         end
     end
+end
+
+function scatter_plot(last_snap, config)
+%%
+        [Y, X, Z] = ndgrid(0:size(last_snap,1)-1, ...
+            0:size(last_snap,2)-1, ...
+            0:size(last_snap,3)-1);
+        
+        X = config.IDX * config.DX * X;
+        Y = config.IDY * config.DY * Y;
+        Z = config.IDZ * config.DZ * Z;
+        
+        mask_3D = (abs(last_snap(:)) > max(abs(last_snap(:)))*0.2);% .* (Z(:)<(config.DH1-100));
+        
+        mask_3D = logical(mask_3D);
+        
+        h = scatter3(X(mask_3D), Y(mask_3D), Z(mask_3D), 100*abs(last_snap(mask_3D))./max(last_snap(:))+eps, last_snap(mask_3D), 'filled');
+                
+        alpha = 0.5;
+        set(h, 'MarkerFaceAlpha',alpha, 'MarkerEdgeAlpha', alpha)
+end
+function save_snap(file_save, file_out, i)
+%%
+if (file_save~=0)
+    % generating filename string
+    if i<10
+        imagefile=[file_out,'3D_00',int2str(i)];
+    elseif i<100
+        imagefile=[file_out,'3D_0',int2str(i)];
+    else
+        imagefile=[file_out,'3D_',int2str(i)];
+    end
+    
+    % output as jpg graphic (or eps) via print command
+    if file_save==1
+        fig2 = gcf;
+        fig2.PaperPosition = [0 0 8 4.5];
+        eval(['print -djpeg100  ' [imagefile,'.jpg']]);
+        %eval(['print -depsc  ' [imagefile,'.eps']]);
+    end
+    
+    % output as png graphic via additional matlab function
+    if file_save==2
+        savefig(imagefile, 'png', '-rgb', '-c0', '-r250');
+    end
+end
 end

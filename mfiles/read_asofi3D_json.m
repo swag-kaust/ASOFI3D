@@ -23,7 +23,7 @@ for field_n = 1:length(field_list)
     config.(field_list{field_n}) = ...
         str2num_if_num(config.(field_list{field_n}));
 end
-write_asofi3D_json(filename, config);
+%write_asofi3D_json([filename, '_snap'], config);
 
 end
 
